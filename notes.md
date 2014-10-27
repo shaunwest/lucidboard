@@ -10,7 +10,7 @@
 - id
 - title
 - createdBy
-- createdAt 
+- createdAt
 - votesAllowed
 
 ## Columns
@@ -55,6 +55,7 @@ POST /api/login
     - username
     - token
 
+// Get all info on a board
 GET /api/boards
   - Out
     - [{
@@ -64,6 +65,7 @@ GET /api/boards
         createdAt
        }, {}, ...]
 
+// Create a new board
 POST /api/boards
   - In
     - title
@@ -71,6 +73,7 @@ POST /api/boards
   - Out
     - {¿everything?}
 
+// Get all info on a board
 GET /api/boards/4
   - Out
     - {
@@ -120,6 +123,7 @@ GET /api/boards/4/votes/7
   - Out
     - [
         { cardId: 3, votes: 1 },
+        { cardId: 7, votes: 2 },
         ...
       ]
 
@@ -151,6 +155,7 @@ PATCH /api/boards/4/cards/2
           votes
         }
 
+// Add a vote
 POST /api/boards/4/cards/2/vote/7
   - (boardId / cardId / userId)
   - In: ""

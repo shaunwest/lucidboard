@@ -32,10 +32,21 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'POST /test': {
+  'POST /api/signin': {
     controller: 'UserController',
-    action:     'login'
+    action:     'signin'
   },
+
+  'GET /api/boards/:id': {
+    controller: 'BoardController',
+    action:     'findById'
+  },
+
+  'POST /api/boards': {
+    controller: 'BoardController',
+    action:     'create'
+  },
+
 
   /***************************************************************************
   *                                                                          *

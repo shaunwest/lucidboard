@@ -35,7 +35,9 @@
     "rimraf": "*",
     "run-sequence": "1.0.0",
     "sails": "~0.10.5",
-    "sails-disk": "~0.10.0"
+    "sails-disk": "~0.10.0",
+    "sails-redis": "^0.10.3",
+    "socket.io": "^1.1.0"
   },
   "scripts": {
     "start": "node app.js",
