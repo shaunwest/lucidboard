@@ -34,7 +34,7 @@ module.exports.routes = {
 
   'POST /test': {
     controller: 'UserController',
-    action:     'login',
+    action:     'login'
   },
 
   /***************************************************************************
@@ -46,5 +46,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-
+  'GET /': {
+    view: 'main'
+  }
 };
