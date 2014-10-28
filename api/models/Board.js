@@ -13,12 +13,13 @@ module.exports = {
   schema: true,
 
   attributes: {
+
     title: {
       type:  'string',
       regex: titleRegex
     },
 
-    fff: {
+    columns: {
       collection: 'column',
       via:        'board'
     },

@@ -32,20 +32,59 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // Sign in
   'POST /api/signin': {
     controller: 'UserController',
     action:     'signin'
   },
 
+  // Board Create
+  'POST /api/boards': {
+    controller: 'BoardController',
+    action:     'create'
+  },
+
+  // Board Update
+  'POST /api/boards/:id': {
+    controller: 'BoardController',
+    action:     'update'
+  },
+
+  // Board Get (Full!)
   'GET /api/boards/:id': {
     controller: 'BoardController',
     action:     'findById'
   },
 
-  'POST /api/boards': {
-    controller: 'BoardController',
+  // Column Create
+  'POST /api/boards/:boardId/columns': {
+    controller: 'ColumnController',
     action:     'create'
   },
+
+  // Column Update
+  'POST /api/boards/:boardId/columns/:columnId': {
+    controller: 'ColumnController',
+    action:     'update'
+  },
+
+  // Card Create
+  'POST /api/boards/:boardId/columns/:columnId/cards': {
+    controller: 'CardController',
+    action:     'create'
+  },
+
+  // Card Update
+  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId': {
+    controller: 'CardController',
+    action:     'update'
+  },
+
+  // Card Vote
+  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/vote': {
+    controller: 'CardController',
+    action:     'vote'
+  }
 
 
   /***************************************************************************
@@ -57,7 +96,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'GET /': {
-    view: 'main'
-  }
+  // 'GET /': {
+  //   view: 'main'
+  // }
 };

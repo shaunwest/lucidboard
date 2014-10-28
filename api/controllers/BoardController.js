@@ -1,24 +1,32 @@
+var async = require('async');
+
 module.exports = {
 
   findById: function(req, res) {
     var id = req.param('id');
-    // console.log('id', id);
-    // console.log('Board', Board);
-    // process.exit();
 
-    Board.findOne({id: id}).populate('fff').exec(function(err, board) {
-      console.log('and', err, board);
+    Board.findOne({id: id}).populate('columns').exec(function(err, board) {
       if (err) return res.serverError(err);
+
+      /*
+      var cardfindermaker = function(column) {
+        return function(cb) {
+        };
+      };
+
+      async.parallel(
+      */
 
       res.jsonx(board);
     });
   },
 
   create: function(req, res) {
-    var title = req.body.title;
+    var user  = req.user,
+        title = req.body.title;
 
     // 1. Create the board
-    Board.create({title: title, creator: req.user.id}, function(err, board) {
+    Board.create({title: title, creator: user.id}, function(err, board) {
       if (err) return res.serverError(err);
 
       var colmakermaker = function(title, pos) {
@@ -40,6 +48,17 @@ module.exports = {
       });
 
     });
+  },
 
+  update: function(req, res) {
+    var id    = req.param('id'),
+        title = req.body.title;
+
+    Board.update(id, {title: title}).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+    });
   }
+
 };

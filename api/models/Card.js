@@ -15,7 +15,12 @@ module.exports = {
     content:  'string',
     position: 'integer',
 
-    column: { model: 'column' }
+    column: { model: 'column' },
+
+    votes: {
+      collection: 'vote',
+      via:        'card'
+    }
   }
 
 };

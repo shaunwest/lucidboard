@@ -13,6 +13,7 @@ module.exports = {
   schema: true,
 
   attributes: {
+
     title: {
       type:  'string',
       regex: titleRegex
@@ -20,7 +21,13 @@ module.exports = {
 
     position: 'integer',
 
-    board: { model: 'board' }
+    board: { model: 'board' },
+
+    cards: {
+      collection: 'card',
+      via:        'column'
+    }
+
   }
 
 };
