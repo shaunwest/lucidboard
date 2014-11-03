@@ -25,7 +25,15 @@ module.exports = {
     },
 
     creator: { model: 'user' },
-  },
 
+    toJSON: function() {
+      return {
+        id:       this.id,
+        title:   this.title,
+        columns: this.columns,
+        creator: this.creator
+      };
+    }
+  },
 
 };

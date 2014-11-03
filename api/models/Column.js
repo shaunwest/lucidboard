@@ -26,6 +26,16 @@ module.exports = {
     cards: {
       collection: 'card',
       via:        'column'
+    },
+
+    toJSON: function() {
+      return {
+        id:       this.id,
+        title:    this.title,
+        position: this.position,
+        board:    this.board,
+        cards:    this.cards
+      };
     }
 
   }

@@ -1,23 +1,51 @@
-var async = require('async');
+var async = require('async'),
+    _     = require('underscore');
 
 module.exports = {
 
   findById: function(req, res) {
     var id = req.param('id');
 
-    Board.findOne({id: id}).populate('columns').exec(function(err, board) {
+    async.auto({
+      board: function(cb) {
+        Board.findOneById(id).populate('columns').exec(cb);
+      },
+      cards: ['board', function(cb, results) {
+        Card.find({column: _.pluck(results.board.columns, 'id')}).exec(cb);
+      }],
+      votes: ['cards', function(cb, results) {
+        Vote.find({card: _.pluck(results.cards, 'id')}).exec(cb);
+      }],
+      mapCards: ['cards', function(cb, results) {
+        var i, board = results.board;
+
+        for (i=0; i<board.columns.length; i++) {
+          results.cards.forEach(function(card) {
+            if (card.column === board.columns[i].id) {
+              var c = card.toObject(); c.votes = [];  // wtf, mate
+              board.columns[i].cards.push(c);
+            }
+          });
+        }
+
+        cb(null, board);
+      }],
+      mapVotes: ['votes', 'mapCards', function(cb, results) {
+        results.votes.forEach(function(vote) {
+          for (var i=0; i<results.board.columns.length; i++) {
+            for (var j=0; j<results.board.columns[i].cards.length; j++) {
+              if (results.board.columns[i].cards[j].id === vote.card) {
+                results.board.columns[i].cards[j].votes.push(vote.toObject());
+              }
+            }
+          }
+        });
+        cb(null, results.board);
+      }]
+    }, function(err, results) {
       if (err) return res.serverError(err);
 
-      /*
-      var cardfindermaker = function(column) {
-        return function(cb) {
-        };
-      };
-
-      async.parallel(
-      */
-
-      res.jsonx(board);
+      res.json(results.mapVotes);
     });
   },
 

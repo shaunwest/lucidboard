@@ -30,6 +30,10 @@ module.exports.policies = {
     '*': 'authenticated'
   },
 
+  CardController: {
+    '*': 'authenticated'
+  },
+
   // '*': true,
 
   /***************************************************************************

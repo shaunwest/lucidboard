@@ -37,7 +37,8 @@
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0",
     "sails-redis": "^0.10.3",
-    "socket.io": "^1.1.0"
+    "socket.io": "^1.1.0",
+    "underscore": "^1.7.0"
   },
   "scripts": {
     "start": "node app.js",

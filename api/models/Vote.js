@@ -12,7 +12,14 @@ module.exports = {
 
   attributes: {
     user: { model: 'user' },
-    card: { model: 'card' }
+    card: { model: 'card' },
+
+    toJSON: function() {
+      return {
+        user: this.user,
+        card: this.card
+      };
+    }
   }
 
 };

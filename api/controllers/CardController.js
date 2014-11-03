@@ -59,10 +59,12 @@ module.exports = {
     //        that the card belongs to the column, which belongs to be board that we
     //        expect! Also, check this sort of thing with the other methods.
 
-    Card.find({id: cardId}).populate('votes').exec(function(err, card) {
+    Card.findOneById(cardId).populate('votes').exec(function(err, card) {
       if (err) return res.serverError(err);
 
-      Vote.create({ user: user.id, card: card.id }, function(err, vote) {
+      if (!card) return res.badRequest('Card does not exist!');
+
+      Vote.create({user: user.id, card: card.id}, function(err, vote) {
         if (err) return res.serverError(res);
 
         res.jsonx(vote);
@@ -71,3 +73,4 @@ module.exports = {
   }
 
 };
+

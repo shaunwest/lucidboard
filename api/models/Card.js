@@ -20,6 +20,16 @@ module.exports = {
     votes: {
       collection: 'vote',
       via:        'card'
+    },
+
+    toJSON: function() {
+      return {
+        id:       this.id,
+        content:  this.content,
+        position: this.position,
+        column:   this.column,
+        votes:    this.votes
+      };
     }
   }
 
