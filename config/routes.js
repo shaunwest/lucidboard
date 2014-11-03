@@ -84,7 +84,7 @@ module.exports.routes = {
   'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/vote': {
     controller: 'CardController',
     action:     'vote'
-  }
+  },
 
 
   /***************************************************************************
@@ -96,7 +96,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  // 'GET /': {
-  //   view: 'main'
-  // }
+  'GET /': {
+    view: 'main'
+  }
 };
