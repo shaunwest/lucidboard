@@ -1,1 +1,16 @@
-<h2>Home</h2>
+<div style="width:40%;float:right">
+  <h3>New Board</h3>
+  <form ng-controller="BoardCreateCtrl" ng-submit="boardCreate()">
+    <p>
+      <label for="title">Title</label>
+      <input type="text" ng-model="title">
+    </p>
+    <input type="submit">
+  </form>
+</div>
+
+<ul>
+  <li ng-repeat="b in boards">
+    <a href="/boards/{{b.id}}">{{b.title}}</a>
+  </li>
+</ul>

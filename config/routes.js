@@ -20,6 +20,8 @@
  * http://sailsjs.org/#/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 
+var jsapp = { view: 'main' };
+
 module.exports.routes = {
 
   /***************************************************************************
@@ -36,6 +38,12 @@ module.exports.routes = {
   'POST /api/signin': {
     controller: 'UserController',
     action:     'signin'
+  },
+
+  // Board list get
+  'GET /api/boards': {
+    controller: 'BoardController',
+    action:     'getList'
   },
 
   // Board Create
@@ -96,7 +104,8 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'GET /': {
-    view: 'main'
-  }
+
+  'GET /':                jsapp,
+  'GET /boards':          jsapp,
+  'GET /boards/:boardId': jsapp
 };

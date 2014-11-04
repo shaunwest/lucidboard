@@ -1,7 +1,16 @@
 var async = require('async'),
-    _     = require('underscore');
+    _     = require('underscore'),
+    redis = require('../services/redis');
 
 module.exports = {
+
+  getList: function(req, res) {
+    Board.find().exec(function(err, boards) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(boards);
+    });
+  },
 
   findById: function(req, res) {
     var id = req.param('id');
@@ -45,7 +54,7 @@ module.exports = {
     }, function(err, results) {
       if (err) return res.serverError(err);
 
-      res.json(results.mapVotes);
+      res.jsonx(results.mapVotes);
     });
   },
 
@@ -73,6 +82,8 @@ module.exports = {
         board.columns = [results.trash, results.firstcol];
 
         res.jsonx(board);
+
+        redis.boardCreated(board);
       });
 
     });
@@ -86,6 +97,8 @@ module.exports = {
       if (err) return res.serverError(err);
 
       res.jsonx(board);
+
+      redis.boardUpdated(board);
     });
   }
 

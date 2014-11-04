@@ -1,3 +1,5 @@
+var redis = require('../api/services/redis');
+
 /**
  * WebSocket Server Settings
  * (sails.config.sockets)
@@ -23,7 +25,7 @@ module.exports.sockets = {
   ***************************************************************************/
   onConnect: function(session, socket) {
 
-    // By default, do nothing.
+    redis.socketOnConnection(session, socket);
 
   },
 

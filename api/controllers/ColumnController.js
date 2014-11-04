@@ -1,3 +1,5 @@
+var redis = require('../services/redis');
+
 var getNextColumnPosition = function(boardId, cb) {
   Board.findOne({id: boardId}).populate('columns').exec(function(err, board) {
     if (err) return cb(err);
@@ -31,6 +33,8 @@ module.exports = {
         if (err) return res.serverError(err);
 
         res.jsonx(column);
+
+        redis.columnCreated(column);
       });
     });
   },
@@ -44,6 +48,8 @@ module.exports = {
       if (err) return res.serverError(err);
 
       res.jsonx(column);
+
+      redis.columnUpdated(column);
     });
   }
 
