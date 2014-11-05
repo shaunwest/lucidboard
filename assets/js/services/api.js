@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('api', ['$sails', '$state', function($sails, $state) {
+    .factory('api', ['$sails', '$state', 'localStorageService', function($sails, $state, localStorageService) {
 
       var debug = function(msg) {
         console.log(msg);
@@ -57,9 +57,10 @@
         //   data.err = data.message;
         //   FlashService.show(data.message);
         // }
-        if (jwr.statusCode === 403) {
-          $state.go('signin');
-        }
+        switch (jwr.statusCode) {
+          case 403: return $state.go('signin');
+          case 500: return alert('oh noes!');
+        };
 
         cb(data, jwr);
       };
@@ -84,11 +85,27 @@
       };
 
       return {
-        login: function(user, pass, cb) {
-          post('/api/signin', {username: user, password: pass}, cb);
+        signin: function(user, pass, cb) {
+          post('/api/signin', {username: user, password: pass}, function(data, jwr) {
+            localStorageService.set('authToken', data.token);
+            console.log('setting token', data.token);
+            cb(data, jwr);
+          });
         },
-        getBoards: function(cb) {
+        signinWithToken: function(token, cb) {
+          post('/api/signin-with-token', {token: token}, function(data, jwr) {
+            localStorageService.set('authToken', data.token);
+            cb(data, jwr);
+          });
+        },
+        boardsGetList: function(cb) {
           get('/api/boards', cb);
+        },
+        boardCreate: function(bits, cb) {
+          post('/api/boards', bits, cb);
+        },
+        boardGet: function(boardId, cb) {
+          get('/api/boards/' + boardId, cb);
         }
       };
     }])

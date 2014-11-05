@@ -40,6 +40,12 @@ module.exports.routes = {
     action:     'signin'
   },
 
+  // Sign in with token
+  'POST /api/signin-with-token': {
+    controller: 'UserController',
+    action:     'signinWithToken'
+  },
+
   // Board list get
   'GET /api/boards': {
     controller: 'BoardController',

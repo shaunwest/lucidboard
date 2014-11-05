@@ -11,13 +11,13 @@ var publish = function(signal, payload) {
 };
 
 module.exports = {
-  boardCreated: function(boardId, board) {
-    publish('board:create:' + boardId, board);
+  boardCreated: function(board) {
+    publish('board:create:' + board.id, board);
   },
-  boardUpdated: function(boardId, board) {
-    publish('board:update:' + boardId, board);
+  boardUpdated: function(board) {
+    publish('board:update:' + board.id, board);
   },
-  boardDeleted: function(boardId, board) {
+  boardDeleted: function(boardId) {
     publish('board:delete:' + boardId, null);
   },
 

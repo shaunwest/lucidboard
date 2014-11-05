@@ -41,6 +41,24 @@ module.exports = {
 
   },
 
+  // Allow a client to reauthenticate with a token.
+  // What comes out is a refreshed token.
+  signinWithToken: function(req, res) {
+    var token = req.body.token;
+
+    User.findOne({id: token}, function(err, user) {
+      if (err) return res.serverError(err);
+
+      if (!user) return res.forbidden('Invalid auth token');
+
+      if (req.isSocket) {
+        req.socket.authToken = token;
+      }
+
+      res.jsonx({token: user.id});
+    });
+  },
+
   /**
    * Method browsers use to subscribe to redis events
    */
