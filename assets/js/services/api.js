@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('api', ['$sails', function($sails) {
+    .factory('api', ['$sails', '$state', function($sails, $state) {
 
       var debug = function(msg) {
         console.log(msg);
@@ -49,41 +49,47 @@
         }
       };
 
-      var handleResponse = function(data, cb) {
-        if (data && data.location) {
-          $location.path(data.location);
+      var handleResponse = function(data, jwr, cb) {
+        // if (data && data.location) {
+        //   $location.path(data.location);
+        // }
+        // if (data && data.status === 'error') {
+        //   data.err = data.message;
+        //   FlashService.show(data.message);
+        // }
+        if (jwr.statusCode === 403) {
+          $state.go('signin');
         }
-        if (data && data.status === 'error') {
-          data.err = data.message;
-          FlashService.show(data.message);
-        }
-        cb(data);
+
+        cb(data, jwr);
       };
 
       var get = function(target, cb) {
-        $sails.get(target, function(data) {
+        $sails.get(target, function(data, jwr) {
           info('api get [' + target + ']: ' + JSON.stringify(data));
-          handleResponse(data, function(data) {
-            if (cb) cb(data);
+          handleResponse(data, jwr, function(data, jwr) {
+            if (cb) cb(data, jwr);
           });
         });
       };
 
       var post = function(target, params, cb) {
-        $sails.post(target, params, function(data) {
+        $sails.post(target, params, function(data, jwr) {
           info('api post [' + target + '][' + JSON.stringify(params) +
             ']: ' + JSON.stringify(data));
-          handleResponse(data, function(data) {
-            if (cb) cb(data);
+          handleResponse(data, jwr, function(data, jwr) {
+            if (cb) cb(data, jwr);
           });
         });
       };
 
       return {
+        login: function(user, pass, cb) {
+          post('/api/signin', {username: user, password: pass}, cb);
+        },
         getBoards: function(cb) {
           get('/api/boards', cb);
         }
       };
     }])
 })();
-

@@ -2,7 +2,12 @@
   'use strict';
   angular.module('hansei.routes')
     .constant('routes', {
-      home: {
+      signin: {
+        url:         '/signin',
+        templateUrl: '/templates/signin.html',
+        controller:  'SigninController'
+      },
+      boards: {
         url:         '/boards',
         templateUrl: '/templates/home.html',
         controller:  'BoardsController',

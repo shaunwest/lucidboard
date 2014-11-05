@@ -5,7 +5,7 @@ var async = require('async'),
 module.exports = {
 
   getList: function(req, res) {
-    Board.find().exec(function(err, boards) {
+    Board.find({}).exec(function(err, boards) {
       if (err) return res.serverError(err);
 
       res.jsonx(boards);

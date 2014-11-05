@@ -9,15 +9,21 @@
  */
 module.exports = function(req, res, next) {
 
+  var token;
+
   var fail = function() {
     return res.forbidden('You are not permitted to perform this action.');
   };
 
-  var token = req.headers['auth-token'];
+  if (req.isSocket) {
+    token = req.socket.authToken;
+  } else {
+    token = req.headers['auth-token'];
+  }
 
   if (!token) return fail();
 
-  if (!token.match(/^\d+$/)) return fail();
+  if (!String(token).match(/^\d+$/)) return fail();
 
   User.findOne({id: token}, function(err, user) {
     if (err) return res.serverError(err);

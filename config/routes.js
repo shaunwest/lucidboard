@@ -106,6 +106,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   'GET /':                jsapp,
+  'GET /signin':          jsapp,
   'GET /boards':          jsapp,
   'GET /boards/:boardId': jsapp
 };

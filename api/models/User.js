@@ -30,10 +30,10 @@ module.exports = {
     // gravatarHash: {
     //   type: 'string'
     // },
-    password: {
-      type: 'string',
-      required: true
-    },
+    // password: {
+    //   type: 'string',
+    //   required: true
+    // },
 
     boards: {
       collection: 'board',

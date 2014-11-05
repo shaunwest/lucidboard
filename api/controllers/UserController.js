@@ -7,6 +7,12 @@ module.exports = {
         password = req.body.password;
 
     var finish = function(user) {
+      var token = user.id;  // FIXEME: temporary
+
+      if (req.isSocket) {
+        req.socket.authToken = token;
+      }
+
       res.jsonx({
         // id:       user.id,
         // username: user.name,
@@ -18,21 +24,19 @@ module.exports = {
     User.findOne({name: username}, function(err, user) {
       if (err) return res.serverError(err);
 
-      if (user) {
+      if (user) return finish(user);
+
+      // Create the user if it doesn't exist
+      User.create({
+        name:     username,
+        // password: password
+      }, function(err, user) {
+        if (err) return res.serverError(err);
+
+        console.log('User created: ', user);
+
         finish(user);
-
-      } else {  // Create the user if it doesn't exist
-        User.create({
-          name: username,
-          password: password
-        }, function(err, user) {
-          if (err) return res.serverError(err);
-
-          console.log('User created: ', user);
-
-          finish(user);
-        });
-      }
+      });
     });
 
   },
