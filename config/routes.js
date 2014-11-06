@@ -41,9 +41,9 @@ module.exports.routes = {
   },
 
   // Sign in with token
-  'POST /api/signin-with-token': {
+  'POST /api/refresh-token': {
     controller: 'UserController',
-    action:     'signinWithToken'
+    action:     'refreshToken'
   },
 
   // Board list get

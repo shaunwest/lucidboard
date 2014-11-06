@@ -34,6 +34,11 @@ module.exports.policies = {
     '*': 'authenticated'
   },
 
+  UserController: {
+    subscribe:   'authenticated',
+    unsubscribe: 'authenticated'
+  },
+
   // '*': true,
 
   /***************************************************************************

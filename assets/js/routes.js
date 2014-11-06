@@ -12,10 +12,13 @@
         templateUrl: '/templates/home.html',
         controller:  'BoardsCtrl',
         resolve: {
-          boards: ['$q', 'api', function($q, api) {
-            console.log('HAI RESOLVE (boards)');
+          boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
-            api.boardsGetList(function(boards) { defer.resolve(boards); });
+            if (user.token()) {
+              api.boardsGetList(function(boards) { defer.resolve(boards); });
+            } else {
+              defer.resolve([]);
+            }
             return defer.promise;
           }]
         }

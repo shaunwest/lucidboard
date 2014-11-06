@@ -33,8 +33,6 @@ module.exports = {
       }, function(err, user) {
         if (err) return res.serverError(err);
 
-        console.log('User created: ', user);
-
         finish(user);
       });
     });
@@ -43,7 +41,8 @@ module.exports = {
 
   // Allow a client to reauthenticate with a token.
   // What comes out is a refreshed token.
-  signinWithToken: function(req, res) {
+  // This is necessary when (re)establishing the websocket.
+  refreshToken: function(req, res) {
     var token = req.body.token;
 
     User.findOne({id: token}, function(err, user) {

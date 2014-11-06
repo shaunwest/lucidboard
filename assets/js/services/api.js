@@ -3,6 +3,11 @@
   angular.module('hansei.services')
     .factory('api', ['$sails', '$state', 'localStorageService', function($sails, $state, localStorageService) {
 
+      var targetsOutsideLogin = [
+        '/api/signin',
+        '/api/refresh-token'
+      ];
+
       var debug = function(msg) {
         console.log(msg);
       };
@@ -12,6 +17,9 @@
       };
 
       var subs = [];  // our currently subscribed events
+
+      // must wait for this to finish before doing anything!
+      var initialTokenPromise;
 
       var subscriber = {
         debug: function() {
@@ -65,38 +73,43 @@
         cb(data, jwr);
       };
 
-      var get = function(target, cb) {
-        $sails.get(target, function(data, jwr) {
-          info('api get [' + target + ']: ' + JSON.stringify(data));
-          handleResponse(data, jwr, function(data, jwr) {
-            if (cb) cb(data, jwr);
+      var handleRequest = function(method, target, params, cb) {
+
+        var invoke = function() {
+          $sails[method](target, params, function(data, jwr) {
+            info('api ' + method + ' [' + target + ']: ' + JSON.stringify(data));
+            handleResponse(data, jwr, function(data, jwr) {
+              if (cb) cb(data, jwr);
+            });
           });
-        });
+        };
+
+        if (targetsOutsideLogin.indexOf(target) !== -1) {
+          invoke();
+
+        } else {
+          initialTokenPromise.then(function() { invoke(); });
+        }
+
+      };
+
+      var get = function(target, cb) {
+        handleRequest('get', target, {}, cb);
       };
 
       var post = function(target, params, cb) {
-        $sails.post(target, params, function(data, jwr) {
-          info('api post [' + target + '][' + JSON.stringify(params) +
-            ']: ' + JSON.stringify(data));
-          handleResponse(data, jwr, function(data, jwr) {
-            if (cb) cb(data, jwr);
-          });
-        });
+        handleRequest('post', target, params, cb);
       };
 
       return {
-        signin: function(user, pass, cb) {
-          post('/api/signin', {username: user, password: pass}, function(data, jwr) {
-            localStorageService.set('authToken', data.token);
-            console.log('setting token', data.token);
-            cb(data, jwr);
-          });
+        setInitialTokenPromise: function(itp) {
+          initialTokenPromise = itp;
         },
-        signinWithToken: function(token, cb) {
-          post('/api/signin-with-token', {token: token}, function(data, jwr) {
-            localStorageService.set('authToken', data.token);
-            cb(data, jwr);
-          });
+        signin: function(user, pass, cb) {
+          post('/api/signin', {username: user, password: pass}, cb);
+        },
+        refreshToken: function(token, cb) {
+          post('/api/refresh-token', {token: token}, cb);
         },
         boardsGetList: function(cb) {
           get('/api/boards', cb);

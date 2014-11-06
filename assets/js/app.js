@@ -10,43 +10,37 @@
         localStorageServiceProvider.setPrefix('niftyboard');
 
         angular.forEach(routes, function(stateConfig, key) {
-          var config = angular.extend(angular.copy(appStateDefaults), stateConfig);
-          $stateProvider.state(key, config);
+          $stateProvider.state(key,
+            angular.extend(angular.copy(appStateDefaults), stateConfig));
         });
 
         $urlRouterProvider.otherwise('/boards');
       }
     ])
 
-    .run(['$sails', '$state', 'api', 'localStorageService',
-      function($sails, $state, api, localStorageService) {
-        console.log('HAI RUN');
+    .run(['$rootScope', '$sails', '$state', 'user', 'api',
+      function($rootScope, $sails, $state, user, api) {
 
-        var refreshToken = function(resubscribe) {
-          var token = localStorageService.get('authToken');
+        // This clues the api library into the status of the initial token setup
+        // so that it can defer any calls until after the websocket session is
+        // authenticated.
+        api.setInitialTokenPromise(user.initialTokenPromise());
 
-          if (!token) {
-            console.log('sending to signin');
+        if (!user.token()) {
+          $rootScope.$on('$stateChangeSuccess', function(event, next) {
             return $state.go('signin');
-          }
-
-          console.log('logging in with ', token);
-          api.signinWithToken(token, function(data) {
-            // We'll get a new, refreshed token back
-            localStorageService.set('authToken', data.token);
-            console.log('GOT', data.token);
-            if (resubscribe) api.resubscribe();
           });
-        };
+          return;
+        }
 
-        $sails.on('connect', function() {
-          console.log('conn');
-          refreshToken();
-        });
+        // We have a token in local storage, so let's reauthenticate with it for
+        // this fresh websocket connection.
+        user.initialRefreshToken();
 
         $sails.on('reconnect', function() {
-          refreshToken(true);
+          api.resubscribe();
         });
+
       }
     ]);
 

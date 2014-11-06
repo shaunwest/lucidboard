@@ -11,6 +11,18 @@
 
 module.exports.bootstrap = function(cb) {
 
+  /*
+  User.findOne({id:2}).exec(function(err, u) {
+    console.log('ok', err, u);
+    u.name = 'hahasrswtdoeuoed';
+    u.boards = [];
+    u.save(function(a,b) {
+      console.log('er',a,b);
+      console.log('u',u);
+    });
+  });
+  */
+
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
