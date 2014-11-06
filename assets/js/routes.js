@@ -28,10 +28,8 @@
         templateUrl: '/templates/board.html',
         controller:  'BoardCtrl',
         resolve: {
-          board: ['$q', '$stateParams', 'api', function($q, $stateParams, api) {
-            var defer = $q.defer(), boardId = $stateParams.boardId;
-            api.boardGet(boardId, function(board) { defer.resolve(board); });
-            return defer.promise;
+          boardData: ['board', '$stateParams', function(board, $stateParams) {
+            return board.load($stateParams.boardId);
           }]
         }
       }
