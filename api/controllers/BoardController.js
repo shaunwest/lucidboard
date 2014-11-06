@@ -8,7 +8,9 @@ module.exports = {
     Board.find({}).exec(function(err, boards) {
       if (err) return res.serverError(err);
 
-      res.jsonx(boards);
+      res.jsonx(boards.map(function(b) {
+        return {id: b.id, title: b.title};
+      }));
     });
   },
 

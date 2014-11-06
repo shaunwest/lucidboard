@@ -12,7 +12,7 @@ var publish = function(signal, payload) {
 
 module.exports = {
   boardCreated: function(board) {
-    publish('board:create:' + board.id, board);
+    publish('board:create', {id: board.id, title: board.title});
   },
   boardUpdated: function(board) {
     publish('board:update:' + board.id, board);

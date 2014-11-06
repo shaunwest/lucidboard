@@ -1,1 +1,19 @@
-{{board.title}}, {{board.id}}
+<h2>{{board.title}}</h2>
+
+<form ng-controller="NewColumnCtrl" ng-submit="createColumn">
+  <input type="text" ng-model="title">
+  <input type="submit" value="Create Column">
+</form>
+
+<div class="column" ng-repeat="column in board.columns" style="float:left;width:20%">
+  <h3>{{column.title}}</h3>
+  <div class="card" ng-repeat="card in column.cards">
+    <div class="cardcontent">
+      {{card.content}}
+    </div>
+    <p>
+      {{card.votes.length}} vote{{card.votes.length === 1 ? '' : 's'}}
+      (<a ng-click="upvote(card.id)">Upvote</a>)
+    </p>
+  </div>
+</div>

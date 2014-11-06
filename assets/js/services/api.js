@@ -102,23 +102,27 @@
       };
 
       return {
-        setInitialTokenPromise: function(itp) {
-          initialTokenPromise = itp;
+        setInitialTokenPromise: function(itp) { initialTokenPromise = itp; },
+        signin: function(user, pass, cb) { post('/api/signin', {username: user, password: pass}, cb); },
+        refreshToken: function(token, cb) { post('/api/refresh-token', {token: token}, cb); },
+        boardsGetList: function(cb) { get('/api/boards', cb); },
+        boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
+        boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
+        columnCreate: function(boardId, bits, cb) { post('/api/boards/' + boardId + '/columns', bits, cb); },
+        on: function(event, fn) {
+          info('Hooking onto the ' + event + ' event.');
+          $sails.on(event, fn);
         },
-        signin: function(user, pass, cb) {
-          post('/api/signin', {username: user, password: pass}, cb);
+        removeListener: function(event, fn) {
+          info('Unhooking onto the ' + event + ' event.');
+          $sails.removeListener(event, fn);
         },
-        refreshToken: function(token, cb) {
-          post('/api/refresh-token', {token: token}, cb);
-        },
-        boardsGetList: function(cb) {
-          get('/api/boards', cb);
-        },
-        boardCreate: function(bits, cb) {
-          post('/api/boards', bits, cb);
-        },
-        boardGet: function(boardId, cb) {
-          get('/api/boards/' + boardId, cb);
+        hook: function(event, scope, fn) {
+          var that = this;
+          this.on(event, fn);
+          scope.$on('$destroy', function() {
+            that.removeListener(event, fn);
+          });
         }
       };
     }])

@@ -3,9 +3,11 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardsCtrl', ['$scope', 'boards',
-    function($scope, boards) {
+  .controller('BoardsCtrl', ['$scope', 'boards', 'api',
+    function($scope, boards, api) {
       $scope.boards = boards;
+
+      api.hook('board:create', $scope, function(board) { $scope.boards.push(board); });
     }])
 
   .controller('BoardCreateFormCtrl', ['$scope', '$state', 'api',
