@@ -41,8 +41,8 @@ module.exports = {
     publish('card:delete:' + boardId, null);
   },
 
-  upvote: function(boardId, card) {
-    publish('upvote:' + boardId, card);
+  cardUpvote: function(boardId, vote) {
+    publish('card:upvote:' + boardId, vote);
   },
 
   socketOnConnection: function(session, socket) {

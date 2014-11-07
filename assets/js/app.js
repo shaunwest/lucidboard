@@ -3,8 +3,13 @@
 
   angular.module('hansei.routes', ['ui.router']);
 
-  angular.module('hansei.services', ['hansei.routes', 'ngSails', 'LocalStorageModule'])
-    .config(['$stateProvider', 'appStateDefaults', '$urlRouterProvider', 'routes', 'localStorageServiceProvider',
+  angular.module('hansei.services', [
+      'hansei.routes',
+      'ngSails',
+      'LocalStorageModule',
+      'angular-lodash/utils/pluck',
+      'angular-lodash/utils/flatten',
+    ]).config(['$stateProvider', 'appStateDefaults', '$urlRouterProvider', 'routes', 'localStorageServiceProvider',
       function($stateProvider, appStateDefaults, $urlRouterProvider, routes, localStorageServiceProvider) {
 
         localStorageServiceProvider.setPrefix('niftyboard');
@@ -44,7 +49,7 @@
       }
     ]);
 
-  angular.module('hansei.ui', ['hansei.services']);
+  angular.module('hansei.ui', ['hansei.services', 'hansei.directives']);
 
   angular.module('hansei', ['hansei.ui'])
     .config(['$locationProvider', function($locationProvider) {

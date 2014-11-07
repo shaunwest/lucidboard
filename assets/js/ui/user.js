@@ -3,8 +3,10 @@
 
   angular.module('hansei.ui')
 
-  .controller('SigninCtrl', ['$scope', '$state', 'user',
-    function($scope, $state, user) {
+  .controller('SigninCtrl', ['$rootScope', '$scope', '$state', 'user',
+    function($rootScope, $scope, $state, user) {
+      $rootScope.showHeader = true;
+
       $scope.username = 'joe';
 
       $scope.signin = function() {

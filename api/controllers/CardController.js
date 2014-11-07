@@ -1,3 +1,5 @@
+var redis = require('../services/redis');
+
 var getNextCardPosition = function(columnId, cb) {
   Column.findOne({id: columnId}).populate('cards').exec(function(err, column) {
     if (err) return cb(err);
@@ -32,6 +34,8 @@ module.exports = {
         if (err) return res.serverError(err);
 
         res.jsonx(card);
+
+        redis.cardCreated(boardId, card);
       });
     });
   },
@@ -40,16 +44,26 @@ module.exports = {
     var boardId  = req.param('boardId'),
         columnId = req.param('columnId'),
         cardId   = req.param('cardId'),
-        content  = req.body.content;
+        content  = req.body.content,
+        bits;
 
-    Card.update(cardId, {content: content}).exec(function(err, card) {
+    bits = {
+      content: content
+    };
+
+    Card.update(cardId, bits).exec(function(err, card) {
       if (err) return res.serverError(err);
 
+      // FIXME: why oh why do I need this?
+      card = card[0];
+
       res.jsonx(card);
+
+      redis.cardUpdated(boardId, card);
     });
   },
 
-  vote: function(req, res) {
+  upvote: function(req, res) {
     var user     = req.user,
         boardId  = req.param('boardId'),
         columnId = req.param('columnId'),
@@ -68,6 +82,8 @@ module.exports = {
         if (err) return res.serverError(res);
 
         res.jsonx(vote);
+
+        redis.cardUpvote(boardId, vote);
       });
     });
   }

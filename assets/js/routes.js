@@ -12,6 +12,9 @@
         templateUrl: '/templates/home.html',
         controller:  'BoardsCtrl',
         resolve: {
+          hideHeader: ['$rootScope', function($rootScope) {
+            $rootScope.showHeader = false;
+          }],
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.token()) {

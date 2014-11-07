@@ -105,9 +105,9 @@ module.exports.routes = {
   },
 
   // Card Vote
-  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/vote': {
+  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/upvote': {
     controller: 'CardController',
-    action:     'vote'
+    action:     'upvote'
   },
 
 

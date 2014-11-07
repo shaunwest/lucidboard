@@ -103,15 +103,35 @@
 
       return {
         setInitialTokenPromise: function(itp) { initialTokenPromise = itp; },
-        signin: function(user, pass, cb) { post('/api/signin', {username: user, password: pass}, cb); },
-        refreshToken: function(token, cb) { post('/api/refresh-token', {token: token}, cb); },
+        signin: function(user, pass, cb) {
+          post('/api/signin', {username: user, password: pass}, cb);
+        },
+        refreshToken: function(token, cb) {
+          post('/api/refresh-token', {token: token}, cb);
+        },
+
         boardsGetList: function(cb) { get('/api/boards', cb); },
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
-        columnCreate: function(boardId, bits, cb) { post('/api/boards/' + boardId + '/columns', bits, cb); },
-        subscribe: function(events, cb)      { subscriber.subscribe(events, cb); },
-        unsubscribe: function(events, cb)    { subscriber.unsubscribe(events, cb); },
-        resubscribe: function(cb)            { subscriber.resubscribe(cb); },
+        columnCreate: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/columns', bits, cb);
+        },
+        cardCreate: function(boardId, columnId, bits, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards',
+            bits, cb);
+        },
+        cardUpdate: function(boardId, columnId, bits, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
+            bits.id, bits, cb);
+        },
+        cardUpvote: function(boardId, columnId, cardId, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
+            cardId + '/upvote', {}, cb);
+        },
+
+        subscribe: function(events, cb)   { subscriber.subscribe(events, cb); },
+        unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },
+        resubscribe: function(cb)         { subscriber.resubscribe(cb); },
         on: function(event, fn) {
           info('Hooking onto the ' + event + ' event.');
           $sails.on(event, fn);
