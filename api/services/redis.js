@@ -21,14 +21,14 @@ module.exports = {
     publish('board:delete:' + boardId, null);
   },
 
-  columnCreated: function(boardId, column) {
-    publish('column:create:' + boardId, column);
+  columnCreated: function(column) {
+    publish('column:create:' + column.board, column);
   },
-  columnUpdated: function(boardId, column) {
-    publish('column:update:' + boardId, column);
+  columnUpdated: function(column) {
+    publish('column:update:' + column.board, column);
   },
-  columnDeleted: function(boardId, column) {
-    publish('column:delete:' + boardId, null);
+  columnDeleted: function(column) {
+    publish('column:delete:' + column.board, column.id);
   },
 
   cardCreated: function(boardId, card) {

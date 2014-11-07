@@ -109,6 +109,9 @@
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
         columnCreate: function(boardId, bits, cb) { post('/api/boards/' + boardId + '/columns', bits, cb); },
+        subscribe: function(events, cb)      { subscriber.subscribe(events, cb); },
+        unsubscribe: function(events, cb)    { subscriber.unsubscribe(events, cb); },
+        resubscribe: function(cb)            { subscriber.resubscribe(cb); },
         on: function(event, fn) {
           info('Hooking onto the ' + event + ' event.');
           $sails.on(event, fn);

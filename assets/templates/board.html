@@ -1,6 +1,6 @@
 <h2>{{board.title}}</h2>
 
-<form ng-controller="NewColumnCtrl" ng-submit="createColumn">
+<form ng-controller="NewColumnCtrl" ng-submit="createColumn()">
   <input type="text" ng-model="title">
   <input type="submit" value="Create Column">
 </form>

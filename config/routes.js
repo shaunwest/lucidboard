@@ -46,6 +46,16 @@ module.exports.routes = {
     action:     'refreshToken'
   },
 
+  'POST /api/subscribe': {
+    controller: 'UserController',
+    action:     'subscribe'
+  },
+
+  'POST /api/unsubscribe': {
+    controller: 'UserController',
+    action:     'unsubscribe'
+  },
+
   // Board list get
   'GET /api/boards': {
     controller: 'BoardController',
