@@ -3,7 +3,7 @@ module.exports = function (gulp, plugins) {
 		plugins.sequence(
 			// 'jst:dev',
 			// 'images',
-			// 'less:dev',
+			// 'sass:dev',
 			// 'sync:dev',
 			// 'coffee:dev',
 			'compileAssets',
