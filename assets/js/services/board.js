@@ -2,14 +2,26 @@
   'use strict';
   angular.module('hansei.services')
     .factory('board', ['$rootScope', 'api', '$q', function($rootScope, api, $q) {
-      var board, defer, _ = {
+      var board, defer, eventCb, cb, _ = {
         pluck:   $rootScope.pluck,
         flatten: $rootScope.flatten
       };
 
-      return {
+      cb = function(type, bits) {
+        if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
+        eventCb(type, bits);
+      };
 
-        load: function(boardId, cb) {
+      return {
+        setEventCb: function(_cb) {
+          eventCb = _cb;
+        },
+
+        // log: function(text, type, extra) {
+        //   log.push({date: new Date(), text: text, type: type, extra: extra});
+        // },
+
+        load: function(boardId) {
           defer = $q.defer();
           api.boardGet(boardId, function(b) {
             board = b;
@@ -34,7 +46,6 @@
         },
 
         card: function(id) {
-          console.log('to', typeof id);
           id = parseInt(id);
           var allCards = _.flatten(_.pluck(board.columns, 'cards'));
           for (var i in allCards) {
@@ -61,7 +72,11 @@
           var card = this.card(vote.card);
           card.votes.push(vote);
           console.log('votes', card.votes);
-        }
+          // cb('upvote', {vote: vote});
+        },
+
+        // timerStart: function(bits) {
+        // }
 
       };
     }])

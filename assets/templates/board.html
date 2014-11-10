@@ -1,5 +1,10 @@
 <div id="resizer-wrapper">
   <div id="main-content" resizer-top><div>
+    <div class="timer" style="float:right">
+      <button ng-click="startTimer()">Start</button>
+      <span>{{timerLeft | formatTime}}</span>
+    </div>
+
     <h2>{{board.title}}</h2>
 
     <form ng-controller="NewColumnCtrl" ng-submit="createColumn()">
@@ -16,7 +21,7 @@
         <p>
           <strong>{{card.votes.length}}</strong>
           vote{{card.votes.length === 1 ? '' : 's'}}
-          (<a href="#" ng-click="upvote(card)">Upvote</a>)
+          (<a href="#" ng-click="upvote(card, $event)">Upvote</a>)
         </p>
       </div>
       <a class="create-card" ng-click="createCard(column)" href="#">+</a>

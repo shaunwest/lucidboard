@@ -3,11 +3,13 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$scope', '$timeout', 'api', 'board', 'eventerFactory',
-    function($scope, $timeout, api, board, eventerFactory) {
-      var openEditor, watcher;
+  .controller('BoardCtrl', ['$scope', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
+    function($scope, $timeout, $interval, api, board, eventerFactory) {
+      var openEditor, watcher, timer;
 
-      $scope.board = board.obj();
+      $scope.board       = board.obj();
+      $scope.timerLength = 5;//300;          // 5 minutes
+      $scope.timerLeft   = $scope.timerLength;
 
       eventerFactory().event('column:create:' + $scope.board.id, function(col) {
         $scope.board.columns.push(col);
@@ -22,11 +24,23 @@
       }).event('card:upvote:' + $scope.board.id, function(vote) {
         console.log('got vote', vote);
         board.cardUpvote(vote);
+      }).event('timer:start:' + $scope.board.id, function(bits) {
+        board.timerStart(bits);
+        timer = $interval(function() {
+          $scope.timerLeft -= 1;
+          if ($scope.timerLeft <= 0) {
+            $scope.timerLeft = 0;
+          }
+        }, 1000);
       }).hook($scope);
 
       openEditor = function(bits) {
         console.log('opening', bits);
         $scope.editor = bits;
+      };
+
+      $scope.startTimer = function() {
+        api.startTimer($scope.board.id);
       };
 
       $scope.waitAndSave = function() {
@@ -60,7 +74,9 @@
         });
       };
 
-      $scope.upvote = function(card) {
+      $scope.upvote = function(card, event) {
+        event.stopPropagation();
+        event.preventDefault();
         api.cardUpvote($scope.board.id, board.column(card.column).id, card.id);
       };
     }])
