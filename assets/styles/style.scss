@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+
+div.column { float: left; margin-right: 5px; }
+a.create-card { display: block; background-color: #eee; text-align: center;
+  padding: 4px; color: #333; font-weight: bold; text-decoration: none; }
+a.create-card:hover { background-color: #ccc; }
+
+div.card { border-top: 1px solid #666; border-left: 1px solid #666;
+  border-bottom: 2px solid #999; border-right: 2px solid #999;
+  padding: 5px; margin-bottom: 6px; cursor: pointer; cursor: hand; }
+li { cursor: pointer; cursor: hand; }
+
+div.card > p { font-size: small; text-align: right; margin: 0; }
+
+div.yellow-card { background-color: #ffe; }
+
+div#card-editor { position: absolute; height: 130px;
+  bottom: 0; left: 0; right: 0; overflow: auto;
+  background-color: #eee; }
+div#card-editor h3 {}
+div#card-editor textarea { width: 100%; height: 100%; }
+div#content-resizer { position: absolute;
+  height: 4px; bottom: 130px; left: 0; right: 0;
+  background-color: #ccc; cursor: n-resize; }
+div#main-content { position: absolute; top: 0; bottom: 136px; /* 130 + 6 */
+  left: 0; right: 0; overflow: auto; }
+div#main-content > div { padding: 0 8px; }
+div#resizer-wrapper { position: absolute; top: 35px; bottom: 0;
+  left: 0; right: 0; overflow: hidden; }
