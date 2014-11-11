@@ -13,10 +13,11 @@
     </form>
 
     <div class="column" ng-repeat="column in board.columns" style="width:{{95 / board.columns.length}}%">
-      <h3>{{column.title}}</h3>
-      <div class="card yellow-card" ng-repeat="card in column.cards" ng-click="openCard(card)">
-        <div class="cardcontent">
-          {{card.content}}
+      <h3 editable-text="column.title" onbeforesave="checkColumnTitle($data, column.id)" buttons="no">{{column.title}}</h3>
+      <!--<div class="card yellow-card" ng-repeat="card in column.cards" ng-click="openCard(card)">-->
+      <div class="card yellow-card" ng-repeat="card in column.cards">
+        <div class="cardcontent" editable-textarea="card.content" onbeforesave="checkCardContent($data, column.id, card.id)" buttons="no">
+          {{ card.content || 'empty' }}
         </div>
         <p>
           <strong>{{card.votes.length}}</strong>

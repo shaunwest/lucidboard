@@ -1,5 +1,5 @@
 (function() {
-  angular.module('hansei.directives', [])
+  angular.module('hansei.ui')
     .directive('resizerTop', ['resizer', function(resizer) {
       return {
         restrict: 'A',

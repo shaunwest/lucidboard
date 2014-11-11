@@ -116,6 +116,9 @@
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },
+        columnUpdate: function(boardId, column, cb) {
+          post('/api/boards/' + boardId + '/columns/' + column.id, column, cb);
+        },
         cardCreate: function(boardId, columnId, bits, cb) {
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards',
             bits, cb);

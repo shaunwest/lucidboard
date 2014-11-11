@@ -15,6 +15,7 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+  'bower_components/angular-xeditable/dist/css/xeditable.css',
   'styles/**/*.css'
 ];
 
@@ -32,6 +33,7 @@ var jsFilesToInject = [
   'bower_components/angular-local-storage/dist/angular-local-storage.js',
   'bower_components/lodash/dist/lodash.js',
   'bower_components/angular-lodash/angular-lodash.js',
+  'bower_components/angular-xeditable/dist/js/xeditable.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files

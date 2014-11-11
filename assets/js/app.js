@@ -49,7 +49,11 @@
       }
     ]);
 
-  angular.module('hansei.ui', ['hansei.services', 'hansei.directives']);
+  angular.module('hansei.ui', ['hansei.services', 'xeditable'])
+
+  .run(['editableOptions', function(editableOptions) {
+    editableOptions.theme = 'bs3';
+  }]);
 
   angular.module('hansei', ['hansei.ui'])
     .config(['$locationProvider', function($locationProvider) {

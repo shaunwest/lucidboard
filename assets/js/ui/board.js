@@ -7,12 +7,16 @@
     function($scope, $timeout, $interval, api, board, eventerFactory) {
       var openEditor, watcher, timer;
 
+      // var regexColumnTitle = /^.{1,20}$/;
+
       $scope.board       = board.obj();
       $scope.timerLength = 5;//300;          // 5 minutes
       $scope.timerLeft   = $scope.timerLength;
 
       eventerFactory().event('column:create:' + $scope.board.id, function(col) {
         $scope.board.columns.push(col);
+      }).event('column:update:' + $scope.board.id, function(col) {
+        board.columnUpdate(col);
       }).event('card:create:' + $scope.board.id, function(card) {
         board.cardCreate(card);
       }).event('card:update:' + $scope.board.id, function(card) {
@@ -38,6 +42,20 @@
         console.log('opening', bits);
         $scope.editor = bits;
       };
+
+      /*
+      for (var i=0; i<$scope.board.columns.length; i++) {
+        (function() {
+          var ii = i;
+          $scope.$watch('board.columns[' + ii + '].title', function(newVal, oldVal) {
+            api.columnUpdate($scope.board.id, {
+              id:    $scope.board.columns[ii].id,
+              title: newVal
+            });
+          });
+        })();
+      }
+      */
 
       $scope.startTimer = function() {
         api.startTimer($scope.board.id);
@@ -65,6 +83,7 @@
         });
       };
 
+      /*
       $scope.openCard = function(card) {
         openEditor({
           title:    'Editing card under ' + board.column(card.column).title,
@@ -73,11 +92,26 @@
           column:   card.column
         });
       };
+      */
 
       $scope.upvote = function(card, event) {
         event.stopPropagation();
         event.preventDefault();
         api.cardUpvote($scope.board.id, board.column(card.column).id, card.id);
+      };
+
+      // --- BEGIN xeditable stuff
+
+      $scope.checkColumnTitle = function(title, id) {
+        api.columnUpdate($scope.board.id, {id: id, title: title});
+        // the false returned will close the editor and not update the model.
+        // (model update will happen when the event is pushed from the server)
+        return false;
+      };
+
+      $scope.checkCardContent = function(content, columnId, id) {
+        api.cardUpdate($scope.board.id, columnId, {id: id, content: content});
+        return false;
       };
     }])
 

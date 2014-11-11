@@ -47,6 +47,9 @@ module.exports = {
     Column.update(columnId, {title: title}).exec(function(err, column) {
       if (err) return res.serverError(err);
 
+      // FIXME: why oh why do I need this?
+      column = column[0];
+
       res.jsonx(column);
 
       redis.columnUpdated(column);

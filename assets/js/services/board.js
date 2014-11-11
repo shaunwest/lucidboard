@@ -42,7 +42,7 @@
           for (var i in board.columns) {
             if (board.columns[i].id === id) return board.columns[i];
           }
-          return null;
+          throw 'Failed to find column id ' + id;
         },
 
         card: function(id) {
@@ -53,7 +53,14 @@
               return allCards[i];
             }
           }
-          return null;
+          throw 'Failed to find card id ' + id;
+        },
+
+        columnUpdate: function(_column) {
+          var column = this.column(_column.id);
+          Object.keys(_column).forEach(function(k) {
+            column[k] = _column[k];
+          });
         },
 
         cardCreate: function(card) {
