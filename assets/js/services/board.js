@@ -36,7 +36,8 @@
 
         id:      function() { return board.id; },
         title:   function() { return board.title; },
-        columns: function() { return board.columns; },
+        columns: function() { return board.columns.slice(1); },
+        trash:   function() { return board.columns[0]; },
 
         column: function(id) {
           for (var i in board.columns) {
@@ -59,6 +60,7 @@
         columnUpdate: function(_column) {
           var column = this.column(_column.id);
           Object.keys(_column).forEach(function(k) {
+            if (k === 'cards') return;
             column[k] = _column[k];
           });
         },
@@ -80,6 +82,27 @@
           card.votes.push(vote);
           console.log('votes', card.votes);
           // cb('upvote', {vote: vote});
+        },
+
+        moveCard: function(info) {
+          var card        = this.card(info.cardId),
+              sourceStack = this.column(card.column).cards,
+              destPosIdx  = info.destPositionIdx,  // TODO: not currently used!
+              index       = null;
+
+          console.log('sourceStack', _.pluck(sourceStack, 'id'));
+          console.log('card', card);
+
+          for (var i=0; i<sourceStack.length; i++) {
+            if (sourceStack[i] === card) {
+              index = i; break;
+            }
+          }
+
+          if (index === null) return alert('holy bugs, batman!');
+
+          sourceStack.splice(index, 1);
+          this.column(info.destColumnId).cards.push(card);
         },
 
         // timerStart: function(bits) {

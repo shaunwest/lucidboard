@@ -14,16 +14,32 @@ div.card > p { font-size: small; text-align: right; margin: 0; }
 
 div.yellow-card { background-color: #ffe; }
 
-div#card-editor { position: absolute; height: 130px;
+div#bottom-pane { position: absolute; height: 130px;
   bottom: 0; left: 0; right: 0; overflow: auto;
   background-color: #eee; }
-div#card-editor h3 {}
-div#card-editor textarea { width: 100%; height: 100%; }
+div#bottom-pane h3 {}
+div#bottom-pane textarea { width: 100%; height: 100%; }
 div#content-resizer { position: absolute;
-  height: 4px; bottom: 130px; left: 0; right: 0;
+  bottom: 130px; left: 0; right: 0;
+  border-top: 3px solid #ccc;
   background-color: #ccc; cursor: n-resize; }
 div#main-content { position: absolute; top: 0; bottom: 136px; /* 130 + 6 */
   left: 0; right: 0; overflow: auto; }
 div#main-content > div { padding: 0 8px; }
 div#resizer-wrapper { position: absolute; top: 35px; bottom: 0;
   left: 0; right: 0; overflow: hidden; }
+
+.editable-click, a.editable-click { border: 0; color: black; }
+.editable-empty, a.editable-empty { border: 0; color: #999; }
+
+
+ul.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
+  margin: 0; background-color: #ddd; }
+ul.tabber li.tab { list-style-type: none; }
+ul.tabber li.tab a { float: left; padding: 4px 30px; color: #aaa; }
+ul.tabber li.tab a:hover { background-color: #ccc; color: #fff; }
+ul.tabber li.active a:hover { background-color: #ccc; color: #fff; }
+ul.tabber li.active a { background-color: #ccc; color: #000; }
+div.currentTab { padding: 20px; }
+
+.clearer { clear: both; line-height: 0; }

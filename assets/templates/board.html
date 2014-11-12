@@ -1,38 +1,57 @@
 <div id="resizer-wrapper">
-  <div id="main-content" resizer-top><div>
-    <div class="timer" style="float:right">
-      <button ng-click="startTimer()">Start</button>
-      <span>{{timerLeft | formatTime}}</span>
+  <div id="main-content" data-resizer-top><div>
+    <div style="float:right">
+      <div class="timer">
+        <button data-ng-click="startTimer()">Start</button>
+        <span>{{timerLeft | formatTime}}</span>
+      </div>
+      <div class="trashbutton">
+        <img src="/images/ios7-trash.svg" width="48" height="48" alt="Trash">
+      </div>
     </div>
 
-    <h2>{{board.title}}</h2>
+    <h2>{{board.title()}}</h2>
 
-    <form ng-controller="NewColumnCtrl" ng-submit="createColumn()">
-      <input type="text" ng-model="title">
+    <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
+      <input type="text" data-ng-model="title">
       <input type="submit" value="Create Column">
     </form>
 
-    <div class="column" ng-repeat="column in board.columns" style="width:{{95 / board.columns.length}}%">
-      <h3 editable-text="column.title" onbeforesave="checkColumnTitle($data, column.id)" buttons="no">{{column.title}}</h3>
-      <!--<div class="card yellow-card" ng-repeat="card in column.cards" ng-click="openCard(card)">-->
-      <div class="card yellow-card" ng-repeat="card in column.cards">
-        <div class="cardcontent" editable-textarea="card.content" onbeforesave="checkCardContent($data, column.id, card.id)" buttons="no">
-          {{ card.content || 'empty' }}
-        </div>
-        <p>
-          <strong>{{card.votes.length}}</strong>
-          vote{{card.votes.length === 1 ? '' : 's'}}
-          (<a href="#" ng-click="upvote(card, $event)">Upvote</a>)
-        </p>
+    <div class="column" data-ng-repeat="column in board.columns()"
+      style="width:{{95 / (board.columns().length)}}%">
+      <h3 data-editable-text="column.title" data-buttons="no"
+        onbeforesave="checkColumnTitle($data, column.id)">
+        {{column.title}}
+      </h3>
+      <div class="cardstack" data-ui-on-drop="onDrop($event, $data, column.cards, column.id)">
+        <card data-ng-repeat="card in column.cards track by $index"
+          board-id="board.id()" card="card" column="column" index="$index">
+        </card>
       </div>
-      <a class="create-card" ng-click="createCard(column)" href="#">+</a>
+      <a class="create-card" data-ng-click="createCard(column)" href="#">+</a>
     </div>
   </div></div>
 
-  <div id="card-editor" resizer-bottom>
-    <h3>{{editor.title}}</h3>
-    <textarea ng-model="editor.content" ng-change="waitAndSave()" ng-disabled="!editor.id"></textarea>
+  <div id="bottom-pane" data-resizer-bottom>
+    <div data-ng-show="currentTab === 'log'">
+      <div data-log></div>
+    </div>
+    <div data-ng-show="currentTab === 'trash'">
+      <card data-ng-repeat="card in board.trash().cards track by $index"
+        board-id="board.id()" card="card" column="board.trash()" index="$index">
+      </card>
+    </div>
   </div>
 </div>
 
-<div id="content-resizer" resizer="horizontal" resizer-height="6"></div>
+<div id="content-resizer" data-resizer="horizontal" data-resizer-height="6">
+  <ul class="tabber">
+    <li class="tab" data-ng-class="{active:currentTab === 'log'}">
+      <a data-ng-click="switchTab('log')">Log</a>
+    </li>
+    <li class="tab" data-ng-class="{active:currentTab === 'trash'}">
+      <a data-ng-click="switchTab('trash')">Trash ({{board.trash().cards.length}})</a>
+    </li>
+    <div class="clearer">&nbsp;</div>
+  </ul>
+</div>

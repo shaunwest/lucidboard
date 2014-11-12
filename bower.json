@@ -25,6 +25,7 @@
     "modernizr": "~2.8.3",
     "angular-local-storage": "~0.1.5",
     "angular-lodash": "~0.1.2",
-    "angular-xeditable": "~0.1.8"
+    "angular-xeditable": "~0.1.8",
+    "angular-native-dragdrop": "~1.0.6"
   }
 }

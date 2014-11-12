@@ -5,30 +5,32 @@
 
   .controller('BoardCtrl', ['$scope', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
     function($scope, $timeout, $interval, api, board, eventerFactory) {
-      var openEditor, watcher, timer;
+      var openEditor, timer;
 
       // var regexColumnTitle = /^.{1,20}$/;
 
-      $scope.board       = board.obj();
+      $scope.board       = board;
       $scope.timerLength = 5;//300;          // 5 minutes
       $scope.timerLeft   = $scope.timerLength;
 
-      eventerFactory().event('column:create:' + $scope.board.id, function(col) {
-        $scope.board.columns.push(col);
-      }).event('column:update:' + $scope.board.id, function(col) {
+      eventerFactory().event('column:create:' + board.id(), function(col) {
+        board.columns().push(col);
+      }).event('column:update:' + board.id(), function(col) {
         board.columnUpdate(col);
-      }).event('card:create:' + $scope.board.id, function(card) {
+      }).event('card:create:' + board.id(), function(card) {
         board.cardCreate(card);
-      }).event('card:update:' + $scope.board.id, function(card) {
+      }).event('card:update:' + board.id(), function(card) {
         board.cardUpdate(card);
         // Purposefully deciding not to update the editor. Users will end up
         // fighting over the content as they both overwrite each other's changes.
         // Maybe we'll have some notification that this is happening... or a list
         // of other users looking at the card...... locking?...
-      }).event('card:upvote:' + $scope.board.id, function(vote) {
+      }).event('card:upvote:' + board.id(), function(vote) {
         console.log('got vote', vote);
         board.cardUpvote(vote);
-      }).event('timer:start:' + $scope.board.id, function(bits) {
+      }).event('board:moveCard:' + board.id(), function(info) {
+        board.moveCard(info);
+      }).event('timer:start:' + board.id(), function(bits) {
         board.timerStart(bits);
         timer = $interval(function() {
           $scope.timerLeft -= 1;
@@ -38,18 +40,18 @@
         }, 1000);
       }).hook($scope);
 
+      /*
       openEditor = function(bits) {
         console.log('opening', bits);
         $scope.editor = bits;
       };
 
-      /*
-      for (var i=0; i<$scope.board.columns.length; i++) {
+      for (var i=0; i<board.columns().length; i++) {
         (function() {
           var ii = i;
           $scope.$watch('board.columns[' + ii + '].title', function(newVal, oldVal) {
-            api.columnUpdate($scope.board.id, {
-              id:    $scope.board.columns[ii].id,
+            api.columnUpdate(board.id(), {
+              id:    board.columns()[ii].id,
               title: newVal
             });
           });
@@ -58,28 +60,33 @@
       */
 
       $scope.startTimer = function() {
-        api.startTimer($scope.board.id);
+        api.startTimer(board.id());
       };
 
+      /*
       $scope.waitAndSave = function() {
         if (watcher) $timeout.cancel(watcher);
 
         watcher = $timeout(function() {
-          api.cardUpdate($scope.board.id, $scope.editor.column, {
+          api.cardUpdate(board.id(), $scope.editor.column, {
             id:       $scope.editor.id,
             content:  $scope.editor.content
           });
         }, 1000);
       };
+      */
 
       $scope.createCard = function(column) {
-        api.cardCreate($scope.board.id, column.id, {}, function(card) {
-          openEditor({
-            title:   'Creating new card under ' + column.title,
-            content: '',
-            id:      card.id,
-            column:  column.id
-          });
+        api.cardCreate(board.id(), column.id, {}, function(card) {
+          // TODO: Open edit automatically
+          //
+          // vv old junk vv
+          // openEditor({
+          //   title:   'Creating new card under ' + column.title,
+          //   content: '',
+          //   id:      card.id,
+          //   column:  column.id
+          // });
         });
       };
 
@@ -97,21 +104,40 @@
       $scope.upvote = function(card, event) {
         event.stopPropagation();
         event.preventDefault();
-        api.cardUpvote($scope.board.id, board.column(card.column).id, card.id);
+        api.cardUpvote(board.id(), board.column(card.column).id, card.id);
       };
+
+      // --- BEGIN Tabber stuff
+
+      $scope.currentTab = 'log';
+
+      // $scope.tabs = [{
+      //   title:
+
+      $scope.switchTab = function(tabName) {
+        $scope.currentTab = tabName;
+      };
+
 
       // --- BEGIN xeditable stuff
 
       $scope.checkColumnTitle = function(title, id) {
-        api.columnUpdate($scope.board.id, {id: id, title: title});
+        api.columnUpdate(board.id(), {id: id, title: title});
         // the false returned will close the editor and not update the model.
         // (model update will happen when the event is pushed from the server)
         return false;
       };
 
-      $scope.checkCardContent = function(content, columnId, id) {
-        api.cardUpdate($scope.board.id, columnId, {id: id, content: content});
-        return false;
+      // --- BEGIN drag-drop stuff
+
+      $scope.onDrop = function($event, $data, array, destColumnId) {
+        console.log('args!', arguments);
+        // array.push($data);
+        api.boardMoveCard(board.id(), {
+          cardId:          $data.id,
+          destColumnId:    destColumnId,
+          destPositionIdx: array[array.length - 1].position + 1
+        });
       };
     }])
 

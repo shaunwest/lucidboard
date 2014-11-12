@@ -20,6 +20,9 @@ module.exports = {
   boardDeleted: function(boardId) {
     publish('board:delete:' + boardId, null);
   },
+  boardMoveCard: function(boardId, info) {
+    publish('board:moveCard:' + boardId, info);
+  },
 
   columnCreated: function(column) {
     publish('column:create:' + column.board, column);
@@ -40,7 +43,6 @@ module.exports = {
   cardDeleted: function(boardId, card) {
     publish('card:delete:' + boardId, null);
   },
-
   cardUpvote: function(boardId, vote) {
     publish('card:upvote:' + boardId, vote);
   },

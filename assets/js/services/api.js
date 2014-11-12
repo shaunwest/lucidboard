@@ -113,6 +113,9 @@
         boardsGetList: function(cb) { get('/api/boards', cb); },
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
+        boardMoveCard: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/move-card', bits, cb);
+        },
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },

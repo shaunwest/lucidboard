@@ -49,7 +49,7 @@
       }
     ]);
 
-  angular.module('hansei.ui', ['hansei.services', 'xeditable'])
+  angular.module('hansei.ui', ['hansei.services', 'xeditable', 'ang-drag-drop'])
 
   .run(['editableOptions', function(editableOptions) {
     editableOptions.theme = 'bs3';

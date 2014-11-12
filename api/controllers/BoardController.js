@@ -102,6 +102,41 @@ module.exports = {
 
       redis.boardUpdated(board);
     });
+  },
+
+  moveCard: function(req, res) {
+    var boardId = req.param('id');
+
+    var p = {
+      cardId:          req.param('cardId'),
+      destColumnId:    req.param('destColumnId'),
+      destPositionIdx: req.param('destPositionIdx')
+    };
+
+    // FIXME omg security
+    // FIXME handle position fields better? (source column)
+
+    Card.findOneById(21).exec(function(err, card) {
+      if (err) return res.serverError(err);
+
+      Column.findOneById(p.destColumnId).populate('cards').exec(function(err, column) {
+        if (err) return res.serverError(err);
+
+        // card.position = column.cards[column.cards.length - 1].position + 1;
+
+        Card.update(p.cardId, {
+          column:   p.destColumnId,
+          position: p.destPositionIdx
+        }).exec(function(err, card) {
+          if (err) return res.serverError(err);
+
+          res.jsonx(card);
+
+          redis.boardMoveCard(boardId, p);
+        });
+      })
+    });
+
   }
 
 };

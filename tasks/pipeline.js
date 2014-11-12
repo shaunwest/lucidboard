@@ -34,6 +34,7 @@ var jsFilesToInject = [
   'bower_components/lodash/dist/lodash.js',
   'bower_components/angular-lodash/angular-lodash.js',
   'bower_components/angular-xeditable/dist/js/xeditable.js',
+  'bower_components/angular-native-dragdrop/draganddrop.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files

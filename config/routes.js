@@ -62,6 +62,12 @@ module.exports.routes = {
     action:     'getList'
   },
 
+  // Board Get (Full!)
+  'GET /api/boards/:id': {
+    controller: 'BoardController',
+    action:     'findById'
+  },
+
   // Board Create
   'POST /api/boards': {
     controller: 'BoardController',
@@ -74,10 +80,10 @@ module.exports.routes = {
     action:     'update'
   },
 
-  // Board Get (Full!)
-  'GET /api/boards/:id': {
+  // Board: Move card
+  'POST /api/boards/:id/move-card': {
     controller: 'BoardController',
-    action:     'findById'
+    action:     'moveCard'
   },
 
   // Column Create
