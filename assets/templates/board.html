@@ -33,10 +33,10 @@
   </div></div>
 
   <div id="bottom-pane" data-resizer-bottom>
-    <div data-ng-show="currentTab === 'log'">
+    <div class="log" data-ng-show="currentTab === 'log'">
       <div data-log></div>
     </div>
-    <div data-ng-show="currentTab === 'trash'">
+    <div class="trash" data-ng-show="currentTab === 'trash'">
       <card data-ng-repeat="card in board.trash().cards track by $index"
         board-id="board.id()" card="card" column="board.trash()" index="$index">
       </card>

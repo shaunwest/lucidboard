@@ -109,7 +109,7 @@
 
       // --- BEGIN Tabber stuff
 
-      $scope.currentTab = 'log';
+      $scope.currentTab = 'trash';
 
       // $scope.tabs = [{
       //   title:

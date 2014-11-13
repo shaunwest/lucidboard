@@ -42,4 +42,7 @@ ul.tabber li.active a:hover { background-color: #ccc; color: #fff; }
 ul.tabber li.active a { background-color: #ccc; color: #000; }
 div.currentTab { padding: 20px; }
 
+div.trash { padding: 8px; }
+div.trash div.card { width: 32%; float: left; margin-right: 4px; }
+
 .clearer { clear: both; line-height: 0; }
