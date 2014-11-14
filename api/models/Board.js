@@ -33,17 +33,18 @@ module.exports = {
       var timerLeft = 0;
 
       if (this.timerStart) {
-        timerLeft = this.timerLength
-          - (this.timerStart.getTime() - new Date().getTime())
-          / 1000;
+        timerLeft = parseInt(this.timerLength
+          - (new Date().getTime() - this.timerStart.getTime())
+          / 1000);
       }
 
       return {
-        id:        this.id,
-        title:     this.title,
-        columns:   this.columns,
-        creator:   this.creator,
-        timerLeft: timerLeft
+        id:          this.id,
+        title:       this.title,
+        columns:     this.columns,
+        creator:     this.creator,
+        timerLength: this.timerLength,
+        timerLeft:   timerLeft
       };
     }
   },

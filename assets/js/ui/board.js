@@ -9,11 +9,34 @@
 
       // var regexColumnTitle = /^.{1,20}$/;
 
-      $scope.board       = board;
-      $scope.timerLength = 5;//300;          // 5 minutes
-      $scope.timerLeft   = $scope.timerLength;
+      $scope.board             = board;
+      $scope.timerMinutesInput = 5;
+      $scope.timerLeft         = 0;
+      // $scope.timerLength = 5;//300;          // 5 minutes
 
       $rootScope.cardDragging = false;
+
+      var startTimer = function(bits) {
+        var sound          = new Audio();
+        sound.src          = '/sounds/ding.mp3';
+        // $scope.timerLength = bits.seconds;
+        $scope.timerLeft   = bits.seconds;
+
+        $interval.cancel(timer);
+
+        timer = $interval(function() {
+          $scope.timerLeft -= 1;
+          if ($scope.timerLeft <= 0) {
+            $scope.timerLeft = 0;
+            sound.play();
+            $interval.cancel(timer);
+          }
+        }, 1000);
+      };
+
+      if (board.timerLeft() > 0) {
+        startTimer({seconds: board.timerLeft()});
+      }
 
       eventerFactory().event('column:create:' + board.id(), function(col) {
         board.columnCreate(col);
@@ -32,19 +55,7 @@
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
       }).event('board:timerStart:' + board.id(), function(bits) {
-        var sound          = new Audio();
-        sound.src          = '/sounds/ding.mp3';
-        $scope.timerLength = bits.seconds;
-        $scope.timerLeft   = bits.seconds;
-
-        timer = $interval(function() {
-          $scope.timerLeft -= 1;
-          if ($scope.timerLeft <= 0) {
-            $scope.timerLeft = 0;
-            sound.play();
-            $interval.cancel(timer);
-          }
-        }, 1000);
+        startTimer(bits);
       }).hook($scope);
 
       /*
@@ -66,8 +77,9 @@
       }
       */
 
-      $scope.timerStart = function() {
-        api.timerStart(board.id(), $scope.timerLength);
+      $scope.timerStart = function(minutes) {
+        $scope.showTimerForm = false;
+        api.timerStart(board.id(), minutes * 60);
       };
 
       /*
@@ -112,13 +124,9 @@
 
       $scope.currentTab = 'trash';
 
-      // $scope.tabs = [{
-      //   title:
-
       $scope.switchTab = function(tabName) {
         $scope.currentTab = tabName;
       };
-
 
       // --- BEGIN xeditable stuff
 

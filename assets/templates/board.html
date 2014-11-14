@@ -1,8 +1,14 @@
 <div id="resizer-wrapper">
   <div id="main-content" data-resizer-top><div>
     <div style="float:right">
-      <div class="timer">
-        <button data-ng-click="timerStart()">Start</button>
+      <div data-ng-show="showTimerForm">
+        <label for="timerMinutesInput">Minutes
+          <input name="timerMinutesInput" type="text" size="4"
+            data-ng-model="timerMinutesInput">
+        </label>
+        <button data-ng-click="timerStart(timerMinutesInput)">Start</button>
+      </div>
+      <div class="timer" data-ng-click="showTimerForm = !showTimerForm">
         <span>{{timerLeft | formatTime}}</span>
       </div>
       <div class="trashbutton">

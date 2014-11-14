@@ -51,6 +51,9 @@
         trash:      function() { return board.columns[0]; },
         allColumns: function() { return board.columns; },
 
+        timerLength: function() { return board.timerLength; },
+        timerLeft:   function() { return board.timerLeft; },
+
         column: function(id) {
           for (var i in board.columns) {
             if (board.columns[i].id == id) return board.columns[i];
