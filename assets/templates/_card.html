@@ -1,4 +1,8 @@
-<div class="card yellow-card"
+<div class="cardjunction top" data-ng-show="!card || card.position === 1"
+  data-ng-class="{active:cardDragging}"
+  data-ui-on-drop="moveToJunction($event, $data, column.cards, column.id, 1)">
+</div>
+<div class="card yellow-card" data-ng-show="card"
   data-ui-draggable="true" data-drag="card"
   data-on-drop-success="dropSuccessHandler($event)">
   <div class="cardcontent" data-buttons="no"
@@ -11,4 +15,9 @@
     vote{{card.votes.length === 1 ? '' : 's'}}
     (<a href="#" data-ng-click="upvote(card, $event)">Upvote</a>)
   </p>
+</div>
+<div class="cardjunction" data-ng-show="card"
+  data-ng-class="{active:cardDragging}"
+  data-ui-on-drop="moveToJunction($event, $data, column.cards, column.id,
+    card.id === $data.id ? card.position : card.position + 1)">
 </div>

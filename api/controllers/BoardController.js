@@ -108,33 +108,85 @@ module.exports = {
     var boardId = req.param('id');
 
     var p = {
-      cardId:          req.param('cardId'),
-      destColumnId:    req.param('destColumnId'),
-      destPositionIdx: req.param('destPositionIdx')
+      cardId:       req.param('cardId'),
+      destColumnId: req.param('destColumnId'),
+      destPosition: req.param('destPosition')
     };
 
     // FIXME omg security
     // FIXME handle position fields better? (source column)
 
-    Card.findOneById(21).exec(function(err, card) {
+    async.auto({
+      card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
+      destStack: function(cb) {
+        Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
+      },
+      sourceStack: ['card', function(cb, r) {
+        if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
+        Card.find({column: r.card.column}).sort({position: 'asc'}).exec(cb);
+      }]
+    }, function(err, r) {
       if (err) return res.serverError(err);
+      if (!r.card || !r.destStack) return res.notFound();
 
-      Column.findOneById(p.destColumnId).populate('cards').exec(function(err, column) {
+      var i, jobs, signalData = {}, originalDestMap = _.pluck(r.destStack, 'id');
+
+      var fixPositions = function(collection, originalMap) {
+        var _jobs = [];
+
+        // reset positions according to spliced changes
+        for (i=0; i<collection.length; i++) collection[i].position = i + 1;
+
+        // save records that need saving
+        for (i=0; i<collection.length; i++) {
+          if (collection[i].id === originalMap[i]) continue;
+          (function() {
+            var cardToSave = collection[i];
+            _jobs.push(function(cb) { cardToSave.save(cb); });
+          })();
+        };
+
+        return _jobs;
+      };
+
+      if (r.sourceStack === null) {  // source and dest stack are the same
+
+        var card = r.destStack.splice(r.card.position - 1, 1)[0];
+        r.destStack.splice(p.destPosition - 1, 0, card);
+
+        jobs = fixPositions(r.destStack, originalDestMap);
+
+        signalData[p.destColumnId] = _.pluck(r.destStack, 'id');
+
+      } else {  // DIFFERENT source and destination stacks
+
+        var originalSourceMap = _.pluck(r.sourceStack, 'id');
+        var card = r.sourceStack.splice(r.card.position - 1, 1)[0];
+        r.destStack.splice(p.destPosition - 1, 0, card);
+
+        // set the new column id on the moving card
+        r.destStack[p.destPosition - 1].column = p.destColumnId;
+
+        // remove the moving card from the original mapping
+        originalDestMap = originalDestMap.filter(function(c) {
+          return c.id !== r.card.id;
+        });
+
+        jobs = fixPositions(r.sourceStack, originalSourceMap)
+          .concat(fixPositions(r.destStack, originalDestMap));
+
+        signalData[p.destColumnId] = _.pluck(r.destStack, 'id');
+        signalData[r.card.column]  = _.pluck(r.sourceStack, 'id');
+      }
+
+      async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
-        // card.position = column.cards[column.cards.length - 1].position + 1;
+        res.jsonx(signalData);
 
-        Card.update(p.cardId, {
-          column:   p.destColumnId,
-          position: p.destPositionIdx
-        }).exec(function(err, card) {
-          if (err) return res.serverError(err);
+        redis.boardMoveCard(boardId, signalData);
+      });
 
-          res.jsonx(card);
-
-          redis.boardMoveCard(boardId, p);
-        });
-      })
     });
 
   }

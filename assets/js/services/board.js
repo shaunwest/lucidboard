@@ -2,14 +2,25 @@
   'use strict';
   angular.module('hansei.services')
     .factory('board', ['$rootScope', 'api', '$q', function($rootScope, api, $q) {
-      var board, defer, eventCb, cb, _ = {
+      var board, defer, boardSort, eventCb, cb, _ = {
         pluck:   $rootScope.pluck,
-        flatten: $rootScope.flatten
+        flatten: $rootScope.flatten,
+        sortBy:  $rootScope.sortBy
       };
 
       cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
         eventCb(type, bits);
+      };
+
+      boardSort = function(b) {
+        b.columns = _.sortBy(b.columns, 'position');
+
+        for (var i=0; i<b.columns.length; i++) {
+          b.columns[i].cards = _.sortBy(b.columns[i].cards, 'position');
+        }
+
+        return b;
       };
 
       return {
@@ -24,7 +35,7 @@
         load: function(boardId) {
           defer = $q.defer();
           api.boardGet(boardId, function(b) {
-            board = b;
+            board = boardSort(b);
             defer.resolve(board);
           });
           return defer.promise;
@@ -34,14 +45,15 @@
 
         obj: function() { return board; },
 
-        id:      function() { return board.id; },
-        title:   function() { return board.title; },
-        columns: function() { return board.columns.slice(1); },
-        trash:   function() { return board.columns[0]; },
+        id:         function() { return board.id; },
+        title:      function() { return board.title; },
+        columns:    function() { return board.columns.slice(1); },
+        trash:      function() { return board.columns[0]; },
+        allColumns: function() { return board.columns; },
 
         column: function(id) {
           for (var i in board.columns) {
-            if (board.columns[i].id === id) return board.columns[i];
+            if (board.columns[i].id == id) return board.columns[i];
           }
           throw 'Failed to find column id ' + id;
         },
@@ -55,6 +67,10 @@
             }
           }
           throw 'Failed to find card id ' + id;
+        },
+
+        columnCreate: function(_column) {
+          board.columns.push(_column);
         },
 
         columnUpdate: function(_column) {
@@ -80,29 +96,40 @@
         cardUpvote: function(vote) {
           var card = this.card(vote.card);
           card.votes.push(vote);
-          console.log('votes', card.votes);
           // cb('upvote', {vote: vote});
         },
 
         moveCard: function(info) {
-          var card        = this.card(info.cardId),
-              sourceStack = this.column(card.column).cards,
-              destPosIdx  = info.destPositionIdx,  // TODO: not currently used!
-              index       = null;
+          // info is an object with keys of column id's. Corresponding vals are arrays
+          // of card ids as they should appear, in order. (Either 1 or 2 columns are
+          // being updated)
 
-          console.log('sourceStack', _.pluck(sourceStack, 'id'));
-          console.log('card', card);
+          var cardStacks = {};
 
-          for (var i=0; i<sourceStack.length; i++) {
-            if (sourceStack[i] === card) {
-              index = i; break;
-            }
-          }
+          Object.keys(info).forEach(function(columnId) {
+            var pos = 1, sourceStack = this.column(columnId).cards;
 
-          if (index === null) return alert('holy bugs, batman!');
+            cardStacks[columnId] = [];
 
-          sourceStack.splice(index, 1);
-          this.column(info.destColumnId).cards.push(card);
+            // make a new array to replace, renumbering positions as we go
+            info[columnId].forEach(function(cardId) {
+              var card = this.card(cardId);
+              card.position = pos;
+              pos++;
+              cardStacks[columnId].push(card);
+            }.bind(this));
+
+          }.bind(this));
+
+          // replace the entire contents of each column with our new stack of cards
+          Object.keys(cardStacks).forEach(function(columnId) {
+            var sourceStack = this.column(columnId).cards;
+
+            sourceStack.splice.apply(sourceStack,
+              [0, Number.MAX_VALUE].concat(cardStacks[columnId]));
+
+          }.bind(this));
+
         },
 
         // timerStart: function(bits) {

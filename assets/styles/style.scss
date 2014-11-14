@@ -7,10 +7,16 @@ a.create-card:hover { background-color: #ccc; }
 
 div.card { border-top: 1px solid #666; border-left: 1px solid #666;
   border-bottom: 2px solid #999; border-right: 2px solid #999;
-  padding: 5px; margin-bottom: 6px; cursor: pointer; cursor: hand; }
+  padding: 5px; cursor: pointer; cursor: hand; }
 li { cursor: pointer; cursor: hand; }
 
 div.card > p { font-size: small; text-align: right; margin: 0; }
+
+div.cardjunction { height: 6px; }
+div.cardjunction.top { height: 0; }
+div.cardjunction.active { height: 12px; }
+div.cardjunction.on-drag-hover { background-color: #ccc; }
+
 
 div.yellow-card { background-color: #ffe; }
 

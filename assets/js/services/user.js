@@ -4,7 +4,7 @@
     .factory('user', ['$q', 'api', 'localStorageService', function($q, api, localStorageService) {
 
       var token = localStorageService.get('authToken'),
-          initialTokenDefer = $q.defer();
+          initialTokenDefer;
 
       return {
         signin: function(user, pass, cb) {
@@ -34,7 +34,12 @@
         token: function() { return token; },
         initialTokenPromise: function() {
           return initialTokenDefer.promise;
-        }
+        },
+        resetInitialTokenPromise: function() {
+          initialTokenDefer = $q.defer();
+          api.setInitialTokenPromise(initialTokenDefer.promise);
+          return initialTokenDefer.promise;
+        },
       };
 
     }])

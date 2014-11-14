@@ -67,7 +67,9 @@
         // }
         switch (jwr.statusCode) {
           case 403: return $state.go('signin');
-          case 500: return alert('oh noes!');
+          case 500:
+            console.log('oh noes', data, jwr);
+            return alert('oh noes!');
         };
 
         cb(data, jwr);
@@ -114,6 +116,7 @@
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
         boardMoveCard: function(boardId, bits, cb) {
+          console.log('uh', bits);
           post('/api/boards/' + boardId + '/move-card', bits, cb);
         },
         columnCreate: function(boardId, bits, cb) {

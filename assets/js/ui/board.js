@@ -3,8 +3,8 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$scope', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
-    function($scope, $timeout, $interval, api, board, eventerFactory) {
+  .controller('BoardCtrl', ['$rootScope', '$scope', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
+    function($rootScope, $scope, $timeout, $interval, api, board, eventerFactory) {
       var openEditor, timer;
 
       // var regexColumnTitle = /^.{1,20}$/;
@@ -13,8 +13,10 @@
       $scope.timerLength = 5;//300;          // 5 minutes
       $scope.timerLeft   = $scope.timerLength;
 
+      $rootScope.cardDragging = false;
+
       eventerFactory().event('column:create:' + board.id(), function(col) {
-        board.columns().push(col);
+        board.columnCreate(col);
       }).event('column:update:' + board.id(), function(col) {
         board.columnUpdate(col);
       }).event('card:create:' + board.id(), function(card) {
@@ -26,7 +28,6 @@
         // Maybe we'll have some notification that this is happening... or a list
         // of other users looking at the card...... locking?...
       }).event('card:upvote:' + board.id(), function(vote) {
-        console.log('got vote', vote);
         board.cardUpvote(vote);
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
@@ -101,12 +102,6 @@
       };
       */
 
-      $scope.upvote = function(card, event) {
-        event.stopPropagation();
-        event.preventDefault();
-        api.cardUpvote(board.id(), board.column(card.column).id, card.id);
-      };
-
       // --- BEGIN Tabber stuff
 
       $scope.currentTab = 'trash';
@@ -130,15 +125,22 @@
 
       // --- BEGIN drag-drop stuff
 
-      $scope.onDrop = function($event, $data, array, destColumnId) {
-        console.log('args!', arguments);
-        // array.push($data);
-        api.boardMoveCard(board.id(), {
-          cardId:          $data.id,
-          destColumnId:    destColumnId,
-          destPositionIdx: array[array.length - 1].position + 1
-        });
-      };
+      $rootScope.$watch('cardDragging', function(a, b) {
+        // console.log('a', a);
+        // console.log('b', b);
+      });
+
+      $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
+        $rootScope.cardDragging = true;
+        // console.log('ha', $rootScope.cardDragging);
+        $rootScope.$apply();  // why the fuck do i need this?
+      });
+
+      $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
+        $rootScope.cardDragging = false;
+        // console.log('oh', $rootScope.cardDragging);
+        $rootScope.$apply();  // why the fuck do i need this?
+      });
     }])
 
   .controller('NewColumnCtrl', ['$scope', 'board', 'api',
