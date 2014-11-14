@@ -31,12 +31,18 @@
         board.cardUpvote(vote);
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
-      }).event('timer:start:' + board.id(), function(bits) {
-        board.timerStart(bits);
+      }).event('board:timerStart:' + board.id(), function(bits) {
+        var sound          = new Audio();
+        sound.src          = '/sounds/ding.mp3';
+        $scope.timerLength = bits.seconds;
+        $scope.timerLeft   = bits.seconds;
+
         timer = $interval(function() {
           $scope.timerLeft -= 1;
           if ($scope.timerLeft <= 0) {
             $scope.timerLeft = 0;
+            sound.play();
+            $interval.cancel(timer);
           }
         }, 1000);
       }).hook($scope);
@@ -60,8 +66,8 @@
       }
       */
 
-      $scope.startTimer = function() {
-        api.startTimer(board.id());
+      $scope.timerStart = function() {
+        api.timerStart(board.id(), $scope.timerLength);
       };
 
       /*

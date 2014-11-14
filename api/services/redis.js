@@ -23,6 +23,9 @@ module.exports = {
   boardMoveCard: function(boardId, info) {
     publish('board:moveCard:' + boardId, info);
   },
+  boardTimerStart: function(boardId, seconds) {
+    publish('board:timerStart:' + boardId, {seconds: seconds});
+  },
 
   columnCreated: function(column) {
     publish('column:create:' + column.board, column);

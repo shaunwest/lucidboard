@@ -26,12 +26,24 @@ module.exports = {
 
     creator: { model: 'user' },
 
+    timerLength: 'integer',
+    timerStart:  'datetime',
+
     toJSON: function() {
+      var timerLeft = 0;
+
+      if (this.timerStart) {
+        timerLeft = this.timerLength
+          - (this.timerStart.getTime() - new Date().getTime())
+          / 1000;
+      }
+
       return {
-        id:       this.id,
-        title:   this.title,
-        columns: this.columns,
-        creator: this.creator
+        id:        this.id,
+        title:     this.title,
+        columns:   this.columns,
+        creator:   this.creator,
+        timerLeft: timerLeft
       };
     }
   },

@@ -86,6 +86,12 @@ module.exports.routes = {
     action:     'moveCard'
   },
 
+  // Board: Start timer
+  'POST /api/boards/:id/timer-start': {
+    controller: 'BoardController',
+    action:     'timerStart'
+  },
+
   // Column Create
   'POST /api/boards/:boardId/columns': {
     controller: 'ColumnController',

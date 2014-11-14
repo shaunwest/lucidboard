@@ -189,6 +189,24 @@ module.exports = {
 
     });
 
+  },
+
+  timerStart: function(req, res) {
+    var boardId = req.param('id'),
+        seconds = req.param('seconds');
+
+    var bits = {
+      timerStart:  new Date(),
+      timerLength: seconds
+    };
+
+    Board.update(boardId, bits).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+
+      redis.boardTimerStart(boardId, seconds);
+    });
   }
 
 };

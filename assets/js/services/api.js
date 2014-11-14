@@ -116,7 +116,6 @@
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
         boardMoveCard: function(boardId, bits, cb) {
-          console.log('uh', bits);
           post('/api/boards/' + boardId + '/move-card', bits, cb);
         },
         columnCreate: function(boardId, bits, cb) {
@@ -136,6 +135,9 @@
         cardUpvote: function(boardId, columnId, cardId, cb) {
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             cardId + '/upvote', {}, cb);
+        },
+        timerStart: function(boardId, seconds, cb) {
+          post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
 
         subscribe: function(events, cb)   { subscriber.subscribe(events, cb); },
