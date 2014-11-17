@@ -1,9 +1,9 @@
-<div id="resizer-wrapper">
-  <div id="main-content" data-resizer-top><div>
+<div class="board">
+  <div class="board-header">
     <div style="float:right">
       <div data-ng-show="showTimerForm">
         <label for="timerMinutesInput">Minutes
-          <input name="timerMinutesInput" type="text" size="4"
+          <input id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
             data-ng-model="timerMinutesInput">
         </label>
         <button data-ng-click="timerStart(timerMinutesInput)">Start</button>
@@ -20,50 +20,36 @@
     </div>
 
     <h2>{{board.title()}}</h2>
-
     <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
       <input type="text" data-ng-model="title">
       <input type="submit" value="Create Column">
     </form>
+  </div>
 
+  <div class="columns">
     <div class="column" data-ng-repeat="column in board.columns()"
-      style="width:{{95 / (board.columns().length)}}%">
+         style="width:{{95 / (board.columns().length)}}%">
       <h3 data-editable-text="column.title" data-buttons="no"
-        onbeforesave="checkColumnTitle($data, column.id)">
+          onbeforesave="checkColumnTitle($data, column.id)">
         {{column.title}}
       </h3>
       <div class="cardstack">
         <card data-ng-show="column.cards.length === 0"
-          board="board" card="null" column="column"
-          card-dragging="cardDragging">
+              board="board" card="null" column="column"
+              card-dragging="cardDragging">
         </card>
         <card data-ng-repeat="card in column.cards track by $index"
-          board="board" card="card" column="column" index="$index"
-          card-dragging="cardDragging">
+              board="board" card="card" column="column" index="$index"
+              card-dragging="cardDragging">
         </card>
       </div>
       <a class="create-card" data-ng-click="createCard(column)" href="#">+</a>
     </div>
-  </div></div>
-
-  <div id="bottom-pane" data-resizer-bottom>
-    <div class="log" data-ng-show="currentTab === 'log'">
-      <div data-log></div>
-    </div>
-    <div class="trash" data-ng-show="currentTab === 'trash'"
-      data-ng-class="{dropready:cardDragging}"
-      data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
-        board.nextPositionByColumnId(board.trash().id))">
-      <card data-ng-repeat="card in board.trash().cards track by $index"
-        board="board" card="card" column="board.trash()" index="$index">
-      </card>
-    </div>
   </div>
 </div>
-
-<div id="content-resizer" data-resizer="horizontal" data-resizer-height="6">
-  <ul class="tabber">
-    <li class="tab" data-ng-class="{activetab:currentTab === 'log'}">
+<div class="resizer" data-resizer="horizontal">
+  <ul class="tabber" data-resizer-handle>
+    <li class="tab" data-ng-class="{active:currentTab === 'log'}">
       <a data-ng-click="switchTab('log')">Log</a>
     </li>
     <li class="tab" data-ng-class="{activetab:currentTab === 'trash'}">
@@ -73,6 +59,22 @@
         Trash ({{board.trash().cards.length}})
       </a>
     </li>
+    <li data-resizer-expand class="button">
+      <a>EXPAND</a>
+    </li>
     <div class="clearer"></div>
   </ul>
+  <div class="resizer-content">
+    <div class="log" data-ng-show="currentTab === 'log'">
+      <div data-log></div>
+    </div>
+    <div class="trash" data-ng-show="currentTab === 'trash'"
+         data-ng-class="{dropready:cardDragging}"
+         data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
+        board.nextPositionByColumnId(board.trash().id))">
+      <card data-ng-repeat="card in board.trash().cards track by $index"
+            board="board" card="card" column="board.trash()" index="$index">
+      </card>
+    </div>
+  </div>
 </div>

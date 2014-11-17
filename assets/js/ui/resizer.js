@@ -16,6 +16,22 @@
         }
       };
     }])
+    .directive('resizerHandle', ['resizer', function(resizer) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          resizer.registerHandle(element);
+        }
+      };
+    }])
+    .directive('resizerExpand', ['resizer', function(resizer) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          resizer.registerExpandButton(element);
+        }
+      }
+    }])
     .directive('resizer', ['resizer', function(resizer) {
       return {
         restrict: 'A',

@@ -21,18 +21,29 @@ div.cardjunction.on-drag-hover { background-color: #ccc; }
 
 div.yellow-card { background-color: #ffe; }
 
-div#bottom-pane { position: absolute; height: 130px;
+div.bottom-pane { position: absolute; height: 130px;
   bottom: 0; left: 0; right: 0; overflow: auto;
   background-color: #eee; }
-div#bottom-pane h3 {}
-div#bottom-pane textarea { width: 100%; height: 100%; }
-div#content-resizer { position: absolute;
-  bottom: 130px; left: 0; right: 0;
+div.bottom-pane h3 {}
+div.bottom-pane textarea { width: 100%; height: 100%; }
+div.resizer { position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height:32px;
   border-top: 3px solid #ccc;
-  background-color: #ccc; cursor: n-resize; }
-div#main-content { position: absolute; top: 0; bottom: 136px; /* 130 + 6 */
+  background-color: #ccc; }
+//div.main-content { position: absolute; top: 0; bottom: 136px; /* 130 + 6 */
+//  left: 0; right: 0; overflow: auto; }
+//div.main-content > div { padding: 0 8px; }
+div.resizer-content {
+  position: absolute;
+  background-color: #eee;
+  left: 0; right: 0; top: 29px; bottom: 0;
+}
+div.board { position: relative; padding: 10px; }
+div.board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
   left: 0; right: 0; overflow: auto; }
-div#main-content > div { padding: 0 8px; }
+div.board-header > div { padding: 0 8px; }
+div.columns { position: absolute; top:100px; left: 0; right: 0; }
 div#resizer-wrapper { position: absolute; top: 35px; bottom: 0;
   left: 0; right: 0; overflow: hidden; }
 
@@ -41,7 +52,7 @@ div#resizer-wrapper { position: absolute; top: 35px; bottom: 0;
 
 
 ul.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
-  margin: 0; background-color: #ddd; }
+  margin: 0; background-color: #ddd; cursor: ns-resize;}
 ul.tabber li.tab { list-style-type: none; }
 ul.tabber li.tab a { float: left; padding: 4px 30px; color: #aaa; }
 ul.tabber li.tab a:hover { background-color: #ccc; color: #fff; }
@@ -51,5 +62,7 @@ div.currentTab { padding: 20px; }
 
 div.trash { padding: 8px; height: 100%; }
 div.trash div.card { width: 32%; float: left; margin-right: 4px; }
+
+ul.tabber li.button { list-style-type: none; float: right; padding: 4px 30px; width: 100px; }
 
 .clearer { clear: both; line-height: 0; }
