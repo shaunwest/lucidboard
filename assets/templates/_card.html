@@ -4,11 +4,13 @@
 </div>
 <div class="card yellow-card" data-ng-show="card"
   data-ui-draggable="true" data-drag="card"
-  data-on-drop-success="dropSuccessHandler($event)">
+  data-on-drop-success="dropSuccessHandler($event)"
+  data-ng-class="{active:cardDragging}"
+  data-ui-on-drop="combineCards($event, $data, card.id)">
   <div class="cardcontent" data-buttons="no"
     data-editable-textarea="card.content"
     data-onbeforesave="checkCardContent($data, column.id, card.id)">
-    {{ card.content || 'empty' }}
+    {{ card.content || 'empty' }} ({{card.position}}, {{ card.id }})
   </div>
   <p class="handle">
     <strong>{{card.votes.length}}</strong>

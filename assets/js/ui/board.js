@@ -56,6 +56,8 @@
         board.moveCard(info);
       }).event('board:timerStart:' + board.id(), function(bits) {
         startTimer(bits);
+      }).event('board:combineCards:' + board.id(), function(info) {
+        board.combineCards(info);
       }).hook($scope);
 
       /*
@@ -146,14 +148,12 @@
 
       $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
         $rootScope.cardDragging = true;
-        // console.log('ha', $rootScope.cardDragging);
-        $rootScope.$apply();  // why the fuck do i need this?
+        console.log('ANGULAR_DRAG_START', $rootScope.cardDragging);
       });
 
       $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
         $rootScope.cardDragging = false;
-        // console.log('oh', $rootScope.cardDragging);
-        $rootScope.$apply();  // why the fuck do i need this?
+        console.log('ANGULAR_DRAG_END', $rootScope.cardDragging);
       });
     }])
 

@@ -12,11 +12,12 @@ li { cursor: pointer; cursor: hand; }
 
 div.card > p { font-size: small; text-align: right; margin: 0; }
 
+div.card.on-drag-hover { border-top: 1px solid black; border-left: 1px solid black;
+  border-bottom: 2px solid black; border-right: 2px solid black; }
 div.cardjunction { height: 6px; }
 div.cardjunction.top { height: 0; }
 div.cardjunction.active { height: 12px; }
 div.cardjunction.on-drag-hover { background-color: #ccc; }
-
 
 div.yellow-card { background-color: #ffe; }
 

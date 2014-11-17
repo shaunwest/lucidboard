@@ -135,8 +135,8 @@
 
         },
 
-        // timerStart: function(bits) {
-        // }
+        combineCards: function(info) {
+        },
 
       };
     }])
