@@ -155,6 +155,14 @@
         $rootScope.cardDragging = false;
         console.log('ANGULAR_DRAG_END', $rootScope.cardDragging);
       });
+
+      $scope.moveCard = function($event, $data, array, destColumnId, position) {
+        api.boardMoveCard(board.id(), {
+          cardId:       $data.id,
+          destColumnId: destColumnId,
+          destPosition: position
+        });
+      };
     }])
 
   .controller('NewColumnCtrl', ['$scope', 'board', 'api',

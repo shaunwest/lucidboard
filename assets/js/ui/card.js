@@ -19,10 +19,7 @@
             // array.splice(index, 1);
           };
 
-          $scope.moveToJunction = function($event, $data, array, destColumnId, position) {
-            // console.log('moveToJunction', arguments);
-            // console.log('moveToJunctionData', $data);
-            // array.push($data);
+          $scope.moveCard = function($event, $data, array, destColumnId, position) {
             api.boardMoveCard(board.id(), {
               cardId:       $data.id,
               destColumnId: destColumnId,

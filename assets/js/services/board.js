@@ -54,6 +54,16 @@
         timerLength: function() { return board.timerLength; },
         timerLeft:   function() { return board.timerLeft; },
 
+        nextPositionByColumnId: function(columnId) {
+          var column = this.column(columnId);
+
+          if (!column) return null;
+
+          if (!column.cards.length) return 1;
+
+          return column.cards[column.cards.length - 1].position + 1;
+        },
+
         column: function(id) {
           for (var i in board.columns) {
             if (board.columns[i].id == id) return board.columns[i];

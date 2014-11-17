@@ -11,9 +11,12 @@
       <div class="timer" data-ng-click="showTimerForm = !showTimerForm">
         <span>{{timerLeft | formatTime}}</span>
       </div>
+      <!--
       <div class="trashbutton">
-        <img src="/images/ios7-trash.svg" width="48" height="48" alt="Trash">
+        <img src="/images/ios7-trash.svg" width="48" height="48" alt="Trash"
+          data-ui-on-drop="trashCard($event, $data)">
       </div>
+      -->
     </div>
 
     <h2>{{board.title()}}</h2>
@@ -47,7 +50,10 @@
     <div class="log" data-ng-show="currentTab === 'log'">
       <div data-log></div>
     </div>
-    <div class="trash" data-ng-show="currentTab === 'trash'">
+    <div class="trash" data-ng-show="currentTab === 'trash'"
+      data-ng-class="{dropready:cardDragging}"
+      data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
+        board.nextPositionByColumnId(board.trash().id))">
       <card data-ng-repeat="card in board.trash().cards track by $index"
         board="board" card="card" column="board.trash()" index="$index">
       </card>
@@ -57,11 +63,15 @@
 
 <div id="content-resizer" data-resizer="horizontal" data-resizer-height="6">
   <ul class="tabber">
-    <li class="tab" data-ng-class="{active:currentTab === 'log'}">
+    <li class="tab" data-ng-class="{activetab:currentTab === 'log'}">
       <a data-ng-click="switchTab('log')">Log</a>
     </li>
-    <li class="tab" data-ng-class="{active:currentTab === 'trash'}">
-      <a data-ng-click="switchTab('trash')">Trash ({{board.trash().cards.length}})</a>
+    <li class="tab" data-ng-class="{activetab:currentTab === 'trash'}">
+      <a data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging}"
+        data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
+          board.nextPositionByColumnId(board.trash().id))">
+        Trash ({{board.trash().cards.length}})
+      </a>
     </li>
     <div class="clearer"></div>
   </ul>

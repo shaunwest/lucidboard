@@ -2,6 +2,24 @@ var async = require('async'),
     _     = require('underscore'),
     redis = require('../services/redis');
 
+var fixPositions = function(collection, originalMap) {
+  var jobs = [];
+
+  // reset positions according to spliced changes
+  for (i=0; i<collection.length; i++) collection[i].position = i + 1;
+
+  // save records that need saving
+  for (i=0; i<collection.length; i++) {
+    if (collection[i].id === originalMap[i]) continue;
+    (function() {
+      var cardToSave = collection[i];
+      jobs.push(function(cb) { cardToSave.save(cb); });
+    })();
+  };
+
+  return jobs;
+};
+
 module.exports = {
 
   getList: function(req, res) {
@@ -131,24 +149,6 @@ module.exports = {
 
       var i, jobs, signalData = {}, originalDestMap = _.pluck(r.destStack, 'id');
 
-      var fixPositions = function(collection, originalMap) {
-        var _jobs = [];
-
-        // reset positions according to spliced changes
-        for (i=0; i<collection.length; i++) collection[i].position = i + 1;
-
-        // save records that need saving
-        for (i=0; i<collection.length; i++) {
-          if (collection[i].id === originalMap[i]) continue;
-          (function() {
-            var cardToSave = collection[i];
-            _jobs.push(function(cb) { cardToSave.save(cb); });
-          })();
-        };
-
-        return _jobs;
-      };
-
       if (r.sourceStack === null) {  // source and dest stack are the same
 
         var card = r.destStack.splice(r.card.position - 1, 1)[0];
@@ -207,6 +207,6 @@ module.exports = {
 
       redis.boardTimerStart(boardId, seconds);
     });
-  }
+  },
 
 };

@@ -1,6 +1,6 @@
 <div class="cardjunction top" data-ng-show="!card || card.position === 1"
   data-ng-class="{active:cardDragging}"
-  data-ui-on-drop="moveToJunction($event, $data, column.cards, column.id, 1)">
+  data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 1)">
 </div>
 <div class="card yellow-card" data-ng-show="card"
   data-ui-draggable="true" data-drag="card"
@@ -20,6 +20,6 @@
 </div>
 <div class="cardjunction" data-ng-show="card"
   data-ng-class="{active:cardDragging}"
-  data-ui-on-drop="moveToJunction($event, $data, column.cards, column.id,
+  data-ui-on-drop="moveCard($event, $data, column.cards, column.id,
     card.id === $data.id ? card.position : card.position + 1)">
 </div>

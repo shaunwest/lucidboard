@@ -45,11 +45,11 @@ ul.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
 ul.tabber li.tab { list-style-type: none; }
 ul.tabber li.tab a { float: left; padding: 4px 30px; color: #aaa; }
 ul.tabber li.tab a:hover { background-color: #ccc; color: #fff; }
-ul.tabber li.active a:hover { background-color: #ccc; color: #fff; }
-ul.tabber li.active a { background-color: #ccc; color: #000; }
+ul.tabber li.activetab a:hover { background-color: #ccc; color: #fff; }
+ul.tabber li.activetab a { background-color: #ccc; color: #000; }
 div.currentTab { padding: 20px; }
 
-div.trash { padding: 8px; }
+div.trash { padding: 8px; height: 100%; }
 div.trash div.card { width: 32%; float: left; margin-right: 4px; }
 
 .clearer { clear: both; line-height: 0; }
