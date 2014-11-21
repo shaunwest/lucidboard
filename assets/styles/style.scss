@@ -30,6 +30,7 @@ div.resizer { position: absolute;
   bottom: 0; left: 0; right: 0;
   height:32px;
   border-top: 3px solid #ccc;
+  overflow: hidden;
   background-color: #ccc; }
 div.resizer-content {
   position: absolute;
