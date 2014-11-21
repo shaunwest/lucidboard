@@ -31,9 +31,6 @@ div.resizer { position: absolute;
   height:32px;
   border-top: 3px solid #ccc;
   background-color: #ccc; }
-//div.main-content { position: absolute; top: 0; bottom: 136px; /* 130 + 6 */
-//  left: 0; right: 0; overflow: auto; }
-//div.main-content > div { padding: 0 8px; }
 div.resizer-content {
   position: absolute;
   background-color: #eee;
@@ -44,8 +41,6 @@ div.board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
   left: 0; right: 0; overflow: auto; }
 div.board-header > div { padding: 0 8px; }
 div.columns { position: absolute; top:100px; left: 0; right: 0; }
-div#resizer-wrapper { position: absolute; top: 35px; bottom: 0;
-  left: 0; right: 0; overflow: hidden; }
 
 .editable-click, a.editable-click { border: 0; color: black; }
 .editable-empty, a.editable-empty { border: 0; color: #999; }
