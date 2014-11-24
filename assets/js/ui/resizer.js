@@ -1,61 +1,75 @@
 (function() {
   angular.module('hansei.ui')
     .factory('resizerManager', ['$document', '$window', '$timeout', function($document, $window, $timeout) {
-      var resizer, handle, expanded = false;
+      var resizer, resizeCallback, handle, mouseOffsetY, expanded = false;
       var EXPAND_HEIGHT = 200;
+      var HANDLE_HEIGHT = 32;
+      var SLIDE_RATE_MS = 16;
 
-      function init() {
-        var mouseOffsetY;
+      function mousemove(event) {
+        var y, height;
+        if(!resizer) {
+          return;
+        }
+        y = ($window.innerHeight - event.pageY);
+        height = y + mouseOffsetY;
 
-        if(!resizer && !handle) return;
-
-        handle.on('mousedown', function(event) {
-          event.preventDefault();
-
-          $document.on('mousemove', mousemove);
-          $document.on('mouseup', mouseup);
-          mouseOffsetY = event.offsetY;
-        });
-
-        function mousemove(event) {
-          var y = $window.innerHeight - event.pageY;
+        if(height > 28) {
           expanded = true;
           resizer.css({
-            height: (y + mouseOffsetY) + 'px'
+            height: height + 'px'
           });
+          if(resizeCallback) {
+            resizeCallback(expanded);
+          }
         }
+      }
 
-        function mouseup() {
-          $document.unbind('mousemove', mousemove);
-          $document.unbind('mouseup', mouseup);
+      function mouseup() {
+        $document.unbind('mousemove', mousemove);
+        $document.unbind('mouseup', mouseup);
+      }
+
+      function expand() {
+        var offsetHeight;
+        if(!resizer) {
+          return;
+        }
+        offsetHeight = resizer[0].offsetHeight;
+        if(offsetHeight < EXPAND_HEIGHT) {
+          resizer[0].style.height = Math.min(offsetHeight + 20, EXPAND_HEIGHT) + 'px';
+          $timeout(expand, SLIDE_RATE_MS);
+        }
+      }
+
+      function collapse() {
+        var offsetHeight;
+        if(!resizer) {
+          return;
+        }
+        offsetHeight = resizer[0].offsetHeight;
+        if(offsetHeight > HANDLE_HEIGHT) {
+          resizer[0].style.height = Math.max(offsetHeight - 20, HANDLE_HEIGHT) + 'px';
+          $timeout(collapse, SLIDE_RATE_MS);
         }
       }
 
       return {
         registerHandle: function(el) {
           handle = el;
-          init();
+          handle.on('mousedown', function(event) {
+            event.preventDefault();
+
+            $document.on('mousemove', mousemove);
+            $document.on('mouseup', mouseup);
+            mouseOffsetY = event.offsetY;
+          });
         },
         registerResizer: function(el) {
           resizer = el;
-          init();
         },
-        registerExpandButton: function(el) {
-          function expand() {
-            var offsetHeight = resizer[0].offsetHeight;
-            if(offsetHeight < EXPAND_HEIGHT) {
-              resizer[0].style.height = Math.min(offsetHeight + 20, EXPAND_HEIGHT) + 'px';
-              $timeout(expand, 16);
-            }
-          }
-
-          function collapse() {
-            var offsetHeight = resizer[0].offsetHeight;
-            if(offsetHeight > 32) {
-              resizer[0].style.height = Math.max(offsetHeight - 20, 32) + 'px';
-              $timeout(collapse, 16);
-            }
-          }
+        registerExpandButton: function(el, callback) {
+          resizeCallback = callback;
 
           el.on('click', function() {
             if(!resizer) {
@@ -64,10 +78,35 @@
 
             if(!expanded) {
               expanded = true;
-              $timeout(expand, 16);
+              $timeout(expand, SLIDE_RATE_MS);
+            }
+
+            if(resizeCallback) {
+              resizeCallback(expanded);
+            }
+          });
+        },
+        registerToggleButton: function(el, callback) {
+          resizeCallback = callback;
+
+          el.on('click', function() {
+            if(!resizer) {
+              return;
+            }
+
+            // Expand
+            if(!expanded) {
+              expanded = true;
+              $timeout(expand, SLIDE_RATE_MS);
+
+            // Collapse
             } else {
               expanded = false;
-              $timeout(collapse, 16);
+              $timeout(collapse, SLIDE_RATE_MS);
+            }
+
+            if(resizeCallback) {
+              resizeCallback(expanded);
             }
           });
         }
@@ -87,6 +126,20 @@
         link: function(scope, element, attrs) {
           resizerManager.registerExpandButton(element);
         }
+      };
+    }])
+    .directive('resizerToggle', ['resizerManager', function(resizerManager) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          scope.label = 'Open';
+          resizerManager.registerToggleButton(element, function(expanded) {
+            scope.label = (expanded) ? 'Close' : 'Open';
+            scope.$apply();
+          });
+        },
+        scope: {},
+        template: '<a>{{ label }}</a>'
       };
     }])
     .directive('resizer', ['resizerManager', function(resizerManager) {

@@ -28,19 +28,19 @@
 
   <div class="columns">
     <div class="column" data-ng-repeat="column in board.columns()"
-         style="width:{{95 / (board.columns().length)}}%">
+      style="width:{{95 / (board.columns().length)}}%">
       <h3 data-editable-text="column.title" data-buttons="no"
           onbeforesave="checkColumnTitle($data, column.id)">
         {{column.title}}
       </h3>
       <div class="cardstack">
         <card data-ng-show="column.cards.length === 0"
-              board="board" card="null" column="column"
-              card-dragging="cardDragging">
+          board="board" card="null" column="column"
+          card-dragging="cardDragging">
         </card>
         <card data-ng-repeat="card in column.cards track by $index"
-              board="board" card="card" column="column" index="$index"
-              card-dragging="cardDragging">
+          board="board" card="card" column="column" index="$index"
+          card-dragging="cardDragging">
         </card>
       </div>
       <a class="create-card" data-ng-click="createCard(column)" href="#">+</a>
@@ -50,17 +50,16 @@
 <div class="resizer" data-resizer>
   <ul class="tabber" data-resizer-handle>
     <li class="tab" data-ng-class="{active:currentTab === 'log'}">
-      <a data-ng-click="switchTab('log')">Log</a>
+      <a data-resizer-expand data-ng-click="switchTab('log')">Log</a>
     </li>
     <li class="tab" data-ng-class="{activetab:currentTab === 'trash'}">
-      <a data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging}"
+      <a data-resizer-expand data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging}"
         data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
           board.nextPositionByColumnId(board.trash().id))">
         Trash ({{board.trash().cards.length}})
       </a>
     </li>
-    <li data-resizer-expand class="button">
-      <a>EXPAND</a>
+    <li data-resizer-toggle class="button">
     </li>
     <div class="clearer"></div>
   </ul>
@@ -69,11 +68,11 @@
       <div data-log></div>
     </div>
     <div class="trash" data-ng-show="currentTab === 'trash'"
-         data-ng-class="{dropready:cardDragging}"
-         data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
+      data-ng-class="{dropready:cardDragging}"
+      data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
         board.nextPositionByColumnId(board.trash().id))">
       <card data-ng-repeat="card in board.trash().cards track by $index"
-            board="board" card="card" column="board.trash()" index="$index">
+        board="board" card="card" column="board.trash()" index="$index">
       </card>
     </div>
   </div>
