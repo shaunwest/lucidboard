@@ -10,13 +10,17 @@
   <div class="cardcontent" data-buttons="no"
     data-editable-textarea="card.content"
     data-onbeforesave="checkCardContent($data, column.id, card.id)">
-    {{ card.content || 'empty' }} ({{card.position}}, {{ card.id }})
+    <pre>{{ card.content || 'empty' }}</pre>
+  </div>
+  <div class="attached-cards" ng-show="card.attached">
+    +{{card.attached}}
   </div>
   <p class="handle">
     <strong>{{card.votes.length}}</strong>
     vote{{card.votes.length === 1 ? '' : 's'}}
     (<a href="#" data-ng-click="upvote(card, $event)">Upvote</a>)
   </p>
+  <div class="clearer"></div>
 </div>
 <div class="cardjunction" data-ng-show="card"
   data-ng-class="{active:cardDragging}"

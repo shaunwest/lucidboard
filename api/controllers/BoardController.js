@@ -198,6 +198,10 @@ module.exports = {
         jobs         = [],
         originalSourceMap;
 
+    if (sourceCardId === destCardId) {
+      return res.badRequest('You cannot combine a card with itself!');
+    }
+
     async.auto({
       source: function(cb) { Card.findOneById(sourceCardId).populate('votes').exec(cb); },
       dest:   function(cb) { Card.findOneById(destCardId).populate('votes').exec(cb); },

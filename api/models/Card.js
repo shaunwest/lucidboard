@@ -32,6 +32,7 @@ module.exports = {
         id:       this.id,
         content:  this.content,
         position: this.position,
+        attached: this.attached,
         column:   this.column,
         votes:    this.votes
       };

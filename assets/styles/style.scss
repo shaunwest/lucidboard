@@ -1,4 +1,4 @@
-* { box-sizing: border-box; }
+* { box-sizing: border-box; font-family: verdana, sans-serif; }
 
 div.column { float: left; margin-right: 5px; }
 a.create-card { display: block; background-color: #eee; text-align: center;
@@ -10,7 +10,10 @@ div.card { border-top: 1px solid #666; border-left: 1px solid #666;
   padding: 5px; cursor: pointer; cursor: hand; }
 li { cursor: pointer; cursor: hand; }
 
-div.card > p { font-size: small; text-align: right; margin: 0; }
+div.card div.cardcontent pre { font-family: verdana, sans-serif; font-size: small; }
+div.card p.handle { font-size: small; float: right; margin: 0; }
+div.card div.attached-cards { float: left; background-color: green; color: white;
+  border-radius: 50%; font-weight: bold; font-size: x-small; padding: 3px; }
 
 div.card.on-drag-hover { border-top: 1px solid black; border-left: 1px solid black;
   border-bottom: 2px solid black; border-right: 2px solid black; }
