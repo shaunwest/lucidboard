@@ -15,6 +15,11 @@ module.exports = {
     content:  'string',
     position: 'integer',
 
+    attached: {  // +1 for each card dropped on this one
+      type:       'integer',
+      defaultsTo: 0
+    },
+
     column: { model: 'column' },
 
     votes: {

@@ -112,10 +112,28 @@
           // cb('upvote', {vote: vote});
         },
 
-        moveCard: function(info) {
+        // Replace the column with the cards of the given id's, in order.
+        rebuildColumn: function(info) {
           // info is an object with keys of column id's. Corresponding vals are arrays
-          // of card ids as they should appear, in order. (Either 1 or 2 columns are
-          // being updated)
+          // of card ids as they should appear, in order. (Multiple columns can be
+          // updated at the same time)
+
+          /*
+          var pos         = 1,
+              sourceStack = this.column(columnId).cards
+              newStack    = [];
+
+          // make a new array to replace, renumbering positions as we go
+          ids.forEach(function(cardId) {
+            var card = this.card(cardId);
+            card.position = pos;
+            pos++;
+            newStack.push(card);
+          }.bind(this));
+
+          // replace the entire contents of each column with our new stack of cards
+          sourceStack.splice.apply(sourceStack, [0, Number.MAX_VALUE].concat(newStack));
+          */
 
           var cardStacks = {};
 
@@ -145,7 +163,24 @@
 
         },
 
+        moveCard: function(info) {
+          this.rebuildColumn(info);
+        },
+
         combineCards: function(info) {
+          var sourceCardId   = info.sourceCardId,
+              sourceColumnId = info.sourceColumnId,
+              sourceMap      = info.sourceMap,
+              destCard       = info.destCard,
+              info           = {},
+              destColumn;
+
+          // Reorder the source column
+          info[sourceColumnId] = sourceMap;
+          this.rebuildColumn(info);
+
+          // Splice in the new card
+          this.column(destCard.column).cards.splice(destCard.position - 1, 1, destCard);
         },
 
       };

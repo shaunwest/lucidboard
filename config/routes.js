@@ -86,6 +86,12 @@ module.exports.routes = {
     action:     'moveCard'
   },
 
+  // Board: Combine cards
+  'POST /api/boards/:id/combine-cards': {
+    controller: 'BoardController',
+    action:     'combineCards'
+  },
+
   // Board: Start timer
   'POST /api/boards/:id/timer-start': {
     controller: 'BoardController',

@@ -118,6 +118,9 @@
         boardMoveCard: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/move-card', bits, cb);
         },
+        boardCombineCards: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/combine-cards', bits, cb);
+        },
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },

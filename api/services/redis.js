@@ -23,6 +23,9 @@ module.exports = {
   boardMoveCard: function(boardId, info) {
     publish('board:moveCard:' + boardId, info);
   },
+  boardCombineCards: function(boardId, info) {
+    publish('board:combineCards:' + boardId, info);
+  },
   boardTimerStart: function(boardId, seconds) {
     publish('board:timerStart:' + boardId, {seconds: seconds});
   },

@@ -28,12 +28,10 @@
           };
 
           $scope.combineCards = function($event, $data, destCardId) {
-            return;
-            console.log('ok', arguments);
-            var target = $event.target;
-            // if (!confirm('Are you sure you want to combine these cards?')) return;
-            console.log('um', destCardId);
-            console.log('target',$event.target);
+            api.boardCombineCards(board.id(), {
+              sourceCardId: $data.id,
+              destCardId:   destCardId
+            });
           };
 
           // This directive is used without a card to create a junction where cards can
