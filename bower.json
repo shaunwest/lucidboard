@@ -1,11 +1,11 @@
 {
-  "name": "hansei",
+  "name": "lucidboard",
   "version": "0.0.0",
   "authors": [
     "Shaun West <shaunwest@quickenloans.com>",
     "Adam Bellinson <adambellinson@quickenloans.com>"
   ],
-  "description": "hansei",
+  "description": "Your thoughts",
   "moduleType": [
     "globals",
     "node"
