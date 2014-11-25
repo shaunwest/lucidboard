@@ -27,9 +27,8 @@
   </header>
 
   <div class="columns">
-    <div class="column" data-ng-repeat="column in board.columns()"
-      style="width:{{95 / (board.columns().length)}}%">
-      <h3 data-editable-text="column.title" data-buttons="no"
+    <div class="column" data-ng-repeat="column in board.columns()">
+      <h3 class="column-title" data-editable-text="column.title" data-buttons="no"
           onbeforesave="checkColumnTitle($data, column.id)">
         {{column.title}}
       </h3>
