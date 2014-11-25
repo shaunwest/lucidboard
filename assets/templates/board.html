@@ -1,5 +1,5 @@
-<div class="board">
-  <div class="board-header">
+<section class="board">
+  <header class="board-header">
     <div style="float:right">
       <div data-ng-show="showTimerForm">
         <label for="timerMinutesInput">Minutes
@@ -24,7 +24,7 @@
       <input type="text" data-ng-model="title">
       <input type="submit" value="Create Column">
     </form>
-  </div>
+  </header>
 
   <div class="columns">
     <div class="column" data-ng-repeat="column in board.columns()"
@@ -46,8 +46,8 @@
       <a class="create-card" data-ng-click="createCard(column)" href="#">+</a>
     </div>
   </div>
-</div>
-<div class="resizer" data-resizer>
+</section>
+<section class="resizer" data-resizer>
   <ul class="tabber" data-resizer-handle>
     <li class="tab" data-ng-class="{active:currentTab === 'log'}">
       <a data-resizer-expand data-ng-click="switchTab('log')">Log</a>
@@ -76,4 +76,4 @@
       </card>
     </div>
   </div>
-</div>
+</section>

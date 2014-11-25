@@ -1,67 +1,73 @@
 * { box-sizing: border-box; font-family: verdana, sans-serif; }
 
-div.column { float: left; margin-right: 5px; }
+article, section, aside, hgroup, nav, header, footer, figure, figcaption {
+  display: block;
+}
+
+main { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
+
+.column { float: left; margin-right: 5px; }
 a.create-card { display: block; background-color: #eee; text-align: center;
   padding: 4px; color: #333; font-weight: bold; text-decoration: none; }
 a.create-card:hover { background-color: #ccc; }
 
-div.card { border-top: 1px solid #666; border-left: 1px solid #666;
+.card { border-top: 1px solid #666; border-left: 1px solid #666;
   border-bottom: 2px solid #999; border-right: 2px solid #999;
   padding: 5px; cursor: pointer; cursor: hand; }
 li { cursor: pointer; cursor: hand; }
 
-div.card div.cardcontent pre { font-family: verdana, sans-serif; font-size: small; }
-div.card p.handle { font-size: small; float: right; margin: 0; }
-div.card div.attached-cards { float: left; background-color: green; color: white;
+.card .cardcontent pre { font-family: verdana, sans-serif; font-size: small; }
+.card .handle { font-size: small; float: right; margin: 0; }
+.card .attached-cards { float: left; background-color: green; color: white;
   border-radius: 50%; font-weight: bold; font-size: x-small; padding: 3px; }
 
-div.card.on-drag-hover { border-top: 1px solid black; border-left: 1px solid black;
+.card.on-drag-hover { border-top: 1px solid black; border-left: 1px solid black;
   border-bottom: 2px solid black; border-right: 2px solid black; }
-div.cardjunction { height: 6px; }
-div.cardjunction.top { height: 0; }
-div.cardjunction.active { height: 12px; }
-div.cardjunction.on-drag-hover { background-color: #ccc; }
+.cardjunction { height: 6px; }
+.cardjunction.top { height: 0; }
+.cardjunction.active { height: 12px; }
+.cardjunction.on-drag-hover { background-color: #ccc; }
 
-div.yellow-card { background-color: #ffe; }
+.yellow-card { background-color: #ffe; }
 
-div.bottom-pane { position: absolute; height: 130px;
+.bottom-pane { position: absolute; height: 130px;
   bottom: 0; left: 0; right: 0; overflow: auto;
   background-color: #eee; }
-div.bottom-pane h3 {}
-div.bottom-pane textarea { width: 100%; height: 100%; }
-div.resizer { position: absolute;
+.bottom-pane h3 {}
+.bottom-pane textarea { width: 100%; height: 100%; }
+.resizer { position: absolute;
   bottom: 0; left: 0; right: 0;
   height:32px;
   border-top: 3px solid #ccc;
   overflow: hidden;
   background-color: #ccc; }
-div.resizer-content {
+.resizer-content {
   position: absolute;
   background-color: #eee;
   left: 0; right: 0; top: 29px; bottom: 0;
 }
-div.board { position: relative; padding: 10px; }
-div.board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
+.board { position: absolute; padding: 10px; top: 0; left: 0; bottom: 0; right: 0; overflow: scroll; margin: 10px; }
+.board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
   left: 0; right: 0; overflow: auto; }
-div.board-header > div { padding: 0 8px; }
-div.columns { position: absolute; top:100px; left: 0; right: 0; }
+.board-header > div { padding: 0 8px; }
+.columns { position: absolute; top:100px; left: 0; right: 0; }
 
-.editable-click, a.editable-click { border: 0; color: black; }
-.editable-empty, a.editable-empty { border: 0; color: #999; }
+.editable-click, .editable-click { border: 0; color: black; }
+.editable-empty, .editable-empty { border: 0; color: #999; }
 
 
-ul.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
+.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
   margin: 0; background-color: #ddd; cursor: ns-resize;}
-ul.tabber li.tab { list-style-type: none; }
-ul.tabber li.tab a { float: left; padding: 4px 30px; color: #aaa; }
-ul.tabber li.tab a:hover { background-color: #ccc; color: #fff; }
-ul.tabber li.activetab a:hover { background-color: #ccc; color: #fff; }
-ul.tabber li.activetab a { background-color: #ccc; color: #000; }
-div.currentTab { padding: 20px; }
+.tabber .tab { list-style-type: none; }
+.tabber .tab a { float: left; padding: 4px 30px; color: #aaa; }
+.tabber .tab a:hover { background-color: #ccc; color: #fff; }
+.tabber .activetab a:hover { background-color: #ccc; color: #fff; }
+.tabber .activetab a { background-color: #ccc; color: #000; }
+.currentTab { padding: 20px; }
 
-div.trash { padding: 8px; height: 100%; }
-div.trash div.card { width: 32%; float: left; margin-right: 4px; }
+.trash { padding: 8px; height: 100%; }
+.trash .card { width: 32%; float: left; margin-right: 4px; }
 
-ul.tabber li.button { list-style-type: none; float: right; padding: 4px 30px; width: 100px; }
+.tabber .button { list-style-type: none; float: right; padding: 4px 30px; width: 100px; }
 
 .clearer { clear: both; line-height: 0; }
