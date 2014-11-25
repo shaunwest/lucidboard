@@ -28,6 +28,7 @@ var jsFilesToInject = [
   'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here
+
   'bower_components/angular/angular.js',
   'bower_components/angular-ui-router/release/angular-ui-router.js',
   'bower_components/angular-local-storage/dist/angular-local-storage.js',
@@ -35,6 +36,7 @@ var jsFilesToInject = [
   'bower_components/angular-lodash/angular-lodash.js',
   'bower_components/angular-xeditable/dist/js/xeditable.js',
   'bower_components/angular-native-dragdrop/draganddrop.js',
+  'bower_components/velocity/velocity.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
