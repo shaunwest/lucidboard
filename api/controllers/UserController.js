@@ -54,7 +54,9 @@ module.exports = {
         req.socket.authToken = token;
       }
 
-      res.jsonx({token: user.id});
+      user.token = user.id;
+
+      res.jsonx(user);
     });
   },
 

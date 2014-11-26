@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('api', ['$sails', '$state', 'localStorageService', function($sails, $state, localStorageService) {
+    .factory('api', ['$sails', '$state', function($sails, $state) {
 
       var targetsOutsideLogin = [
         '/api/signin',
@@ -115,6 +115,7 @@
         boardsGetList: function(cb) { get('/api/boards', cb); },
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
+        boardUpdate: function(boardId, bits, cb) { post('/api/boards/' + boardId, bits, cb); },
         boardMoveCard: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/move-card', bits, cb);
         },

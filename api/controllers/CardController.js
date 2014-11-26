@@ -51,7 +51,7 @@ module.exports = {
       content: content
     };
 
-    Card.update(cardId, bits).exec(function(err, card) {
+    Card.update(cardId, bits).populate('votes').exec(function(err, card) {
       if (err) return res.serverError(err);
 
       // FIXME: why oh why do I need this?
@@ -73,17 +73,43 @@ module.exports = {
     //        that the card belongs to the column, which belongs to be board that we
     //        expect! Also, check this sort of thing with the other methods.
 
-    Card.findOneById(cardId).populate('votes').exec(function(err, card) {
+    // Let's make sure they haven't voted too much. This probably could be faster...
+    Board.loadFullById(boardId, function(err, board) {
       if (err) return res.serverError(err);
 
-      if (!card) return res.badRequest('Card does not exist!');
+      var cool = false;
 
-      Vote.create({user: user.id, card: card.id}, function(err, vote) {
-        if (err) return res.serverError(res);
+      if (board.votesPerUser === 0) {  // no vote limit
+        cool = true;
 
-        res.jsonx(vote);
+      } else {
+        var votesRemaining = board.votesPerUser;
 
-        redis.cardUpvote(boardId, vote);
+        board.columns.forEach(function(column) {
+          column.cards.forEach(function(card) {
+            card.votes.forEach(function(v) {
+              if (v.user === user.id) votesRemaining--;
+            });
+          });
+        });
+
+        cool = votesRemaining > 0;
+      }
+
+      if (!cool) return res.badRequest("You're out of votes!");
+
+      Card.findOneById(cardId).populate('votes').exec(function(err, card) {
+        if (err) return res.serverError(err);
+
+        if (!card) return res.badRequest('Card does not exist!');
+
+        Vote.create({user: user.id, card: card.id}, function(err, vote) {
+          if (err) return res.serverError(res);
+
+          res.jsonx(vote);
+
+          redis.cardUpvote(boardId, vote);
+        });
       });
     });
   }

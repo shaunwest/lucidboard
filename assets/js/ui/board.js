@@ -14,6 +14,8 @@
       $scope.timerLeft         = 0;
       // $scope.timerLength = 5;//300;          // 5 minutes
 
+      $scope.b = board.obj();
+
       $rootScope.cardDragging = false;
 
       var startTimer = function(bits) {
@@ -52,6 +54,8 @@
         // of other users looking at the card...... locking?...
       }).event('card:upvote:' + board.id(), function(vote) {
         board.cardUpvote(vote);
+      }).event('board:update:' + board.id(), function(b) {
+        board.update(b);
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
       }).event('board:timerStart:' + board.id(), function(bits) {

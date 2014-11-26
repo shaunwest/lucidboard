@@ -27,6 +27,12 @@
     .run(['$rootScope', '$sails', '$state', 'user', 'api',
       function($rootScope, $sails, $state, user, api) {
 
+        $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
+          if (rejection === 'not_logged_in') {
+            $state.go('signin');
+          }
+        });
+
         var initialSetup = function() {
           // This clues the api library into the status of the initial token setup
           // so that it can defer any calls until after the websocket session is
@@ -34,9 +40,6 @@
           user.resetInitialTokenPromise();
 
           if (!user.token()) {
-            $rootScope.$on('$stateChangeSuccess', function(event, next) {
-              return $state.go('signin');
-            });
             return;
           }
 

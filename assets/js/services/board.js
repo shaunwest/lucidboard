@@ -1,26 +1,49 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('board', ['$rootScope', 'api', '$q', function($rootScope, api, $q) {
-      var board, defer, boardSort, eventCb, cb, _ = {
+    .factory('board', ['$rootScope', 'api', 'user', '$q', function($rootScope, api, user, $q) {
+      var board, defer, votesRemaining, eventCb, _ = {
         pluck:   $rootScope.pluck,
         flatten: $rootScope.flatten,
         sortBy:  $rootScope.sortBy
       };
 
-      cb = function(type, bits) {
+      var cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
         eventCb(type, bits);
       };
 
-      boardSort = function(b) {
-        b.columns = _.sortBy(b.columns, 'position');
+      var loadBoard = function(b) {
+        board = b;
+        boardSort();
+        figureVotesRemaining();
+      };
 
-        for (var i=0; i<b.columns.length; i++) {
-          b.columns[i].cards = _.sortBy(b.columns[i].cards, 'position');
+      var figureVotesRemaining = function() {
+        if (board.votesPerUser === 0) {
+          votesRemaining = -1;  // infinite votes
+          return;
         }
 
-        return b;
+        votesRemaining = board.votesPerUser;
+
+        board.columns.forEach(function(col) {
+          col.cards.forEach(function(card) {
+            card.votes.forEach(function(v) {
+              if (v.user === user.obj().id) {
+                votesRemaining--;
+              }
+            });
+          });
+        });
+      }
+
+      var boardSort = function() {
+        board.columns = _.sortBy(board.columns, 'position');
+
+        for (var i=0; i<board.columns.length; i++) {
+          board.columns[i].cards = _.sortBy(board.columns[i].cards, 'position');
+        }
       };
 
       return {
@@ -35,24 +58,32 @@
         load: function(boardId) {
           defer = $q.defer();
           api.boardGet(boardId, function(b) {
-            board = boardSort(b);
+            loadBoard(b);
             defer.resolve(board);
           });
           return defer.promise;
         },
 
-        promise: function() { return defer.promise; },
+        promise:        function() { return defer.promise; },
 
-        obj: function() { return board; },
+        obj:            function() { return board; },
 
-        id:         function() { return board.id; },
-        title:      function() { return board.title; },
-        columns:    function() { return board.columns.slice(1); },
-        trash:      function() { return board.columns[0]; },
-        allColumns: function() { return board.columns; },
+        id:             function() { return board.id; },
+        title:          function() { return board.title; },
+        columns:        function() { return board.columns.slice(1); },
+        trash:          function() { return board.columns[0]; },
+        allColumns:     function() { return board.columns; },
 
-        timerLength: function() { return board.timerLength; },
-        timerLeft:   function() { return board.timerLeft; },
+        votesPerUser:   function() { return board.votesPerUser; },
+        p_seeVotes:     function() { return board.p_seeVotes; },
+        p_seeContent:   function() { return board.p_seeContent; },
+        p_combineCards: function() { return board.p_combineCards; },
+        p_lock:         function() { return board.p_lock; },
+
+        timerLength:    function() { return board.timerLength; },
+        timerLeft:      function() { return board.timerLeft; },
+
+        votesRemaining: function() { return votesRemaining; },
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
@@ -82,6 +113,17 @@
           throw 'Failed to find card id ' + id;
         },
 
+        update: function(b) {
+          board.title          = b.title;
+          board.votesPerUser   = b.votesPerUser;
+          board.p_seeVotes     = b.p_seeVotes;
+          board.p_seeContent   = b.p_seeContent;
+          board.p_combineCards = b.p_combineCards;
+          board.p_lock         = b.p_lock;
+
+          figureVotesRemaining();
+        },
+
         columnCreate: function(_column) {
           board.columns.push(_column);
         },
@@ -109,7 +151,10 @@
         cardUpvote: function(vote) {
           var card = this.card(vote.card);
           card.votes.push(vote);
-          // cb('upvote', {vote: vote});
+
+          if (vote.user === user.obj().id) {
+            votesRemaining--;
+          }
         },
 
         // Replace the column with the cards of the given id's, in order.

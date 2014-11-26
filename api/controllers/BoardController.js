@@ -35,55 +35,28 @@ module.exports = {
   findById: function(req, res) {
     var id = req.param('id');
 
-    async.auto({
-      board: function(cb) {
-        Board.findOneById(id).populate('columns').exec(cb);
-      },
-      cards: ['board', function(cb, results) {
-        Card.find({column: _.pluck(results.board.columns, 'id')}).exec(cb);
-      }],
-      votes: ['cards', function(cb, results) {
-        Vote.find({card: _.pluck(results.cards, 'id')}).exec(cb);
-      }],
-      mapCards: ['cards', function(cb, results) {
-        var i, board = results.board;
-
-        for (i=0; i<board.columns.length; i++) {
-          results.cards.forEach(function(card) {
-            if (card.column === board.columns[i].id) {
-              var c = card.toObject(); c.votes = [];  // wtf, mate
-              board.columns[i].cards.push(c);
-            }
-          });
-        }
-
-        cb(null, board);
-      }],
-      mapVotes: ['votes', 'mapCards', function(cb, results) {
-        results.votes.forEach(function(vote) {
-          for (var i=0; i<results.board.columns.length; i++) {
-            for (var j=0; j<results.board.columns[i].cards.length; j++) {
-              if (results.board.columns[i].cards[j].id === vote.card) {
-                results.board.columns[i].cards[j].votes.push(vote.toObject());
-              }
-            }
-          }
-        });
-        cb(null, results.board);
-      }]
-    }, function(err, results) {
+    Board.loadFullById(id, function(err, board) {
       if (err) return res.serverError(err);
 
-      res.jsonx(results.mapVotes);
+      res.jsonx(board);
     });
   },
 
   create: function(req, res) {
-    var user  = req.user,
-        title = req.body.title;
+    var user = req.user;
+
+    var bits = {
+      creator:        user.id,
+      title:          req.body.title,
+      votesPerUser:   req.body.votesPerUser,
+      p_seeVotes:     req.body.p_seeVotes,
+      p_seeContent:   req.body.p_seeContent,
+      p_combineCards: req.body.p_combineCards,
+      p_lock:         req.body.p_lock
+    };
 
     // 1. Create the board
-    Board.create({title: title, creator: user.id}, function(err, board) {
+    Board.create(bits, function(err, board) {
       if (err) return res.serverError(err);
 
       var colmakermaker = function(title, pos) {
@@ -113,8 +86,19 @@ module.exports = {
     var id    = req.param('id'),
         title = req.body.title;
 
-    Board.update(id, {title: title}).exec(function(err, board) {
+    var bits = {
+      title:          req.body.title,
+      votesPerUser:   req.body.votesPerUser,
+      p_seeVotes:     req.body.p_seeVotes,
+      p_seeContent:   req.body.p_seeContent,
+      p_combineCards: req.body.p_combineCards,
+      p_lock:         req.body.p_lock
+    };
+
+    Board.update(id, bits).exec(function(err, board) {
       if (err) return res.serverError(err);
+
+      board = board[0];  // grr
 
       res.jsonx(board);
 

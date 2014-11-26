@@ -3,17 +3,23 @@
   angular.module('hansei.services')
     .factory('user', ['$q', 'api', 'localStorageService', function($q, api, localStorageService) {
 
-      var token = localStorageService.get('authToken'),
+      var user = { token: localStorageService.get('authToken') },
           initialTokenDefer;
 
       return {
-        signin: function(user, pass, cb) {
-          api.signin(user, pass, function(data, jwr) {
-            token = data.token;
-            localStorageService.set('authToken', token);
+        obj:    function() { return user; },
+        token:  function() { return user.token; },
+        signin: function(username, pass, cb) {
+          api.signin(username, pass, function(data, jwr) {
+            localStorageService.set('authToken', data.token);
             initialTokenDefer.resolve();
+            user = data;
             cb(data, jwr);
           });
+        },
+        signout: function() {
+          user = { token: null };
+          localStorageService.remove('authToken');
         },
         initialRefreshToken: function() {
           // When the websocket is reestablished, this method must first be
@@ -25,13 +31,14 @@
           return initialTokenDefer.promise;
         },
         refreshToken: function(cb) {
-          api.refreshToken(token, function(data, jwr) {
-            token = data.token || null;
-            localStorageService.set('authToken', token);
+          api.refreshToken(user.token, function(data, jwr) {
+            user.token = data.token || null;
+            localStorageService.set('authToken', user.token);
+            console.log('USER', data);
+            user = data;
             cb(data, jwr);
           });
         },
-        token: function() { return token; },
         initialTokenPromise: function() {
           return initialTokenDefer.promise;
         },

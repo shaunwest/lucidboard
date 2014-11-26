@@ -18,9 +18,11 @@
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.token()) {
-              api.boardsGetList(function(boards) { defer.resolve(boards); });
+              api.boardsGetList(function(boards) {
+                defer.resolve(boards);
+              });
             } else {
-              defer.resolve([]);
+              defer.reject('not_logged_in');
             }
             return defer.promise;
           }]
@@ -31,7 +33,12 @@
         templateUrl: '/templates/board.html',
         controller:  'BoardCtrl',
         resolve: {
-          boardData: ['board', '$stateParams', function(board, $stateParams) {
+          boardData: ['board', 'user', '$stateParams', function(board, user, $stateParams) {
+            if (!user.token()) {
+              var defer = $q.defer();
+              defer.reject('not_logged_in');
+              return defer.promise;
+            }
             return board.load($stateParams.boardId);
           }]
         }

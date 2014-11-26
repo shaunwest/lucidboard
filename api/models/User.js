@@ -38,14 +38,15 @@ module.exports = {
     boards: {
       collection: 'board',
       via:        'creator'
-    }
-  },
+    },
 
-  toJSON: function() {
-    var obj = this.toObject();
-    delete obj.password;
-    delete obj._csrf;
-    return obj;
+    toJSON: function() {
+      return {
+        id:    this.id,
+        name:  this.name,
+        token: this.id
+      };
+    }
   },
 
   // beforeCreate: function (attrs, next) {

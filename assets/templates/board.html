@@ -1,6 +1,11 @@
 <section class="board">
   <header class="board-header">
     <div style="float:right">
+      <div data-ng-show="board.votesPerUser() !== 0">
+        <p>{{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
+          remaining.
+        </p>
+      </div>
       <div data-ng-show="showTimerForm">
         <label for="timerMinutesInput">Minutes
           <input id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
@@ -58,6 +63,9 @@
         Trash ({{board.trash().cards.length}})
       </a>
     </li>
+    <li class="tab" data-ng-class="{active:currentTab === 'settings'}">
+      <a data-resizer-expand data-ng-click="switchTab('settings')">Settings</a>
+    </li>
     <li data-resizer-toggle class="button">
     </li>
     <div class="clearer"></div>
@@ -73,6 +81,9 @@
       <card data-ng-repeat="card in board.trash().cards track by $index"
         board="board" card="card" column="board.trash()" index="$index">
       </card>
+    </div>
+    <div class="Board Settings" data-ng-show="currentTab === 'settings'">
+      <board-settings class="panel-board-settings" board="board"></board-settings>
     </div>
   </div>
 </section>

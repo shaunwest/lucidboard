@@ -9,6 +9,8 @@
 
       $scope.username = 'joe';
 
+      user.signout();
+
       $scope.signin = function() {
         user.signin($scope.username, $scope.password, function() {
           $state.go('boards');

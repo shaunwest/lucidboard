@@ -3,20 +3,16 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardsCtrl', ['$scope', 'boards', 'api',
-    function($scope, boards, api) {
+  .controller('BoardsCtrl', ['$scope', 'boards', 'user', 'api',
+    function($scope, boards, user, api) {
+
+      if (!user.token()) return;
+
       $scope.boards = boards;
 
-      api.hook('board:create', $scope, function(board) { $scope.boards.push(board); });
-    }])
-
-  .controller('BoardCreateFormCtrl', ['$scope', '$state', 'api',
-    function($scope, $state, api) {
-      $scope.create = function() {
-        api.boardCreate({title: $scope.title}, function(board) {
-          $state.go('board', {boardId: board.id});
-        });
-      };
+      api.hook('board:create', $scope, function(board) {
+        $scope.boards.push(board);
+      });
     }])
 
 })();
