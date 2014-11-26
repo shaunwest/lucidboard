@@ -6,7 +6,8 @@ article, section, aside, hgroup, nav, header, footer, figure, figcaption {
 
 main { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
 
-.column { float: left; margin-right: 5px; }
+.column { display: table-cell; padding: 5px; }
+.column-title { height: 24px; }
 a.create-card { display: block; background-color: #eee; text-align: center;
   padding: 4px; color: #333; font-weight: bold; text-decoration: none; }
 a.create-card:hover { background-color: #ccc; }
@@ -46,11 +47,11 @@ li { cursor: pointer; cursor: hand; }
   background-color: #eee;
   left: 0; right: 0; top: 29px; bottom: 0;
 }
-.board { position: absolute; padding: 10px; top: 0; left: 0; bottom: 0; right: 0; overflow: scroll; margin: 10px; }
+.board { position: absolute; padding: 0; top: 0; left: 0; bottom: 0; right: 0; overflow: auto; margin: 10px; }
 .board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
   left: 0; right: 0; overflow: auto; }
 .board-header > div { padding: 0 8px; }
-.columns { position: absolute; top:100px; left: 0; right: 0; }
+.columns { display: table; position: absolute; top:100px; width:100%; table-layout: fixed; }
 
 .editable-click, .editable-click { border: 0; color: black; }
 .editable-empty, .editable-empty { border: 0; color: #999; }
