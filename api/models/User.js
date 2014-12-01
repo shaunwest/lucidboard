@@ -40,6 +40,11 @@ module.exports = {
       via:        'creator'
     },
 
+    cards: {
+      collection: 'card',
+      via:        'creator'
+    },
+
     toJSON: function() {
       return {
         id:    this.id,

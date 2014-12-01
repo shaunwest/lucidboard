@@ -20,6 +20,8 @@ module.exports = {
       defaultsTo: 0
     },
 
+    creator: { model: 'user' },
+
     column: { model: 'column' },
 
     votes: {
@@ -30,6 +32,7 @@ module.exports = {
     toJSON: function() {
       return {
         id:       this.id,
+        creator:  this.creator,
         content:  this.content,
         position: this.position,
         attached: this.attached,

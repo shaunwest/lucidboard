@@ -11,8 +11,10 @@
           index:        '=',
           cardDragging: '='
         },
-        controller: ['$scope', 'api', function($scope, api) {
+        controller: ['$scope', 'api', 'user', function($scope, api, user) {
           var board = $scope.board;
+
+          $scope.user = user;
 
           $scope.dropSuccessHandler = function($event) {
             // console.log('array', $scope.index, $scope.column.cards);

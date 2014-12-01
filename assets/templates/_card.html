@@ -7,17 +7,30 @@
   data-on-drop-success="dropSuccessHandler($event)"
   data-ng-class="{active:cardDragging}"
   data-ui-on-drop="combineCards($event, $data, card.id)">
-  <div class="cardcontent" data-buttons="no"
-    data-editable-textarea="card.content"
-    data-onbeforesave="checkCardContent($data, column.id, card.id)">
-    <pre>{{ card.content || 'empty' }}</pre>
+  <div data-ng-show="card.userCanWrite || !board.p_lock()">
+    <div class="cardcontent" data-buttons="no"
+      data-editable-textarea="card.content"
+      data-onbeforesave="checkCardContent($data, column.id, card.id)">
+      <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">{{card.content}}</pre>
+      <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">{{card.content | obfuscated}}</pre>
+      <pre data-ng-show="!card.content">empty</pre>
+    </div>
+  </div>
+  <div data-ng-show="!card.userCanWrite && board.p_lock()">
+    <div class="cardcontent">
+      <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">{{card.content}}</pre>
+      <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">{{card.content | obfuscated}}</pre>
+      <pre data-ng-show="!card.content">empty</pre>
+    </div>
   </div>
   <div class="attached-cards" ng-show="card.attached">
     +{{card.attached}}
   </div>
-  <p class="handle">
-    <strong>{{card.votes.length}}</strong>
-    vote{{card.votes.length === 1 ? '' : 's'}}
+  <p class="handle" title="Your votes: {{card.votes | myVotes}}">
+    <span ng-show="board.p_seeVotes()">
+      <strong>{{card.votes.length}}</strong>
+      vote{{card.votes.length === 1 ? '' : 's'}}
+    </span>
     (<a href="#" data-ng-click="upvote(card, $event)">Upvote</a>)
   </p>
   <div class="clearer"></div>

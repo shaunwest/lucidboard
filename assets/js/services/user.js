@@ -8,6 +8,7 @@
 
       return {
         obj:    function() { return user; },
+        id:     function() { return user.id; },
         token:  function() { return user.token; },
         signin: function(username, pass, cb) {
           api.signin(username, pass, function(data, jwr) {

@@ -13,10 +13,21 @@
         eventCb(type, bits);
       };
 
+      var isOwner = function() { return user.id() === board.creator; };
+
       var loadBoard = function(b) {
         board = b;
         boardSort();
         figureVotesRemaining();
+        parseCards();
+      };
+
+      var boardSort = function() {
+        board.columns = _.sortBy(board.columns, 'position');
+
+        for (var i=0; i<board.columns.length; i++) {
+          board.columns[i].cards = _.sortBy(board.columns[i].cards, 'position');
+        }
       };
 
       var figureVotesRemaining = function() {
@@ -36,14 +47,18 @@
             });
           });
         });
-      }
+      };
 
-      var boardSort = function() {
-        board.columns = _.sortBy(board.columns, 'position');
-
-        for (var i=0; i<board.columns.length; i++) {
-          board.columns[i].cards = _.sortBy(board.columns[i].cards, 'position');
-        }
+      var parseCards = function() {
+        board.columns.forEach(function(col) {
+          col.cards.forEach(function(card) {
+            if (isOwner()) {
+              card.userCanWrite = true;
+            } else {
+              card.userCanWrite = card.creator === user.id();
+            }
+          });
+        });
       };
 
       return {
@@ -84,6 +99,8 @@
         timerLeft:      function() { return board.timerLeft; },
 
         votesRemaining: function() { return votesRemaining; },
+
+        isOwner:        isOwner,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);

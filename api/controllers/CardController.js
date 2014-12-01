@@ -17,7 +17,8 @@ var getNextCardPosition = function(columnId, cb) {
 module.exports = {
 
   create: function(req, res) {
-    var boardId  = req.param('boardId'),
+    var user     = req.user,
+        boardId  = req.param('boardId'),
         columnId = req.param('columnId'),
         content  = req.body.content;
 
@@ -25,6 +26,7 @@ module.exports = {
       if (err) return res.serverError(err);
 
       var attributes = {
+        creator:  user.id,
         content:  content,
         position: nextpos,
         column:   columnId
