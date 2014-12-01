@@ -1,0 +1,21 @@
+$base-font-size: 1em;
+$base-line-height: 1.5;
+
+
+// Default font stack
+$font-heading: Arial, Helvetica, sans-serif;
+$font-heading-weight: bold;
+$font-body: Arial, Helvetica, sans-serif;
+
+%font--heading {
+  font-family: $font-heading;
+  font-weight: $font-heading-weight;
+  line-height: $base-line-height;
+}
+
+%font--body {
+  font-family: $font-body;
+  color: $font-body-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+}

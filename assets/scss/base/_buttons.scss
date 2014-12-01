@@ -1,0 +1,15 @@
+[class*="btn"] {
+    font-family: $font-heading;
+    color: $white;
+    outline: 0;
+    cursor: pointer;
+    display: inline-block;
+    background-color: pink;
+    border-radius: 0.3125em;
+    border: none;
+    padding: 0.5em 1em;
+    &:hover {
+        background-color: pink;
+        color: $white;
+    }
+}

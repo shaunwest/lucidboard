@@ -1,0 +1,33 @@
+// Slides piece to the right
+@keyframes slide-right {
+  0% {
+    transform: translateX(-50%);
+  }
+}
+
+// Closes an open piece of content
+@keyframes close-slide-right {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Slides piece to the left
+@keyframes slide-left {
+  0% {
+    transform: translateX(150%);
+  }
+}
+
+// These classes are used for dynamic elements
+.close-slide-right {
+  animation-name: close-slide-right;
+  animation-duration: 400ms;
+  animation-timing-function: ease-out;
+}
+
+.slide-left {
+  animation-name: slide-left;
+  animation-duration: 400ms;
+  animation-timing-function: ease-out;
+}

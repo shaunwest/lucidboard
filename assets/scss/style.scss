@@ -1,0 +1,114 @@
+@import "susy";
+@import "vars";
+
+@import "helpers/normalize";
+@import "helpers/mixins";
+
+@import "base/colors";
+@import "base/layout";
+@import "base/typography";
+@import "base/headings";
+@import "base/links";
+@import "base/buttons";
+@import "base/forms";
+@import "base/lists";
+
+@import "modules/icons";
+@import "modules/nav";
+@import "modules/footer";
+@import "modules/state";
+@import "modules/animations";
+
+
+// This is all previously written scss
+* { box-sizing: border-box; font-family: verdana, sans-serif; }
+
+article, section, aside, hgroup, nav, header, footer, figure, figcaption {
+  display: block;
+}
+
+main { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
+
+.column { display: table-cell; padding: 5px; }
+.column-title { height: 24px; }
+
+.page_boards { padding: 12px; }
+
+#title { width: 80%; }
+.new-board-panel { width: 30%; float: right;
+  background-color: #eee; margin: 10px; padding: 8px; }
+.board-settings { line-height: 2em; padding: 8px; }
+.board-settings label { float: left; clear: both; font-size: small; }
+.board-settings input { float: right; margin-top: 6px; }
+.board-settings h3 { margin-top: 0; }
+.board-settings h4 { clear: both; margin: 0; }
+.board-settings .suboptions { margin-left: 2em; }
+.board-settings .submit { padding: 5px; background-color: #ccc;
+  border: 2px solid #999; }
+.board-settings .submit:hover { background-color: #eee; border-color: #666; }
+.panel-board-settings { width: 30em; margin: 0 auto; background-color: blue; }
+
+a.create-card { display: block; background-color: #eee; text-align: center;
+  padding: 4px; color: #333; font-weight: bold; text-decoration: none; }
+a.create-card:hover { background-color: #ccc; }
+
+.card { border-top: 1px solid #666; border-left: 1px solid #666;
+  border-bottom: 2px solid #999; border-right: 2px solid #999;
+  padding: 5px; cursor: pointer; cursor: hand; }
+li { cursor: pointer; cursor: hand; }
+
+.card .cardcontent pre { font-family: verdana, sans-serif; font-size: small; }
+.card .handle { font-size: small; float: right; margin: 0; }
+.card .attached-cards { float: left; background-color: green; color: white;
+  border-radius: 50%; font-weight: bold; font-size: x-small; padding: 3px; }
+
+.card.on-drag-hover { border-top: 1px solid black; border-left: 1px solid black;
+  border-bottom: 2px solid black; border-right: 2px solid black; }
+.cardjunction { height: 6px; }
+.cardjunction.top { height: 0; }
+.cardjunction.active { height: 12px; }
+.cardjunction.on-drag-hover { background-color: #ccc; }
+
+.yellow-card { background-color: #ffe; }
+
+.bottom-pane { position: absolute; height: 130px;
+  bottom: 0; left: 0; right: 0; overflow: auto;
+  background-color: #eee; }
+.bottom-pane h3 {}
+.bottom-pane textarea { width: 100%; height: 100%; }
+.resizer { position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height:32px;
+  border-top: 3px solid #ccc;
+  overflow: hidden;
+  background-color: #ccc; }
+.resizer-content {
+  position: absolute;
+  background-color: #eee;
+  left: 0; right: 0; top: 29px; bottom: 0;
+}
+.board { position: absolute; padding: 0; top: 0; left: 0; bottom: 0; right: 0; overflow: auto; margin: 10px; }
+.board-header { position: absolute; top: 0; height: 100px; /* 130 + 6 */
+  left: 0; right: 0; overflow: auto; }
+.board-header > div { padding: 0 8px; }
+.columns { display: table; position: absolute; top:100px; width:100%; table-layout: fixed; }
+
+.editable-click, .editable-click { border: 0; color: black; }
+.editable-empty, .editable-empty { border: 0; color: #999; }
+
+
+.tabber { border-bottom: 3px solid #ccc; font-weight: bold;
+  margin: 0; background-color: #ddd; cursor: ns-resize;}
+.tabber .tab { list-style-type: none; }
+.tabber .tab a { float: left; padding: 4px 30px; color: #aaa; }
+.tabber .tab a:hover { background-color: #ccc; color: #fff; }
+.tabber .activetab a:hover { background-color: #ccc; color: #fff; }
+.tabber .activetab a { background-color: #ccc; color: #000; }
+.currentTab { padding: 20px; }
+
+.trash { padding: 8px; height: 100%; }
+.trash .card { width: 32%; float: left; margin-right: 4px; }
+
+.tabber .button { list-style-type: none; float: right; padding: 4px 30px; width: 100px; }
+
+.clearer { clear: both; line-height: 0; }
