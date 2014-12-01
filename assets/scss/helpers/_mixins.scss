@@ -1,0 +1,17 @@
+@mixin clearfix {
+  &:before,
+  &:after {
+      content: " ";
+      display: table;
+  }
+  &:after {
+      clear: both;
+  };
+}
+
+// If you want to force text to truncate
+@mixin overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
