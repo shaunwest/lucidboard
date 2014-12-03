@@ -1,9 +1,11 @@
 // Base Colors
-$link-color: blue;
-$link-color-interaction: blue;
+$link-color: #0C73E8;
+$link-color-interaction: lighten($link-color, 6%);;
 $font-body-color: #333;
 
 // Default colors
 $white: #fff;
 $light-grey: #dedede;
 $grey: #aaa;
+
+$primary: #D5D5D5;

@@ -1,6 +1,6 @@
 h1, h2, h3, h4, h5, h6 {
     @extend %font--heading;
-    color: blue;
+    color: #333;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
@@ -27,4 +27,8 @@ h5, .epsilon {
 
 h6, .zeta {
   font-size: $h6-size;
+}
+
+.heading-brand {
+    font-family: $font-heading-brand;
 }

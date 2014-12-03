@@ -1,11 +1,30 @@
-<div class="board-settings">
-  <form data-ng-submit="submit()">
-    <label for="title">Title</label>
-    <input id="title" type="text" data-ng-model="b.title">
-    <label for="votesPerUser">Max Votes Per User (0 is &#8734;)</label>
-    <input id="votesPerUser" type="text" data-ng-model="b.votesPerUser" size="2">
-    <h4>Participants Can:</h4>
-    <div class="suboptions">
+<form data-ng-submit="submit()">
+  <ul class="form-fields">
+    <li>
+        <h5>Board Settings</h5>
+    </li>
+    <li>
+        <label for="title">Board Title</label>
+        <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
+    <li>
+    <li>
+        <label for="votesPerUser">Vote Limit Per User</label>
+        <select id="votesPerUser" data-ng-model="b.votesPerUser">
+            <option value="0">Vote Limit</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </li>
+    <li>
+      <label>Participants Can:</label>
       <label for="p_seeVotes">See Votes</label>
       <input id="p_seeVotes" type="checkbox" data-ng-model="b.p_seeVotes">
       <label for="p_seeContent">See Card Content</label>
@@ -14,9 +33,10 @@
       <input id="p_combineCards" type="checkbox" data-ng-model="b.p_combineCards">
       <label for="p_lock">Actually not do anything</label>
       <input id="p_lock" type="checkbox" data-ng-model="b.p_lock">
-    </div>
-    <div class="clearer"></div>
-    <input class="submit" type="submit"
-      value="{{b.id ? 'Update' : 'Create'}} Board">
-  </form>
-</div>
+    </li>
+    <li>
+        <input class="btn" type="submit"
+          value="{{b.id ? 'Update' : 'Create'}} Board">
+     </li>
+  </ul>
+</form>

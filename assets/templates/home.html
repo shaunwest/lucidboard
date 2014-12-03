@@ -1,18 +1,22 @@
-<div class="page_boards">
-
-  <div class="new-board-panel">
-    <h3>New Board</h3>
-    <board-settings></board-settings>
+<section class="main-container">
+  <div class="main-container-title">
+    <h2 class="main-container-title-header">
+        Boards
+    </h2>
   </div>
-
-  <h1>Lucidboard</h1>
-
-  <h2>Boards</h2>
-
-  <ul>
-    <li data-ng-repeat="b in boards">
-      <a href="/boards/{{b.id}}">{{b.title}}</a>
-    </li>
-  </ul>
-
-</div>
+  <div class="main-container-content">
+      <ul class="y-list">
+          <li>
+            <button class="btn">New Board</button>
+          </li>
+      </ul>
+      <div class="hide">
+        <board-settings></board-settings>
+      </div>
+      <ul class="y-list-color">
+        <li data-ng-repeat="b in boards">
+          <a href="/boards/{{b.id}}">{{b.title}}</a>
+        </li>
+      </ul>
+  </div>
+</section>

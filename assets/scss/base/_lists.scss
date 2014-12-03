@@ -1,6 +1,6 @@
 // Use for lists you wish to make vertical
 .y-list {
-  list-style: none;
+  list-style-type: none;
   margin: 0;
   padding: 0;
 }
@@ -17,4 +17,27 @@
     padding-left: 0.5em;
     padding-right: 0.5em;
   }
+}
+
+.y-list-color {
+    margin-top: 1.5em;
+    @extend .y-list;
+    li {
+        background: lighten($link-color, 25%);
+        padding: 1em;
+        transition: background .15s;
+        a {
+            text-align: center;
+            color: $font-body-color;
+            display: block;
+            text-transform: uppercase;
+            font-weight: bold;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        &:hover {
+            background: lighten($link-color, 30%);
+        }
+    }
 }
