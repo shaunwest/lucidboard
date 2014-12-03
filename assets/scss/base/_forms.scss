@@ -5,10 +5,9 @@
 
 // You can use .field-label for items that are not labels
 .form-fields label, .field-label {
-  @extend %font--heading;
   text-align: left;
-  color: blue;
   display: block;
+  font-weight: bold;
   margin: {
     top: 0.5em;
     bottom: 0.5em;
@@ -27,7 +26,7 @@ input[type="tel"], select, .text-input {
     border-radius: 0.3125em;
     box-sizing: border-box;
     &:focus {
-      border: 0.125em solid blue;
+      border: 0.125em solid $link-color;
       background: lighten(blue, 50%);
     }
 }

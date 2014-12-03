@@ -4,12 +4,13 @@
     outline: 0;
     cursor: pointer;
     display: inline-block;
-    background-color: pink;
+    background-color: #09B224;
     border-radius: 0.3125em;
     border: none;
     padding: 0.5em 1em;
+    transition: background .15s;
     &:hover {
-        background-color: pink;
+        background: lighten(#09B224, 6%);
         color: $white;
     }
 }

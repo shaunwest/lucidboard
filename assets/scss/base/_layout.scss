@@ -9,7 +9,33 @@ html {
 }
 
 body {
-  @include container;
+  @include container(12);
   @include clearfix;
   min-height: 100%;
+  background: $primary;
+}
+
+.main-container {
+    @include clearfix;
+    @include span(12 of 12);
+    background: #fff;
+    @media (min-width: 50em) {
+        @include span(4 of 12);
+        margin-left: span(4 of 12);
+    }
+}
+
+.main-container-title {
+    padding: 0.5em;
+    background: $link-color;
+    margin-bottom: 1.5em;
+}
+
+.main-container-title-header {
+    color: white;
+    margin-bottom: 0;
+}
+
+.main-container-content {
+    padding: 1em;
 }

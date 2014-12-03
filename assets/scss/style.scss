@@ -21,31 +21,10 @@
 
 
 // This is all previously written scss
-* { box-sizing: border-box; font-family: verdana, sans-serif; }
-
-article, section, aside, hgroup, nav, header, footer, figure, figcaption {
-  display: block;
-}
-
-main { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
 
 .column { display: table-cell; padding: 5px; }
 .column-title { height: 24px; }
 
-.page_boards { padding: 12px; }
-
-#title { width: 80%; }
-.new-board-panel { width: 30%; float: right;
-  background-color: #eee; margin: 10px; padding: 8px; }
-.board-settings { line-height: 2em; padding: 8px; }
-.board-settings label { float: left; clear: both; font-size: small; }
-.board-settings input { float: right; margin-top: 6px; }
-.board-settings h3 { margin-top: 0; }
-.board-settings h4 { clear: both; margin: 0; }
-.board-settings .suboptions { margin-left: 2em; }
-.board-settings .submit { padding: 5px; background-color: #ccc;
-  border: 2px solid #999; }
-.board-settings .submit:hover { background-color: #eee; border-color: #666; }
 .panel-board-settings { width: 30em; margin: 0 auto; background-color: blue; }
 
 a.create-card { display: block; background-color: #eee; text-align: center;
@@ -54,8 +33,7 @@ a.create-card:hover { background-color: #ccc; }
 
 .card { border-top: 1px solid #666; border-left: 1px solid #666;
   border-bottom: 2px solid #999; border-right: 2px solid #999;
-  padding: 5px; cursor: pointer; cursor: hand; }
-li { cursor: pointer; cursor: hand; }
+  padding: 5px; cursor: pointer; }
 
 .card .cardcontent pre { font-family: verdana, sans-serif; font-size: small; }
 .card .handle { font-size: small; float: right; margin: 0; }
@@ -110,5 +88,3 @@ li { cursor: pointer; cursor: hand; }
 .trash .card { width: 32%; float: left; margin-right: 4px; }
 
 .tabber .button { list-style-type: none; float: right; padding: 4px 30px; width: 100px; }
-
-.clearer { clear: both; line-height: 0; }
