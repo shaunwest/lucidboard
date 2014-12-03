@@ -8,7 +8,7 @@
   data-ng-class="{active:cardDragging}"
   data-ui-on-drop="combineCards($event, $data, card.id)">
   <div data-ng-show="card.userCanWrite || !board.p_lock()">
-    <div class="cardcontent" data-buttons="no"
+    <div class="cardcontent"
       data-editable-textarea="card.content"
       data-onbeforesave="checkCardContent($data, column.id, card.id)">
       <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">{{card.content}}</pre>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="attached-cards" ng-show="card.attached">
-    +{{card.attached}}
+    &nbsp;{{card.attached + 1}}&nbsp;
   </div>
   <p class="handle" title="Your votes: {{card.votes | myVotes}}">
     <span ng-show="board.p_seeVotes()">
