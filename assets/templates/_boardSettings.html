@@ -1,14 +1,16 @@
 <form data-ng-submit="submit()">
   <ul class="form-fields">
     <li>
-        <h5>Board Settings</h5>
+        <h5 class="main-container-title-header">Board Settings</h5>
     </li>
     <li>
         <label for="title">Board Title</label>
         <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
     <li>
     <li>
-        <label for="votesPerUser">Vote Limit Per User</label>
+        <label for="votesPerUser">
+            Vote Limit Per User
+        </label>
         <select id="votesPerUser" data-ng-model="b.votesPerUser">
             <option value="0">Vote Limit</option>
             <option value="1">1</option>

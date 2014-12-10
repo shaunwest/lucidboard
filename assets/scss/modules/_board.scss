@@ -1,0 +1,202 @@
+// This is all previously written scss
+
+.board {
+    @include clearfix;
+    overflow: auto;
+    @include span(12 of 12 omega);
+    padding: 0.3125em;
+}
+
+.board-header {
+    @include clearfix;
+    @include span(12 of 12 omega);
+    overflow: auto;
+    background: #fff;
+    margin-bottom: 1.5em;
+    padding: 0.5em;
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
+.board-info {
+    float: right;
+}
+
+.timer {
+    float: right;
+}
+
+.columns {
+    @include span(12 of 12 omega);
+    padding: 0.3125em;
+    background: #fff;
+    @media (min-width: 40em) {
+        display: table;
+        table-layout: fixed;
+    }
+}
+
+.column {
+    padding: 0 0.3125em;
+    width: 100%;
+    @media (min-width: 40em) {
+        display: table-cell;
+    }
+}
+
+.panel-board-settings {
+    width: 30em;
+    margin: 0 auto;
+    background-color: blue;
+}
+
+.card {
+    @include clearfix;
+    padding: 0.3125em;
+    cursor: pointer;
+ }
+
+.card .cardcontent pre {
+    font-size: 1em;
+    font-family: $font-body;
+}
+
+.card .handle {
+    font-size: small;
+    float: right;
+    margin: 0;
+}
+
+.card .attached-cards {
+    float: left;
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: x-small;
+    padding: 3px;
+ }
+
+.card.on-drag-hover {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+ }
+
+.cardjunction {
+    height: 6px;
+}
+
+.cardjunction.top {
+    height: 0;
+}
+
+.cardjunction.active {
+    height: 12px;
+}
+
+.cardjunction.on-drag-hover {
+    background-color: #ccc;
+}
+
+.slate-card {
+    background-color: #C7C7C7;
+}
+
+.bottom-pane {
+    position: absolute;
+    height: 130px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    background-color: #eee;
+ }
+
+.bottom-pane textarea {
+    width: 100%;
+    height: 100%;
+}
+
+.resizer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    overflow: hidden;
+    background-color: #333;
+    color: white;
+}
+
+.resizer-content {
+  position: absolute;
+  background-color: #333;
+  left: 0;
+  right: 0;
+  top: 1.8125em;
+  bottom: 0;
+  padding: 1em;
+}
+
+
+.editable-empty, .editable-empty, .editable-click  {
+     border: 0;
+     color: #333;
+     &:hover {
+         color: lighten(#333, 10%);
+     }
+}
+
+.tabber {
+    @include clearfix;
+    font-weight: bold;
+    margin: 0;
+    background-color: #333;
+    cursor: ns-resize;
+}
+
+.tabber .tab {
+    list-style-type: none;
+    a {
+        float: left;
+        padding: 0.25em 2em;
+        color: #fff;
+        &:hover {
+            background-color: lighten(#333, 7%);
+            color: #fff;
+        }
+    }
+}
+
+.tabber .activetab a:hover {
+    background-color: lighten(#333, 7%);
+}
+
+.tabber .activetab a {
+    background-color: lighten(#333, 7%);
+}
+
+.trash {
+    padding: 8px;
+    height: 100%;
+}
+
+.trash .card {
+    width: 32%;
+    float: left;
+    margin-right: 4px;
+}
+
+.tabber
+.button {
+    list-style-type: none;
+    float: right;
+    padding: 4px 30px;
+    width: 100px;
+    a {
+        color: #fff;
+    }
+}

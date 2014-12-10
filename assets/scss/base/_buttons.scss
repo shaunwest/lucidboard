@@ -9,8 +9,14 @@
     border: none;
     padding: 0.5em 1em;
     transition: background .15s;
+    text-align: center;
     &:hover {
         background: lighten(#09B224, 6%);
         color: $white;
+        text-decoration: none;
     }
+}
+
+.btn-full {
+    width: 100%;
 }

@@ -1,60 +1,67 @@
 <section class="board">
   <header class="board-header">
-    <div style="float:right">
-      <div data-ng-show="board.votesPerUser() !== 0">
-        <p>{{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
-          remaining.
-        </p>
-      </div>
-      <div data-ng-show="showTimerForm">
-        <label for="timerMinutesInput">Minutes
-          <input id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-            data-ng-model="timerMinutesInput">
-        </label>
-        <button data-ng-click="timerStart(timerMinutesInput)">Start</button>
-      </div>
-      <div class="timer" data-ng-click="showTimerForm = !showTimerForm">
-        <span>{{timerLeft | formatTime}}</span>
-      </div>
-      <!--
-      <div class="trashbutton">
-        <img src="/images/ios7-trash.svg" width="48" height="48" alt="Trash"
-          data-ui-on-drop="trashCard($event, $data)">
-      </div>
-      -->
-    </div>
-
-    <h2>{{board.title()}}</h2>
-    <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
-      <input type="text" data-ng-model="title">
-      <input type="submit" value="Create Column">
-    </form>
+        <div data-ng-show="showTimerForm">
+            <label for="timerMinutesInput">Minutes
+              <input id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+                data-ng-model="timerMinutesInput">
+            </label>
+            <button data-ng-click="timerStart(timerMinutesInput)" class="btn">Start</button>
+        </div>
+        <div class="timer" data-ng-click="showTimerForm = !showTimerForm">
+            <span>{{timerLeft | formatTime}} remaining</span>
+            <input type="submit" value="Add Columns" class="btn">
+        </div>
+        <h2 class="delta">
+            Board Title: {{board.title()}}
+        </h2>
+        <div class="board-info" data-ng-show="board.votesPerUser() !== 0">
+            {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
+            remaining.
+        </div>
+        <form class="hide" data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
+            <ul class="form-fields quarter">
+                <li>
+                  <input type="text" data-ng-model="title" placeholder="Column Title">
+                </li>
+                <li>
+                  <input type="submit" value="Create New Column" class="btn">
+                </li>
+            </ul>
+        </form>
   </header>
-
   <div class="columns">
     <div class="column" data-ng-repeat="column in board.columns()">
-      <h3 class="column-title" data-editable-text="column.title" data-buttons="no"
-          onbeforesave="checkColumnTitle($data, column.id)">
-        {{column.title}}
-      </h3>
       <div class="cardstack">
-        <card data-ng-show="column.cards.length === 0"
-          board="board" card="null" column="column"
-          card-dragging="cardDragging">
-        </card>
-        <card data-ng-repeat="card in column.cards track by $index"
-          board="board" card="card" column="column" index="$index"
-          card-dragging="cardDragging">
-        </card>
+        <ul class="y-list">
+            <li>
+                <h3 class="delta column-title" data-editable-text="column.title" data-buttons="no"
+                      onbeforesave="checkColumnTitle($data, column.id)">
+                    {{column.title}}
+                </h3>
+            </li>
+            <li>
+                <card data-ng-show="column.cards.length === 0"
+                  board="board" card="null" column="column"
+                  card-dragging="cardDragging">
+                </card>
+            </li>
+            <li>
+                <card data-ng-repeat="card in column.cards track by $index"
+                  board="board" card="card" column="column" index="$index"
+                  card-dragging="cardDragging">
+                </card>
+            </li>
       </div>
-      <a class="create-card" data-ng-click="createCard(column)" href="#">+</a>
+      <a class="btn-full" data-ng-click="createCard(column)" href="#">+</a>
     </div>
   </div>
 </section>
 <section class="resizer" data-resizer>
-  <ul class="tabber" data-resizer-handle>
+  <ul class="x-list tabber" data-resizer-handle>
     <li class="tab" data-ng-class="{active:currentTab === 'log'}">
-      <a data-resizer-expand data-ng-click="switchTab('log')">Log</a>
+      <a data-resizer-expand data-ng-click="switchTab('log')">
+          Log
+      </a>
     </li>
     <li class="tab" data-ng-class="{activetab:currentTab === 'trash'}">
       <a data-resizer-expand data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging}"
@@ -64,11 +71,12 @@
       </a>
     </li>
     <li class="tab" data-ng-class="{active:currentTab === 'settings'}">
-      <a data-resizer-expand data-ng-click="switchTab('settings')">Settings</a>
+      <a data-resizer-expand data-ng-click="switchTab('settings')">
+          Settings
+      </a>
     </li>
     <li data-resizer-toggle class="button">
     </li>
-    <div class="clearer"></div>
   </ul>
   <div class="resizer-content">
     <div class="log" data-ng-show="currentTab === 'log'">
@@ -82,7 +90,7 @@
         board="board" card="card" column="board.trash()" index="$index">
       </card>
     </div>
-    <div class="Board Settings" data-ng-show="currentTab === 'settings'">
+    <div data-ng-show="currentTab === 'settings'">
       <board-settings class="panel-board-settings" board="board"></board-settings>
     </div>
   </div>

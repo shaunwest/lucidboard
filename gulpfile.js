@@ -22,7 +22,7 @@ var gulp = require('gulp'),
             lazy: true // whether the plugins should be lazy loaded on demand
           }),
   path = require('path'),
-  growl = false;
+  growl = true;
 
 //module.exports = function(gulp) {
 

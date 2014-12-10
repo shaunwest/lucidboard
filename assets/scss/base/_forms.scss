@@ -30,3 +30,7 @@ input[type="tel"], select, .text-input {
       background: lighten(blue, 50%);
     }
 }
+
+.quarter {
+    @include span(4 of 12);
+}
