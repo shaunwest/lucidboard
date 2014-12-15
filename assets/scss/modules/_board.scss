@@ -33,6 +33,10 @@
         overflow: hidden;
         position: relative;
         width: 100%;
+        border-right: 0.0625em solid #C5C5C5;
+        &:last-child {
+            border-right: 0;
+        }
         @media (min-width: 40em) {
             float: left;
             width: percentage(4/12);
@@ -40,7 +44,6 @@
     }
     a {
         background-color: #eff0f2;
-        color: #888;
         font-weight: bold;
         display: block;
         outline: none;
@@ -49,7 +52,6 @@
         -webkit-transition: all 0.2s ease-in-out;
         -moz-transition: all 0.2s ease-in-out;
         transition: all 0.2s ease-in-out;
-        border-right: 0.0625em solid #C5C5C5;
     }
     .active {
         background-color: #fff;
