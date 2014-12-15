@@ -1,0 +1,167 @@
+// This is all previously written scss
+
+.board {
+    @include clearfix;
+    @include span(12 of 12 omega);
+    background: #fff;
+}
+
+.board-header {
+    @include clearfix;
+    @include span(12 of 12 omega);
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
+.board-info {
+    @include clearfix;
+    float: right;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+.tabs {
+    padding: 0;
+    display: table;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    li {
+        float: left;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        @media (min-width: 40em) {
+            float: left;
+            width: percentage(4/12);
+        }
+    }
+    a {
+        background-color: #eff0f2;
+        color: #888;
+        font-weight: bold;
+        display: block;
+        outline: none;
+        padding: 0.5em 1.25em;
+        text-decoration: none;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        border-right: 0.0625em solid #C5C5C5;
+    }
+    .active {
+        background-color: #fff;
+    }
+}
+
+.timer {
+    float: right;
+}
+
+.columns {
+    @include clearfix;
+    @include span(12 of 12 omega);
+    padding: 0.3125em;
+    @media (min-width: 40em) {
+        display: table;
+        table-layout: fixed;
+    }
+}
+
+.column {
+    padding: 0 0.3125em;
+    width: 100%;
+    @media (min-width: 40em) {
+        display: table-cell;
+    }
+}
+
+.panel-board-settings {
+    background: #fff;
+    @include span(12 of 12 omega);
+    padding: 1em;
+}
+
+.panel-board-settings-half {
+    @media (min-width: 40em) {
+        @include span(6 of 12);
+    }
+    @media (min-width: 60em) {
+        @include span(4 of 12);
+    }
+}
+
+.card {
+    @include clearfix;
+    padding: 0.3125em;
+    cursor: pointer;
+ }
+
+.card .cardcontent pre {
+    font-size: 1em;
+    font-family: $font-body;
+}
+
+.card .handle {
+    font-size: small;
+    float: right;
+    margin: 0;
+}
+
+.card .attached-cards {
+    float: left;
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: x-small;
+    padding: 3px;
+ }
+
+.card.on-drag-hover {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+ }
+
+.cardjunction {
+    height: 6px;
+}
+
+.cardjunction.top {
+    height: 0;
+}
+
+.cardjunction.active {
+    height: 12px;
+}
+
+.cardjunction.on-drag-hover {
+    background-color: #ccc;
+}
+
+.slate-card {
+    background-color: #8DB4E0;
+}
+
+.editable-empty, .editable-empty, .editable-click  {
+     border: 0;
+     color: #333;
+     &:hover {
+         color: lighten(#333, 10%);
+     }
+}
+
+.trash {
+    @include span(12 of 12 omega);
+    background: #fff;
+}
+
+.trash .card {
+    width: 32%;
+    float: left;
+    margin-right: 0.25em;
+}
