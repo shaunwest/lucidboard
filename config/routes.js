@@ -128,6 +128,12 @@ module.exports.routes = {
     action:     'upvote'
   },
 
+  // Board Export (CSV)
+  'GET /api/boards/:boardId/export/csv': {
+    controller: 'ExportController',
+    action:     'csv'
+  },
+
 
   /***************************************************************************
   *                                                                          *

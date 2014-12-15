@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "async": "^0.9.0",
+    "csv-stringify": "0.0.5",
     "ejs": "~0.8.4",
     "gulp": "^3.8.7",
     "gulp-autoprefixer": "1.0.1",

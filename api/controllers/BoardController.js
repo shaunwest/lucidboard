@@ -251,6 +251,6 @@ module.exports = {
 
       redis.boardTimerStart(boardId, seconds);
     });
-  },
+  }
 
 };
