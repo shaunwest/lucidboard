@@ -1,22 +1,18 @@
 <section class="main-container">
-  <div class="main-container-title">
-    <h2 class="main-container-title-header">
-        Boards
-    </h2>
-  </div>
-  <div class="main-container-content">
-      <ul class="y-list">
-          <li>
-            <button class="btn">New Board</button>
-          </li>
-      </ul>
-      <div class="panel-board-settings">
-        <board-settings></board-settings>
-      </div>
+    <div class="main-container-content">
+      <h1 class="beta">Active Boards</h1>
       <ul class="y-list-color">
         <li data-ng-repeat="b in boards">
-          <a href="/boards/{{b.id}}">{{b.title}}</a>
+          <a href="/boards/{{b.id}}">
+              {{b.title}}
+          </a>
         </li>
       </ul>
-  </div>
+      <div class="panel-board-settings">
+          <button class="btn">
+              Add A New Board
+          </button>
+          <board-settings class="hide"></board-settings>
+      </div>
+    </div>
 </section>

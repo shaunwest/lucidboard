@@ -1,5 +1,6 @@
 // Use for lists you wish to make vertical
 .y-list {
+  @include clearfix;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -22,6 +23,8 @@
 .y-list-color {
     margin-top: 1.5em;
     @extend .y-list;
+    float: left;
+    width: precentage(1/4);
     li {
         background: lighten($link-color, 25%);
         padding: 1em;
