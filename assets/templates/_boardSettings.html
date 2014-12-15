@@ -1,41 +1,26 @@
 <form data-ng-submit="submit()">
   <ul class="form-fields">
     <li>
-        <label for="title">Board Title</label>
-        <input id="title" type="text" data-ng-model="b.title" placeholder="Title" >
+      <label for="title">Board Title</label>
+      <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
     </li>
     <li>
-        <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
-            <ul class="form-fields">
-                <li>
-                    <label>
-                        Add New Columns
-                    </label>
-                    <input type="text" data-ng-model="title" placeholder="Column Title">
-                </li>
-                <li>
-                    <input type="submit" value="Create New Column" class="btn">
-                </li>
-            </ul>
-        </form>
-    </li>
-    <li>
-        <label for="votesPerUser">
-            Vote Limit Per User
-        </label>
-        <select id="votesPerUser" data-ng-model="b.votesPerUser">
-            <option value="0">Vote Limit</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
+      <label for="votesPerUser">
+        Vote Limit Per User
+      </label>
+      <select id="votesPerUser" data-ng-model="b.votesPerUser">
+        <option value="0">Vote Limit</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
     </li>
     <li>
       <label>Participants Can:</label>
@@ -45,12 +30,13 @@
       <input id="p_seeContent" type="checkbox" data-ng-model="b.p_seeContent">
       <label for="p_combineCards">Combine Cards</label>
       <input id="p_combineCards" type="checkbox" data-ng-model="b.p_combineCards">
-      <label for="p_lock">Actually not do anything</label>
-      <input id="p_lock" type="checkbox" data-ng-model="b.p_lock">
+      <div ng-show="false">
+        <label for="p_lock">Actually not do anything</label>
+        <input id="p_lock" type="checkbox" data-ng-model="b.p_lock">
+      </div>
     </li>
     <li>
-        <input class="btn" type="submit"
-          value="{{b.id ? 'Update' : 'Create'}} Board">
-     </li>
+      <input class="btn" type="submit" value="{{b.id ? 'Update' : 'Create'}} Board">
+    </li>
   </ul>
 </form>

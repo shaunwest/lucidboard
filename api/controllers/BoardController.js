@@ -37,6 +37,7 @@ module.exports = {
 
     Board.loadFullById(id, function(err, board) {
       if (err) return res.serverError(err);
+      if (board === false) return res.notFound();
 
       res.jsonx(board);
     });

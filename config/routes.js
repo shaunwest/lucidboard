@@ -128,12 +128,6 @@ module.exports.routes = {
     action:     'upvote'
   },
 
-  // Board Export (CSV)
-  'GET /api/boards/:boardId/export/csv': {
-    controller: 'ExportController',
-    action:     'csv'
-  },
-
 
   /***************************************************************************
   *                                                                          *
@@ -148,5 +142,11 @@ module.exports.routes = {
   'GET /':                jsapp,
   'GET /signin':          jsapp,
   'GET /boards':          jsapp,
-  'GET /boards/:boardId': jsapp
+  'GET /boards/:boardId': jsapp,
+
+  // Board Export (CSV)
+  'GET /boards/:boardId/export/csv': {
+    controller: 'ExportController',
+    action:     'csv'
+  }
 };

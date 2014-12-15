@@ -2,12 +2,17 @@
     <ul class="tabs">
         <li>
             <a href="#" data-ng-click="switchTab('board')" data-ng-class="{active:currentTab === 'board'}">
-                Board Title: {{board.title()}}
+                Board: {{board.title()}}
             </a>
         </li>
         <li>
             <a href="#" data-ng-click="switchTab('settings')" data-ng-class="{active:currentTab === 'settings'}">
                 Settings
+            </a>
+        </li>
+        <li>
+            <a href="#" data-ng-click="switchTab('columns')" data-ng-class="{active:currentTab === 'columns'}">
+                Columns
             </a>
         </li>
         <li>
@@ -69,7 +74,26 @@
     </div>
 </div>
 <div data-ng-show="currentTab === 'settings'" class="panel-board-settings">
+    <div data-ng-show="b.id" style="float:right;width:15em">
+      <a href="/boards/{{b.id}}/export/csv">Export to CSV</a>
+    </div>
     <board-settings class="panel-board-settings-half" board="board"></board-settings>
+</div>
+<div data-ng-show="currentTab === 'columns'" class="panel-board-settings">
+  <ul>
+    <li data-ng-repeat="c in board.columns()">{{c.title}}</li>
+  </ul>
+  <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
+    <ul class="form-fields">
+      <li>
+        <label>Add New Column</label>
+        <input type="text" data-ng-model="title" placeholder="Column Title">
+      </li>
+      <li>
+        <input type="submit" value="Create New Column" class="btn">
+      </li>
+    </ul>
+  </form>
 </div>
 <div class="trash" data-ng-show="currentTab === 'trash'"
     data-ng-class="{dropready:cardDragging}"

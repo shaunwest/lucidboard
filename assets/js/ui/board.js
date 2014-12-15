@@ -3,9 +3,13 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$rootScope', '$scope', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
-    function($rootScope, $scope, $timeout, $interval, api, board, eventerFactory) {
+  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
+    function($rootScope, $scope, $state, $timeout, $interval, api, board, eventerFactory) {
       var openEditor, timer;
+
+      if (!board.loaded()) {
+        return $state.go('boards');
+      }
 
       // var regexColumnTitle = /^.{1,20}$/;
 

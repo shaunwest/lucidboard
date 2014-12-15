@@ -13,7 +13,7 @@
         eventCb(type, bits);
       };
 
-      var isOwner = function() { return user.id() === board.creator; };
+      var isBoardOwner = function() { return user.id() === board.creator; };
 
       var loadBoard = function(b) {
         board = b;
@@ -52,7 +52,7 @@
       var parseCards = function() {
         board.columns.forEach(function(col) {
           col.cards.forEach(function(card) {
-            if (isOwner()) {
+            if (isBoardOwner()) {
               card.userCanWrite = true;
             } else {
               card.userCanWrite = card.creator === user.id();
@@ -82,6 +82,7 @@
         promise:        function() { return defer.promise; },
 
         obj:            function() { return board; },
+        loaded:         function() { return !!board.id; },
 
         id:             function() { return board.id; },
         title:          function() { return board.title; },
@@ -100,7 +101,7 @@
 
         votesRemaining: function() { return votesRemaining; },
 
-        isOwner:        isOwner,
+        isBoardOwner:   isBoardOwner,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
@@ -156,6 +157,7 @@
         cardCreate: function(card) {
           var column = this.column(card.column);
           column.cards.push(card);
+          parseCards();
         },
 
         cardUpdate: function(_card) {

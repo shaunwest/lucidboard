@@ -23,11 +23,11 @@ module.exports = {
       stringify(input, function(err, output) {
         if (err) return res.serverError(err);
 
-        var d = new Date(), filename = board.title.replace(/[^a-z0-9-]/, '_');
+        var d = new Date(), filename = board.title.replace(/[^a-zA-Z0-9-]+/g, '_');
 
         filename += '-' + (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear();
 
-        res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+        res.setHeader('Content-Disposition', 'attachment; filename=' + filename + '.csv');
         res.setHeader('Content-Type', 'text/csv');
         res.send(output);
       });

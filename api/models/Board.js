@@ -72,6 +72,10 @@ module.exports = {
         Board.findOneById(id).populate('columns').exec(cb);
       },
       cards: ['board', function(cb, results) {
+        if (!results.board) {
+          results.board = false;
+          return cb('Board not found');
+        }
         Card.find({column: _.pluck(results.board.columns, 'id')}).exec(cb);
       }],
       votes: ['cards', function(cb, results) {
@@ -104,7 +108,8 @@ module.exports = {
         cb(null, results.board);
       }]
     }, function(err, results) {
-      if (err) return cb(err);
+      if (results.board === false) return _cb(null, false);
+      if (err)                     return _cb(err);
 
       _cb(null, results.mapVotes);
     });
