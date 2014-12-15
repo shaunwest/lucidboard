@@ -1,6 +1,9 @@
 // Apply this class to <ul> that have forms
 .form-fields {
   @extend .y-list;
+  li {
+      @include clearfix;
+  }
 }
 
 // You can use .field-label for items that are not labels

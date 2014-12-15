@@ -2,26 +2,58 @@
 
 .board {
     @include clearfix;
-    overflow: auto;
     @include span(12 of 12 omega);
-    padding: 0.3125em;
+    background: #fff;
 }
 
 .board-header {
     @include clearfix;
     @include span(12 of 12 omega);
-    overflow: auto;
-    background: #fff;
-    margin-bottom: 1.5em;
-    padding: 0.5em;
     h2 {
         margin-bottom: 0;
-        float: left;
     }
 }
 
 .board-info {
+    @include clearfix;
     float: right;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+.tabs {
+    padding: 0;
+    display: table;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    li {
+        float: left;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        @media (min-width: 40em) {
+            float: left;
+            width: percentage(4/12);
+        }
+    }
+    a {
+        background-color: #eff0f2;
+        color: #888;
+        font-weight: bold;
+        display: block;
+        outline: none;
+        padding: 0.5em 1.25em;
+        text-decoration: none;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        border-right: 0.0625em solid #C5C5C5;
+    }
+    .active {
+        background-color: #fff;
+    }
 }
 
 .timer {
@@ -29,9 +61,9 @@
 }
 
 .columns {
+    @include clearfix;
     @include span(12 of 12 omega);
     padding: 0.3125em;
-    background: #fff;
     @media (min-width: 40em) {
         display: table;
         table-layout: fixed;
@@ -47,9 +79,18 @@
 }
 
 .panel-board-settings {
-    width: 30em;
-    margin: 0 auto;
-    background-color: blue;
+    background: #fff;
+    @include span(12 of 12 omega);
+    padding: 1em;
+}
+
+.panel-board-settings-half {
+    @media (min-width: 40em) {
+        @include span(6 of 12);
+    }
+    @media (min-width: 60em) {
+        @include span(4 of 12);
+    }
 }
 
 .card {
@@ -103,45 +144,8 @@
 }
 
 .slate-card {
-    background-color: #C7C7C7;
+    background-color: #8DB4E0;
 }
-
-.bottom-pane {
-    position: absolute;
-    height: 130px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: auto;
-    background-color: #eee;
- }
-
-.bottom-pane textarea {
-    width: 100%;
-    height: 100%;
-}
-
-.resizer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2em;
-    overflow: hidden;
-    background-color: #333;
-    color: white;
-}
-
-.resizer-content {
-  position: absolute;
-  background-color: #333;
-  left: 0;
-  right: 0;
-  top: 1.8125em;
-  bottom: 0;
-  padding: 1em;
-}
-
 
 .editable-empty, .editable-empty, .editable-click  {
      border: 0;
@@ -151,53 +155,13 @@
      }
 }
 
-.tabber {
-    @include clearfix;
-    font-weight: bold;
-    margin: 0;
-    background-color: #333;
-    cursor: ns-resize;
-}
-
-.tabber .tab {
-    list-style-type: none;
-    a {
-        float: left;
-        padding: 0.25em 2em;
-        color: #fff;
-        &:hover {
-            background-color: lighten(#333, 7%);
-            color: #fff;
-        }
-    }
-}
-
-.tabber .activetab a:hover {
-    background-color: lighten(#333, 7%);
-}
-
-.tabber .activetab a {
-    background-color: lighten(#333, 7%);
-}
-
 .trash {
-    padding: 8px;
-    height: 100%;
+    @include span(12 of 12 omega);
+    background: #fff;
 }
 
 .trash .card {
     width: 32%;
     float: left;
-    margin-right: 4px;
-}
-
-.tabber
-.button {
-    list-style-type: none;
-    float: right;
-    padding: 4px 30px;
-    width: 100px;
-    a {
-        color: #fff;
-    }
+    margin-right: 0.25em;
 }

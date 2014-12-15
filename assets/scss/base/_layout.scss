@@ -1,5 +1,7 @@
 *, *:before, *:after {
-  box-sizing: inherit;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
@@ -20,8 +22,8 @@ body {
     @include span(12 of 12);
     background: #fff;
     @media (min-width: 50em) {
-        @include span(4 of 12);
-        margin-left: span(4 of 12);
+        @include span(6 of 12);
+        margin-left: span(6 of 12);
     }
 }
 
@@ -38,4 +40,9 @@ body {
 
 .main-container-content {
     padding: 1em;
+}
+
+main {
+    @include clearfix;
+    padding: 0.5em;
 }

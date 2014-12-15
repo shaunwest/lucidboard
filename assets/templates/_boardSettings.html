@@ -1,12 +1,24 @@
 <form data-ng-submit="submit()">
   <ul class="form-fields">
     <li>
-        <h5 class="main-container-title-header">Board Settings</h5>
+        <label for="title">Board Title</label>
+        <input id="title" type="text" data-ng-model="b.title" placeholder="Title" >
     </li>
     <li>
-        <label for="title">Board Title</label>
-        <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
-    <li>
+        <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
+            <ul class="form-fields">
+                <li>
+                    <label>
+                        Add New Columns
+                    </label>
+                    <input type="text" data-ng-model="title" placeholder="Column Title">
+                </li>
+                <li>
+                    <input type="submit" value="Create New Column" class="btn">
+                </li>
+            </ul>
+        </form>
+    </li>
     <li>
         <label for="votesPerUser">
             Vote Limit Per User
