@@ -89,7 +89,7 @@
         if (targetsOutsideLogin.indexOf(target) !== -1) {
 
           // TODO: I would love to figure out why this timout helps so much...
-          setTimeout(function() { invoke(); }, 10);
+          setTimeout(function() { invoke(); }, 100);
 
         } else {
           initialTokenPromise.then(function() { invoke(); });
