@@ -149,19 +149,17 @@
 
       // --- BEGIN drag-drop stuff
 
-      $rootScope.$watch('cardDragging', function(a, b) {
+      $rootScope.$watch('cardDragging', function(newVal, oldVal) {
         // console.log('a', a);
         // console.log('b', b);
       });
 
       $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
         $rootScope.cardDragging = true;
-        console.log('ANGULAR_DRAG_START', $rootScope.cardDragging);
       });
 
       $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
         $rootScope.cardDragging = false;
-        console.log('ANGULAR_DRAG_END', $rootScope.cardDragging);
       });
 
       $scope.moveCard = function($event, $data, array, destColumnId, position) {
@@ -177,6 +175,7 @@
     function($scope, board, api) {
       $scope.createColumn = function() {
         api.columnCreate(board.id(), {title: $scope.title});
+        $scope.title = '';
       };
     }])
 
