@@ -6,7 +6,7 @@
  * @docs		    :: http://sailsjs.org/#!documentation/models
  */
 
-var titleRegex = /^.{1,20}$/;
+var titleRegex = /^.{1,25}$/;
 
 module.exports = {
 

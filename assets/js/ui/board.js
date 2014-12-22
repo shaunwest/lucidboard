@@ -132,7 +132,7 @@
 
       // --- BEGIN Tabber stuff
 
-      $scope.currentTab = 'trash';
+      $scope.currentTab = 'board';
 
       $scope.switchTab = function(tabName) {
         $scope.currentTab = tabName;

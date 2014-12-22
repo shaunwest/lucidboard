@@ -41,7 +41,7 @@
         <div data-ng-click="showTimerForm = !showTimerForm">
             <span>{{timerLeft | formatTime}} remaining</span>
         </div>
-        <div data-ng-show="board.votesPerUser() !== 0">
+        <div data-ng-show="board.votesPerUser() !== 0 && board.votesRemaining()">
             {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
             remaining
         </div>
@@ -87,7 +87,7 @@
     <ul class="form-fields">
       <li>
         <label>Add New Column</label>
-        <input type="text" data-ng-model="title" placeholder="Column Title">
+        <input type="text" data-ng-model="title" placeholder="Column Title" maxlength="25">
       </li>
       <li>
         <input type="submit" value="Create New Column" class="btn">
