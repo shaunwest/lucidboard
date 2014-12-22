@@ -1,5 +1,10 @@
 // This is all previously written scss
 
+.board-container {
+    @include clearfix;
+    margin: 2em;
+}
+
 .board {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -22,39 +27,53 @@
 }
 
 .tabs {
-    padding: 0;
+    padding-bottom: 0.5em;
+    padding-left: 0;
     display: table;
-    position: relative;
-    overflow: hidden;
-    margin: 0;
+    margin-bottom: 1.5em;
     width: 100%;
+    list-style: none;
+    border-bottom: 0.0625em solid #333;
     li {
         float: left;
-        overflow: hidden;
-        position: relative;
         width: 100%;
-        border-right: 0.0625em solid #C5C5C5;
         &:last-child {
             border-right: 0;
         }
         @media (min-width: 40em) {
             float: left;
-            width: percentage(3/12);
+            width: auto;
+            margin-right: 1.5em;
         }
     }
     a {
-        background-color: #eff0f2;
         font-weight: bold;
         display: block;
         outline: none;
-        padding: 0.5em 1.25em;
-        text-decoration: none;
-        -webkit-transition: all 0.2s ease-in-out;
-        -moz-transition: all 0.2s ease-in-out;
-        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        color: #333;
+        &:hover {
+            color: $link-color;
+            path {
+                -webkit-transition: all 0.3s ease-in-out;
+                -moz-transition: all 0.3s ease-in-out;
+                transition: all 0.3s ease-in-out;
+                fill: $link-color;
+            }
+        }
+        path {
+            &:hover {
+                fill: $link-color;
+            }
+        }
     }
     .active {
-        background-color: #fff;
+        color: $link-color;
+        .icon-left path {
+            fill: $link-color;
+        }
     }
 }
 
@@ -146,7 +165,7 @@
 }
 
 .slate-card {
-    background-color: #8DB4E0;
+    background-color: #95C1F2;
 }
 
 .editable-empty, .editable-empty, .editable-click  {
