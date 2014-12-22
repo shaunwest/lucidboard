@@ -13,7 +13,13 @@ html {
 body {
   @include container(12);
   @include clearfix;
+  padding-left: 0.5em;
+  padding-right:0.5em;
   min-height: 100%;
+  @media (min-width: 30em) {
+      padding-left: 2em;
+      padding-right:2em;
+  }
 }
 
 .main-container {
@@ -28,5 +34,4 @@ body {
 
 main {
     @include clearfix;
-    padding: 0.5em;
 }
