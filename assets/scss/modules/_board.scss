@@ -1,10 +1,5 @@
 // This is all previously written scss
 
-.board-container {
-    @include clearfix;
-    margin: 2em;
-}
-
 .board {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -84,7 +79,6 @@
 .columns {
     @include clearfix;
     @include span(12 of 12 omega);
-    padding: 0.3125em;
     @media (min-width: 40em) {
         display: table;
         table-layout: fixed;
