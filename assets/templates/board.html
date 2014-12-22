@@ -119,32 +119,4 @@
             board="board" card="card" column="board.trash()" index="$index">
         </card>
     </div>
-<<<<<<< HEAD
-    <board-settings class="panel-board-settings-half" board="board"></board-settings>
-</div>
-<div data-ng-show="currentTab === 'columns'" class="panel-board-settings">
-  <ul>
-    <li data-ng-repeat="c in board.columns()">{{c.title}}</li>
-  </ul>
-  <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
-    <ul class="form-fields">
-      <li>
-        <label>Add New Column</label>
-        <input type="text" data-ng-model="title" placeholder="Column Title" maxlength="25">
-      </li>
-      <li>
-        <input type="submit" value="Create New Column" class="btn">
-      </li>
-    </ul>
-  </form>
-</div>
-<div class="trash" data-ng-show="currentTab === 'trash'"
-    data-ng-class="{dropready:cardDragging}"
-    data-ui-on-drop="moveCard($event, $data, board.trash().cards, board.trash().id,
-    board.nextPositionByColumnId(board.trash().id))">
-    <card data-ng-repeat="card in board.trash().cards track by $index"
-        board="board" card="card" column="board.trash()" index="$index">
-    </card>
-=======
->>>>>>> add some pretty icons and change up board header
 </div>
