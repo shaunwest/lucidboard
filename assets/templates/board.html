@@ -57,28 +57,29 @@
 <div class="board" data-ng-show="currentTab === 'board'">
     <div class="columns">
         <div class="column" data-ng-repeat="column in board.columns()">
-            <div class="cardstack">
-                <ul class="y-list">
-                    <li>
-                        <h3 class="delta column-title" data-editable-text="column.title" data-buttons="no"
-                            onbeforesave="checkColumnTitle($data, column.id)">
-                            {{column.title}}
-                        </h3>
-                    </li>
-                    <li>
-                        <card data-ng-show="column.cards.length === 0"
-                            board="board" card="null" column="column"
-                            card-dragging="cardDragging">
-                        </card>
-                    </li>
-                    <li>
-                        <card data-ng-repeat="card in column.cards track by $index"
-                            board="board" card="card" column="column" index="$index"
-                            card-dragging="cardDragging">
-                        </card>
-                    </li>
-            </div>
-            <a class="btn-full" data-ng-click="createCard(column)" href="#">+</a>
+            <ul class="y-list">
+                <li>
+                    <h3 class="delta column-title" data-editable-text="column.title" data-buttons="no"
+                        onbeforesave="checkColumnTitle($data, column.id)">
+                        {{column.title}}
+                    </h3>
+                </li>
+                <li>
+                    <card data-ng-show="column.cards.length === 0"
+                        board="board" card="null" column="column"
+                        card-dragging="cardDragging">
+                    </card>
+                </li>
+                <li>
+                    <card data-ng-repeat="card in column.cards track by $index"
+                        board="board" card="card" column="column" index="$index"
+                        card-dragging="cardDragging">
+                    </card>
+                </li>
+                <li>
+                    <a class="btn-full" data-ng-click="createCard(column)" href="#">+</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

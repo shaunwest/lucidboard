@@ -133,13 +133,18 @@
     font-weight: bold;
     font-size: x-small;
     padding: 3px;
- }
+}
+
+[card="card"] {
+    @include clearfix;
+    display: block;
+}
 
 .card.on-drag-hover {
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 2px solid black;
-    border-right: 2px solid black;
+    border-top: 0.125em dashed #333;
+    border-left: 0.125em dashed #333;
+    border-bottom: 0.125em dashed #333;
+    border-right: 0.125em dashed #333;
  }
 
 .cardjunction {
