@@ -180,7 +180,7 @@
     .btn-default {
         width: 2em;
         height: 1em;
-        background-image: url('/images/checkmark.svg');
+        background-image: url('/images/cross.svg');
         background-repeat: no-repeat;
         background-size: 2em 1em;
         background-position: center;
@@ -189,7 +189,7 @@
 
     .btn-primary {
         @extend .btn-default;
-        background-image: url('/images/cross.svg');
+        background-image: url('/images/checkmark.svg');
         background-size: 30px 14px;
         background-color: rgb(255, 155, 0);
         &:hover {
