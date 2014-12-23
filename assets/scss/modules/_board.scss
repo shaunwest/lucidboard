@@ -162,12 +162,43 @@
     background-color: #95C1F2;
 }
 
-.editable-empty, .editable-empty, .editable-click  {
+.editable-empty, .editable-click {
      border: 0;
      color: #333;
      &:hover {
          color: lighten(#333, 10%);
      }
+}
+
+.editable-buttons {
+    display: block;
+    margin: 0.5em 1.5em;
+
+    .btn-default {
+        width: 2em;
+        height: 1em;
+        background-image: url('/images/checkmark.svg');
+        background-repeat: no-repeat;
+        background-size: 2em 1em;
+        background-position: center;
+        padding: 1.5em;
+    }
+
+    .btn-primary {
+        @extend .btn-default;
+        background-image: url('/images/cross.svg');
+        background-size: 30px 14px;
+        background-color: rgb(255, 155, 0);
+        &:hover {
+            background-color: lighten(#FCB03A, 6%);
+        }
+    }
+}
+
+.editable-input {
+    &.editable-has-buttons {
+        width: 100%;
+    }
 }
 
 .trash {
