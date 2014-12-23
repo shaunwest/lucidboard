@@ -17,8 +17,6 @@
 .board-info {
     @include clearfix;
     float: right;
-    padding-top: 1em;
-    padding-right: 1em;
 }
 
 .tabs {
@@ -72,10 +70,6 @@
     }
 }
 
-.timer {
-    float: right;
-}
-
 .columns {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -117,6 +111,8 @@
 .card .cardcontent pre {
     font-size: 1em;
     font-family: $font-body;
+    margin: 0;
+    padding: 0;
 }
 
 .card .handle {
@@ -127,19 +123,26 @@
 
 .card .attached-cards {
     float: left;
-    background-color: green;
+    background-color: #333;
     color: white;
-    border-radius: 50%;
+    border-radius: 0.8em;
     font-weight: bold;
-    font-size: x-small;
-    padding: 3px;
- }
+    font-size: 0.5em;
+    padding: 0.1875em;
+    width: 2em;
+    text-align: center;
+}
+
+[card="card"] {
+    @include clearfix;
+    display: block;
+}
 
 .card.on-drag-hover {
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 2px solid black;
-    border-right: 2px solid black;
+    border-top: 0.125em dashed #eee;
+    border-left: 0.125em dashed #eee;
+    border-bottom: 0.125em dashed #eee;
+    border-right: 0.125em dashed #eee;
  }
 
 .cardjunction {
@@ -159,7 +162,7 @@
 }
 
 .slate-card {
-    background-color: #95C1F2;
+    background-color: #C4D9F0;
 }
 
 .editable-empty, .editable-click {
