@@ -104,8 +104,9 @@
 
 .card {
     @include clearfix;
-    padding: 0.3125em;
+    padding: 1em;
     cursor: pointer;
+    border-radius: 0.3125em;
  }
 
 .card .cardcontent pre {

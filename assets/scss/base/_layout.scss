@@ -24,12 +24,18 @@ body {
 
 .main-container {
     @include clearfix;
-    @include span(12 of 12);
-    background: #fff;
+    @include span(12 of 12 omega);
 }
 
-.main-container-content {
-    padding: 1em;
+.main-container-half {
+    @include clearfix;
+    @include span(12 of 12 omega);
+    @media (min-width: 40em) {
+        @include span(6 of 12);
+        &:last-child {
+            @include omega;
+        }
+    }
 }
 
 main {
