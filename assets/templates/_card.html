@@ -12,26 +12,26 @@
       data-editable-textarea="card.content"
       data-onbeforesave="checkCardContent($data, column.id, card.id)">
       <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
-          {{card.content}}
+{{card.content}}
       </pre>
       <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
-          {{card.content | obfuscated}}
+{{card.content | obfuscated}}
       </pre>
       <pre data-ng-show="!card.content">
-          empty
+empty
       </pre>
     </div>
   </div>
   <div data-ng-show="!card.userCanWrite && board.p_lock()">
     <div class="cardcontent">
       <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
-          {{card.content}}
+{{card.content}}
       </pre>
       <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
-          {{card.content | obfuscated}}
+{{card.content | obfuscated}}
       </pre>
       <pre data-ng-show="!card.content">
-          Empty
+Empty
       </pre>
     </div>
   </div>

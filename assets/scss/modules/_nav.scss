@@ -1,7 +1,6 @@
 .header-bar {
     @include clearfix;
-    @include span(12 of 12);
-    margin-bottom: 2em;
+    @include span(12 of 12 omega);
     background: $white;
     h1 {
         margin-bottom: 0;
