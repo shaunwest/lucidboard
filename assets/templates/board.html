@@ -9,7 +9,9 @@
         </button>
     </div>
     <div data-ng-click="showTimerForm = !showTimerForm">
-        <span>{{timerLeft | formatTime}} remaining</span>
+        <span>
+            {{timerLeft | formatTime}} remaining
+        </span>
     </div>
     <div data-ng-show="board.votesPerUser() !== 0">
         {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
