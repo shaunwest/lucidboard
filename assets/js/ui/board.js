@@ -169,14 +169,5 @@
           destPosition: position
         });
       };
-    }])
-
-  .controller('NewColumnCtrl', ['$scope', 'board', 'api',
-    function($scope, board, api) {
-      $scope.createColumn = function() {
-        api.columnCreate(board.id(), {title: $scope.title});
-        $scope.title = '';
-      };
-    }])
-
+    }]);
 })();

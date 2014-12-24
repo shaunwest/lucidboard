@@ -97,21 +97,7 @@
     <board-settings class="panel-board-settings-half" board="board"></board-settings>
 </div>
 <div data-ng-show="currentTab === 'columns'" class="panel-board-settings">
-    <h4>Current Columns</h4>
-  <ul class="y-list">
-    <li data-ng-repeat="c in board.columns()">{{c.title}}</li>
-  </ul>
-  <form data-ng-controller="NewColumnCtrl" data-ng-submit="createColumn()">
-    <ul class="y-list">
-      <li>
-          <h4>Add New Column</h4>
-        <input type="text" data-ng-model="title" placeholder="Column Title">
-      </li>
-      <li>
-        <input type="submit" value="Create New Column" class="btn">
-      </li>
-    </ul>
-  </form>
+    <edit-columns board="board"></edit-columns>
 </div>
 <div class="trash" data-ng-show="currentTab === 'trash'"
     data-ng-class="{dropready:cardDragging}"
