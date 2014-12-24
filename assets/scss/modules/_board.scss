@@ -165,6 +165,9 @@
     border: 0.125em dashed #ccc;
     margin-top: 0.375em;
     margin-bottom: 0.375em;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .slate-card {
