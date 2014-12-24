@@ -187,21 +187,22 @@
         background-size: 2em 1em;
         background-position: center;
         padding: 1.5em;
+        background-color: rgb(255, 155, 0);
     }
     .btn-primary {
         @extend .btn-default;
         background-image: url('/images/checkmark.svg');
         background-size: 30px 14px;
-        background-color: rgb(255, 155, 0);
+        background-color: #15A62C;
         &:hover {
-            background-color: lighten(#FCB03A, 6%);
+            background-color: lighten(#15A62C, 6%);
         }
     }
 }
 
 .editable-input {
     &.editable-has-buttons {
-        width: 100%;
+        width: 80%;
         outline: 0;
         border: 0;
         background: transparent;
