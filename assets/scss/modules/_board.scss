@@ -26,7 +26,7 @@
     margin-bottom: 1.5em;
     width: 100%;
     list-style: none;
-    border-bottom: 0.0625em solid #333;
+    border-bottom: 0.0625em solid $font-body-color;
     li {
         float: left;
         width: 100%;
@@ -46,7 +46,7 @@
         -webkit-transition: all 0.3s ease-in-out;
         -moz-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
-        color: #333;
+        color: $font-body-color;
         &:hover {
             color: $link-color;
             path {
@@ -124,7 +124,7 @@
 
 .card .attached-cards {
     float: left;
-    background-color: #333;
+    background-color: $font-body-color;
     color: white;
     border-radius: 0.8em;
     font-weight: bold;
@@ -147,7 +147,7 @@
  }
 
 .cardjunction {
-    height: 6px;
+    height: 0.375em;
 }
 
 .cardjunction.top {
@@ -159,7 +159,12 @@
 }
 
 .cardjunction.on-drag-hover {
-    background-color: #ccc;
+    background-color: #eee;
+    height: 6em;
+    border-radius: 0.1875em;
+    border: 0.125em dashed #ccc;
+    margin-top: 0.375em;
+    margin-bottom: 0.375em;
 }
 
 .slate-card {
@@ -169,9 +174,9 @@
 
 .editable-empty, .editable-click {
      border: 0;
-     color: #333;
+     color: $font-body-color;
      &:hover {
-         color: lighten(#333, 10%);
+         color: lighten($font-body-color, 10%);
      }
 }
 
