@@ -185,7 +185,7 @@
         background-repeat: no-repeat;
         background-size: 2em 1em;
         background-position: center;
-        padding: 1.5em;
+        padding: 0.75em;
         background-color: rgb(255, 155, 0);
     }
     .btn-primary {
@@ -205,6 +205,7 @@
         outline: 0;
         border: 0;
         background: transparent;
+        resize: none;
     }
 }
 
