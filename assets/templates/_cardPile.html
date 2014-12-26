@@ -1,0 +1,16 @@
+<div class="card-slot">
+  <card data-board="board" data-card="getTopCard(item)"
+    data-board="board" data-column="column" data-index="index"
+    data-card-dragging="cardDragging">
+  </card>
+  <div class="card-pile-panel">
+    <div style="float:right">{{votes}} vote{{votes === 1 ? '' : 's'}}</div>
+    <div style="float:left">{{curCard}} / {{pile.length}}</div>
+    <div style="text-align:center;background-color:#eef">
+      <a href="" data-ng-click="back()">&laquo;</a>
+      &nbsp; &nbsp; &nbsp;
+      <a href="" data-ng-click="forward()">&raquo;</a>
+    </div>
+    <div class="clearer">&nbsp;</div>
+  </div>
+</div>

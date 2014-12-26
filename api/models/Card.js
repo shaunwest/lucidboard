@@ -15,9 +15,13 @@ module.exports = {
     content:  'string',
     position: 'integer',
 
-    attached: {  // +1 for each card dropped on this one
-      type:       'integer',
-      defaultsTo: 0
+    // only relevant if the card is in a stack, that is, shares the same column and
+    // position of another card. When a stack exists, in this case, cards are ordered
+    // from lowest id to greatest id, and the last card or the one with topOfStack as
+    // true is on top.
+    topOfStack: {
+      type:       'boolean',
+      defaultsTo: false
     },
 
     creator: { model: 'user' },
@@ -31,13 +35,13 @@ module.exports = {
 
     toJSON: function() {
       return {
-        id:       this.id,
-        creator:  this.creator,
-        content:  this.content,
-        position: this.position,
-        attached: this.attached,
-        column:   this.column,
-        votes:    this.votes
+        id:         this.id,
+        creator:    this.creator,
+        content:    this.content,
+        position:   this.position,
+        topOfStack: this.topOfStack,
+        column:     this.column,
+        votes:      this.votes
       };
     }
   }

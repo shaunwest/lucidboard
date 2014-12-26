@@ -72,10 +72,9 @@
                     </div>
                 </li>
                 <li>
-                    <card data-ng-repeat-start="card in column.cards track by $index"
-                        board="board" card="card" column="column" index="$index"
-                        card-dragging="cardDragging">
-                    </card>
+                    <card-slot data-ng-repeat-start="slot in column.cardSlots track by $index"
+                        board="board" item="slot" column="column" index="$index">
+                    </card-slot>
                     <div data-ng-repeat-end class="cardjunction"
                         data-ng-class="{active:cardDragging}"
                         data-ui-on-drop="moveCard($event, $data, column.cards, column.id,

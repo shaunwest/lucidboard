@@ -25,8 +25,28 @@
       var boardSort = function() {
         board.columns = _.sortBy(board.columns, 'position');
 
+        // Per column, cards are sorted by position, but if a position value
+        // is shared, the cards are stacked with an order of the id, ascending.
         for (var i=0; i<board.columns.length; i++) {
-          board.columns[i].cards = _.sortBy(board.columns[i].cards, 'position');
+          var j, buffer = [],
+            origlist = _.sortBy(_.sortBy(board.columns[i].cards, 'id'), 'position');
+
+          delete board.columns[i].cards;  // we'll use cardSlots instead.
+
+          board.columns[i].cardSlots = [];
+
+          // Group piles into arrays
+          var loadSlot = function(curCard) {
+            if (buffer.length && (!curCard || curCard.position != buffer[0].position)) {
+              board.columns[i].cardSlots.push(buffer.length > 1 ? buffer : buffer[0]);
+              buffer = [];
+            }
+          };
+          for (j=0; j<origlist.length; j++) {
+            loadSlot(origlist[j]);
+            buffer.push(origlist[j]);
+          }
+          loadSlot();
         }
       };
 
@@ -38,24 +58,32 @@
 
         votesRemaining = board.votesPerUser;
 
-        board.columns.forEach(function(col) {
-          col.cards.forEach(function(card) {
-            card.votes.forEach(function(v) {
-              if (v.user === user.obj().id) {
-                votesRemaining--;
-              }
-            });
+        spiderCards(function(card) {
+          card.votes.forEach(function(v) {
+            if (v.user === user.obj().id) {
+              votesRemaining--;
+            }
           });
         });
       };
 
       var parseCards = function() {
+        spiderCards(function(card) {
+          if (isBoardOwner()) {
+            card.userCanWrite = true;
+          } else {
+            card.userCanWrite = card.creator === user.id();
+          }
+        });
+      };
+
+      var spiderCards = function(cb) {
         board.columns.forEach(function(col) {
-          col.cards.forEach(function(card) {
-            if (isBoardOwner()) {
-              card.userCanWrite = true;
+          col.cardSlots.forEach(function(slot) {
+            if (angular.isArray(slot)) {
+              slot.forEach(function(c) { cb(c); });
             } else {
-              card.userCanWrite = card.creator === user.id();
+              cb(slot);
             }
           });
         });
@@ -231,6 +259,7 @@
           this.rebuildColumn(info);
         },
 
+        /*
         combineCards: function(info) {
           var sourceCardId   = info.sourceCardId,
               sourceColumnId = info.sourceColumnId,
@@ -246,6 +275,31 @@
           // Splice in the new card
           this.column(destCard.column).cards.splice(destCard.position - 1, 1, destCard);
         },
+        */
+
+        combineCards: function(info) {
+          var newCard   = info.card,
+              sourceMap = info.sourceMap,
+              remap     = {},
+              card;
+
+          // Reorder the source column
+          remap[newCard.column] = sourceMap;
+          this.rebuildColumn(remap);
+
+          // If topOfStack is coming down flipped on, make sure the others are flipped off.
+          if (newCard.topOfStack) {
+            this.column(newCard.column).cards.forEach(function(c) {
+              c.topOfStack = false;
+            });
+          }
+
+          // Grab the actual, live card, corresponding to the source. Update some things.
+          card            = this.card(newCard.id);
+          card.column     = newCard.column;
+          card.position   = newCard.position;
+          card.topOfStack = newCard.topOfStack;
+        }
 
       };
     }])

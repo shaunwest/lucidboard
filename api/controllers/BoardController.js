@@ -176,123 +176,57 @@ module.exports = {
 
   },
 
-  /*
   combineCards: function(req, res) {
-    return res.badRequest('Function not yet implemented.');
-
     var boardId      = req.param('id'),
         sourceCardId = req.param('sourceCardId'),
-        destCardId   = req.param('destCardId'),
-        jobs         = [],
-        originalSourceMap;
+        destCardId   = req.param('destCardId');
 
     if (sourceCardId === destCardId) {
       return res.badRequest('You cannot combine a card with itself!');
     }
 
     async.auto({
-      source: function(cb) { Card.findOneById(sourceCardId).populate('votes').exec(cb); },
-      dest:   function(cb) { Card.findOneById(destCardId).populate('votes').exec(cb); },
+      source: function(cb) { Card.findOneById(sourceCardId).exec(cb); },
+      dest:   function(cb) { Card.findOneById(destCardId).exec(cb); },
       sourceStack: ['source', function(cb, r) {
         Card.find({column: r.source.column}).sort({position: 'asc'}).exec(cb);
+      }],
+      destStackStack: ['dest', function(cb, r) {
+        Card.find({column: r.dest.column, position: r.dest.position}).exec(cb);
       }]
     }, function(err, r) {
       if (err) return res.serverError(err);
 
-      originalSourceMap = _.pluck(r.sourceStack, 'id');
+      var jobs = [];
 
-      // Move votes to new card
-      r.source.votes.forEach(function(v) {
-        v.card = destCardId;
-        r.dest.votes.push(v);  // this is just for the returned signalData
-        jobs.push(function(cb) { v.save(cb); });
-      });
-
-      // +1 to attached property for the card
-      r.dest.attached++;
-      r.dest.content += "\n" + r.source.content
-      jobs.push(function(cb) { r.dest.save(cb); });
-
-      // Destroy the source card!
-      jobs.push(function(cb) { r.source.destroy(cb); });
-
-      // Splice out the source card from the source Stack
+      // Splice out the source card from the source Stack and get saving work
+      // for all cards in the source stack that need positions reordered
       r.sourceStack.splice(r.source.position - 1, 1);
+      jobs = jobs.concat(fixPositions(r.sourceStack, _.pluck(r.sourceStack, 'id')));
 
-      // save all cards in the source stack that need positions reordered
-      jobs = jobs.concat(fixPositions(r.sourceStack, originalSourceMap));
+      // Resituate the source card
+      r.source.column     = r.dest.column;
+      r.source.position   = r.dest.position;
+      r.source.topOfStack = true;
+      jobs.push(function(cb) { r.source.save(cb); });
+
+      // Flip off other topOfStack flags
+      r.destStackStack.forEach(function(c) {
+        if (c.topOfStack) {
+          c.topOfStack = false;
+          jobs.push(function(cb) { c.save(cb); });
+        }
+      });
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
         var signalData = {
-          sourceCardId:   r.source.id,
-          sourceColumnId: r.source.column,
-          sourceMap:      _.pluck(r.sourceStack, 'id'),
-          destCard:       r.dest
-        };
-
-        res.jsonx(signalData);
-
-        redis.boardCombineCards(boardId, signalData);
-      });
-    });
-  },
-  */
-
-  combineCards: function(req, res) {
-    return res.badRequest('Function not yet implemented.');
-
-    var boardId      = req.param('id'),
-        sourceCardId = req.param('sourceCardId'),
-        destCardId   = req.param('destCardId'),
-        jobs         = [],
-        originalSourceMap;
-
-    if (sourceCardId === destCardId) {
-      return res.badRequest('You cannot combine a card with itself!');
-    }
-
-    async.auto({
-      source: function(cb) { Card.findOneById(sourceCardId).populate('votes').exec(cb); },
-      dest:   function(cb) { Card.findOneById(destCardId).populate('votes').exec(cb); },
-      sourceStack: ['source', function(cb, r) {
-        Card.find({column: r.source.column}).sort({position: 'asc'}).exec(cb);
-      }]
-    }, function(err, r) {
-      if (err) return res.serverError(err);
-
-      originalSourceMap = _.pluck(r.sourceStack, 'id');
-
-      // Move votes to new card
-      r.source.votes.forEach(function(v) {
-        v.card = destCardId;
-        r.dest.votes.push(v);  // this is just for the returned signalData
-        jobs.push(function(cb) { v.save(cb); });
-      });
-
-      // +1 to attached property for the card
-      r.dest.attached++;
-      r.dest.content += "\n" + r.source.content
-      jobs.push(function(cb) { r.dest.save(cb); });
-
-      // Destroy the source card!
-      jobs.push(function(cb) { r.source.destroy(cb); });
-
-      // Splice out the source card from the source Stack
-      r.sourceStack.splice(r.source.position - 1, 1);
-
-      // save all cards in the source stack that need positions reordered
-      jobs = jobs.concat(fixPositions(r.sourceStack, originalSourceMap));
-
-      async.parallel(jobs, function(err, results) {
-        if (err) return res.serverError(err);
-
-        var signalData = {
-          sourceCardId:   r.source.id,
-          sourceColumnId: r.source.column,
-          sourceMap:      _.pluck(r.sourceStack, 'id'),
-          destCard:       r.dest
+          card:      r.source,
+          sourceMap: _.pluck(r.sourceStack, 'id'),
+          // sourceCardId:   r.source.id,
+          // sourceColumnId: r.source.column,
+          // destCard:       r.dest
         };
 
         res.jsonx(signalData);
