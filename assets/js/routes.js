@@ -42,6 +42,10 @@
             return board.load($stateParams.boardId);
           }]
         }
+      },
+      home: {
+          url:         '/',
+          templateUrl: '/templates/splash.html'
       }
     });
 })();

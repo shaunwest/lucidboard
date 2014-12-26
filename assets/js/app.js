@@ -20,7 +20,7 @@
             angular.extend(angular.copy(appStateDefaults), stateConfig));
         });
 
-        $urlRouterProvider.otherwise('/boards');
+        $urlRouterProvider.otherwise('/');
       }
     ])
 

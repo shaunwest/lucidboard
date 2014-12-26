@@ -4,14 +4,14 @@
     outline: 0;
     cursor: pointer;
     display: inline-block;
-    background-color: #09B224;
+    background-color: #15A62C;
     border-radius: 0.3125em;
     border: none;
     padding: 0.5em 1em;
-    transition: background .15s;
+    transition: background 500ms;
     text-align: center;
     &:hover {
-        background: lighten(#09B224, 6%);
+        background: lighten(#15A62C, 6%);
         color: $white;
         text-decoration: none;
     }

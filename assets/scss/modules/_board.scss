@@ -26,7 +26,7 @@
     margin-bottom: 1.5em;
     width: 100%;
     list-style: none;
-    border-bottom: 0.0625em solid #333;
+    border-bottom: 0.0625em solid $font-body-color;
     li {
         float: left;
         width: 100%;
@@ -46,7 +46,7 @@
         -webkit-transition: all 0.3s ease-in-out;
         -moz-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
-        color: #333;
+        color: $font-body-color;
         &:hover {
             color: $link-color;
             path {
@@ -104,8 +104,9 @@
 
 .card {
     @include clearfix;
-    padding: 0.3125em;
+    padding: 1em;
     cursor: pointer;
+    border-radius: 0.1875em;
  }
 
 .card .cardcontent pre {
@@ -123,7 +124,7 @@
 
 .card .attached-cards {
     float: left;
-    background-color: #333;
+    background-color: $font-body-color;
     color: white;
     border-radius: 0.8em;
     font-weight: bold;
@@ -146,7 +147,7 @@
  }
 
 .cardjunction {
-    height: 6px;
+    height: 0.375em;
 }
 
 .cardjunction.top {
@@ -158,25 +159,33 @@
 }
 
 .cardjunction.on-drag-hover {
-    background-color: #ccc;
+    background-color: #eee;
+    height: 6em;
+    border-radius: 0.1875em;
+    border: 0.125em dashed #ccc;
+    margin-top: 0.375em;
+    margin-bottom: 0.375em;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .slate-card {
+    border-left: 0.1875em solid $link-color;
     background-color: #C4D9F0;
 }
 
 .editable-empty, .editable-click {
      border: 0;
-     color: #333;
+     color: $font-body-color;
      &:hover {
-         color: lighten(#333, 10%);
+         color: lighten($font-body-color, 10%);
      }
 }
 
 .editable-buttons {
     display: block;
-    margin: 0.5em 1.5em;
-
+    float: right;
     .btn-default {
         width: 2em;
         height: 1em;
@@ -184,24 +193,32 @@
         background-repeat: no-repeat;
         background-size: 2em 1em;
         background-position: center;
-        padding: 1.5em;
+        padding: 0.75em;
+        background-color: rgb(255, 155, 0);
     }
-
     .btn-primary {
         @extend .btn-default;
         background-image: url('/images/checkmark.svg');
         background-size: 30px 14px;
-        background-color: rgb(255, 155, 0);
+        background-color: #15A62C;
         &:hover {
-            background-color: lighten(#FCB03A, 6%);
+            background-color: lighten(#15A62C, 6%);
         }
     }
 }
 
 .editable-input {
     &.editable-has-buttons {
-        width: 100%;
+        width: 80%;
+        outline: 0;
+        border: 0;
+        background: transparent;
+        resize: none;
     }
+}
+
+.editable-controls, .editable-wrap {
+    width: 100%;
 }
 
 .trash {

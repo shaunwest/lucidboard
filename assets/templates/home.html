@@ -1,6 +1,7 @@
-<section class="main-container">
-  <div class="main-container-content">
-    <h1 class="beta">Boards</h1>
+<section class="main-container-half">
+    <h1 class="gamma">
+        Active Boards
+    </h1>
     <ul class="y-list-color">
       <li data-ng-repeat="b in boards">
         <a href="/boards/{{b.id}}">
@@ -8,12 +9,10 @@
         </a>
       </li>
     </ul>
-    <h1 class="beta" style="clear:both">Create New Board</h1>
-    <!--
-      <button class="btn">
-          Add A New Board
-      </button>
-    -->
-      <board-settings></board-settings>
-  </div>
+</section>
+<section class="main-container-half">
+    <h1 class="gamma">
+        Create New Board
+    </h1>
+    <board-settings ></board-settings>
 </section>
