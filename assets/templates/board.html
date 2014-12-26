@@ -66,17 +66,21 @@
                         {{column.title}}
                     </h3>
                 </li>
-                <li>
-                    <card data-ng-show="column.cards.length === 0"
-                        board="board" card="null" column="column"
-                        card-dragging="cardDragging">
-                    </card>
+                    <div class="cardjunction top"
+                        data-ng-class="{active:cardDragging}"
+                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 1)">
+                    </div>
                 </li>
                 <li>
-                    <card data-ng-repeat="card in column.cards track by $index"
+                    <card data-ng-repeat-start="card in column.cards track by $index"
                         board="board" card="card" column="column" index="$index"
                         card-dragging="cardDragging">
                     </card>
+                    <div data-ng-repeat-end class="cardjunction"
+                        data-ng-class="{active:cardDragging}"
+                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id,
+                            card.id === $data.id ? card.position : card.position + 1)">
+                    </div>
                 </li>
                 <li>
                     <a class="btn-full" data-ng-click="createCard(column)" href="#">Add New Card</a>

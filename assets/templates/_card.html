@@ -1,7 +1,3 @@
-<div class="cardjunction top" data-ng-show="!card || card.position === 1"
-  data-ng-class="{active:cardDragging}"
-  data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 1)">
-</div>
 <div class="card slate-card" data-ng-show="card"
   data-ui-draggable="true" data-drag="card"
   data-on-drop-success="dropSuccessHandler($event)"
@@ -50,9 +46,4 @@ Empty
         </svg>
     </a>
   </p>
-</div>
-<div class="cardjunction" data-ng-show="card"
-  data-ng-class="{active:cardDragging}"
-  data-ui-on-drop="moveCard($event, $data, column.cards, column.id,
-    card.id === $data.id ? card.position : card.position + 1)">
 </div>
