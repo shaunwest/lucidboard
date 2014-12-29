@@ -10,7 +10,7 @@ html {
   box-sizing: border-box;
 }
 
-body {
+.site-container {
   @include container(12);
   @include clearfix;
   padding-left: 0.5em;
@@ -31,6 +31,14 @@ body {
     @extend .main-container;
 }
 
+.brand-bg {
+    background: $link-color;
+    text-align: center;
+    h1 {
+        color: $white;
+    }
+}
+
 .main-container-half {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -44,7 +52,7 @@ body {
 
 .main-container-half-media {
     @extend .main-container-half;
-    padding: 3em;
+    padding: 4em;
 }
 
 main {
