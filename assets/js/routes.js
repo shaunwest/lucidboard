@@ -45,7 +45,9 @@
       },
       home: {
           url:         '/',
-          templateUrl: '/templates/splash.html'
+          templateUrl: '/templates/splash.html',
+          headerUrl: '',
+          footerUrl: ''
       }
     });
 })();

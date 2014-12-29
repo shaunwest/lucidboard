@@ -16,8 +16,8 @@
         localStorageServiceProvider.setPrefix('niftyboard');
 
         angular.forEach(routes, function(stateConfig, key) {
-          $stateProvider.state(key,
-            angular.extend(angular.copy(appStateDefaults), stateConfig));
+          var appState = angular.extend(angular.copy(appStateDefaults), stateConfig);
+          $stateProvider.state(key, appState);
         });
 
         $urlRouterProvider.otherwise('/');
@@ -31,6 +31,12 @@
           if (rejection === 'not_logged_in') {
             $state.go('signin');
           }
+        });
+
+        // Adds special app state values to $rootScope
+        $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+          $rootScope.headerUrl = toState.headerUrl;
+          $rootScope.footerUrl = toState.footerUrl;
         });
 
         var initialSetup = function() {
