@@ -22,12 +22,6 @@ html {
   }
 }
 
-// removes all padding and margin
-.full {
-    padding: 0;
-    margin: 0;
-}
-
 .main-container {
     @include clearfix;
     @include span(12 of 12 omega);
