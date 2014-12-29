@@ -27,6 +27,10 @@ body {
     @include span(12 of 12 omega);
 }
 
+.main-container-padded {
+    @extend .main-container;
+}
+
 .main-container-half {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -36,6 +40,11 @@ body {
             @include omega;
         }
     }
+}
+
+.main-container-half-media {
+    @extend .main-container-half;
+    padding: 3em;
 }
 
 main {
