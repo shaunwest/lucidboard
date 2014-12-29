@@ -11,7 +11,7 @@ html {
 }
 
 .site-container {
-  @include container(12);
+  @include container(12 omega);
   @include clearfix;
   padding-left: 0.5em;
   padding-right:0.5em;
