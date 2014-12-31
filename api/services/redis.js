@@ -26,6 +26,10 @@ module.exports = {
   boardCombineCards: function(boardId, info) {
     publish('board:combineCards:' + boardId, info);
   },
+  boardFlipCard: function(boardId, cardId) {
+    publish('board:flipCard:' + boardId, cardId);
+  },
+
   boardTimerStart: function(boardId, seconds) {
     publish('board:timerStart:' + boardId, {seconds: seconds});
   },

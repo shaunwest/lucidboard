@@ -66,6 +66,8 @@
         startTimer(bits);
       }).event('board:combineCards:' + board.id(), function(info) {
         board.combineCards(info);
+      }).event('board:flipCard:' + board.id(), function(cardId) {
+        board.flipCard(cardId);
       }).hook($scope);
 
       /*

@@ -92,6 +92,12 @@ module.exports.routes = {
     action:     'combineCards'
   },
 
+  // Board: Card flip (new card on top of pile)
+  'POST /api/boards/:id/card-flip': {
+    controller: 'BoardController',
+    action:     'cardFlip'
+  },
+
   // Board: Start timer
   'POST /api/boards/:id/timer-start': {
     controller: 'BoardController',

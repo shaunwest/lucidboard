@@ -124,6 +124,9 @@
         boardCombineCards: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/combine-cards', bits, cb);
         },
+        boardCardFlip: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/card-flip', bits, cb);
+        },
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },

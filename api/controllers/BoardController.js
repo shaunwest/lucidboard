@@ -2,20 +2,80 @@ var async = require('async'),
     _     = require('underscore'),
     redis = require('../services/redis');
 
-var fixPositions = function(collection, originalMap) {
-  var jobs = [];
+// Organize cards into slots. That means that
+//
+//   [{..., position: 1}, {..., position: 1}, {..., position: 2}]
+//
+// will become
+//
+//   [[{..., position: 1}, {..., position: 1}], {..., position: 2}]
+var normalizeStack = function(stack) {
+  var buffer = [], ret = [];
 
-  // reset positions according to spliced changes
-  for (i=0; i<collection.length; i++) collection[i].position = i + 1;
+  stack.forEach(function(card) {
+    if (buffer.length && card.position !== buffer[0].position) {
+      ret.push(buffer);
+      buffer = [];
+    }
+    buffer.push(card);
+  });
 
-  // save records that need saving
-  for (i=0; i<collection.length; i++) {
-    if (collection[i].id === originalMap[i]) continue;
-    (function() {
-      var cardToSave = collection[i];
-      jobs.push(function(cb) { cardToSave.save(cb); });
-    })();
-  };
+  ret.push(buffer);
+
+  return ret;
+};
+
+// Splice out and return a card being dragged from the stack
+var spliceCard = function(stack, cardId) {
+  var card;
+
+  for (var x=0; x<stack.length; x++) {
+    for (var y=0; y<stack[x].length; y++) {
+      if (stack[x][y].id == cardId) {
+        card = stack[x].splice(y, 1)[0];
+        break;
+      }
+    }
+    if (card) {
+      // splice out the empty array if we took the only card from the slot
+      if (!stack[x].length) stack.splice(x, 1);
+      break;
+    }
+  }
+
+  return card;
+};
+
+// This function takes a multidimentional array of cards and returns the
+// representation that we will use to sync up our clients. So,
+//
+//   [[{id: 1, position: 1}, {id: 2, position: 1}], {id: 3, position: 2}]
+//
+// will become
+//
+//   [[1, 2], [3]]
+var toStackMap = function(stack) {
+  var ret = [];
+  stack.forEach(function(slot) { ret.push(_.pluck(slot, 'id')); });
+  return ret;
+};
+
+// Fix position settings for all elements in the collection.
+// Return an array of jobs to save all updated cards.
+var fixPositions = function(stack, origMap) {
+  var i, j, jobs = [];
+
+  for (i=0; i<stack.length; i++) {
+    for (j=0; j<stack[i].length; j++) {
+      if (!origMap[i] || !origMap[i][j] || origMap[i][j] !== stack[i][j].id) {
+        (function() {
+          var cardToSave = stack[i][j];
+          cardToSave.position = i + 1;
+          jobs.push(function(cb) { cardToSave.save(cb); });
+        })();
+      }
+    }
+  }
 
   return jobs;
 };
@@ -129,39 +189,49 @@ module.exports = {
         Card.find({column: r.card.column}).sort({position: 'asc'}).exec(cb);
       }]
     }, function(err, r) {
-      if (err) return res.serverError(err);
+      if (err)                     return res.serverError(err);
       if (!r.card || !r.destStack) return res.notFound();
 
-      var i, jobs, signalData = {}, originalDestMap = _.pluck(r.destStack, 'id');
+      var jobs = [], signalData = {};
 
       if (r.sourceStack === null) {  // source and dest stack are the same
 
-        var card = r.destStack.splice(r.card.position - 1, 1)[0];
-        r.destStack.splice(p.destPosition - 1, 0, card);
+        var destStack       = normalizeStack(r.destStack),
+            originalDestMap = toStackMap(destStack),
+            destIdx         = p.destPosition,
+            card            = spliceCard(destStack, r.card.id);
 
-        jobs = fixPositions(r.destStack, originalDestMap);
+        // Reinsert the cardSlot.
+        destStack.splice(p.destPosition, 0, [card]);
 
-        signalData[p.destColumnId] = _.pluck(r.destStack, 'id');
+        // Figure out the work to actually update the db.
+        jobs = fixPositions(destStack, originalDestMap);
 
-      } else {  // DIFFERENT source and destination stacks
+        // Sort out card id mapping to feed to the clients.
+        signalData[p.destColumnId] = toStackMap(destStack);
 
-        var originalSourceMap = _.pluck(r.sourceStack, 'id');
-        var card = r.sourceStack.splice(r.card.position - 1, 1)[0];
-        r.destStack.splice(p.destPosition - 1, 0, card);
+      } else {  // DIFFERENT source and destination stacks (columns)
+
+        var destStack         = normalizeStack(r.destStack),
+            originalDestMap   = toStackMap(destStack),
+            sourceStack       = normalizeStack(r.sourceStack),
+            originalSourceMap = toStackMap(sourceStack),
+            card              = spliceCard(sourceStack, r.card.id),
+            originalColumnId  = card.column;
 
         // set the new column id on the moving card
-        r.destStack[p.destPosition - 1].column = p.destColumnId;
+        card.column = p.destColumnId;
 
-        // remove the moving card from the original mapping
-        originalDestMap = originalDestMap.filter(function(c) {
-          return c.id !== r.card.id;
-        });
+        // Reinsert the cardSlot
+        destStack.splice(p.destPosition, 0, [card]);
 
-        jobs = fixPositions(r.sourceStack, originalSourceMap)
-          .concat(fixPositions(r.destStack, originalDestMap));
+        // Figure out the work to actually update the db.
+        jobs = fixPositions(sourceStack, originalSourceMap)
+          .concat(fixPositions(destStack, originalDestMap));
 
-        signalData[p.destColumnId] = _.pluck(r.destStack, 'id');
-        signalData[r.card.column]  = _.pluck(r.sourceStack, 'id');
+        // Sort out card id mapping to feed to the clients.
+        signalData[p.destColumnId]   = toStackMap(destStack);
+        signalData[originalColumnId] = toStackMap(sourceStack);
       }
 
       async.parallel(jobs, function(err, results) {
@@ -199,21 +269,22 @@ module.exports = {
 
       var jobs = [];
 
-      // Splice out the source card from the source Stack and get saving work
+      // Splice out the source card from the source Stack and get the jobs to save
       // for all cards in the source stack that need positions reordered
+
       r.sourceStack.splice(r.source.position - 1, 1);
       jobs = jobs.concat(fixPositions(r.sourceStack, _.pluck(r.sourceStack, 'id')));
 
       // Resituate the source card
-      r.source.column     = r.dest.column;
-      r.source.position   = r.dest.position;
-      r.source.topOfStack = true;
+      r.source.column    = r.dest.column;
+      r.source.position  = r.dest.position;
+      r.source.topOfPile = true;
       jobs.push(function(cb) { r.source.save(cb); });
 
-      // Flip off other topOfStack flags
+      // Flip off other topOfPile flags
       r.destStackStack.forEach(function(c) {
-        if (c.topOfStack) {
-          c.topOfStack = false;
+        if (c.topOfPile) {
+          c.topOfPile = false;
           jobs.push(function(cb) { c.save(cb); });
         }
       });
@@ -232,6 +303,38 @@ module.exports = {
         res.jsonx(signalData);
 
         redis.boardCombineCards(boardId, signalData);
+      });
+    });
+  },
+
+  // A new card is on top of a pile
+  cardFlip: function(req, res) {
+    var boardId   = req.param('id'),
+        cardId    = req.param('cardId'),
+        columnId  = req.param('columnId'),
+        position  = req.param('position'),
+        condition = {column: columnId, position: position},
+        jobs      = [];
+
+    Card.find(condition).sort({id: 'desc'}).exec(function(err, cards) {
+      if (err) return res.serverError(err);
+
+      cards.forEach(function(card) {
+        if (card.topOfPile && card.id != cardId) {
+          card.topOfPile = false;
+          jobs.push(function(cb) { card.save(cb); });
+        } else if (!card.topOfPile && card.id == cardId) {
+          card.topOfPile = true;
+          jobs.push(function(cb) { card.save(cb); });
+        }
+      });
+
+      async.parallel(jobs, function(err, results) {
+        if (err) return res.serverError(err);
+
+        res.jsonx({cardId: cardId});
+
+        redis.boardFlipCard(boardId, cardId);
       });
     });
   },

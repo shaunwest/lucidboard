@@ -17,9 +17,9 @@ module.exports = {
 
     // only relevant if the card is in a stack, that is, shares the same column and
     // position of another card. When a stack exists, in this case, cards are ordered
-    // from lowest id to greatest id, and the last card or the one with topOfStack as
+    // from lowest id to greatest id, and the last card or the one with topOfPile as
     // true is on top.
-    topOfStack: {
+    topOfPile: {
       type:       'boolean',
       defaultsTo: false
     },
@@ -39,7 +39,7 @@ module.exports = {
         creator:    this.creator,
         content:    this.content,
         position:   this.position,
-        topOfStack: this.topOfStack,
+        topOfPile:  this.topOfPile,
         column:     this.column,
         votes:      this.votes
       };
