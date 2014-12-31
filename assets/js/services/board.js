@@ -152,10 +152,11 @@
 
         card: function(id) {
           id = parseInt(id);
-          var allSlots = _.flatten(_.pluck(board.columns, 'cardSlots'));
-          for (var i in allSlots) {
-            if (allSlots[i].id === id) {
-              return allSlots[i];
+          var allCards = _.flatten(_.pluck(board.columns, 'cardSlots'));
+          console.log('allCards', allCards);
+          for (var i in allCards) {
+            if (allCards[i].id === id) {
+              return allCards[i];
             }
           }
           throw 'Failed to find card id ' + id;
@@ -186,7 +187,7 @@
 
         cardCreate: function(card) {
           var column = this.column(card.column);
-          column.cardSlots.push(card);
+          column.cardSlots.push([card]);
           parseCards();
         },
 
@@ -222,6 +223,7 @@
             cardStacks[columnId] = [];
 
             // make a new array to replace, renumbering positions as we go
+            console.log('uh', info[columnId]);
             info[columnId].forEach(function(slotInfo) {
               var slot = [];
               slotInfo.forEach(function(cardId) {
@@ -251,10 +253,16 @@
         },
 
         combineCards: function(info) {
-          var newCard   = info.card,
-              sourceMap = info.sourceMap,
-              remap     = {},
-              card;
+          var newCard    = info.card,
+              sourceMap  = info.sourceMap,
+              destColumn = this.column(newCard.column),
+              card       = this.card(newCard.id),
+              remap      = {};
+
+          // Grab the actual, live card, corresponding to the source. Update some things.
+          card.column    = newCard.column;
+          card.position  = newCard.position;
+          card.topOfPile = newCard.topOfPile;
 
           // Reorder the source column
           remap[newCard.column] = sourceMap;
@@ -263,17 +271,15 @@
           // If topOfPile is coming down flipped on, make sure the others in the
           // relevant pile are flipped off.
           if (newCard.topOfPile) {
-            this.column(newCard.column).cardSlots.forEach(function(s) {
+            destColumn.cardSlots.forEach(function(s) {
               if (!s.length || s[0].position !== newCard.position) return;
               s.forEach(function(c) { c.topOfPile = false; });
             });
           }
 
-          // Grab the actual, live card, corresponding to the source. Update some things.
-          card           = this.card(newCard.id);
-          card.column    = newCard.column;
-          card.position  = newCard.position;
-          card.topOfPile = newCard.topOfPile;
+          // Add the card to the target slot!
+          console.log('cardSlots', destColumn.cardSlots);
+          destColumn.cardSlots[newCard.position - 1].push(card);
         },
 
         flipCard: function(cardId) {

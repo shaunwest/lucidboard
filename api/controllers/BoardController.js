@@ -267,13 +267,10 @@ module.exports = {
     }, function(err, r) {
       if (err) return res.serverError(err);
 
-      var jobs = [];
-
-      // Splice out the source card from the source Stack and get the jobs to save
-      // for all cards in the source stack that need positions reordered
-
-      r.sourceStack.splice(r.source.position - 1, 1);
-      jobs = jobs.concat(fixPositions(r.sourceStack, _.pluck(r.sourceStack, 'id')));
+      var sourceStack       = normalizeStack(r.sourceStack),
+          originalSourceMap = toStackMap(sourceStack),
+          card              = spliceCard(sourceStack, r.source.id),
+          jobs              = fixPositions(sourceStack, originalSourceMap);
 
       // Resituate the source card
       r.source.column    = r.dest.column;
@@ -294,10 +291,7 @@ module.exports = {
 
         var signalData = {
           card:      r.source,
-          sourceMap: _.pluck(r.sourceStack, 'id'),
-          // sourceCardId:   r.source.id,
-          // sourceColumnId: r.source.column,
-          // destCard:       r.dest
+          sourceMap: toStackMap(sourceStack),
         };
 
         res.jsonx(signalData);
