@@ -10,6 +10,13 @@
     margin-bottom: 1.5em;
 }
 
+.y-list-mbz {
+    @extend .y-list;
+    li {
+        margin-bottom: 0;
+    }
+}
+
 // Use for lists you wish to make horizontal
 .x-list {
   @extend .y-list;
