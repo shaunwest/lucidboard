@@ -18,3 +18,4 @@ Adam's List:
 - Fix moveCard routine. I think piles broke it.
 - forward()/back() frontend/backend things for piles.
 - numbers on the cards and columns preceding the text?
+- way to delete boards? columns?
