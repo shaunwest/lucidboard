@@ -1,3 +1,6 @@
+<!--
+<a href="" ng-click="debugBoard()">showme board</a>
+-->
 <div class="board-info">
     <div data-ng-show="showTimerForm">
         <label for="timerMinutesInput">Minutes
@@ -63,12 +66,12 @@
                 <li>
                     <h3 class="delta column-title" data-editable-text="column.title" data-buttons="no"
                         onbeforesave="checkColumnTitle($data, column.id)">
-                        {{column.title}}
+                        {{column.id}} - {{column.title}}
                     </h3>
                 </li>
                     <div class="cardjunction top"
                         data-ng-class="{active:cardDragging}"
-                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 0)">
+                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 1)">
                     </div>
                 </li>
                 <li>
@@ -77,7 +80,7 @@
                     </card-slot>
                     <div data-ng-repeat-end class="cardjunction"
                         data-ng-class="{active:cardDragging}"
-                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, slot[0].position)">
+                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, slot[0].position + 1)">
                         <!-- deleteme, pls
                         slot.id === $data.id ? slot.position : slot.position + 1)">
                         -->

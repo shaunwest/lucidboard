@@ -22,10 +22,18 @@
           };
 
           $scope.moveCard = function($event, $data, array, destColumnId, position) {
+            alert('is this even being used??');
+            return;
+            // TODO: I'm going to need something like this ....
+            var extra = 0;
+            if ($data.column === $scope.column.id && position > $data.position) {
+              extra = 1;
+            }
+
             api.boardMoveCard(board.id(), {
               cardId:       $data.id,
               destColumnId: destColumnId,
-              destPosition: position
+              destPosition: position - extra
             });
           };
 
@@ -36,9 +44,10 @@
             });
           };
 
+          // old news...
           // This directive is used without a card to create a junction where cards can
           // be dropped. The rest of this function is not needed in this case.
-          if (!$scope.card) return;
+          // if (!$scope.card) return;
 
           $scope.checkCardContent = function(content, columnId, id) {
             api.cardUpdate(board.id(), columnId, {id: id, content: content});

@@ -68,8 +68,8 @@ module.exports = {
     // When a redis event comes in that the client has subscribed to,
     // forward it along over the websocket.
     socket.redis.on('message', function(channel, message) {
-      console.log('redis->socket[' + socket.handshake.sessionID + '] ' +
-        channel + ': ' + message);
+      // console.log('redis->socket[' + socket.handshake.sessionID + '] ' +
+      //   channel + ': ' + message);
       socket.emit(channel, JSON.parse(message));
     });
   },

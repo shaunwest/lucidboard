@@ -28,28 +28,35 @@
         // Per column, cards are sorted by position, but if a position value
         // is shared, the cards are stacked with an order of the id, ascending.
         for (var i=0; i<board.columns.length; i++) {
-          var j, buffer = [],
-            origlist = _.sortBy(_.sortBy(board.columns[i].cards, 'id'), 'position');
-
-          delete board.columns[i].cards;  // we'll use cardSlots instead.
-
-          board.columns[i].cardSlots = [];
-
-          // Group piles into arrays
-          var maybeLoadSlot = function(curCard) {
-            if (buffer.length && (!curCard || curCard.position != buffer[0].position)) {
-              board.columns[i].cardSlots.push(buffer);
-              buffer = [];
-            }
-          };
-
-          for (j=0; j<origlist.length; j++) {
-            maybeLoadSlot(origlist[j]);
-            buffer.push(origlist[j]);
-          }
-
-          maybeLoadSlot();  // but surely!
+          board.columns[i] = fixColumn(board.columns[i]);
         }
+      };
+
+      var fixColumn = function(column) {
+        var j,
+            buffer   = [],
+            origlist = _.sortBy(_.sortBy(column.cards, 'id'), 'position');
+
+        // We'll use cardSlots instead.
+        delete column.cards;
+        column.cardSlots = [];
+
+        // Group piles into arrays
+        var maybeLoadSlot = function(curCard) {
+          if (buffer.length && (!curCard || curCard.position != buffer[0].position)) {
+            column.cardSlots.push(buffer);
+            buffer = [];
+          }
+        };
+
+        for (j=0; j<origlist.length; j++) {
+          maybeLoadSlot(origlist[j]);
+          buffer.push(origlist[j]);
+        }
+
+        maybeLoadSlot();  // but surely!
+
+        return column;
       };
 
       var figureVotesRemaining = function() {
@@ -153,7 +160,6 @@
         card: function(id) {
           id = parseInt(id);
           var allCards = _.flatten(_.pluck(board.columns, 'cardSlots'));
-          console.log('allCards', allCards);
           for (var i in allCards) {
             if (allCards[i].id === id) {
               return allCards[i];
@@ -174,7 +180,7 @@
         },
 
         columnCreate: function(_column) {
-          board.columns.push(_column);
+          board.columns.push(fixColumn(_column));
         },
 
         columnUpdate: function(_column) {
@@ -223,7 +229,6 @@
             cardStacks[columnId] = [];
 
             // make a new array to replace, renumbering positions as we go
-            console.log('uh', info[columnId]);
             info[columnId].forEach(function(slotInfo) {
               var slot = [];
               slotInfo.forEach(function(cardId) {
@@ -253,33 +258,35 @@
         },
 
         combineCards: function(info) {
-          var newCard    = info.card,
-              sourceMap  = info.sourceMap,
-              destColumn = this.column(newCard.column),
-              card       = this.card(newCard.id),
-              remap      = {};
+          var cardInfo       = info.card,
+              sourceMap      = info.sourceMap,
+              sourceColumnId = info.sourceColumnId,
+              destColumn     = this.column(cardInfo.column),
+              card           = this.card(cardInfo.id),
+              remap          = {};
 
-          // Grab the actual, live card, corresponding to the source. Update some things.
-          card.column    = newCard.column;
-          card.position  = newCard.position;
-          card.topOfPile = newCard.topOfPile;
-
-          // Reorder the source column
-          remap[newCard.column] = sourceMap;
+          // Reorder the source column, removing the the dragged card if it's there
+          remap[sourceColumnId] = sourceMap.map(function(s) {
+            return s.filter(function(id) { return id != card.id; });
+          });
           this.rebuildColumn(remap);
 
           // If topOfPile is coming down flipped on, make sure the others in the
           // relevant pile are flipped off.
-          if (newCard.topOfPile) {
+          if (cardInfo.topOfPile) {
             destColumn.cardSlots.forEach(function(s) {
-              if (!s.length || s[0].position !== newCard.position) return;
+              if (!s.length || s[0].position !== cardInfo.position) return;
               s.forEach(function(c) { c.topOfPile = false; });
             });
           }
 
+          // Update some things on the live card.
+          card.column    = cardInfo.column;
+          card.position  = cardInfo.position;
+          card.topOfPile = cardInfo.topOfPile;
+
           // Add the card to the target slot!
-          console.log('cardSlots', destColumn.cardSlots);
-          destColumn.cardSlots[newCard.position - 1].push(card);
+          destColumn.cardSlots[card.position - 1].push(card);
         },
 
         flipCard: function(cardId) {

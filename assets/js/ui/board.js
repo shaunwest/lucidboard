@@ -70,6 +70,10 @@
         board.flipCard(cardId);
       }).hook($scope);
 
+      // $scope.debugBoard = function() {
+      //   console.log(board.obj());
+      // };
+
       /*
       openEditor = function(bits) {
         console.log('opening', bits);
@@ -165,10 +169,15 @@
       });
 
       $scope.moveCard = function($event, $data, array, destColumnId, position) {
+        var extra = 0;
+        if ($data.column === destColumnId && position > $data.position) {
+          extra = 1;
+        }
+
         api.boardMoveCard(board.id(), {
           cardId:       $data.id,
           destColumnId: destColumnId,
-          destPosition: position
+          destPosition: position - extra
         });
       };
     }]);

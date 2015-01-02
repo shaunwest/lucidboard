@@ -202,7 +202,7 @@ module.exports = {
             card            = spliceCard(destStack, r.card.id);
 
         // Reinsert the cardSlot.
-        destStack.splice(p.destPosition, 0, [card]);
+        destStack.splice(p.destPosition - 1, 0, [card]);
 
         // Figure out the work to actually update the db.
         jobs = fixPositions(destStack, originalDestMap);
@@ -223,7 +223,7 @@ module.exports = {
         card.column = p.destColumnId;
 
         // Reinsert the cardSlot
-        destStack.splice(p.destPosition, 0, [card]);
+        destStack.splice(p.destPosition - 1, 0, [card]);
 
         // Figure out the work to actually update the db.
         jobs = fixPositions(sourceStack, originalSourceMap)
@@ -267,10 +267,25 @@ module.exports = {
     }, function(err, r) {
       if (err) return res.serverError(err);
 
-      var sourceStack       = normalizeStack(r.sourceStack),
+      var sourceColumnId    = r.source.column,
+          sourcePosition    = r.source.position,
+          sourceStack       = normalizeStack(r.sourceStack),
           originalSourceMap = toStackMap(sourceStack),
+          sourceIsFromPile  = sourceStack[sourcePosition - 1].length > 1,
           card              = spliceCard(sourceStack, r.source.id),
-          jobs              = fixPositions(sourceStack, originalSourceMap);
+          jobs              = fixPositions(sourceStack, originalSourceMap),
+          destPosition;
+
+      // If we're joining a higher card with a lower card on the same stack, then the
+      // desired position will have reduced by one once we eliminate the slot that the
+      // source card is currently inhabiting. We'll need to adjust the destination
+      // position accordingly.
+      if (sourceColumnId === r.dest.column  // same column,
+       && sourcePosition < r.dest.position  // dragged card is above lower one
+       && !sourceIsFromPile)                // source card didn't come from a pile
+      {
+        r.dest.position--;
+      }
 
       // Resituate the source card
       r.source.column    = r.dest.column;
@@ -286,12 +301,19 @@ module.exports = {
         }
       });
 
+      // if (sourceColumnId == r.dest.column && sourcePosition < r.dest.position) {
+      if (sourceColumnId == r.dest.column) {
+        var extra = sourcePosition < r.dest.position ? 1 : 0;
+        sourceStack[r.dest.position - 1 - extra].push(r.source);
+      }
+
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
         var signalData = {
-          card:      r.source,
-          sourceMap: toStackMap(sourceStack),
+          card:           r.source,
+          sourceMap:      toStackMap(sourceStack),
+          sourceColumnId: sourceColumnId
         };
 
         res.jsonx(signalData);
