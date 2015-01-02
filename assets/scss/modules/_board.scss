@@ -115,10 +115,17 @@
     padding: 0;
 }
 
-.card .handle {
+.handle {
     font-size: small;
     float: right;
     margin: 0;
+    color: #575757;
+    fill: #575757;
+    transition: all 0.2s ease-in;
+    &:hover {
+        color: $link-color;
+        fill: $link-color;
+    }
 }
 
 .card .attached-cards {
@@ -164,8 +171,6 @@
     border: 0.125em dashed #ccc;
     margin-top: 0.375em;
     margin-bottom: 0.375em;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
