@@ -86,6 +86,7 @@
 }
 
 .panel-board-settings {
+    @include clearfix;
     background: #fff;
     @include span(12 of 12 omega);
     padding: 1em;
@@ -193,7 +194,7 @@
         background-size: 2em 1em;
         background-position: center;
         padding: 0.75em;
-        background-color: rgb(255, 155, 0);
+        background-color: #bbbbbb;
     }
     .btn-primary {
         @extend .btn-default;
@@ -218,6 +219,7 @@
 
 .editable-controls, .editable-wrap {
     width: 100%;
+    margin-bottom: 1em;
 }
 
 .trash {
