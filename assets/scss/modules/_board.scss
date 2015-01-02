@@ -16,7 +16,12 @@
 
 .board-info {
     @include clearfix;
-    float: right;
+    float: left;
+    margin-top: 1em;
+    @media (min-width: 63em) {
+        float: right;
+        margin-top: 0;
+    }
 }
 
 .tabs {
@@ -30,9 +35,6 @@
     li {
         float: left;
         width: 100%;
-        &:last-child {
-            border-right: 0;
-        }
         @media (min-width: 40em) {
             float: left;
             width: auto;
@@ -43,15 +45,11 @@
         font-weight: bold;
         display: block;
         outline: none;
-        -webkit-transition: all 0.3s ease-in-out;
-        -moz-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
         color: $font-body-color;
         &:hover {
             color: $link-color;
             path {
-                -webkit-transition: all 0.3s ease-in-out;
-                -moz-transition: all 0.3s ease-in-out;
                 transition: all 0.3s ease-in-out;
                 fill: $link-color;
             }
