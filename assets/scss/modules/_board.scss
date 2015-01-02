@@ -232,3 +232,16 @@
     float: left;
     margin-right: 0.25em;
 }
+
+.card-pile-panel {
+    @include clearfix;
+    background: $link-color;
+    color: $white;
+    a {
+        color: $white;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    text-align: center;
+}
