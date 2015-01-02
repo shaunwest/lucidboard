@@ -10,6 +10,7 @@
     padding: 0.5em 1em;
     transition: background 500ms;
     text-align: center;
+    text-decoration: none;
     &:hover {
         background: lighten(#15A62C, 6%);
         color: $white;

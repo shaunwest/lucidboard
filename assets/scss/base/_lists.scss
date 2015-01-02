@@ -20,6 +20,10 @@
   }
 }
 
+.x-list > li {
+    margin-bottom: 0;
+}
+
 .y-list-color {
     @include clearfix;
     @extend .y-list;
