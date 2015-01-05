@@ -92,14 +92,6 @@
     </div>
 </div>
 <div data-ng-show="currentTab === 'settings'" class="panel-board-settings">
-    <div data-ng-show="b.id" class="board-info">
-      <a href="/boards/{{b.id}}/export/csv">
-          <svg class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="32" viewBox="0 0 24 32">
-              <path d="M14 0h-14v32h24v-22.002l-10-9.998zM4 28v-24h8v8h8v16h-16z" fill="#0C73E8"></path>
-          </svg>
-          Export to CSV
-      </a>
-    </div>
     <board-settings class="panel-board-settings-half" board="board"></board-settings>
 </div>
 <div data-ng-show="currentTab === 'columns'" class="panel-board-settings">
