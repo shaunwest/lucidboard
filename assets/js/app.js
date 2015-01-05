@@ -10,7 +10,11 @@
       'angular-lodash/utils/pluck',
       'angular-lodash/utils/flatten',
       'angular-lodash/utils/sortBy',
-    ]).config(['$stateProvider', 'appStateDefaults', '$urlRouterProvider', 'routes', 'localStorageServiceProvider',
+    ]).config(['$stateProvider',
+      'appStateDefaults',
+      '$urlRouterProvider',
+      'routes',
+      'localStorageServiceProvider',
       function($stateProvider, appStateDefaults, $urlRouterProvider, routes, localStorageServiceProvider) {
 
         localStorageServiceProvider.setPrefix('niftyboard');
@@ -64,7 +68,11 @@
       }
     ]);
 
-  angular.module('hansei.ui', ['hansei.services', 'xeditable', 'ang-drag-drop'])
+  angular.module('hansei.ui', [
+      'hansei.services',
+      'xeditable',
+      'ang-drag-drop',
+      'ng-context-menu'])
 
   .run(['editableOptions', function(editableOptions) {
     editableOptions.theme = 'bs3';

@@ -155,10 +155,10 @@
 
       // --- BEGIN drag-drop stuff
 
-      $rootScope.$watch('cardDragging', function(newVal, oldVal) {
-        // console.log('a', a);
-        // console.log('b', b);
-      });
+      // $rootScope.$watch('cardDragging', function(newVal, oldVal) {
+      //   console.log('a', a);
+      //   console.log('b', b);
+      // });
 
       $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
         $rootScope.cardDragging = true;

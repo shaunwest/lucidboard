@@ -19,3 +19,6 @@
 @import "modules/state";
 @import "modules/animations";
 @import "modules/board";
+
+.dropdown { display: none; position: fixed; background-color: #eee; padding: 0.8em; }
+.open { display: block; }

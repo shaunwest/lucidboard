@@ -98,6 +98,10 @@
     data-ng-class="{dropready:cardDragging}"
     data-ui-on-drop="moveCard($event, $data, board.trash().cardSlots, board.trash().id,
     board.nextPositionByColumnId(board.trash().id))">
+    <div class="cardjunction top"
+        data-ng-class="{active:cardDragging}"
+        data-ui-on-drop="moveCard($event, $data, column.cardSlots, column.id, 1)">
+    </div>
     <card-slot data-ng-repeat-start="slot in board.trash().cardSlots track by $index"
         board="board" item="slot" column="board.trash()" index="$index">
     </card-slot>

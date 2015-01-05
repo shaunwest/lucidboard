@@ -36,6 +36,7 @@ var jsFilesToInject = [
   'bower_components/angular-lodash/angular-lodash.js',
   'bower_components/angular-xeditable/dist/js/xeditable.js',
   'bower_components/angular-native-dragdrop/draganddrop.js',
+  'bower_components/ng-context-menu/dist/ng-context-menu.min.js',
   'bower_components/velocity/velocity.js',
   'js/dependencies/**/*.js',
 

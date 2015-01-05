@@ -16,25 +16,11 @@
 
           $scope.user = user;
 
+          $scope.onShow = function() { console.log('srsly'); };
+
           $scope.dropSuccessHandler = function($event) {
             // console.log('array', $scope.index, $scope.column.cards);
             // array.splice(index, 1);
-          };
-
-          $scope.moveCard = function($event, $data, array, destColumnId, position) {
-            alert('is this even being used??');
-            return;
-            // TODO: I'm going to need something like this ....
-            var extra = 0;
-            if ($data.column === $scope.column.id && position > $data.position) {
-              extra = 1;
-            }
-
-            api.boardMoveCard(board.id(), {
-              cardId:       $data.id,
-              destColumnId: destColumnId,
-              destPosition: position - extra
-            });
           };
 
           $scope.combineCards = function($event, $data, destCardId) {
@@ -62,9 +48,17 @@
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
 
-          $scope.$watch('cardDragging', function(a) {
-            // console.log('YAYY', a);
-          });
+          // $scope.$watch('cardDragging', function(a) {
+          //   console.log('YAYY', a);
+          // });
+
+          $scope.moveTo = function(column, card) {
+            api.boardMoveCard(board.id(), {
+              cardId:       card.id,
+              destColumnId: column.id,
+              destPosition: column.cardSlots.length + 1
+            });
+          };
         }],
       };
     }])

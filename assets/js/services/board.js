@@ -123,7 +123,6 @@
 
         id:             function() { return board.id; },
         title:          function() { return board.title; },
-        columns:        function() { return board.columns.slice(1); },
         trash:          function() { return board.columns[0]; },
         allColumns:     function() { return board.columns; },
 
@@ -148,6 +147,20 @@
           if (!column.cardSlots.length) return 1;
 
           return column.cardSlots[column.cardSlots.length - 1].position + 1;
+        },
+
+        columns: function(o) {
+          var ret = board.columns.slice(1);
+
+          if (o && o.withTrash) {
+            ret.push(board.columns.slice(0, 1)[0]);
+          }
+
+          if (o && o.excludingId) {
+            ret = ret.filter(function(c) { return c.id !== o.excludingId; });
+          }
+
+          return ret;
         },
 
         column: function(id) {
