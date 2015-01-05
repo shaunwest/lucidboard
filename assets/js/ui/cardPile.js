@@ -14,7 +14,6 @@
 
           // Calculate the total number of votes for the pile
           $scope.votes = 0;
-          console.log('pile',$scope.pile);
           $scope.pile.forEach(function(c) {
             $scope.votes += c.votes.length;
           });

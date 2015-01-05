@@ -20,7 +20,7 @@ var normalizeStack = function(stack) {
     buffer.push(card);
   });
 
-  ret.push(buffer);
+  if (buffer.length) ret.push(buffer);
 
   return ret;
 };

@@ -168,9 +168,15 @@
         $rootScope.cardDragging = false;
       });
 
-      $scope.moveCard = function($event, $data, array, destColumnId, position) {
+      $scope.moveCard = function($event, $data, cardSlots, destColumnId, position) {
+
         var extra = 0;
-        if ($data.column === destColumnId && position > $data.position) {
+
+        if (
+          $data.column === destColumnId &&             // same source & destination columns
+          position > $data.position     &&             // source occurs higher than destination
+          cardSlots[$data.position - 1].length === 1)  // source was not a [multi-card] pile
+        {
           extra = 1;
         }
 

@@ -69,7 +69,7 @@
                 </li>
                     <div class="cardjunction top"
                         data-ng-class="{active:cardDragging}"
-                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, 1)">
+                        data-ui-on-drop="moveCard($event, $data, column.cardSlots, column.id, 1)">
                     </div>
                 </li>
                 <li>
@@ -78,7 +78,7 @@
                     </card-slot>
                     <div data-ng-repeat-end class="cardjunction"
                         data-ng-class="{active:cardDragging}"
-                        data-ui-on-drop="moveCard($event, $data, column.cards, column.id, slot[0].position + 1)">
+                        data-ui-on-drop="moveCard($event, $data, column.cardSlots, column.id, slot[0].position + 1)">
                         <!-- deleteme, pls
                         slot.id === $data.id ? slot.position : slot.position + 1)">
                         -->
