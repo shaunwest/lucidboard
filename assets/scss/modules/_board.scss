@@ -16,7 +16,12 @@
 
 .board-info {
     @include clearfix;
-    float: right;
+    float: left;
+    margin-top: 1em;
+    @media (min-width: 63em) {
+        float: right;
+        margin-top: 0;
+    }
 }
 
 .tabs {
@@ -30,9 +35,6 @@
     li {
         float: left;
         width: 100%;
-        &:last-child {
-            border-right: 0;
-        }
         @media (min-width: 40em) {
             float: left;
             width: auto;
@@ -43,15 +45,11 @@
         font-weight: bold;
         display: block;
         outline: none;
-        -webkit-transition: all 0.3s ease-in-out;
-        -moz-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
         color: $font-body-color;
         &:hover {
             color: $link-color;
             path {
-                -webkit-transition: all 0.3s ease-in-out;
-                -moz-transition: all 0.3s ease-in-out;
                 transition: all 0.3s ease-in-out;
                 fill: $link-color;
             }
@@ -88,6 +86,7 @@
 }
 
 .panel-board-settings {
+    @include clearfix;
     background: #fff;
     @include span(12 of 12 omega);
     padding: 1em;
@@ -116,10 +115,17 @@
     padding: 0;
 }
 
-.card .handle {
+.handle {
     font-size: small;
     float: right;
     margin: 0;
+    color: #575757;
+    fill: #575757;
+    transition: all 0.2s ease-in;
+    &:hover {
+        color: $link-color;
+        fill: $link-color;
+    }
 }
 
 .card .attached-cards {
@@ -165,8 +171,6 @@
     border: 0.125em dashed #ccc;
     margin-top: 0.375em;
     margin-bottom: 0.375em;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
@@ -195,7 +199,7 @@
         background-size: 2em 1em;
         background-position: center;
         padding: 0.75em;
-        background-color: rgb(255, 155, 0);
+        background-color: #bbbbbb;
     }
     .btn-primary {
         @extend .btn-default;
@@ -220,6 +224,7 @@
 
 .editable-controls, .editable-wrap {
     width: 100%;
+    margin-bottom: 1em;
 }
 
 .trash {
