@@ -62,3 +62,54 @@
         }
     }
 }
+
+// Use for tabbed list
+.board-tabs {
+    padding-bottom: 0.5em;
+    padding-left: 0;
+    display: table;
+    margin-bottom: 1.5em;
+    width: 100%;
+    list-style: none;
+    border-bottom: 0.0625em solid $font-body-color;
+    li {
+        @media (min-width: 40em) {
+            display: inline-block;
+            margin-right: 1.5em;
+            .board-tab-full {
+                margin-top: 0.5em;
+                float: left;
+                width: 100%;
+                margin-right: 0;
+            }
+            .btn {
+                margin-top: 0.5em;
+            }
+        }
+    }
+    a {
+        font-weight: bold;
+        display: block;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+        color: $font-body-color;
+        &:hover {
+            color: $link-color;
+            path {
+                transition: all 0.3s ease-in-out;
+                fill: $link-color;
+            }
+        }
+        path {
+            &:hover {
+                fill: $link-color;
+            }
+        }
+    }
+    .active {
+        color: $link-color;
+        .icon-left path {
+            fill: $link-color;
+        }
+    }
+}
