@@ -1,31 +1,62 @@
 (function() {
   'use strict';
 
-  angular.module('hansei.routes', ['ui.router']);
-
-  angular.module('hansei.services', [
-      'hansei.routes',
-      'ngSails',
-      'LocalStorageModule',
-      'angular-lodash/utils/pluck',
-      'angular-lodash/utils/flatten',
-      'angular-lodash/utils/sortBy',
-    ]).config(['$stateProvider',
+  // ROUTING
+  angular.module('hansei.routes', [
+      'ui.router',
+      'LocalStorageModule'
+    ])
+    .config([
+      '$stateProvider',
       'appStateDefaults',
       '$urlRouterProvider',
       'routes',
       'localStorageServiceProvider',
-      function($stateProvider, appStateDefaults, $urlRouterProvider, routes, localStorageServiceProvider) {
+      function($stateProvider,
+               appStateDefaults,
+               $urlRouterProvider,
+               routes,
+               localStorageServiceProvider) {
 
         localStorageServiceProvider.setPrefix('niftyboard');
 
         angular.forEach(routes, function(stateConfig, key) {
-          var appState = angular.extend(angular.copy(appStateDefaults), stateConfig);
-          $stateProvider.state(key, appState);
+          $stateProvider
+            .state(key, angular.extend(angular.copy(appStateDefaults), stateConfig));
         });
 
         $urlRouterProvider.otherwise('/');
       }
+    ])
+    .run(['$rootScope', '$state', function($rootScope, $state) {
+      // Monitor state change errors and route accordingly
+      $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
+        switch(rejection) {
+          case 'not_logged_in':
+            $state.go('signin');
+            break;
+          case 'skip_splash':
+            $state.go('boards');
+            break;
+        }
+      });
+
+      // Useful variables can be set in each route. Put them on $rootScope
+      // so they can be accessed in templates.
+      $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+        $rootScope.headerUrl = toState.headerUrl;
+        $rootScope.footerUrl = toState.footerUrl;
+      });
+    }]);
+
+
+  // SERVICES
+  angular.module('hansei.services', [
+      'hansei.routes',
+      'ngSails',
+      'angular-lodash/utils/pluck',
+      'angular-lodash/utils/flatten',
+      'angular-lodash/utils/sortBy',
     ])
 
     .run(['$rootScope', '$sails', '$state', 'user', 'api',
@@ -46,23 +77,6 @@
           user.initialRefreshToken();
         }
 
-        $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
-          switch(rejection) {
-            case 'not_logged_in':
-              $state.go('signin');
-              break;
-            case 'skip_splash':
-              $state.go('boards');
-              break;
-          }
-        });
-
-        // Adds special app state values to $rootScope
-        $rootScope.$on('$stateChangeSuccess', function(event, toState) {
-          $rootScope.headerUrl = toState.headerUrl;
-          $rootScope.footerUrl = toState.footerUrl;
-        });
-
         $sails.on('reconnect', function() {
           initialSetup();
           api.resubscribe();
@@ -72,33 +86,30 @@
       }
     ]);
 
+
+  // USER INTERFACE
   angular.module('hansei.ui', [
       'hansei.services',
       'xeditable',
       'ang-drag-drop',
       'ng-context-menu'])
 
-  .run(['editableOptions', function(editableOptions) {
-    editableOptions.theme = 'bs3';
-  }])
+    .run(['editableOptions', function(editableOptions) {
+      editableOptions.theme = 'bs3';
+    }])
 
-  .run(['$rootScope', '$state', 'user', function($rootScope, $state, user) {
-    $rootScope.signout = function($event) {
-      $event.preventDefault();
-      user.signout();
-      $state.go('signin');
-    };
-
-    /*if(user.token()) {
-      $cookieStore.put('signedIn', true);
-      $state.go('boards');
-    }*/
-  }]);
-
-  angular.module('hansei', ['hansei.ui'])
-    .config(['$locationProvider', function($locationProvider) {
-      $locationProvider
-        .html5Mode({enabled: true, requireBase: false})
-        .hashPrefix('!');
+    .run(['$rootScope', '$state', 'user', function($rootScope, $state, user) {
+      $rootScope.signout = function($event) {
+        $event.preventDefault();
+        user.signout();
+        $state.go('signin');
+      };
     }]);
+
+    angular.module('hansei', ['hansei.ui'])
+      .config(['$locationProvider', function($locationProvider) {
+        $locationProvider
+          .html5Mode({enabled: true, requireBase: false})
+          .hashPrefix('!');
+      }]);
 })();

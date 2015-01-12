@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('hansei.ui')
     .directive('cardPile', [function() {
       return {
@@ -66,7 +68,7 @@
 
           $scope.getTopCard = getTopCard;
 
-        }],
+        }]
       };
     }])
 })();

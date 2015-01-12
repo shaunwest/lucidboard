@@ -1,4 +1,5 @@
 (function() {
+  'use strict';
   angular.module('hansei.ui')
     .directive('cardSlot', [function() {
       return {
@@ -11,5 +12,5 @@
           index:  '='
         }
       };
-    }])
+    }]);
 })();

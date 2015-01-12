@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('hansei.ui')
     .directive('card', [function() {
       return {
@@ -59,7 +61,7 @@
               destPosition: column.cardSlots.length + 1
             });
           };
-        }],
+        }]
       };
     }])
 })();
