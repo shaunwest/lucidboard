@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('hansei.ui')
     .directive('boardSettings', [function() {
       return {
