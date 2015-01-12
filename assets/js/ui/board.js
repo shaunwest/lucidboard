@@ -168,23 +168,37 @@
         $rootScope.cardDragging = false;
       });
 
-      $scope.moveCard = function($event, $data, cardSlots, destColumnId, position) {
+      $scope.moveSlot = function($event, $data, cardSlots, destColumnId, position) {
 
-        var extra = 0;
+        console.log('arguments', arguments);
 
-        if (
-          $data.column === destColumnId &&             // same source & destination columns
-          position > $data.position     &&             // source occurs higher than destination
-          cardSlots[$data.position - 1].length === 1)  // source was not a [multi-card] pile
-        {
-          extra = 1;
+        if ($data.pile) {
+
+          api.boardMovePile(board.id(), {
+            sourceColumnId: $data.sourceColumnId,
+            sourcePosition: $data.sourcePosition,
+            destColumnId:   destColumnId,
+            destPosition:   position
+          });
+
+        } else {  // we're just moving a single card
+
+          var extra = 0;
+
+          if (
+            $data.column === destColumnId &&             // same source & destination columns
+            position > $data.position     &&             // source occurs higher than destination
+            cardSlots[$data.position - 1].length === 1)  // source was not a [multi-card] pile
+          {
+            extra = 1;
+          }
+
+          api.boardMoveCard(board.id(), {
+            cardId:       $data.id,
+            destColumnId: destColumnId,
+            destPosition: position - extra
+          });
         }
-
-        api.boardMoveCard(board.id(), {
-          cardId:       $data.id,
-          destColumnId: destColumnId,
-          destPosition: position - extra
-        });
       };
     }]);
 })();

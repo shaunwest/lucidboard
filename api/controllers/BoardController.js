@@ -239,7 +239,74 @@ module.exports = {
 
         res.jsonx(signalData);
 
-        redis.boardMoveCard(boardId, signalData);
+        redis.boardMoveCards(boardId, signalData);
+      });
+
+    });
+
+  },
+
+  movePile: function(req, res) {
+    var boardId = req.param('id');
+
+    var p = {
+      sourceColumnId: req.param('sourceColumnId'),
+      sourcePosition: req.param('sourcePosition'),
+      destColumnId:   req.param('destColumnId'),
+      destPosition:   req.param('destPosition')
+    };
+    console.log('movePile p', p);
+
+    // FIXME omg security
+    // FIXME handle position fields better? (source column)
+
+    async.auto({
+      sourceStack: function(cb) {
+        Card.find({column: p.sourceColumnId}).sort({position: 'asc'}).exec(cb);
+      },
+      destStack: function(cb) {
+        if (p.sourceColumnId === p.destColumnId) return cb(null, null);
+        Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
+      }
+    }, function(err, r) {
+      if (err)                                                 return res.serverError(err);
+      if (!r.sourceStack)                                      return res.notFound();
+      if (p.sourceColumnId !== p.destColumnId && !r.destStack) return res.notFound();
+
+      var sourceStack       = normalizeStack(r.sourceStack),
+          originalSourceMap = toStackMap(sourceStack),
+          destStack         = r.destStack ? normalizeStack(r.destStack) : null,
+          originalDestMap   = r.destStack ? toStackMap(destStack) : null,
+          pile              = sourceStack.splice(p.sourcePosition - 1, 1)[0],
+          extra             = (p.sourcePosition < p.destPosition && !destStack) ? 1 : 0,
+          jobs              = [],
+          signalData        = {};
+
+      // Set the new column id on the moving cards
+      pile.forEach(function(card) {
+        card.column   = p.destColumnId;
+        card.position = p.destPosition;
+        jobs.push(function(cb) { card.save(cb); });
+      });
+
+      // Splice in the pile to the destination
+      (destStack || sourceStack).splice(p.destPosition - 1 - extra, 0, pile);
+
+      // Figure out the work to actually update the db.
+      jobs = fixPositions(sourceStack, originalSourceMap)
+        .concat(destStack ? fixPositions(destStack, originalDestMap) : []);
+
+      // Sort out card id mapping to feed to the clients.
+      signalData[p.sourceColumnId] = toStackMap(sourceStack);
+
+      if (destStack) signalData[p.destColumnId] = toStackMap(destStack);
+
+      async.parallel(jobs, function(err, results) {
+        if (err) return res.serverError(err);
+
+        res.jsonx(signalData);
+
+        redis.boardMoveCards(boardId, signalData);
       });
 
     });
@@ -247,17 +314,24 @@ module.exports = {
   },
 
   combineCards: function(req, res) {
-    var boardId      = req.param('id'),
-        sourceCardId = req.param('sourceCardId'),
-        destCardId   = req.param('destCardId');
+    var boardId = req.param('id');
 
-    if (sourceCardId === destCardId) {
+    var p = {
+      sourceCardId: req.param('sourceCardId'),
+      destCardId:   req.param('destCardId')
+    };
+
+    console.log('combineCards p', p);
+
+    if (p.sourceCardId === p.destCardId) {
       return res.badRequest('You cannot combine a card with itself!');
+    } else if (!p.sourceCardId || !p.destCardId) {
+      return res.badRequest('sourceCardId and destCardId are required.');
     }
 
     async.auto({
-      source: function(cb) { Card.findOneById(sourceCardId).exec(cb); },
-      dest:   function(cb) { Card.findOneById(destCardId).exec(cb); },
+      source: function(cb) { Card.findOneById(p.sourceCardId).exec(cb); },
+      dest:   function(cb) { Card.findOneById(p.destCardId).exec(cb); },
       sourceStack: ['source', function(cb, r) {
         Card.find({column: r.source.column}).sort({position: 'asc'}).exec(cb);
       }],
@@ -319,6 +393,94 @@ module.exports = {
         res.jsonx(signalData);
 
         redis.boardCombineCards(boardId, signalData);
+      });
+    });
+  },
+
+  combinePiles: function(req, res) {
+    var boardId = req.param('id');
+
+    var p = {
+      sourceColumnId: req.param('sourceColumnId'),
+      sourcePosition: req.param('sourcePosition'),
+      destCardId:     req.param('destCardId')
+    };
+
+    console.log('combinePiles p', p);
+
+    // if (p.sourceCardId === p.destCardId) {
+    //   return res.badRequest('You cannot combine a card with itself!');
+    // } else if (!p.sourceCardId || !p.destCardId) {
+    //   return res.badRequest('sourceCardId and destCardId are required.');
+    // }
+
+    async.auto({
+      dest: function(cb) { Card.findOneById(p.destCardId).exec(cb); },
+      sourceStack: function(cb, r) {
+        Card.find({column: p.sourceColumnId}).sort({position: 'asc'}).exec(cb);
+      },
+      destStack: ['dest', function(cb, r) {
+        Card.find({column: r.dest.column}).sort({position: 'asc'}).exec(cb);
+      }]
+    }, function(err, r) {
+      if (err) return res.serverError(err);
+
+      var sourceStack       = normalizeStack(r.sourceStack),
+          originalSourceMap = toStackMap(sourceStack),
+          destStack         = normalizeStack(r.destStack),
+          originalDestMap   = toStackMap(destStack),
+          pile              = sourceStack.splice(p.sourcePosition - 1, 1)[0],
+          jobs              = fixPositions(sourceStack, originalSourceMap);
+          // destPosition;
+
+      // If we're joining a higher card with a lower card on the same stack, then the
+      // desired position will have reduced by one once we eliminate the slot that the
+      // source card is currently inhabiting. We'll need to adjust the destination
+      // position accordingly.
+      if (p.sourceColumnId === r.dest.column   // same column,
+       && p.sourcePosition < r.dest.position)  // dragged card is above lower one
+      {
+        r.dest.position--;
+      }
+
+      // Resituate the moving cards
+      pile.forEach(function(c) {
+        c.column    = r.dest.column;
+        c.position  = r.dest.position;
+        jobs.push(function(cb) { c.save(cb); });
+      });
+
+      // Flip off other topOfPile flags on the target stack
+      console.log('r.dest.position', r.dest.position);
+      console.log('r.destStack', destStack);
+      destStack[r.dest.position - 1].forEach(function(c) {
+        if (c.topOfPile) {
+          c.topOfPile = false;
+          jobs.push(function(cb) { c.save(cb); });
+        }
+      });
+
+      // if (p.sourceColumnId == r.dest.column) {
+      //   var extra = p.sourcePosition < r.dest.position ? 1 : 0;
+      //   sourceStack[r.dest.position - 1 - extra].concat(pile);
+      // }
+
+      console.log('BEFORE', destStack);
+      destStack[r.dest.position - 1] = destStack[r.dest.position - 1].concat(pile);
+      console.log('AFTER', destStack);
+
+      async.parallel(jobs, function(err, results) {
+        if (err) return res.serverError(err);
+
+        var signalData = {};
+        signalData[p.sourceColumnId] = toStackMap(sourceStack);
+        if (p.sourceColumnId != r.dest.column) {
+          signalData[r.dest.column] = toStackMap(destStack);
+        }
+
+        res.jsonx(signalData);
+
+        redis.boardMoveCards(boardId, signalData);
       });
     });
   },

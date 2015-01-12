@@ -92,6 +92,18 @@ module.exports.routes = {
     action:     'combineCards'
   },
 
+  // Board: Combine piles
+  'POST /api/boards/:id/combine-piles': {
+    controller: 'BoardController',
+    action:     'combinePiles'
+  },
+
+  // Board: Move pile
+  'POST /api/boards/:id/move-pile': {
+    controller: 'BoardController',
+    action:     'movePile'
+  },
+
   // Board: Card flip (new card on top of pile)
   'POST /api/boards/:id/card-flip': {
     controller: 'BoardController',

@@ -121,8 +121,14 @@
         boardMoveCard: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/move-card', bits, cb);
         },
+        boardMovePile: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/move-pile', bits, cb);
+        },
         boardCombineCards: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/combine-cards', bits, cb);
+        },
+        boardCombinePiles: function(boardId, bits, cb) {
+          post('/api/boards/' + boardId + '/combine-piles', bits, cb);
         },
         boardCardFlip: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/card-flip', bits, cb);

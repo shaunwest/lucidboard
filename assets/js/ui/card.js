@@ -20,22 +20,25 @@
 
           $scope.onShow = function() { console.log('srsly'); };
 
-          $scope.dropSuccessHandler = function($event) {
-            // console.log('array', $scope.index, $scope.column.cards);
-            // array.splice(index, 1);
-          };
+          // $scope.dropSuccessHandler = function($event) {
+          //   console.log('array', $scope.index, $scope.column.cards);
+          //   array.splice(index, 1);
+          // };
 
-          $scope.combineCards = function($event, $data, destCardId) {
-            api.boardCombineCards(board.id(), {
-              sourceCardId: $data.id,
-              destCardId:   destCardId
-            });
+          $scope.combineThings = function($event, $data, destCardId) {
+            if ($data.pile) {
+              api.boardCombinePiles(board.id(), {
+                sourceColumnId: $data.sourceColumnId,
+                sourcePosition: $data.sourcePosition,
+                destCardId:     destCardId
+              });
+            } else {
+              api.boardCombineCards(board.id(), {
+                sourceCardId: $data.id,
+                destCardId:   destCardId
+              });
+            }
           };
-
-          // old news...
-          // This directive is used without a card to create a junction where cards can
-          // be dropped. The rest of this function is not needed in this case.
-          // if (!$scope.card) return;
 
           $scope.checkCardContent = function(content, columnId, id) {
             api.cardUpdate(board.id(), columnId, {id: id, content: content});
