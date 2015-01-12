@@ -31,19 +31,7 @@
     .run(['$rootScope', '$sails', '$state', 'user', 'api',
       function($rootScope, $sails, $state, user, api) {
 
-        $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
-          if (rejection === 'not_logged_in') {
-            $state.go('signin');
-          }
-        });
-
-        // Adds special app state values to $rootScope
-        $rootScope.$on('$stateChangeSuccess', function(event, toState) {
-          $rootScope.headerUrl = toState.headerUrl;
-          $rootScope.footerUrl = toState.footerUrl;
-        });
-
-        var initialSetup = function() {
+        function initialSetup() {
           // This clues the api library into the status of the initial token setup
           // so that it can defer any calls until after the websocket session is
           // authenticated.
@@ -56,15 +44,31 @@
           // We have a token in local storage, so let's reauthenticate with it for
           // this fresh websocket connection.
           user.initialRefreshToken();
-        };
+        }
 
-        initialSetup();
+        $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
+          switch(rejection) {
+            case 'not_logged_in':
+              $state.go('signin');
+              break;
+            case 'skip_splash':
+              $state.go('boards');
+              break;
+          }
+        });
+
+        // Adds special app state values to $rootScope
+        $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+          $rootScope.headerUrl = toState.headerUrl;
+          $rootScope.footerUrl = toState.footerUrl;
+        });
 
         $sails.on('reconnect', function() {
           initialSetup();
           api.resubscribe();
         });
 
+        initialSetup();
       }
     ]);
 
@@ -76,6 +80,19 @@
 
   .run(['editableOptions', function(editableOptions) {
     editableOptions.theme = 'bs3';
+  }])
+
+  .run(['$rootScope', '$state', 'user', function($rootScope, $state, user) {
+    $rootScope.signout = function($event) {
+      $event.preventDefault();
+      user.signout();
+      $state.go('signin');
+    };
+
+    /*if(user.token()) {
+      $cookieStore.put('signedIn', true);
+      $state.go('boards');
+    }*/
   }]);
 
   angular.module('hansei', ['hansei.ui'])
