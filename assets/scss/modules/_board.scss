@@ -24,50 +24,6 @@
     }
 }
 
-.tabs {
-    padding-bottom: 0.5em;
-    padding-left: 0;
-    display: table;
-    margin-bottom: 1.5em;
-    width: 100%;
-    list-style: none;
-    border-bottom: 0.0625em solid $font-body-color;
-    li {
-        float: left;
-        width: 100%;
-        @media (min-width: 40em) {
-            float: left;
-            width: auto;
-            margin-right: 1.5em;
-        }
-    }
-    a {
-        font-weight: bold;
-        display: block;
-        outline: none;
-        transition: all 0.3s ease-in-out;
-        color: $font-body-color;
-        &:hover {
-            color: $link-color;
-            path {
-                transition: all 0.3s ease-in-out;
-                fill: $link-color;
-            }
-        }
-        path {
-            &:hover {
-                fill: $link-color;
-            }
-        }
-    }
-    .active {
-        color: $link-color;
-        .icon-left path {
-            fill: $link-color;
-        }
-    }
-}
-
 .columns {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -257,4 +213,12 @@
 .card-slot {
     background: $link-color;
     border-radius: 1.1875em;
+}
+
+.dropdown {
+    display: none;
+    position: fixed;
+    background-color: #eee;
+    padding: 0.8em;
+    box-shadow: 0px 1px 6px 0px #696868;
 }
