@@ -1,0 +1,19 @@
+.flag {
+    display: table;
+    width: 100%;
+    overflow: hidden;
+}
+
+.flag-body, .flag-media, .flag-close {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 1em;
+}
+
+.flag-body {
+    width: 100%;
+}
+
+.flag-media, .flag-close {
+    text-align: center;
+}

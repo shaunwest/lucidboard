@@ -39,9 +39,6 @@ html, body {
     @include span(12 of 12 omega);
 }
 
-.main-container-padded {
-    @extend .main-container;
-}
 
 .brand-bg {
     background: $link-color;
@@ -51,24 +48,15 @@ html, body {
     }
 }
 
-.main-container-half {
+.panel {
     @include clearfix;
     @include span(12 of 12 omega);
     @media (min-width: 40em) {
         @include span(6 of 12);
-        &:last-child {
+        &.last {
             @include omega;
         }
     }
-}
-
-.main-container-half-media {
-    @extend .main-container-half;
-    padding: 4em;
-}
-
-main {
-    @include clearfix;
 }
 
 .aside-right {
