@@ -1,18 +1,20 @@
-<section class="main-container-half">
-    <h1 class="gamma">
-        Active Boards
-    </h1>
-    <ul class="y-list-color">
-      <li data-ng-repeat="b in boards">
-        <a href="/boards/{{b.id}}">
-          {{b.title}}
-        </a>
-      </li>
-    </ul>
-</section>
-<section class="main-container-half">
-    <h1 class="gamma">
-        Create New Board
-    </h1>
-    <board-settings ></board-settings>
-</section>
+<div class="tier">
+    <section class="panel">
+        <h1 class="gamma">
+            Active Boards
+        </h1>
+        <ul class="y-list-color">
+          <li data-ng-repeat="b in boards">
+            <a href="/boards/{{b.id}}">
+              {{b.title}}
+            </a>
+          </li>
+        </ul>
+    </section>
+    <section class="panel last">
+        <h1 class="gamma">
+            Create New Board
+        </h1>
+        <board-settings ></board-settings>
+    </section>
+</div>

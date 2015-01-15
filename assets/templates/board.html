@@ -34,6 +34,10 @@
                 Trash ({{board.trash().cardSlots.length}})
             </a>
         </li>
+        <li data-ng-show="board.votesPerUser() !== 0">
+            {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
+            left
+        </li>
         <li>
             <div data-ng-click="showTimerForm = !showTimerForm">
                 <svg alt="countdown" class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
@@ -54,10 +58,6 @@
                 </li>
             </ul>
         </li>
-        <li data-ng-show="board.votesPerUser() !== 0">
-            {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
-            remaining
-        </li>
     </ul>
 </div>
 <div class="board" data-ng-show="currentTab === 'board'">
@@ -65,11 +65,12 @@
         <div class="column" data-ng-repeat="column in board.columns()">
             <ul class="y-list-mbz">
                 <li>
-                    <h3 class="delta column-title" data-editable-text="column.title" data-buttons="no"
+                    <p class="mtn delta column-title" data-editable-text="column.title" data-buttons="no"
                         onbeforesave="checkColumnTitle($data, column.id)">
-                        {{column.id}} - {{column.title}}
-                    </h3>
+                        {{column.title}}
+                    </p>
                 </li>
+                <li>
                     <div class="cardjunction top"
                         data-ng-class="{active:cardDragging}"
                         data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
