@@ -7,7 +7,6 @@
 html, body {
   height: 100%;
   @extend %font--body;
-  box-sizing: border-box;
 }
 
 .main {
@@ -19,6 +18,7 @@ html, body {
     }
 }
 
+// Used on body
 .site-container {
   @include container(12 omega);
   @include clearfix;
@@ -30,24 +30,17 @@ html, body {
   }
 }
 
+// sticky footer
 .site-footer, .page-wrap:after {
     height: 2em;
 }
 
-.main-container {
+.tier {
     @include clearfix;
     @include span(12 of 12 omega);
 }
 
-
-.brand-bg {
-    background: $link-color;
-    text-align: center;
-    h1 {
-        color: $white;
-    }
-}
-
+// a panel is half a tier
 .panel {
     @include clearfix;
     @include span(12 of 12 omega);
