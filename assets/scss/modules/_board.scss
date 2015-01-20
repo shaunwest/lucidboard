@@ -142,25 +142,16 @@
 
 .editable-buttons {
     display: block;
-    float: right;
-    margin-bottom: 0.25em;
-    .btn-default {
-        width: 2em;
-        height: 1em;
-        background-image: url('/images/cross.svg');
-        background-repeat: no-repeat;
-        background-size: 2em 1em;
-        background-position: center;
-        padding: 0.75em;
-        background-color: #bbbbbb;
-    }
     .btn-primary {
-        @extend .btn-default;
-        background-image: url('/images/checkmark.svg');
-        background-size: 30px 14px;
-        background-color: #15A62C;
-        &:hover {
-            background-color: lighten(#15A62C, 6%);
+        &:after {
+            content: 'Save';
+        }
+    }
+    .btn-default {
+        @extend .btn-primary;
+        background: #575757;
+        &:after {
+            content: 'Cancel';
         }
     }
 }
