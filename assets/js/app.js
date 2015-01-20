@@ -92,9 +92,12 @@
       'hansei.services',
       'xeditable',
       'ang-drag-drop',
-      'ng-context-menu'])
+      'ng-context-menu',
+      'monospaced.elastic'
+    ])
 
-    .run(['editableOptions', function(editableOptions) {
+    .run(['editableOptions', 'editableThemes', function(editableOptions, editableThemes) {
+      editableThemes['bs3'].inputClass = 'msd-elastic';
       editableOptions.theme = 'bs3';
     }])
 
@@ -106,10 +109,12 @@
       };
     }]);
 
-    angular.module('hansei', ['hansei.ui'])
-      .config(['$locationProvider', function($locationProvider) {
-        $locationProvider
-          .html5Mode({enabled: true, requireBase: false})
-          .hashPrefix('!');
-      }]);
+
+  // APP
+  angular.module('hansei', ['hansei.ui'])
+    .config(['$locationProvider', function($locationProvider) {
+      $locationProvider
+        .html5Mode({enabled: true, requireBase: false})
+        .hashPrefix('!');
+    }]);
 })();
