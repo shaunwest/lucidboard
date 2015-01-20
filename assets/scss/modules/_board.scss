@@ -24,6 +24,7 @@
     }
 }
 
+// Column container
 .columns {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -33,9 +34,11 @@
     }
 }
 
+// Individual columns
 .column {
     padding: 0 0.5em;
     width: 100%;
+    margin-bottom: 1.5em;
     @media (min-width: 70em) {
         display: table-cell;
     }
