@@ -110,24 +110,21 @@
 
 .cardjunction {
     height: 0.375em;
-}
-
-.cardjunction.top {
-    height: 0;
-}
-
-.cardjunction.active {
-    height: 12px;
-}
-
-.cardjunction.on-drag-hover {
-    background-color: #eee;
-    height: 6em;
-    border-radius: 0.1875em;
-    border: 0.125em dashed #ccc;
-    margin-top: 0.375em;
-    margin-bottom: 0.375em;
-    transition: all 0.2s ease-in-out;
+    &.top {
+        height: 0;
+    }
+    &.active {
+        height: 12px;
+    }
+    &.on-drag-hover {
+        background-color: #eee;
+        height: 6em;
+        border-radius: 0.1875em;
+        border: 0.125em dashed #ccc;
+        margin-top: 0.375em;
+        margin-bottom: 0.375em;
+        transition: all 0.2s ease-in-out;
+    }
 }
 
 .slate-card {
@@ -145,25 +142,16 @@
 
 .editable-buttons {
     display: block;
-    float: right;
-    margin-bottom: 0.25em;
-    .btn-default {
-        width: 2em;
-        height: 1em;
-        background-image: url('/images/cross.svg');
-        background-repeat: no-repeat;
-        background-size: 2em 1em;
-        background-position: center;
-        padding: 0.75em;
-        background-color: #bbbbbb;
-    }
     .btn-primary {
-        @extend .btn-default;
-        background-image: url('/images/checkmark.svg');
-        background-size: 30px 14px;
-        background-color: #15A62C;
-        &:hover {
-            background-color: lighten(#15A62C, 6%);
+        &:after {
+            content: 'Save';
+        }
+    }
+    .btn-default {
+        @extend .btn-primary;
+        background: #575757;
+        &:after {
+            content: 'Cancel';
         }
     }
 }
@@ -186,12 +174,11 @@
 .trash {
     @include span(12 of 12 omega);
     background: #fff;
-}
-
-.trash .card {
-    width: 32%;
-    float: left;
-    margin-right: 0.25em;
+    .card {
+        width: 32%;
+        float: left;
+        margin-right: 0.25em;
+    }
 }
 
 .card-pile-panel {
