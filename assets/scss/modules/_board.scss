@@ -1,25 +1,6 @@
-// This is all previously written scss
-
-.board, .board-header {
-    @include clearfix;
-    @include span(12 of 12 omega);
-    background: #fff;
-}
-
-.board-info {
-    @include clearfix;
-    float: left;
-    margin-top: 1em;
-    @media (min-width: 63em) {
-        float: right;
-        margin-top: 0;
-    }
-}
-
-// Column container
-.columns {
-    @include clearfix;
-    @include span(12 of 12 omega);
+// Column container displays as table for screens >70em
+.column-container {
+    @extend .tier;
     @media (min-width: 70em) {
         display: table;
         table-layout: fixed;
@@ -36,42 +17,25 @@
     }
 }
 
-.panel-board-settings {
-    @include clearfix;
-    background: #fff;
-    @include span(12 of 12 omega);
-    padding: 1em;
-}
-
-.panel-board-settings-half {
-    @media (min-width: 40em) {
-        @include span(6 of 12);
-    }
-    @media (min-width: 60em) {
-        @include span(4 of 12);
-    }
-}
-
 .card {
     @include clearfix;
     padding: 1em;
     cursor: pointer;
     border-radius: 0.1875em;
+    .cardcontent pre {
+        font-size: 1em;
+        font-family: $font-body;
+        margin: 0;
+        padding: 0;
+    }
  }
-
-.card .cardcontent pre {
-    font-size: 1em;
-    font-family: $font-body;
-    margin: 0;
-    padding: 0;
-}
 
 .handle {
     font-size: small;
     float: right;
     margin: 0;
-    color: #575757;
-    fill: #575757;
+    color: $muted;
+    fill: $muted;
     transition: all 0.2s ease-in;
     &:hover {
         color: $link-color;
@@ -144,7 +108,7 @@
     }
     .btn-default {
         @extend .btn-primary;
-        background: #575757;
+        background: $muted;
         &:after {
             content: 'Cancel';
         }
