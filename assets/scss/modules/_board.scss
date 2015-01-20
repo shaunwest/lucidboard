@@ -6,16 +6,6 @@
     background: #fff;
 }
 
-.board-info {
-    @include clearfix;
-    float: left;
-    margin-top: 1em;
-    @media (min-width: 63em) {
-        float: right;
-        margin-top: 0;
-    }
-}
-
 // Column container
 .columns {
     @include clearfix;
