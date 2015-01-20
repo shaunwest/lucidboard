@@ -8,12 +8,12 @@
     ])
     .config([
       '$stateProvider',
-      'appStateDefaults',
+      'routeDefaults',
       '$urlRouterProvider',
       'routes',
       'localStorageServiceProvider',
       function($stateProvider,
-               appStateDefaults,
+               routeDefaults,
                $urlRouterProvider,
                routes,
                localStorageServiceProvider) {
@@ -22,7 +22,7 @@
 
         angular.forEach(routes, function(stateConfig, key) {
           $stateProvider
-            .state(key, angular.extend(angular.copy(appStateDefaults), stateConfig));
+            .state(key, angular.extend(angular.copy(routeDefaults), stateConfig));
         });
 
         $urlRouterProvider.otherwise('/');
