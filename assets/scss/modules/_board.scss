@@ -1,17 +1,9 @@
 // This is all previously written scss
 
-.board {
+.board, .board-header {
     @include clearfix;
     @include span(12 of 12 omega);
     background: #fff;
-}
-
-.board-header {
-    @include clearfix;
-    @include span(12 of 12 omega);
-    h2 {
-        margin-bottom: 0;
-    }
 }
 
 .board-info {
