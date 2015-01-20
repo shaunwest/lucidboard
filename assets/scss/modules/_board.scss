@@ -166,6 +166,11 @@
     }
 }
 
+// weird selector based on plugin for column titles
+.editable-wrap .editable-controls>input {
+    font-size: 1.75em;
+}
+
 .editable-controls, .editable-wrap {
     width: 100%;
     margin-bottom: 1em;
