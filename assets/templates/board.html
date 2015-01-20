@@ -1,4 +1,4 @@
-<div class="board-header">
+<div class="tier">
     <ul class="y-list board-tabs">
         <li>
             <a href="#" data-ng-click="switchTab('board')" data-ng-class="{active:currentTab === 'board'}">
@@ -62,8 +62,8 @@
         </li>
     </ul>
 </div>
-<div class="board" data-ng-show="currentTab === 'board'">
-    <div class="columns">
+<div class="tier" data-ng-show="currentTab === 'board'">
+    <div class="column-container">
         <div class="column" data-ng-repeat="column in board.columns()">
             <ul class="y-list-mbz">
                 <li>
@@ -94,10 +94,10 @@
         </div>
     </div>
 </div>
-<div data-ng-show="currentTab === 'settings'" class="panel-board-settings">
-    <board-settings class="panel-board-settings-half" board="board"></board-settings>
+<div data-ng-show="currentTab === 'settings'" class="tier-padded">
+    <board-settings class="panel" board="board"></board-settings>
 </div>
-<div data-ng-show="currentTab === 'columns'" class="panel-board-settings">
+<div data-ng-show="currentTab === 'columns'" class="tier-padded">
     <edit-columns board="board"></edit-columns>
 </div>
 <div class="trash" data-ng-show="currentTab === 'trash'"

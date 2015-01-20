@@ -35,20 +35,28 @@ html, body {
     height: 2em;
 }
 
+// layout content piece container
 .tier {
     @include clearfix;
     @include span(12 of 12 omega);
 }
 
-// a panel is half a tier
+.tier-padded {
+    @extend .tier;
+    padding: 1em;
+}
+
+// a panel is half a tier on screens >40em
 .panel {
-    @include clearfix;
-    @include span(12 of 12 omega);
+    @extend .tier;
     @media (min-width: 40em) {
         @include span(6 of 12);
-        &.last {
-            @include omega;
-        }
+    }
+    @media (min-width: 60em) {
+        @include span(4 of 12);
+    }
+    &.last {
+        @include omega;
     }
 }
 
