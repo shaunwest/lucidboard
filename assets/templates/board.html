@@ -35,8 +35,10 @@
             </a>
         </li>
         <li data-ng-show="board.votesPerUser() !== 0">
-            {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
-            left
+            <strong>
+                {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
+                left
+            </strong>
         </li>
         <li>
             <a href="#" data-ng-click="showTimerForm = !showTimerForm">

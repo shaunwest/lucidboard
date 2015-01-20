@@ -1,17 +1,9 @@
 // This is all previously written scss
 
-.board {
+.board, .board-header {
     @include clearfix;
     @include span(12 of 12 omega);
     background: #fff;
-}
-
-.board-header {
-    @include clearfix;
-    @include span(12 of 12 omega);
-    h2 {
-        margin-bottom: 0;
-    }
 }
 
 .board-info {
@@ -24,6 +16,7 @@
     }
 }
 
+// Column container
 .columns {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -33,9 +26,11 @@
     }
 }
 
+// Individual columns
 .column {
     padding: 0 0.5em;
     width: 100%;
+    margin-bottom: 1.5em;
     @media (min-width: 70em) {
         display: table-cell;
     }
@@ -164,6 +159,11 @@
         background: transparent;
         resize: none;
     }
+}
+
+// weird selector based on plugin for column titles
+.editable-wrap .editable-controls>input {
+    font-size: 1.75em;
 }
 
 .editable-controls, .editable-wrap {
