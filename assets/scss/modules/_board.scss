@@ -140,12 +140,10 @@
 }
 
 .trash {
+    @include clearfix;
     @include span(12 of 12 omega);
-    background: #fff;
     .card {
-        width: 32%;
-        float: left;
-        margin-right: 0.25em;
+        width: 40%;
     }
 }
 
