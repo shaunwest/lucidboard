@@ -178,6 +178,9 @@
     li {
         a {
             display: block;
+            &:hover {
+                text-decoration: none;
+            }
         }
         padding: 0.5em 1.5em;
         &:hover:first-child {
