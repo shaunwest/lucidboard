@@ -9,21 +9,13 @@ html, body {
   @extend %font--body;
 }
 
-.main {
-    min-height: 100%;
-    margin-bottom: -2em;
-    &:after {
-        content: "";
-        display: block;
-    }
-}
-
-// Used on body
 .site-container {
   @include container(12 omega);
   @include clearfix;
   padding-left: 0.5em;
   padding-right:0.5em;
+  min-height: 100%;
+  margin-bottom: 2em;
   @media (min-width: 30em) {
       padding-left: 2em;
       padding-right:2em;
@@ -31,8 +23,12 @@ html, body {
 }
 
 // sticky footer
-.site-footer, .page-wrap:after {
-    height: 2em;
+.site-footer {
+    @include container(12 of 12 omega);
+    height: 7em;
+    background: #333;
+    color: $white;
+    padding: 2em 1em;
 }
 
 // layout content piece container
