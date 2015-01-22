@@ -173,5 +173,18 @@
     display: none;
     position: fixed;
     background-color: #eee;
-    padding: 0.8em;
+    border-radius:  0.1875em;
+    transition: all 0.2s ease-in;
+    li {
+        a {
+            display: block;
+        }
+        padding: 0.5em 1.5em;
+        &:hover:first-child {
+            background-color: #eee;
+        }
+        &:hover {
+            background-color: darken(#eee, 6%);
+        }
+    }
 }

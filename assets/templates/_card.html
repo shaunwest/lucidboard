@@ -47,8 +47,10 @@ Empty
   </div>
 </div>
 <div class="dropdown" id="menu-{{card.id}}">
-  <h6>Move to:</h6>
   <ul class="y-list dropdown-menu" role="menu">
+      <li>
+          <strong>Move Card to:</strong>
+      </li>
     <li data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
       <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
         {{col.title}}
