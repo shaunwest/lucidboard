@@ -93,6 +93,7 @@
         font-weight: bold;
         display: block;
         outline: none;
+        padding: 0.5em;
         color: $font-body-color;
         &:hover {
             color: $link-color;
@@ -101,6 +102,5 @@
     .active {
         color: $link-color;
         background: #F0E9C4;
-        padding: 0.5em;
     }
 }
