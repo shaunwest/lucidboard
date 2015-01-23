@@ -124,6 +124,7 @@
         id:             function() { return board.id; },
         title:          function() { return board.title; },
         trash:          function() { return board.columns[0]; },
+        trashIsEmpty:   function() { return (this.trash().cardSlots.length === 0); },
         allColumns:     function() { return board.columns; },
 
         votesPerUser:   function() { return board.votesPerUser; },
