@@ -10,6 +10,9 @@
 
       $scope.boards = boards;
 
+      // reverse the array to order boards by descending create date
+      $scope.boards.reverse();
+
       api.hook('board:create', $scope, function(board) {
         $scope.boards.push(board);
       });
