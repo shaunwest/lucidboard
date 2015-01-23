@@ -93,7 +93,6 @@
         font-weight: bold;
         display: block;
         outline: none;
-        transition: all 0.3s ease-in-out;
         color: $font-body-color;
         &:hover {
             color: $link-color;
@@ -101,7 +100,7 @@
     }
     .active {
         color: $link-color;
-        background: palegoldenrod;
+        background: #F0E9C4;
         padding: 0.5em;
     }
 }
