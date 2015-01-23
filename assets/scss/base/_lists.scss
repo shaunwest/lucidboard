@@ -97,21 +97,11 @@
         color: $font-body-color;
         &:hover {
             color: $link-color;
-            path {
-                transition: all 0.3s ease-in-out;
-                fill: $link-color;
-            }
-        }
-        path {
-            &:hover {
-                fill: $link-color;
-            }
         }
     }
     .active {
         color: $link-color;
-        .icon-left path {
-            fill: $link-color;
-        }
+        background: palegoldenrod;
+        padding: 0.5em;
     }
 }
