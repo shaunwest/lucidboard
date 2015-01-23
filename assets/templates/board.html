@@ -28,10 +28,10 @@
             <a href="#" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
                 data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
                 board.nextPositionByColumnId(board.trash().id))">
-                <svg class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                <svg data-ng-show="board.trashIsEmpty()" class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
                     <path d="M8 26c0 1.656 1.343 3 3 3h10c1.656 0 3-1.344 3-3l2-16h-20l2 16zM19 13h2v13h-2v-13zM15 13h2v13h-2v-13zM11 13h2v13h-2v-13zM25.5 6h-6.5c0 0-0.448-2-1-2h-4c-0.553 0-1 2-1 2h-6.5c-0.829 0-1.5 0.671-1.5 1.5s0 1.5 0 1.5h22c0 0 0-0.671 0-1.5s-0.672-1.5-1.5-1.5z" fill="#333333"></path>
                 </svg>
-                <svg class="icon-left" width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <svg data-ng-hide="board.trashIsEmpty()" class="icon-left" width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
                         <path d="M16,5 C18.7544521,5 19,6 19,6 L21,6 L22,7 L21,8 L21,10 L17,9 L13,9 L12,8 L13,6 C13,5.99999997 13.9999999,5.99999982 16,5 Z" id="Path-6" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup"></path>
                         <path d="M14.1662465,20.8848878 C16.9206986,20.8848878 17.1662465,21.8848878 17.1662465,21.8848878 L19.1662465,21.8848878 L20.1662465,22.8848878 L19.1662465,23.8848878 L19.1662465,25.8848878 L15.1662465,24.8848878 L11.1662465,24.8848878 L10.1662465,23.8848878 L11.1662465,21.8848878 C11.1662465,21.8848878 12.1662464,21.8848877 14.1662465,20.8848878 Z" id="Path-6-copy" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup" transform="translate(15.166247, 23.384888) rotate(-37.000000) translate(-15.166247, -23.384888) "></path>
