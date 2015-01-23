@@ -93,14 +93,20 @@
         font-weight: bold;
         display: block;
         outline: none;
+        border-radius:  0.1875em;
         padding: 0.5em;
         color: $font-body-color;
-        &:hover {
+        &:hover, &:active, &:focus {
             color: $link-color;
+            text-decoration: none;
         }
     }
     .active {
         color: $link-color;
-        background: #F0E9C4;
+        background-color: #F0E9C4;
+        transition: background-color 0.2s ease-in;
+        &:hover {
+            background-color: lighten(#F0E9C4, 2%);
+        }
     }
 }
