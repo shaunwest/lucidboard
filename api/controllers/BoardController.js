@@ -255,7 +255,6 @@ module.exports = {
       destColumnId:   req.param('destColumnId'),
       destPosition:   req.param('destPosition')
     };
-    console.log('movePile p', p);
 
     // FIXME omg security
     // FIXME handle position fields better? (source column)
@@ -320,8 +319,6 @@ module.exports = {
       sourceCardId: req.param('sourceCardId'),
       destCardId:   req.param('destCardId')
     };
-
-    console.log('combineCards p', p);
 
     if (p.sourceCardId === p.destCardId) {
       return res.badRequest('You cannot combine a card with itself!');
@@ -406,8 +403,6 @@ module.exports = {
       destCardId:     req.param('destCardId')
     };
 
-    console.log('combinePiles p', p);
-
     // if (p.sourceCardId === p.destCardId) {
     //   return res.badRequest('You cannot combine a card with itself!');
     // } else if (!p.sourceCardId || !p.destCardId) {
@@ -451,8 +446,6 @@ module.exports = {
       });
 
       // Flip off other topOfPile flags on the target stack
-      console.log('r.dest.position', r.dest.position);
-      console.log('r.destStack', destStack);
       destStack[r.dest.position - 1].forEach(function(c) {
         if (c.topOfPile) {
           c.topOfPile = false;
@@ -465,9 +458,7 @@ module.exports = {
       //   sourceStack[r.dest.position - 1 - extra].concat(pile);
       // }
 
-      console.log('BEFORE', destStack);
       destStack[r.dest.position - 1] = destStack[r.dest.position - 1].concat(pile);
-      console.log('AFTER', destStack);
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);

@@ -16,7 +16,7 @@ module.exports = {
   boardDeleted:      function(boardId) { publish('board:delete:' + boardId, null); },
   boardMoveCards:    function(boardId, info) { publish('board:moveCard:' + boardId, info); },
   boardCombineCards: function(boardId, info) { publish('board:combineCards:' + boardId, info); },
-  boardCombineCards: function(boardId, info) { publish('board:combinePiles:' + boardId, info); },
+  boardCombinePiles: function(boardId, info) { publish('board:combinePiles:' + boardId, info); },
   boardFlipCard:     function(boardId, cardId) { publish('board:flipCard:' + boardId, cardId); },
 
   boardTimerStart: function(boardId, seconds) {
