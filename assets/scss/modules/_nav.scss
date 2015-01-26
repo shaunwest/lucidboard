@@ -1,19 +1,9 @@
 .header-bar {
     @include clearfix;
     @include span(12 of 12 omega);
-    background: $brand;
-    padding-left: 1.5em;
-    padding-right: 1.5em;
+    padding: 1em 1.5em;
     margin-bottom: 0.5em;
     h1 {
         margin-bottom: 0;
-        color: $white;
-    }
-    a {
-        color: $white;
-        &:hover {
-            text-decoration: none;
-            color: $white;
-        }
     }
 }

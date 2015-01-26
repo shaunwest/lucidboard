@@ -65,14 +65,13 @@
 
 // Use for tabbed list
 .board-tabs {
-    padding-left: 0;
-    padding-bottom: 0.25em;
+    padding:0.5 0;
     display: table;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    background: $white;
     width: 100%;
     list-style: none;
-    border-bottom: 0.0625em solid $font-body-color;
     li {
         @media (min-width: 40em) {
             display: inline-block;
@@ -89,24 +88,14 @@
             }
         }
     }
-    a {
+    select, label, a {
         font-weight: bold;
-        display: block;
         outline: none;
         border-radius:  0.1875em;
         padding: 0.5em;
-        color: $font-body-color;
-        &:hover, &:active, &:focus {
-            color: $link-color;
-            text-decoration: none;
-        }
+        display: inline-block;
     }
     .active {
-        color: $link-color;
-        background-color: #F0E9C4;
-        transition: background-color 0.2s ease-in;
-        &:hover {
-            background-color: lighten(#F0E9C4, 2%);
-        }
+        color: $link-color-interaction;
     }
 }

@@ -72,12 +72,23 @@
                 </li>
             </ul>
         </li>
+        <li class="aside-right">
+            <label for="viewSections">
+                View
+            </label>
+            <select id="viewSections">
+                <option value="0">All Columns</option>
+                <option value="1">Column 1</option>
+                <option value="2">Column 2</option>
+                <option value="3">Column 3</option>
+            </select>
+        </li>
     </ul>
 </div>
 <div class="tier" data-ng-show="currentTab === 'board'">
     <div class="column-container">
         <div class="column" data-ng-repeat="column in board.columns()">
-            <ul class="y-list-mbz">
+            <ul class="form-fields--blank">
                 <li>
                     <h4 class="mtn delta column-title" data-editable-text="column.title" data-buttons="no"
                         onbeforesave="checkColumnTitle($data, column.id)">
