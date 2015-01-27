@@ -15,22 +15,40 @@
 }
 
 // You can use .text-input for items that are not type=text, email or password
-input[type="text"], input[type="email"], input[type="password"],
-input[type="tel"], select, .text-input {
-    outline: 0;
-    padding: 0.5em;
-    width: 100%;
-    position: relative;
-    background: $white;
-    border: 0.125em solid $grey;
-    border-radius: 0.3125em;
-    box-sizing: border-box;
-    &:focus {
-      border: 0.125em solid $link-color;
-      background: lighten(blue, 50%);
+.form-fields {
+     input[type="text"], input[type="email"], input[type="password"],
+     input[type="tel"], select, .text-input {
+        outline: 0;
+        padding: 0.5em;
+        width: 100%;
+        position: relative;
+        background: $white;
+        border: 0.125em solid $grey;
+        border-radius: 0.3125em;
+        box-sizing: border-box;
+        &:focus {
+          border: 0.125em solid $link-color-interaction;
+          background: lighten(blue, 50%);
+        }
     }
 }
 
-.quarter {
-    @include span(4 of 12);
+.form-fields--blank {
+    @extend .y-list;
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="tel"], select, .text-input {
+        outline: 0;
+        width: 100%;
+        position: relative;
+        background: transparent;
+        box-sizing: border-box;
+        border: 0;
+        text-align: center;
+        &:focus, &:active, &:hover {
+            border: 0;
+            outline: 0;
+            background: transparent;
+            box-shadow: 0;
+        }
+    }
 }

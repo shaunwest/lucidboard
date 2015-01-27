@@ -4,7 +4,7 @@ TODO
 List of things any dev can jump in and take care of. Feel free to add.
 ----------------------------------------------------------------------
 
-
++   fix trash can filled svg spacing
 +   Review mobile experience
 +   make alarm  timer pulse
 
