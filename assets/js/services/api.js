@@ -8,12 +8,12 @@
         '/api/refresh-token'
       ];
 
-      var debug = function(msg) {
-        console.log(msg);
+      var debug = function() {
+        console.log.apply(console, arguments);
       };
 
-      var info = function(msg) {
-        console.log(msg);
+      var info = function() {
+        console.log.apply(console, arguments);
       };
 
       var subs = [];  // our currently subscribed events
@@ -79,7 +79,7 @@
 
         var invoke = function() {
           $sails[method](target, params, function(data, jwr) {
-            info('api ' + method + ' [' + target + ']: ' + JSON.stringify(data));
+            info('api ' + method + ' [' + target + ']', params, data);
             handleResponse(data, jwr, function(data, jwr) {
               if (cb) cb(data, jwr);
             });

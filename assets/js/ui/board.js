@@ -170,8 +170,6 @@
 
       $scope.moveSlot = function($event, $data, cardSlots, destColumnId, position) {
 
-        console.log('arguments', arguments);
-
         if ($data.pile) {
 
           api.boardMovePile(board.id(), {

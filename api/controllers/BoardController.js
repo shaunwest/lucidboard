@@ -438,6 +438,12 @@ module.exports = {
         r.dest.position--;
       }
 
+      // If source and dest are the same stack, splice out the same source cards from
+      // the destStack.
+      if (p.sourceColumnId === r.dest.column) {
+        destStack.splice(p.sourcePosition - 1, 1);
+      }
+
       // Resituate the moving cards
       pile.forEach(function(c) {
         c.column    = r.dest.column;
@@ -464,9 +470,9 @@ module.exports = {
         if (err) return res.serverError(err);
 
         var signalData = {};
-        signalData[p.sourceColumnId] = toStackMap(sourceStack);
+        signalData[r.dest.column] = toStackMap(destStack);
         if (p.sourceColumnId != r.dest.column) {
-          signalData[r.dest.column] = toStackMap(destStack);
+          signalData[p.sourceColumnId] = toStackMap(sourceStack);
         }
 
         res.jsonx(signalData);
