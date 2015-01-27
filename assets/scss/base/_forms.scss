@@ -11,7 +11,10 @@
     text-align: left;
     display: block;
     font-weight: bold;
-    margin-bottom: 0.5em;
+}
+
+input[type="checkbox"] {
+    margin-right: 0.5em;
 }
 
 // You can use .text-input for items that are not type=text, email or password

@@ -43,7 +43,6 @@ html, body {
     padding: 1em;
 }
 
-// a panel is half a tier on screens >40em
 .panel {
     @extend .tier;
     @media (min-width: 40em) {
@@ -51,6 +50,16 @@ html, body {
     }
     @media (min-width: 60em) {
         @include span(4 of 12);
+    }
+    &.last {
+        @include omega;
+    }
+}
+
+.panel--half {
+    @extend .tier;
+    @media (min-width: 40em) {
+        @include span(6 of 12);
     }
     &.last {
         @include omega;
