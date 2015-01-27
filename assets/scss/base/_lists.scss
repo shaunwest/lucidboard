@@ -10,13 +10,6 @@
     margin-bottom: 1.5em;
 }
 
-.y-list-mbz {
-    @extend .y-list;
-    li {
-        margin-bottom: 0;
-    }
-}
-
 // Use for lists you wish to make horizontal
 .x-list {
   @extend .y-list;
@@ -37,22 +30,19 @@
     float: left;
     width: 100%;
     font-size: 1.25em;
-    @media (min-width: 40em) {
-        padding-right: 1em;
-    }
     li {
         margin-bottom: 0.5em;
         cursor: pointer;
         transition: background 500ms;
-        background: #C4D9F0;
-        border-radius: 0.3125em;
+        background: $primary;
+        border-radius: 0.15em;
         &:hover {
-            background: lighten(#C4D9F0, 5%);
+            background: lighten($primary, 5%);
         }
         a {
             padding: 1em 0em;
             text-align: center;
-            color: $font-body-color;
+            color: $white;
             display: block;
             text-transform: uppercase;
             font-weight: bold;
