@@ -19,7 +19,9 @@
 
 .card {
     @include clearfix;
-    cursor: -webkit-grab;
+    cursor: grab;
+    // cursor: -webkit-grab;
+    // cursor: -moz-grab;
     border-radius: 0.15em;
     font-weight: bold;
     .cardcontent pre {
@@ -30,7 +32,8 @@
     }
     &:active {
         cursor: grabbing;
-        cursor: -webkit-grabbing;
+        // cursor: -webkit-grabbing;
+        // cursor: -moz-grabbing;
     }
  }
 
