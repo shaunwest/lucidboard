@@ -2,6 +2,7 @@
   'use strict';
 
   angular.module('hansei.ui')
+    // .directive('boardSettings', ['colsets', function(colsets) {
     .directive('boardSettings', [function() {
       return {
         restrict: 'E',
@@ -10,6 +11,22 @@
           board: '='
         },
         controller: ['$scope', '$state', 'api', function($scope, $state, api) {
+
+          $scope.colsets = [
+            {
+              id: 1,
+              name: 'One Column',
+              cols: ['First Column']
+            },
+            {
+              id: 2,
+              name: 'Retrospective',
+              cols: [
+                'What Went Well',
+                "What Didn't go Well"
+              ]
+            },
+          ];
 
           if ($scope.board) {
             $scope.b = {
@@ -25,6 +42,7 @@
             $scope.b = {
               id:             null,
               title:          '',
+              colsetId:       '1',
               votesPerUser:   '0',
               p_seeVotes:     true,
               p_seeContent:   true,
@@ -33,13 +51,14 @@
             };
           }
 
-          $scope.submit = function() {
+          $scope.submit = function(data) {
 
             if (!$scope.b.title) return alert('You must enter a title.');
             if (!String($scope.b.votesPerUser).match(/^\d+$/)) return alert('Invalid max votes.');
 
             var bits = {
               title:          $scope.b.title,
+              colsetId:       $scope.b.colsetId,
               votesPerUser:   $scope.b.votesPerUser,
               p_seeVotes:     !!$scope.b.p_seeVotes,
               p_seeContent:   !!$scope.b.p_seeContent,

@@ -15,6 +15,13 @@
           hideHeader: ['$rootScope', function($rootScope) {
             $rootScope.showHeader = false;
           }],
+          // colsets: ['$q', 'api', function($q, api) {
+          //   var defer = $q.defer();
+          //   api.getColsets(function(colsets) {
+          //     defer.resolve(colsets);
+          //   });
+          //   return defer.promise;
+          // }],
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.token()) {

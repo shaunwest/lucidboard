@@ -146,6 +146,13 @@ module.exports.routes = {
     action:     'upvote'
   },
 
+  // Get the colset list
+  'GET /api/colsets': {
+    controller: 'BoardController',
+    action:     'colsets'
+  },
+
+
 
   /***************************************************************************
   *                                                                          *

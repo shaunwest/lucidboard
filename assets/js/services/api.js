@@ -154,6 +154,7 @@
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
+        getColsets: function(cb) { get('/api/colsets', cb); },
 
         subscribe: function(events, cb)   { subscriber.subscribe(events, cb); },
         unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },

@@ -1,6 +1,7 @@
-var async = require('async'),
-    _     = require('underscore'),
-    redis = require('../services/redis');
+var async   = require('async'),
+    _       = require('underscore'),
+    redis   = require('../services/redis'),
+    colsets = require('../services/colsets').byId();
 
 // Organize cards into slots. That means that
 //
@@ -108,6 +109,7 @@ module.exports = {
 
     var bits = {
       creator:        user.id,
+      colsetId:       req.body.colsetId,
       title:          req.body.title,
       votesPerUser:   req.body.votesPerUser,
       p_seeVotes:     req.body.p_seeVotes,
@@ -127,13 +129,15 @@ module.exports = {
       };
 
       // 2. Create starter columns
-      async.parallel({
-        trash:    colmakermaker('Trash', 0),
-        firstcol: colmakermaker('First Column', 1)
-      }, function(err, results) {
+      var pos = 1, jobs = [colmakermaker('Trash', 0)];
+      (colsets[bits.colsetId] || colsets[1]).cols.forEach(function(name) {
+        jobs.push(colmakermaker(name, pos));
+        pos++;
+      });
+      async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
-        board.columns = [results.trash, results.firstcol];
+        board.columns = results;
 
         res.jsonx(board);
 
@@ -530,6 +534,10 @@ module.exports = {
 
       redis.boardTimerStart(boardId, seconds);
     });
+  },
+
+  colsets: function(req, res) {
+    res.jsonx(colsets);
   }
 
 };
