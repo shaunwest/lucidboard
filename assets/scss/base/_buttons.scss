@@ -4,7 +4,7 @@
     outline: 0;
     cursor: pointer;
     display: inline-block;
-    background-color: $primary;
+    background-color: $button;
     border-radius: 0.15em;
     border: none;
     padding: 0.5em 1em;
@@ -12,7 +12,7 @@
     text-align: center;
     text-decoration: none;
     &:hover {
-        background: lighten($primary, 6%);
+        background: darken($button, 5%);
         color: $white;
         text-decoration: none;
     }

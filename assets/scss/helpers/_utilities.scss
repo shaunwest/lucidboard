@@ -9,3 +9,9 @@
 .mbn {
     margin-bottom: 0;
 }
+
+// Branding classes
+.brand-underline {
+    border-bottom: 0.1875em solid $brand-dull;
+    margin-bottom: 0.5em;
+}

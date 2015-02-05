@@ -37,10 +37,10 @@
         margin-bottom: 0.5em;
         cursor: pointer;
         transition: background 500ms;
-        background: $primary;
+        background: $brand-dull;
         border-radius: 0.15em;
         &:hover {
-            background: lighten($primary, 5%);
+            background: lighten($brand-dull, 5%);
         }
         a {
             padding: 1em 0em;
@@ -53,44 +53,5 @@
                 text-decoration: none;
             }
         }
-    }
-}
-
-// Use for tabbed list
-.board-tabs {
-    padding: 0.5em 0;
-    display: table;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    background: $white;
-    width: 100%;
-    list-style: none;
-    li {
-        @media (min-width: 40em) {
-            display: inline-block;
-            margin-right: 1.5em;
-            margin-bottom: 0;
-            .text-input, select {
-                outline: 0;
-                padding: 0.5em;
-                background: $white;
-                border: 0.125em solid $grey;
-                border-radius: 0.3125em;
-                &:focus {
-                    border: 0.125em solid $link-color-interaction;
-                    background: lighten($primary, 50%);
-                }
-            }
-        }
-    }
-    select, label, a {
-        font-weight: bold;
-        outline: none;
-        border-radius:  0.1875em;
-        padding: 0.5em;
-        display: inline-block;
-    }
-    .active {
-        color: $link-color-interaction;
     }
 }
