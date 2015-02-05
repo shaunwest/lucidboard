@@ -1,14 +1,17 @@
 .header-bar {
     @include clearfix;
     @include span(12 of 12 omega);
-    padding: 1em 1.5em;
+    padding: 1em 0;
     margin-bottom: 0.5em;
     h1 {
         margin-bottom: 0;
     }
     a {
-        &:hover {
+        &:hover, &:active, &:focus {
             text-decoration: none;
         }
+    }
+    @media (min-width: 70em) {
+        padding: 1em 1.5em;
     }
 }

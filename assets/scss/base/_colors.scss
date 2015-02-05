@@ -2,7 +2,7 @@
 $font-body-color: #333;
 $link-color: $font-body-color;
 $primary: #349dc0;
-$link-color-interaction: lighten($primary, 6%);
+$link-color-interaction: $primary;
 
 // Default colors
 $white: #fff;
@@ -10,4 +10,4 @@ $light-grey: #dedede;
 $grey: #aaa;
 
 $brand: #d5161e;
-$muted: #575757;
+$muted: #B8B8B8;

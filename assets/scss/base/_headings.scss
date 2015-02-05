@@ -34,13 +34,7 @@ h6, .zeta {
     color: $brand;
 }
 
-.heading-muted {
-    font-family: $font-heading-brand;
-    color: $muted;
-}
-
-.main-container-heading {
-    line-height: 1;
-    padding-top: 2em;
-    padding-left: 0.5em;
+.heading-underline  {
+    text-align: center;
+    border-bottom: 0.2em solid rgb(52, 157, 192);
 }

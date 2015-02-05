@@ -24,7 +24,44 @@
                 Columns
             </a>
         </li>
+        <li data-ng-show="board.votesPerUser() !== 0">
+            <strong>
+                {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
+                Left
+            </strong>
+        </li>
         <li>
+            <label for="viewSections">
+                View
+            </label>
+            <select id="viewSections">
+                <option value="0">All Columns</option>
+                <option value="1">Column 1</option>
+                <option value="2">Column 2</option>
+                <option value="3">Column 3</option>
+            </select>
+        </li>
+        <li>
+            <a href="#" data-ng-click="showTimerForm = !showTimerForm">
+                <svg alt="countdown" class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                    <path d="M27.229 14.775c-1.374-3.807-4.725-6.729-8.891-7.659 1.067-1.532 2.836-2.539 4.845-2.539 3.264 0 5.909 2.646 5.909 5.91 0 1.694-0.722 3.211-1.863 4.288zM15.864 4.799v3.716c5.67 0.231 10.199 4.888 10.199 10.614 0 2.392-0.799 4.592-2.13 6.367l2.464 4.269-2.047 1.183-2.109-3.654c-1.846 1.543-4.221 2.474-6.814 2.474-2.579 0-4.943-0.919-6.784-2.445l-2.165 3.747-2.047-1.183 2.516-4.356c-1.348-1.782-2.156-3.995-2.156-6.402 0-5.688 4.468-10.319 10.084-10.608v-3.722c-0.573-0.205-0.989-0.74-0.989-1.385 0-0.82 0.665-1.484 1.484-1.484s1.485 0.665 1.485 1.484c-0.001 0.645-0.417 1.18-0.991 1.385zM7.153 19.129c0 4.57 3.704 8.273 8.273 8.273s8.273-3.703 8.273-8.273c0-4.568-3.705-8.272-8.273-8.272s-8.273 3.704-8.273 8.272zM17.906 20.918h-2.969c-0.547 0-0.99-0.443-0.99-0.99v-3.959c0-0.547 0.443-0.99 0.99-0.99 0.546 0 0.989 0.443 0.989 0.99v2.969h1.979c0.547 0 0.99 0.443 0.99 0.99s-0.442 0.99-0.989 0.99zM3.772 14.775c-1.142-1.078-1.864-2.594-1.864-4.288 0-3.264 2.646-5.91 5.91-5.91 2.008 0 3.776 1.007 4.845 2.539-4.166 0.93-7.517 3.852-8.891 7.659z" fill="#000000"></path>
+                </svg>
+                {{timerLeft | formatTime}}
+            </a>
+        </li>
+        <li data-ng-show="showTimerForm">
+            <input class="text-input" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+            data-ng-model="timerMinutesInput">
+            <label for="timerMinutesInput">
+                Min
+            </label>
+        </li>
+        <li data-ng-show="showTimerForm">
+            <button data-ng-click="timerStart(timerMinutesInput)" class="btn">
+                Start Timer
+            </button>
+        </li>
+        <li class="aside-right">
             <a href="#" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
                 data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
                 board.nextPositionByColumnId(board.trash().id))">
@@ -46,43 +83,6 @@
                 Trash ({{board.trash().cardSlots.length}})
             </a>
         </li>
-        <li data-ng-show="board.votesPerUser() !== 0">
-            <strong>
-                {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
-                left
-            </strong>
-        </li>
-        <li>
-            <a href="#" data-ng-click="showTimerForm = !showTimerForm">
-                <svg alt="countdown" class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
-                    <path d="M27.229 14.775c-1.374-3.807-4.725-6.729-8.891-7.659 1.067-1.532 2.836-2.539 4.845-2.539 3.264 0 5.909 2.646 5.909 5.91 0 1.694-0.722 3.211-1.863 4.288zM15.864 4.799v3.716c5.67 0.231 10.199 4.888 10.199 10.614 0 2.392-0.799 4.592-2.13 6.367l2.464 4.269-2.047 1.183-2.109-3.654c-1.846 1.543-4.221 2.474-6.814 2.474-2.579 0-4.943-0.919-6.784-2.445l-2.165 3.747-2.047-1.183 2.516-4.356c-1.348-1.782-2.156-3.995-2.156-6.402 0-5.688 4.468-10.319 10.084-10.608v-3.722c-0.573-0.205-0.989-0.74-0.989-1.385 0-0.82 0.665-1.484 1.484-1.484s1.485 0.665 1.485 1.484c-0.001 0.645-0.417 1.18-0.991 1.385zM7.153 19.129c0 4.57 3.704 8.273 8.273 8.273s8.273-3.703 8.273-8.273c0-4.568-3.705-8.272-8.273-8.272s-8.273 3.704-8.273 8.272zM17.906 20.918h-2.969c-0.547 0-0.99-0.443-0.99-0.99v-3.959c0-0.547 0.443-0.99 0.99-0.99 0.546 0 0.989 0.443 0.989 0.99v2.969h1.979c0.547 0 0.99 0.443 0.99 0.99s-0.442 0.99-0.989 0.99zM3.772 14.775c-1.142-1.078-1.864-2.594-1.864-4.288 0-3.264 2.646-5.91 5.91-5.91 2.008 0 3.776 1.007 4.845 2.539-4.166 0.93-7.517 3.852-8.891 7.659z" fill="#000000"></path>
-                </svg>
-                {{timerLeft | formatTime}}
-            </a>
-            <ul class="y-list" data-ng-show="showTimerForm">
-                <li class="board-tab-full">
-                    <label for="timerMinutesInput">
-                        Minutes
-                    </label>
-                    <input id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                    data-ng-model="timerMinutesInput">
-                    <button data-ng-click="timerStart(timerMinutesInput)" class="btn">
-                        Start
-                    </button>
-                </li>
-            </ul>
-        </li>
-        <li class="aside-right">
-            <label for="viewSections">
-                View
-            </label>
-            <select id="viewSections">
-                <option value="0">All Columns</option>
-                <option value="1">Column 1</option>
-                <option value="2">Column 2</option>
-                <option value="3">Column 3</option>
-            </select>
-        </li>
     </ul>
 </div>
 <div class="tier" data-ng-show="currentTab === 'board'">
@@ -90,7 +90,7 @@
         <div class="column" data-ng-repeat="column in board.columns()">
             <ul class="form-fields--blank">
                 <li>
-                    <h4 class="mtn delta column-title" data-editable-text="column.title" data-buttons="no"
+                    <h4 class="mtn mbn delta heading-underline" data-editable-text="column.title" data-buttons="no"
                         onbeforesave="checkColumnTitle($data, column.id)">
                         {{column.title}}
                     </h4>
@@ -111,7 +111,7 @@
                     </div>
                 </li>
                 <li>
-                    <a class="btn-full" data-ng-click="createCard(column)" href="#">Add New Card</a>
+                    <button class="btn-full" data-ng-click="createCard(column)">Add New Card</button>
                 </li>
             </ul>
         </div>

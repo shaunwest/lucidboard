@@ -15,8 +15,8 @@
       <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
 {{card.content | obfuscated}}
       </pre>
-      <pre data-ng-show="!card.content">
-empty
+      <pre data-ng-show="!card.content" class="muted">
+Enter comments...
       </pre>
       <p class="handle" title="Your votes: {{card.votes | myVotes}}">
           <span ng-show="board.p_seeVotes()">

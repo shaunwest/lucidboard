@@ -17,20 +17,23 @@
     }
 }
 
-.column-title,  {
-    text-align: center;
-    border-bottom: 0.2em solid rgb(52, 157, 192);
-}
-
 .card {
     @include clearfix;
-    cursor: pointer;
+    cursor: grab;
+    // cursor: -webkit-grab;
+    // cursor: -moz-grab;
     border-radius: 0.15em;
     font-weight: bold;
     .cardcontent pre {
         font-family: $font-body;
         margin: 0;
         padding: 1em;
+        font-style: normal
+    }
+    &:active {
+        cursor: grabbing;
+        // cursor: -webkit-grabbing;
+        // cursor: -moz-grabbing;
     }
  }
 
@@ -38,12 +41,10 @@
     padding: 0.5em;
     float: right;
     margin: 0;
-    color: $muted;
-    fill: $muted;
     transition: all 0.2s ease-in;
-    &:hover {
-        color: $link-color;
-        fill: $link-color;
+    &:hover, &:active, &:focus {
+        color: $primary;
+        fill: $primary;
     }
 }
 
@@ -59,11 +60,6 @@
     text-align: center;
 }
 
-[card="card"] {
-    @include clearfix;
-    display: block;
-}
-
 .card.on-drag-hover {
     border-top: 0.125em dashed #eee;
     border-left: 0.125em dashed #eee;
@@ -72,12 +68,12 @@
  }
 
 .cardjunction {
-    height: 0.375em;
+    height: 0.5em;
     &.top {
         height: 0;
     }
     &.active {
-        height: 12px;
+        height: 0.75em;
     }
     &.on-drag-hover {
         background-color: #eee;
@@ -92,21 +88,21 @@
 
 .slate-card {
     background-color: $white;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     &:hover {
-        background-color: darken($white, 3%);
+        background-color: lighten($primary, 45%);
     }
     .editable-click {
-        border-bottom: 0.10em solid #B8B8B8;
+        border-bottom: 0;
     }
 }
 
-
-.editable-empty, .editable-click {
-     color: $font-body-color;
-     &:hover {
-         color: lighten($font-body-color, 10%);
-     }
+.editable-click {
+    color: $font-body-color;
+    &:hover, &:active, &:focus {
+        color: initial;
+        border-bottom-color: $primary;
+    }
 }
 
 .editable-buttons {
