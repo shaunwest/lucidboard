@@ -20,8 +20,8 @@
 .card {
     @include clearfix;
     cursor: grab;
-    // cursor: -webkit-grab;
-    // cursor: -moz-grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
     border-radius: 0.15em;
     font-weight: bold;
     .cardcontent pre {
@@ -32,8 +32,8 @@
     }
     &:active {
         cursor: grabbing;
-        // cursor: -webkit-grabbing;
-        // cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+        cursor: -moz-grabbing;
     }
  }
 
@@ -43,8 +43,8 @@
     margin: 0;
     transition: all 0.2s ease-in;
     &:hover, &:active, &:focus {
-        color: $primary;
-        fill: $primary;
+        color: $brand-dull;
+        fill: $brand-dull;
     }
 }
 
@@ -61,10 +61,10 @@
 }
 
 .card.on-drag-hover {
-    border-top: 0.125em dashed #eee;
-    border-left: 0.125em dashed #eee;
-    border-bottom: 0.125em dashed #eee;
-    border-right: 0.125em dashed #eee;
+    border-top: 0.125em dashed $muted;
+    border-left: 0.125em dashed $muted;
+    border-bottom: 0.125em dashed $muted;
+    border-right: 0.125em dashed $muted;
  }
 
 .cardjunction {
@@ -76,10 +76,10 @@
         height: 0.75em;
     }
     &.on-drag-hover {
-        background-color: #eee;
+        background-color: $muted;
         height: 6em;
         border-radius: 0.15em;
-        border: 0.125em dashed #ccc;
+        border: 0.125em dashed $muted;
         margin-top: 0.375em;
         margin-bottom: 0.375em;
         transition: all 0.2s ease-in-out;
@@ -87,21 +87,22 @@
 }
 
 .slate-card {
-    background-color: $white;
+    background-color: $light-blue;
     transition: background-color 0.2s ease-in-out;
     &:hover {
-        background-color: lighten($primary, 45%);
+        background-color: darken($light-blue, 5%);
     }
     .editable-click {
-        border-bottom: 0;
+        border-bottom: 0.125em solid $white;
     }
 }
 
 .editable-click {
     color: $font-body-color;
+    border-bottom: 0;
     &:hover, &:active, &:focus {
         color: initial;
-        border-bottom-color: $primary;
+        border-bottom-color: $white;
     }
 }
 
@@ -165,14 +166,14 @@
 }
 
 .card-slot {
-    background: $link-color;
+    background: $brand-dull;
     border-radius: 0.15em;
 }
 
 .dropdown {
     display: none;
     position: fixed;
-    background-color: #eee;
+    background-color: $muted;
     border-radius: 0.15em;
     transition: all 0.2s ease-in;
     li {
@@ -184,10 +185,10 @@
         }
         padding: 0.5em 1.5em;
         &:hover:first-child {
-            background-color: #eee;
+            background-color: $muted;
         }
         &:hover {
-            background-color: darken(#eee, 6%);
+            background-color: darken($muted, 6%);
         }
     }
 }
