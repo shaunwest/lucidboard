@@ -4,6 +4,7 @@ module.exports = function (gulp, plugins) {
 			'clean:dev',
 			'jst:dev',
 			'sass:dev',
+      'autoprefix:dev',
 			'copy:dev',
 			'coffee:dev',
 			cb
