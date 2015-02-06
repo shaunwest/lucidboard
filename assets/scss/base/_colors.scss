@@ -1,12 +1,9 @@
-// Brand Colors
 $font-body-color: #333;
-$brand-dull: #3f5866; // Medium Blue
-$brand-bright: #f05623; // Orange
-$link-color-interaction: darken($brand-dull, 5%);
-$button: #29a397;
-
-// Colors
+$fiord: #3f5866;
+$flamingo: #f05623;
+$fiord-darken: darken($fiord, 5%);
+$jungle-green: #29a397;
 $white: #fff;
-$light-grey: #f2f2f3;
-$light-blue: #bcd6e1;
-$muted: #dddddd;
+$athens-gray: #f2f2f3;
+$ziggurat: #bcd6e1;
+$alto: #dddddd;

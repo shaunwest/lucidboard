@@ -29,15 +29,18 @@
         }
     }
     > li {
-        background: $brand-dull;
+        background: $fiord;
         padding: 1em;
         margin-bottom: 1em;
         @media (min-width: 50em) {
             display: inline-block;
             margin-bottom: 0;
             @include span(3 of 12);
+            @include gutters(0.5em);
             &:last-child {
-                @include span(6 of 12 omega);
+                width: 50%;
+                @include omega;
+
             }
         }
     }

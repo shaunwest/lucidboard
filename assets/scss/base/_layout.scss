@@ -12,7 +12,7 @@ html, body {
 .site-container {
   @include container(12 omega);
   @include clearfix;
-  background: $light-grey;
+  background: $athens-gray;
   padding-left: 0.5em;
   padding-right:0.5em;
   min-height: 100%;
@@ -27,7 +27,7 @@ html, body {
 .site-footer {
     @include container(12 of 12 omega);
     height: 7em;
-    background: $brand-dull;
+    background: $fiord;
     color: $white;
     padding: 2em 1em;
 }

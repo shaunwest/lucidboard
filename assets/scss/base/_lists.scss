@@ -37,10 +37,10 @@
         margin-bottom: 0.5em;
         cursor: pointer;
         transition: background 500ms;
-        background: $brand-dull;
+        background: $fiord;
         border-radius: 0.15em;
         &:hover {
-            background: lighten($brand-dull, 5%);
+            background: lighten($fiord, 5%);
         }
         a {
             padding: 1em 0em;
