@@ -148,6 +148,7 @@
 
 .card-pile-panel {
     @include clearfix;
+    margin-top:  0.125em;
     background: $fiord;
     color: $white;
     a {
@@ -159,11 +160,6 @@
     border-bottom-right-radius: 0.1875em;
     border-bottom-left-radius: 0.1875em;
     text-align: center;
-}
-
-.card-slot {
-    background: $fiord;
-    border-radius: 0.15em;
 }
 
 .dropdown {
