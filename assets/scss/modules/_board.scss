@@ -8,6 +8,9 @@
     .column:first-child {
         padding-left: 0;
     }
+    .column:last-child {
+        padding-right: 0;
+    }
 }
 
 // Individual columns
