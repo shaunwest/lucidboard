@@ -60,14 +60,12 @@
 }
 
 .card.on-drag-hover {
-    border-top: 0.125em dashed $alto;
-    border-left: 0.125em dashed $alto;
-    border-bottom: 0.125em dashed $alto;
-    border-right: 0.125em dashed $alto;
+    border: 0.125em dashed $alto;
  }
 
 .cardjunction {
     height: 0.5em;
+    transition: all 0.2s ease-in-out;
     &.top {
         height: 0;
     }
@@ -81,7 +79,6 @@
         border: 0.125em dashed $alto;
         margin-top: 0.375em;
         margin-bottom: 0.375em;
-        transition: all 0.2s ease-in-out;
     }
 }
 
@@ -114,7 +111,7 @@
     }
     .btn-default {
         @extend .btn-primary;
-        background: $alto;
+        background: $jungle-green;
         &:after {
             content: 'Cancel';
         }
