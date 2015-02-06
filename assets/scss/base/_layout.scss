@@ -1,8 +1,11 @@
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+$susy: (
+  columns: 12,
+  container: 100%,
+  global-box-sizing: border-box
+);
+
+// susy includes border-box properties
+@include border-box-sizing;
 
 html, body {
   height: 100%;
@@ -10,7 +13,7 @@ html, body {
 }
 
 .site-container {
-  @include container(12 omega);
+  @include container;
   @include clearfix;
   background: $athens-gray;
   padding-left: 0.5em;
@@ -29,7 +32,6 @@ html, body {
     height: 7em;
     background: $fiord;
     color: $white;
-    padding: 2em 1em;
 }
 
 // layout content piece container

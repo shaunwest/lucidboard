@@ -1,21 +1,33 @@
-.icon-logo {
-    float: left;
-    width: 16em;
+.icon-standard {
+    width: 1.25em;
+    outline: none;
 }
 
 .icon-left {
+    @extend .icon-standard;
     float: left;
     margin-right: 0.25em;
-    width: 1.25em;
+}
+
+.icon-logo {
+    @extend .icon-standard;
+    width: 16em;
 }
 
 .icon-middle {
-    width: 7em;
-    height: 7em;
-    display: inline-block;
+    @extend .icon-standard;
+    display: block;
+    margin: 0 auto;
 }
 
-.icon-standard {
-    height: 1em;
-    outline: none;
+.icon-middle-small {
+    @extend .icon-middle;
+    width: 7em;
+    height: 7em;
+}
+
+.icon-middle-large {
+    @extend .icon-middle;
+    width: 32em;
+    height: 16em;
 }

@@ -20,7 +20,7 @@
 .nav-sub {
     @include clearfix;
     color: $white;
-    @include span(12 of 12 omega);
+    @include span(24 of 24 omega);
     margin-bottom: 1.5em;
     a {
         color: $white;
@@ -35,9 +35,9 @@
         @media (min-width: 50em) {
             display: inline-block;
             margin-bottom: 0;
-            @include span(3 of 12);
+            @include span(6 of 24);
             &:last-child {
-                @include span(6 of 12 omega);
+                @include span(12 of 24 omega);
             }
         }
     }
