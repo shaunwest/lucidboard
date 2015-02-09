@@ -29,9 +29,14 @@
         }
     }
     > li {
-        background: $fiord;
+        background: $oxford;
         padding: 1em;
         margin-bottom: 1em;
+        transition: all 0.2s ease-in;
+        &:hover, &:active, &:focus {
+            background: darken($oxford, 6%);
+            cursor: pointer;
+        }
         @media (min-width: 50em) {
             display: inline-block;
             margin-bottom: 0;
