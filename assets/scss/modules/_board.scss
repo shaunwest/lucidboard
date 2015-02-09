@@ -144,9 +144,12 @@
 .trash {
     @include clearfix;
     @include span(12 of 12 omega);
-    .card {
-        width: 40%;
+    @media (min-width: 70em) {
+        @include span(4 of 12);
     }
+    // .card {
+    //     width: 40%;
+    // }
 }
 
 .card-pile-panel {
