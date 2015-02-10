@@ -25,7 +25,7 @@
             .state(key, angular.extend(angular.copy(routeDefaults), stateConfig));
         });
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/signin');
       }
     ])
     .run(['$rootScope', '$state', function($rootScope, $state) {
@@ -34,9 +34,6 @@
         switch(rejection) {
           case 'not_logged_in':
             $state.go('signin');
-            break;
-          case 'skip_splash':
-            $state.go('boards');
             break;
         }
       });

@@ -49,25 +49,6 @@
             return board.load($stateParams.boardId);
           }]
         }
-      },
-      home: {
-        url:         '/',
-        templateUrl: '/templates/splash.html',
-        headerUrl: '',
-        footerUrl: '',
-        resolve: {
-          skipSplash: ['$q', 'user', function($q, user) {
-            var defer = $q.defer();
-
-            if(user.token()) {
-              defer.reject('skip_splash');
-            } else {
-              defer.resolve();
-            }
-
-            return defer.promise;
-          }]
-        }
       }
     });
 })();
