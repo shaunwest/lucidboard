@@ -3,9 +3,6 @@
     @include span(12 of 12 omega);
     padding: 1em 0;
     margin-bottom: 0.5em;
-    h1 {
-        margin-bottom: 0;
-    }
     a {
         &:hover, &:active, &:focus {
             text-decoration: none;
