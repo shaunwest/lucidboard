@@ -20,6 +20,18 @@
 
       $scope.b = board.obj();
 
+      $scope.columnViews = $scope.board.columns().map(function(column) {
+        return {
+          label: column.title,
+          id: column.id
+        };
+      });
+      $scope.columnViews.unshift($scope.columnViewSelected = {id: 0, label: 'View All'});
+
+      $scope.getColumnViewState = function(columnId, columnViewSelected) {
+        return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
+      };
+
       $rootScope.cardDragging = false;
 
       var startTimer = function(bits) {
