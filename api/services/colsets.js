@@ -15,7 +15,9 @@ var colsets = [
 ];
 
 module.exports = {
-  colsets: colsets,
+  all: function() {
+    return colsets;
+  },
   byId: function() {
     var ret = {};
     colsets.forEach(function(s) { ret[s.id] = s; });

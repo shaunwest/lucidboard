@@ -11,6 +11,14 @@
 
 module.exports.bootstrap = function(cb) {
 
+  // Load in some secret keys from .env
+  require('dotenv').load();
+  if (!process.env.SESSION_SECRET || !process.env.CRYPTO_KEY) {
+    console.error("Crypto tokens were not found. Please generate them with\n\n" +
+      "    gulp generateEnv\n");
+    process.exit(1);
+  }
+
   /*
   User.findOne({id:2}).exec(function(err, u) {
     console.log('ok', err, u);
