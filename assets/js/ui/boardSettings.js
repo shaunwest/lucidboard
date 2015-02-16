@@ -10,23 +10,9 @@
         scope: {
           board: '='
         },
-        controller: ['$scope', '$state', 'api', function($scope, $state, api) {
+        controller: ['$scope', '$state', 'api', 'colsets', function($scope, $state, api, colsets) {
 
-          $scope.colsets = [
-            {
-              id: 1,
-              name: 'One Column',
-              cols: ['First Column']
-            },
-            {
-              id: 2,
-              name: 'Retrospective',
-              cols: [
-                'What Went Well',
-                "What Didn't go Well"
-              ]
-            },
-          ];
+          $scope.colsets = colsets.all();
 
           if ($scope.board) {
             $scope.b = {

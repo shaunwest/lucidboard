@@ -9,19 +9,16 @@
       },
       boards: {
         url:         '/boards',
-        templateUrl: '/templates/home.html',
+        templateUrl: '/templates/boards.html',
         controller:  'BoardsCtrl',
         resolve: {
           hideHeader: ['$rootScope', function($rootScope) {
             $rootScope.showHeader = false;
           }],
-          // colsets: ['$q', 'api', function($q, api) {
-          //   var defer = $q.defer();
-          //   api.getColsets(function(colsets) {
-          //     defer.resolve(colsets);
-          //   });
-          //   return defer.promise;
-          // }],
+          loadColsets: ['colsets', function(colsets) {
+            colsets.load();
+            return colsets.promise;
+          }],
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.token()) {
