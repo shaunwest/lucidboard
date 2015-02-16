@@ -1,7 +1,7 @@
 var async   = require('async'),
     _       = require('underscore'),
     redis   = require('../services/redis'),
-    colsets = require('../services/colsets').byId();
+    colsets = require('../services/colsets').all();
 
 // Organize cards into slots. That means that
 //
@@ -81,6 +81,16 @@ var fixPositions = function(stack, origMap) {
   return jobs;
 };
 
+var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
+  Board.findOneById(id).exec(function(err, board) {
+    if (err)                           return res.serverError(err);
+    if (!board)                        return res.notFound();
+    if (board.creator !== req.user.id) return res.forbidden();
+
+    cb(board);
+  });
+};
+
 module.exports = {
 
   getList: function(req, res) {
@@ -148,7 +158,7 @@ module.exports = {
   },
 
   update: function(req, res) {
-    var id    = req.param('id'),
+    var id    = parseInt(req.param('id')),
         title = req.body.title;
 
     var bits = {
@@ -160,14 +170,12 @@ module.exports = {
       p_lock:         req.body.p_lock
     };
 
-    Board.update(id, bits).exec(function(err, board) {
-      if (err) return res.serverError(err);
-
-      board = board[0];  // grr
-
-      res.jsonx(board);
-
-      redis.boardUpdated(board);
+    boardIsLegitAndOwnedBy(id, req, res, function(board) {
+      Board.update(id, bits).exec(function(err, board) {
+        if (err) return res.serverError(err);
+        res.jsonx(board[0]);
+        redis.boardUpdated(board[0]);
+      });
     });
   },
 
@@ -175,28 +183,37 @@ module.exports = {
     var boardId = req.param('id');
 
     var p = {
-      cardId:       req.param('cardId'),
-      destColumnId: req.param('destColumnId'),
-      destPosition: req.param('destPosition')
+      cardId:       parseInt(req.param('cardId')),
+      destColumnId: parseInt(req.param('destColumnId')),
+      destPosition: parseInt(req.param('destPosition'))
     };
-
-    // FIXME omg security
-    // FIXME handle position fields better? (source column)
 
     async.auto({
       card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
+      destColumn: function(cb) {
+        Column.find({board: boardId, id: p.destColumnId}).exec(cb);
+      },
       destStack: function(cb) {
         Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
       },
+      sourceColumn: ['card', function(cb, r) {
+        if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
+        Column.find({board: boardId, id: r.card.column}).exec(cb);
+      }],
       sourceStack: ['card', function(cb, r) {
         if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
         Card.find({column: r.card.column}).sort({position: 'asc'}).exec(cb);
       }]
     }, function(err, r) {
-      if (err)                     return res.serverError(err);
-      if (!r.card || !r.destStack) return res.notFound();
+      if (err)                                                       return res.serverError(err);
+      if (!r.card || !r.destColumn || !r.destStack)                  return res.notFound();
+      if (((r.card.column === p.destColumnId) &&  r.sourceColumn)
+       || ((r.card.column !== p.destColumnId) && !r.sourceColumn))   return res.notFound();
 
-      var jobs = [], signalData = {};
+      var jobs = [], signalData = {}, destStack = normalizeStack(r.destStack);
+
+      if (p.destPosition < 1 || p.destPosition > destStack.length+1) return res.badRequest();
+      if (p.destPosition % 1 !== 0)                                  return res.badRequest();
 
       if (r.sourceStack === null) {  // source and dest stack are the same
 
@@ -251,39 +268,50 @@ module.exports = {
   },
 
   movePile: function(req, res) {
-    var boardId = req.param('id');
+    var boardId = parseInt(req.param('id'));
 
     var p = {
-      sourceColumnId: req.param('sourceColumnId'),
-      sourcePosition: req.param('sourcePosition'),
-      destColumnId:   req.param('destColumnId'),
-      destPosition:   req.param('destPosition')
+      sourceColumnId: parseInt(req.param('sourceColumnId')),
+      sourcePosition: parseInt(req.param('sourcePosition')),
+      destColumnId:   parseInt(req.param('destColumnId')),
+      destPosition:   parseInt(req.param('destPosition'))
     };
 
-    // FIXME omg security
-    // FIXME handle position fields better? (source column)
-
     async.auto({
+      sourceColumn: function(cb) {
+        Column.find({board: boardId, id: p.sourceColumnId}).exec(cb);
+      },
       sourceStack: function(cb) {
         Card.find({column: p.sourceColumnId}).sort({position: 'asc'}).exec(cb);
+      },
+      destColumn: function(cb) {
+        if (p.sourceColumnId === p.destColumnId) return cb(null, null);
+        Column.find({board: boardId, id: p.destColumnId}).exec(cb);
       },
       destStack: function(cb) {
         if (p.sourceColumnId === p.destColumnId) return cb(null, null);
         Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
       }
     }, function(err, r) {
-      if (err)                                                 return res.serverError(err);
-      if (!r.sourceStack)                                      return res.notFound();
-      if (p.sourceColumnId !== p.destColumnId && !r.destStack) return res.notFound();
+      if (err)                                                           return res.serverError(err);
+      if (!r.sourceColumn || !r.destColumn)                              return res.notFound();
+      if (((p.sourceColumnId === p.destColumnId) &&  r.destColumn)
+       || ((p.sourceColumnId !== p.destColumnId) && !r.destColumn))      return res.notFound();
 
       var sourceStack       = normalizeStack(r.sourceStack),
-          originalSourceMap = toStackMap(sourceStack),
-          destStack         = r.destStack ? normalizeStack(r.destStack) : null,
+          destStack         = r.destStack ? normalizeStack(r.destStack) : null;
+
+      if (p.sourcePosition < 1 || p.sourcePosition > sourceStack.length) return res.badRequest();
+      if (p.destPosition   < 1 || p.destPosition   > destStack.length+1) return res.badRequest();
+      if (p.sourcePosition % 1 !== 0 || p.destPosition % 1 !== 0)        return res.badRequest();
+
+      var originalSourceMap = toStackMap(sourceStack),
           originalDestMap   = r.destStack ? toStackMap(destStack) : null,
           pile              = sourceStack.splice(p.sourcePosition - 1, 1)[0],
           extra             = (p.sourcePosition < p.destPosition && !destStack) ? 1 : 0,
           jobs              = [],
           signalData        = {};
+
 
       // Set the new column id on the moving cards
       pile.forEach(function(card) {
@@ -317,11 +345,11 @@ module.exports = {
   },
 
   combineCards: function(req, res) {
-    var boardId = req.param('id');
+    var boardId = parseInt(req.param('id'));
 
     var p = {
-      sourceCardId: req.param('sourceCardId'),
-      destCardId:   req.param('destCardId')
+      sourceCardId: parseInt(req.param('sourceCardId')),
+      destCardId:   parseInt(req.param('destCardId'))
     };
 
     if (p.sourceCardId === p.destCardId) {
@@ -331,16 +359,25 @@ module.exports = {
     }
 
     async.auto({
+      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
       source: function(cb) { Card.findOneById(p.sourceCardId).exec(cb); },
       dest:   function(cb) { Card.findOneById(p.destCardId).exec(cb); },
+      sourceColumn: ['source', function(cb, r) {
+        Column.findOneById(r.source.column).exec(cb);
+      }],
       sourceStack: ['source', function(cb, r) {
         Card.find({column: r.source.column}).sort({position: 'asc'}).exec(cb);
+      }],
+      destStack: ['dest', function(cb, r) {
+        Column.findOneById(r.dest.column).exec(cb);
       }],
       destStackStack: ['dest', function(cb, r) {
         Card.find({column: r.dest.column, position: r.dest.position}).exec(cb);
       }]
     }, function(err, r) {
       if (err) return res.serverError(err);
+
+      // TODO - continue my work in security things here
 
       var sourceColumnId    = r.source.column,
           sourcePosition    = r.source.position,
@@ -402,9 +439,9 @@ module.exports = {
     var boardId = req.param('id');
 
     var p = {
-      sourceColumnId: req.param('sourceColumnId'),
-      sourcePosition: req.param('sourcePosition'),
-      destCardId:     req.param('destCardId')
+      sourceColumnId: parseInt(req.param('sourceColumnId')),
+      sourcePosition: parseInt(req.param('sourcePosition')),
+      destCardId:     parseInt(req.param('destCardId'))
     };
 
     // if (p.sourceCardId === p.destCardId) {
@@ -488,10 +525,10 @@ module.exports = {
 
   // A new card is on top of a pile
   cardFlip: function(req, res) {
-    var boardId   = req.param('id'),
-        cardId    = req.param('cardId'),
-        columnId  = req.param('columnId'),
-        position  = req.param('position'),
+    var boardId   = parseInt(req.param('id')),
+        cardId    = parseInt(req.param('cardId')),
+        columnId  = parseInt(req.param('columnId')),
+        position  = parseInt(req.param('position')),
         condition = {column: columnId, position: position},
         jobs      = [];
 
@@ -519,8 +556,8 @@ module.exports = {
   },
 
   timerStart: function(req, res) {
-    var boardId = req.param('id'),
-        seconds = req.param('seconds');
+    var boardId = parseInt(req.param('id')),
+        seconds = parseInt(req.param('seconds'));
 
     var bits = {
       timerStart:  new Date(),
