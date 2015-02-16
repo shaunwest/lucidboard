@@ -15,7 +15,7 @@
 
 // Individual columns
 .column {
-    padding: 0 0.5em;
+    padding: 0 0.75em;
     width: 100%;
     margin-bottom: 1.5em;
     @media (min-width: 70em) {
@@ -160,6 +160,7 @@
     margin-top:  0.125em;
     background: $fiord;
     color: $white;
+    max-width: 49.375em;
     a {
         color: $white;
         &:hover {
