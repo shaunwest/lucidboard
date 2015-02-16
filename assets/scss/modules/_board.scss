@@ -28,6 +28,8 @@
     cursor: grab;
     border-radius: 0.15em;
     font-weight: bold;
+    width: 100%;
+    max-width: 49.375em;
     .cardcontent pre {
         font-family: $font-body;
         margin: 0;
@@ -44,9 +46,14 @@
     float: right;
     margin: 0;
     transition: all 0.2s ease-in;
+    font-style: normal;
     &:hover, &:active, &:focus {
-        color: $fiord;
-        fill: $fiord;
+        color: $flamingo;
+        fill: $flamingo;
+        font-style: normal;
+    }
+    .icon-left {
+        width: 1.25em;
     }
 }
 
