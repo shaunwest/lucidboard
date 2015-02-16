@@ -26,15 +26,6 @@ html, body {
   }
 }
 
-// waiting till we start work on sign in
-// .site-bg-img {
-//     background: url(/images/dock.jpg) no-repeat center center fixed;
-//     -webkit-background-size: cover;
-//     -moz-background-size: cover;
-//     -o-background-size: cover;
-//     background-size: cover;
-// }
-
 // sticky footer
 .site-footer {
     @include container(12 of 12 omega);
@@ -90,4 +81,10 @@ html, body {
 
 .aside-right {
     float: right;
+}
+
+// general class to add brand color to elements
+.brand-color {
+    color: $flamingo;
+    fill: $flamingo;
 }
