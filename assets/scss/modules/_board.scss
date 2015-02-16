@@ -30,6 +30,10 @@
     font-weight: bold;
     width: 100%;
     max-width: 49.375em;
+    textarea {
+        margin-left: 0.5em;
+        margin-top: 0.5em;
+    }
     .cardcontent pre {
         font-family: $font-body;
         margin: 0;
@@ -40,6 +44,7 @@
         cursor: grabbing;
     }
  }
+
 
 .handle {
     padding: 0.5em;
@@ -114,6 +119,7 @@
 
 .editable-buttons {
     display: block;
+    margin-left: 0.5em;
     .btn-primary {
         &:after {
             content: 'Save';
