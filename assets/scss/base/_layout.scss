@@ -15,7 +15,6 @@ html, body {
 .site-container {
   @include container;
   @include clearfix;
-  background: $athens-gray;
   padding-left: 0.5em;
   padding-right:0.5em;
   min-height: 100%;
