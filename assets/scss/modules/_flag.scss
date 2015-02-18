@@ -2,6 +2,13 @@
     display: table;
     width: 100%;
     overflow: hidden;
+    border-radius: 0.15em;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+    transition: all 0.2s ease-in;
+    svg {
+        display: block;
+    }
 }
 
 .flag-body, .flag-media, .flag-close {
@@ -16,4 +23,26 @@
 
 .flag-media, .flag-close {
     text-align: center;
+}
+
+// Alert message styles
+.flag-media--alert {
+    @extend .flag-media;
+    background: $torch;
+}
+
+.flag--alert {
+    @extend .flag;
+    background: lighten($torch, 30%);
+}
+
+// Success message styles
+.flag-media--success {
+    @extend .flag-media;
+    background: $jade;
+}
+
+.flag--success {
+    @extend .flag;
+    background: $jade-light;
 }

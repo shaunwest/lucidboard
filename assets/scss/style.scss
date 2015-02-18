@@ -19,5 +19,6 @@
 @import "modules/state";
 @import "modules/animations";
 @import "modules/board";
-@import "helpers/utilities";
 @import "modules/flag";
+// Utilities always needs to be at the bottom 
+@import "helpers/utilities";
