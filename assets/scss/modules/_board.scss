@@ -184,19 +184,27 @@
     background-color: $alto;
     border-radius: 0.15em;
     transition: all 0.2s ease-in;
+    box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
     li {
+        margin-bottom: 0;
+        border-bottom: 0.0625em solid darken($alto, 6%);
         a {
             display: block;
             &:hover {
                 text-decoration: none;
             }
+            padding: 0.5em 1.5em;
         }
-        padding: 0.5em 1.5em;
+        &:first-child {
+            padding: 0.5em 1.5em;
+            border-color: darken($alto, 25%);
+        }
         &:hover:first-child {
             background-color: $alto;
         }
         &:hover {
             background-color: darken($alto, 6%);
+            cursor: pointer;
         }
     }
 }
