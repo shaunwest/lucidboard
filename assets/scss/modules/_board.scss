@@ -48,7 +48,6 @@
 
 .handle {
     padding: 0.5em;
-    float: right;
     margin: 0;
     transition: all 0.2s ease-in;
     font-style: normal;
@@ -59,6 +58,46 @@
     }
     .icon-left {
         width: 1.25em;
+    }
+}
+
+.handle--last {
+    @extend .handle;
+    float: right;
+}
+
+.handle--first {
+    @extend .handle;
+    float: left;
+}
+
+.card-menu {
+    background: $oxford;
+    color: white;
+    width: 100%;
+    float: left;
+    li {
+        margin-bottom: 0;
+        border-bottom: 0.0625em solid lighten($oxford, 6%);;
+        a {
+            color: white;
+            display: block;
+            &:hover {
+                text-decoration: none;
+            }
+            padding: 0.5em 1.5em;
+        }
+        &:first-child {
+            padding: 0.5em 1.5em;
+        }
+        &:hover:first-child {
+            background-color: $oxford;
+            cursor: pointer;
+        }
+        &:hover {
+            background-color: lighten($oxford, 6%);
+            cursor: pointer;
+        }
     }
 }
 
