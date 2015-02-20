@@ -1,4 +1,5 @@
-var subscriber = require('../services/subscriber');
+var ldap       = require('../services/ldap'),
+    subscriber = require('../services/subscriber');
 
 module.exports = {
 
@@ -7,19 +8,40 @@ module.exports = {
         password = req.body.password;
 
     var finish = function(user) {
-      var token = user.id;  // FIXEME: temporary
+      var token = user.buildToken();
 
       if (req.isSocket) {
         req.socket.authToken = token;
       }
 
       res.jsonx({
-        // id:       user.id,
-        // username: user.name,
-        token:    user.id  // FIXME: temporary
+        username: user.name,
+        email:    user.email,
+        token:    user.buildToken()
       });
     };
 
+    ldap.login(username, password, function(err, data) {
+      if (err)   return res.serverError(err);
+      if (!data) return res.json({
+        status:  'error',
+        code:    'badlogin',
+        message: 'Invalid username or password.'
+      });
+
+      User.findOne({name: data.username}, function(err, user) {
+        if (err)  return res.serverError(err);
+        if (user) return finish(user);
+
+        User.create({name: data.username, email: data.email}, function(err, user) {
+          if (err) return res.serverError(err);
+
+          finish(user);
+        });
+      });
+    });
+
+    /*
     // TODO: Make this actually a thing. We aren't even password checking.
     User.findOne({name: username}, function(err, user) {
       if (err) return res.serverError(err);
@@ -36,6 +58,7 @@ module.exports = {
         finish(user);
       });
     });
+    */
 
   },
 
@@ -45,7 +68,7 @@ module.exports = {
   refreshToken: function(req, res) {
     var token = req.body.token;
 
-    User.findOne({id: token}, function(err, user) {
+    User.findByToken(token, function(err, user) {
       if (err) return res.serverError(err);
 
       if (!user) return res.forbidden('Invalid auth token');

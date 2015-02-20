@@ -8,12 +8,26 @@
         '/api/refresh-token'
       ];
 
+      var sanitize = function(thing) {
+        if (typeof thing === 'array') {
+          return thing.map(sanitize);
+        } else if (typeof thing === 'object') {
+          Object.keys(thing).forEach(function(k) {
+            if (typeof thing[k] === 'object') thing[k] = sanitize(thing[k]);
+            if (k === 'password') thing[k] = '***';
+          });
+          return thing;
+        } else {
+          return thing;
+        }
+      };
+
       var debug = function() {
-        console.log.apply(console, arguments);
+        console.log.apply(console, sanitize(arguments));
       };
 
       var info = function() {
-        console.log.apply(console, arguments);
+        console.log.apply(console, sanitize(arguments));
       };
 
       var subs = [];  // our currently subscribed events
