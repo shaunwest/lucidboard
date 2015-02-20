@@ -25,14 +25,6 @@ html, body {
   }
 }
 
-// sticky footer
-.site-footer {
-    @include container(12 of 12 omega);
-    height: 7em;
-    background: $oxford;
-    color: $white;
-}
-
 // layout content piece container
 .tier {
     @include clearfix;
@@ -79,7 +71,7 @@ html, body {
 }
 
 .aside-right {
-    @media (min-width: 50em) {
+    @media (min-width: 60em) {
         float: right;
     }
 }

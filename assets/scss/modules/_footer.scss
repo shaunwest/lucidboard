@@ -1,0 +1,7 @@
+// sticky footer
+.site-footer {
+    @include container(12 of 12 omega);
+    height: 7em;
+    background: $oxford;
+    color: $white;
+}
