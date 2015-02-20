@@ -46,4 +46,6 @@ module.exports = {
     }
   }
 
+  $scope.cardMenu = false;
+
 };

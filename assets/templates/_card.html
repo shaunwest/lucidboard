@@ -19,7 +19,7 @@ Click to enter comments...
       </pre>
     </div>
     <div class="handle--first">
-        <a href="#">
+        <a href="#" ng-click="cardMenu = !cardMenu">
             <svg class="icon-left" width="8px" height="24px" viewBox="0 0 8 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
                 <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
                     <path d="M4,15.6144578 C6.20913911,15.6144578 8,14.0609399 8,12.1445783 C8,10.2282167 6.20913911,8.6746988 4,8.6746988 C1.79086089,8.6746988 0,10.2282167 0,12.1445783 C0,14.0609399 1.79086089,15.6144578 4,15.6144578 Z M4,24 C6.20913911,24 8,22.4464821 8,20.5301205 C8,18.6137588 6.20913911,17.060241 4,17.060241 C1.79086089,17.060241 0,18.6137588 0,20.5301205 C0,22.4464821 1.79086089,24 4,24 Z M4,6.93975904 C6.20913911,6.93975904 8,5.38624115 8,3.46987952 C8,1.55351788 6.20913911,0 4,0 C1.79086089,0 0,1.55351788 0,3.46987952 C0,5.38624115 1.79086089,6.93975904 4,6.93975904 Z" id="Oval-1" sketch:type="MSShapeGroup"></path>
@@ -39,7 +39,7 @@ Click to enter comments...
             </svg>
         </a>
     </div>
-    <div class="card-menu" id="menu-{{card.id}}">
+    <div class="card-menu" id="menu-{{card.id}}" ng-show="cardMenu">
       <ul class="y-list" role="menu">
           <li>
               Move Card To
