@@ -17,6 +17,7 @@
           var board = $scope.board;
 
           $scope.user = user;
+          $scope.cardMenu = false;
 
           $scope.onShow = function() { console.log('srsly'); };
 
