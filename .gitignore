@@ -120,4 +120,4 @@ nbproject
 www
 
 .env
-ldap.js
+/config/ldap.js
