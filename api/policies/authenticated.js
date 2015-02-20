@@ -17,15 +17,13 @@ module.exports = function(req, res, next) {
 
   if (req.isSocket) {
     token = req.socket.authToken;
+    console.log('token-socket', token);
   } else {
     token = req.headers['auth-token'];
+    console.log('token-regular', token);
   }
 
-  if (!token) return fail();
-
-  if (!String(token).match(/^\d+$/)) return fail();
-
-  User.findOne({id: token}, function(err, user) {
+  User.findByToken(token, function(err, user) {
     if (err) return res.serverError(err);
 
     if (!user) return fail();

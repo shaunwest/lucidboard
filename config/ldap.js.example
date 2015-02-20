@@ -1,0 +1,12 @@
+module.exports.ldap = {
+  maxAttempts:   3,
+  url:           'ldap://your.ldap.server:9999',
+  adminDn:       'MI\\whatever',
+  adminPassword: 'secretpassword',
+  searchFilter:  '(samaccountname={{username}})',
+  dns: [
+    'DC=mi,DC=corp,DC=example,DC=com',
+    // You may list any number of DNs here and we will check them all
+    // for the user before giving up.
+  ]
+};

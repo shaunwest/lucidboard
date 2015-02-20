@@ -7,6 +7,7 @@
  */
 
 var
+  md5           = require('MD5'),
   crypto        = require('crypto'),
   usernameRegex = /^[a-zA-Z0-9_]{2,20}$/;
 
@@ -22,11 +23,11 @@ module.exports = {
       regex: usernameRegex,
       unique: true
     },
-    // email: {
-    //   type: 'string',
-    //   unique: true,
-    //   required: true
-    // },
+    email: {
+      type: 'string',
+      unique: true,
+      required: true
+    },
     // gravatarHash: {
     //   type: 'string'
     // },
@@ -49,10 +50,32 @@ module.exports = {
       return {
         id:    this.id,
         name:  this.name,
-        token: this.id
+        token: this.buildToken()
       };
+    },
+
+    buildToken: function() {
+      return this.id + '.' + md5(this.id, sails.config.crypto.key);
+    },
+
+    verifyToken: function(token) {
+      return token === this.buildToken();
     }
   },
+
+  findByToken: function(token, cb) {
+    var bits = String(token).split(/\./);
+
+    if (!bits[0].match(/^\d+$/)) return false;
+
+    this.findOneById(bits[0]).exec(function(err, user) {
+      if (err)                      return cb(err);
+      if (!user)                    return cb();
+      if (!user.verifyToken(token)) return cb();
+
+      cb(null, user);
+    });
+  }
 
   // beforeCreate: function (attrs, next) {
   //   var bcrypt = require('bcrypt');
