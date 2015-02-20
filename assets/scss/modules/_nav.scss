@@ -26,6 +26,7 @@
         }
     }
     > li {
+        @include span(24 of 24 omega);
         background: $oxford;
         padding: 1em;
         margin-bottom: 1em;
@@ -35,6 +36,7 @@
             cursor: pointer;
         }
         @media (min-width: 50em) {
+            float: left;
             display: inline-block;
             margin-bottom: 0;
             @include span(6 of 24);

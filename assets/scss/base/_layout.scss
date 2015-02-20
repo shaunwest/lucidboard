@@ -79,7 +79,9 @@ html, body {
 }
 
 .aside-right {
-    float: right;
+    @media (min-width: 50em) {
+        float: right;
+    }
 }
 
 // general class to add brand color to elements
