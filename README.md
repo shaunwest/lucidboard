@@ -6,6 +6,7 @@ A virtual board of adhesive sticky notes for all your brainstorming and retrospe
 
 Make sure you have a running instance of Redis going on and do something like the following:
 
+    npm install -g sails bower gulp
     cp config/ldap.js.example config/ldap.js
     vim config/ldap.js  # or your editor of choice.
     bower install
