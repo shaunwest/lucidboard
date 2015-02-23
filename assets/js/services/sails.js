@@ -50,8 +50,8 @@
                     });
                 });
             },
-            removeListener: function (event, cb) {
-                socket.removeListener(event, function () {
+            off: function (event, cb) {
+                socket.off(event, function () {
                     var args = arguments;
                     $rootScope.$apply(function () {
                         cb.apply(socket, args);

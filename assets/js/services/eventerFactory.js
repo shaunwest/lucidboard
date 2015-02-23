@@ -39,8 +39,8 @@
           unregister: function() {
             // debug('eventer unregistering.');
             api.unsubscribe(this.getEvents());
-            for (var ev in events) { api.removeListener(ev, events[ev]); }
-            // $.each(events, function(ev, fn) { api.removeListener(ev, fn); });
+            for (var ev in events) { api.off(ev, events[ev]); }
+            // $.each(events, function(ev, fn) { api.off(ev, fn); });
             return this;
           },
         };

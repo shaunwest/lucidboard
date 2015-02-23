@@ -178,15 +178,15 @@
           info('Hooking onto the ' + event + ' event.');
           $sails.on(event, fn);
         },
-        removeListener: function(event, fn) {
+        off: function(event, fn) {
           info('Unhooking onto the ' + event + ' event.');
-          $sails.removeListener(event, fn);
+          $sails.off(event, fn);
         },
         hook: function(event, scope, fn) {
           var that = this;
           this.on(event, fn);
           scope.$on('$destroy', function() {
-            that.removeListener(event, fn);
+            that.off(event, fn);
           });
         }
       };
