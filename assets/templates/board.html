@@ -33,6 +33,9 @@
         <li>
             <ul class="x-list">
                 <li>
+                    <a href="#" data-ng-click="goFullScreen()">Full Screen</a>
+                </li>
+                <li>
                     <a href="#" data-ng-click="switchTab('settings')" data-ng-class="{active:currentTab === 'settings'}">
                         <svg class="icon-left" width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
@@ -46,9 +49,6 @@
                     {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
                     Left
                 </li>
-		<li>
-			<a href="#" data-ng-click="goFullScreen(document.documentElement)">X</a>
-		</li>
                 <li>
                     <a href="#" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="icon-left" width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
