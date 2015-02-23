@@ -16,6 +16,10 @@ module.exports = function(req, res, next) {
   };
 
   if (req.isSocket) {
+    req.user = req.socket.user;
+
+    if (req.user) return next();
+
     token = req.socket.authToken;
     console.log('token-socket', token);
 
@@ -33,7 +37,8 @@ module.exports = function(req, res, next) {
 
     if (!user) return fail();
 
-    req.user = user;
+    req.user        = user;
+    req.socket.user = user;
 
     next();
   });
