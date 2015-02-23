@@ -46,6 +46,9 @@
                     {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
                     Left
                 </li>
+		<li>
+			<a href="#" data-ng-click="goFullScreen(document.documentElement)">X</a>
+		</li>
                 <li>
                     <a href="#" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="icon-left" width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">

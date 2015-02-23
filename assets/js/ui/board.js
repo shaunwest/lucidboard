@@ -105,6 +105,19 @@
       }
       */
 
+      $scope.goFullScreen = function() {
+        var element = document.documentElement;
+	if(element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if(element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if(element.webkitRequestFullscreen) {
+          element.webkitRequestFullscreen();
+        } else if(element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        }
+      }
+
       $scope.timerStart = function(minutes) {
         $scope.showTimerForm = false;
         api.timerStart(board.id(), minutes * 60);
