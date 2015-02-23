@@ -4,7 +4,7 @@
 
     ngSailsModule.service('$sails', ['$rootScope', function ($rootScope) {
 
-        var socket = io.connect(),
+        var socket = io.sails.connect(),
             connected = false,
             reconnectAttempt = null;
 

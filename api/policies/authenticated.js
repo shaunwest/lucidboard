@@ -18,6 +18,11 @@ module.exports = function(req, res, next) {
   if (req.isSocket) {
     token = req.socket.authToken;
     console.log('token-socket', token);
+
+    if (!req.socket || !req.socket.redis) {
+      redis.socketOnConnection(req.session, req.socket);
+    }
+
   } else {
     token = req.headers['auth-token'];
     console.log('token-regular', token);
