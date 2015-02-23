@@ -9,6 +9,7 @@
       ];
 
       var sanitize = function(thing) {
+        if (!thing) return thing;
         if (typeof thing === 'array') {
           return thing.map(sanitize);
         } else if (typeof thing === 'object') {
