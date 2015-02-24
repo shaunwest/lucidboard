@@ -5,8 +5,14 @@ var ldap       = require('../services/ldap'),
 module.exports = {
 
   signin: function(req, res) {
-    var username = req.body.username,
-        password = req.body.password;
+    var username = req.body.username.trim(),
+        password = req.body.password.trim();
+
+    var badLoginJson = {
+      status:  'error',
+      code:    'badlogin',
+      message: 'Invalid username or password.'
+    };
 
     var finish = function(user) {
       var token = user.buildToken();
@@ -25,6 +31,8 @@ module.exports = {
     switch (config.signin) {
       case 'dumb':
 
+        if (!username) return res.forbidden(badLoginJson);
+
         User.findOne({name: username}, function(err, user) {
           if (err) return res.serverError(err);
 
@@ -41,13 +49,11 @@ module.exports = {
 
       case 'ldap':
 
+        if (!username || !password) return res.forbidden(badLoginJson);
+
         ldap.login(username, password, function(err, data) {
           if (err)   return res.serverError(err);
-          if (!data) return res.json({
-            status:  'error',
-            code:    'badlogin',
-            message: 'Invalid username or password.'
-          });
+          if (!data) return res.forbidden(badLoginJson);
 
           User.findOne({name: data.username}, function(err, user) {
             if (err)  return res.serverError(err);
