@@ -3,7 +3,6 @@ var ldap       = require('../services/ldap'),
     config     = sails.config.app;
 
 module.exports = {
-
   signin: function(req, res) {
     var username = (req.body.username || '').trim(),
         password = (req.body.password || '').trim();
@@ -39,7 +38,7 @@ module.exports = {
           if (user) return finish(user);
 
           // Create the user if it doesn't exist
-          User.create({name: username}, function(err, user) {
+          User.create({name: username, email: 'dumb-' + username + '@example.com'}, function(err, user) {
             if (err) return res.serverError(err);
 
             finish(user);
