@@ -1,5 +1,6 @@
 var ldap       = require('../services/ldap'),
-    subscriber = require('../services/subscriber');
+    subscriber = require('../services/subscriber'),
+    config     = sails.config.app;
 
 module.exports = {
 
@@ -21,44 +22,51 @@ module.exports = {
       });
     };
 
-    ldap.login(username, password, function(err, data) {
-      if (err)   return res.serverError(err);
-      if (!data) return res.json({
-        status:  'error',
-        code:    'badlogin',
-        message: 'Invalid username or password.'
-      });
+    switch (config.signin) {
+      case 'dumb':
 
-      User.findOne({name: data.username}, function(err, user) {
-        if (err)  return res.serverError(err);
-        if (user) return finish(user);
-
-        User.create({name: data.username, email: data.email}, function(err, user) {
+        User.findOne({name: username}, function(err, user) {
           if (err) return res.serverError(err);
 
-          finish(user);
+          if (user) return finish(user);
+
+          // Create the user if it doesn't exist
+          User.create({name: username}, function(err, user) {
+            if (err) return res.serverError(err);
+
+            finish(user);
+          });
         });
-      });
-    });
+        break;
 
-    /*
-    // TODO: Make this actually a thing. We aren't even password checking.
-    User.findOne({name: username}, function(err, user) {
-      if (err) return res.serverError(err);
+      case 'ldap':
 
-      if (user) return finish(user);
+        ldap.login(username, password, function(err, data) {
+          if (err)   return res.serverError(err);
+          if (!data) return res.json({
+            status:  'error',
+            code:    'badlogin',
+            message: 'Invalid username or password.'
+          });
 
-      // Create the user if it doesn't exist
-      User.create({
-        name:     username,
-        // password: password
-      }, function(err, user) {
-        if (err) return res.serverError(err);
+          User.findOne({name: data.username}, function(err, user) {
+            if (err)  return res.serverError(err);
+            if (user) return finish(user);
 
-        finish(user);
-      });
-    });
-    */
+            User.create({name: data.username, email: data.email}, function(err, user) {
+              if (err) return res.serverError(err);
+
+              finish(user);
+            });
+          });
+        });
+        break;
+
+      default:
+
+        throw 'Invalid signin setting in app configuration.';
+
+    }
 
   },
 

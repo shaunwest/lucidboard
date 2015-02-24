@@ -146,10 +146,10 @@ module.exports.routes = {
     action:     'upvote'
   },
 
-  // Get the colset list
-  'GET /api/colsets': {
+  // Get the config
+  'GET /api/config': {
     controller: 'BoardController',
-    action:     'colsets'
+    action:     'config'
   },
 
 

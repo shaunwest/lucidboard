@@ -1,7 +1,7 @@
 var async   = require('async'),
     _       = require('underscore'),
     redis   = require('../services/redis'),
-    colsets = require('../services/colsets').all();
+    config  = sails.config.app;
 
 // Organize cards into slots. That means that
 //
@@ -573,8 +573,8 @@ module.exports = {
     });
   },
 
-  colsets: function(req, res) {
-    res.jsonx(colsets);
+  config: function(req, res) {
+    res.jsonx(config);
   }
 
 };

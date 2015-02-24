@@ -55,7 +55,14 @@ module.exports = {
     },
 
     buildToken: function() {
-      return this.id + '.' + md5(this.id, sails.config.crypto.key);
+      switch (sails.config.app.signin) {
+        case 'dumb':
+          return this.id;
+        case 'ldap':
+          return this.id + '.' + md5(this.id, sails.config.crypto.key);
+        default:
+          throw 'Invalid signin setting in app configuration.';
+      }
     },
 
     verifyToken: function(token) {

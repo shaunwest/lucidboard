@@ -4,6 +4,7 @@
     .factory('api', ['$sails', '$state', function($sails, $state) {
 
       var targetsOutsideLogin = [
+        '/api/config',
         '/api/signin',
         '/api/refresh-token'
       ];
@@ -169,7 +170,7 @@
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
-        getColsets: function(cb) { get('/api/colsets', cb); },
+        getConfig: function(cb) { get('/api/config', cb); },
 
         subscribe: function(events, cb)   { subscriber.subscribe(events, cb); },
         unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },

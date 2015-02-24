@@ -1,0 +1,13 @@
+module.exports = {
+
+  app: {
+    /*
+     * Sigin methods:
+     *
+     *   - ldap: edit config/ldap.js to configure
+     *   - dumb: username input only
+     */
+    signin: 'ldap'
+  }
+
+};
