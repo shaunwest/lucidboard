@@ -5,8 +5,8 @@ var ldap       = require('../services/ldap'),
 module.exports = {
 
   signin: function(req, res) {
-    var username = req.body.username.trim(),
-        password = req.body.password.trim();
+    var username = (req.body.username || '').trim(),
+        password = (req.body.password || '').trim();
 
     var badLoginJson = {
       status:  'error',
