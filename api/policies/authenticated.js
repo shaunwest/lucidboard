@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
   var token;
 
   var fail = function() {
-    return res.forbidden('You are not permitted to perform this action.');
+    res.forbidden('You are not permitted to perform this action.');
   };
 
   if (req.isSocket) {

@@ -3,13 +3,13 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardsCtrl', ['$scope', 'boards', 'user', 'api', 'colsets',
-    function($scope, boards, user, api, colsets) {
+  .controller('BoardsCtrl', ['$scope', 'boards', 'user', 'api', 'config',
+    function($scope, boards, user, api, config) {
 
       if (!user.token()) return;
 
       $scope.boards  = boards;
-      $scope.colsets = colsets;
+      $scope.colsets = config.colsets();
 
       // reverse the array to order boards by descending create date
       $scope.boards.reverse();

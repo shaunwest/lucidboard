@@ -7,8 +7,11 @@ A virtual board of adhesive sticky notes for all your brainstorming and retrospe
 Make sure you have a running instance of Redis going on and do something like the following:
 
     npm install -g sails bower gulp
-    cp config/ldap.js.example config/ldap.js
-    vim config/ldap.js  # or your editor of choice.
+    cp config/local.js.example config/local.js  # maybe do this if you want to override defaults
+    cp config/ldap.js.example config/ldap.js    # if you're using ldap
+    vim config/local.js                         # or your editor of choice.
+    vim config/ldap.js                          # or your editor of choice.
+    bundle install
     bower install
     npm install
     npm start

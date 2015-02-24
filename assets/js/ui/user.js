@@ -3,9 +3,16 @@
 
   angular.module('hansei.ui')
 
-  .controller('SigninCtrl', ['$rootScope', '$scope', '$state', 'user',
-    function($rootScope, $scope, $state, user) {
+  .controller('SigninCtrl', ['$rootScope', '$scope', '$state', 'user', 'config',
+    function($rootScope, $scope, $state, user, config) {
+
       $rootScope.showHeader = true;
+
+      if (config.signin() === 'dumb') {
+        $rootScope.signinStyle = 'user';
+      } else if (config.signin() === 'ldap') {
+        $rootScope.signinStyle = 'userpass';
+      }
 
       user.signout();
 

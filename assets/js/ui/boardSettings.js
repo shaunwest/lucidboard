@@ -2,7 +2,6 @@
   'use strict';
 
   angular.module('hansei.ui')
-    // .directive('boardSettings', ['colsets', function(colsets) {
     .directive('boardSettings', [function() {
       return {
         restrict: 'E',
@@ -10,9 +9,9 @@
         scope: {
           board: '='
         },
-        controller: ['$scope', '$state', 'api', 'colsets', function($scope, $state, api, colsets) {
+        controller: ['$scope', '$state', 'api', 'config', function($scope, $state, api, config) {
 
-          $scope.colsets = colsets.all();
+          $scope.colsets = config.colsets();
 
           if ($scope.board) {
             $scope.b = {

@@ -18,6 +18,10 @@ module.exports = {
 
       if (typeof err === 'string' && err.match(/no such user/)) {
         err = null;  // don't treat this as an error -- try the next dn.
+      } else if (typeof err === 'object' && err !== null) {
+        if (err.code === 49) {
+          err = null;  // don't error. this means username exists, but bad pw.
+        }
       }
 
       if (err) return cb(err);

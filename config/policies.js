@@ -27,7 +27,8 @@ module.exports.policies = {
   ***************************************************************************/
 
   BoardController: {
-    '*': 'authenticated'
+    '*': 'authenticated',
+    config: true  // config fetch can be public
   },
 
   CardController: {
