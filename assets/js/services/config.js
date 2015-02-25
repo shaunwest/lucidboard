@@ -8,14 +8,15 @@
 
       return {
         load: function() {
-          api.getConfig(function(_config) {
-            config = _config;
-            defer.resolve();
-          });
+          if (!config) {
+            api.getConfig(function(_config) {
+              config = _config;
+              defer.resolve();
+            });
+          }
           return defer.promise;
         },
         all: function() {
-          console.log('all', config);
           return config;
         },
         signin:  function() { return config.signin; },

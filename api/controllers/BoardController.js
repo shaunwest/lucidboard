@@ -1,7 +1,7 @@
 var async   = require('async'),
     _       = require('underscore'),
     redis   = require('../services/redis'),
-    config  = sails.config.app;
+    config  = require('../services/config');
 
 // Organize cards into slots. That means that
 //
@@ -139,8 +139,8 @@ module.exports = {
       };
 
       // 2. Create starter columns
-      var pos = 1, jobs = [colmakermaker('Trash', 0)];
-      (colsets[bits.colsetId] || colsets[1]).cols.forEach(function(name) {
+      var pos = 1, jobs = [colmakermaker('Trash', 0)], colsetsById = config.colsetsById();
+      (colsetsById[bits.colsetId] || colsetsById[1]).cols.forEach(function(name) {
         jobs.push(colmakermaker(name, pos));
         pos++;
       });
@@ -574,7 +574,7 @@ module.exports = {
   },
 
   config: function(req, res) {
-    res.jsonx(config);
+    res.jsonx(config.all());
   }
 
 };

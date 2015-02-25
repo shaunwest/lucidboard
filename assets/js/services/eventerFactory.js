@@ -7,9 +7,7 @@
         events = events || {};
         return {
           getEvents: function() {
-            console.log('events', Object.keys(events));
             return Object.keys(events);
-            // return $.map(events, function(fn, ev) { return ev; });
           },
           event: function(ev, fn) {
             events[ev] = fn;
@@ -22,25 +20,25 @@
           hook: function(scope) {
             var _eventer = this;
 
-            _eventer.register();
+            _eventer.register(scope);
             scope.$on('$destroy', function() { _eventer.unregister(); });
           },
-          register: function() {
+          register: function(scope) {
             if (typeof events === 'function') {
               events = events();
             }
 
-            // debug('eventer registering...');
             api.subscribe(this.getEvents());
-            for (var ev in events) { api.on(ev, events[ev]); }
-            // $.each(events, function(ev, fn) { api.on(ev, fn); });
+
+            // This hooks the actual code to the future inbound message. When the
+            // scope $destroys, the event is automatically unhooked.
+            for (var ev in events) { api.hook(ev, scope, events[ev]); }
+
             return this;
           },
           unregister: function() {
-            // debug('eventer unregistering.');
             api.unsubscribe(this.getEvents());
-            for (var ev in events) { api.off(ev, events[ev]); }
-            // $.each(events, function(ev, fn) { api.off(ev, fn); });
+
             return this;
           },
         };
