@@ -14,6 +14,7 @@ module.exports = {
 
     content:  'string',
     position: 'integer',
+    locked: 'boolean',
 
     // only relevant if the card is in a stack, that is, shares the same column and
     // position of another card. When a stack exists, in this case, cards are ordered
@@ -41,7 +42,8 @@ module.exports = {
         position:   this.position,
         topOfPile:  this.topOfPile,
         column:     this.column,
-        votes:      this.votes
+        votes:      this.votes,
+        locked:     this.locked
       };
     }
   }
