@@ -89,6 +89,9 @@
     &:hover {
         background-color: darken($ziggurat, 5%);
     }
+    &.locked {
+        background-color: $detroit;
+    }
     .editable-click {
         border-bottom: 0.125em solid $white;
     }
