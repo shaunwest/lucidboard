@@ -1,17 +1,17 @@
 .icon-standard {
-    width: 1em;
-    outline: none;
-    height: 100%;
-}
-
-.icon-left {
-    float: left;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    fill: currentColor;
     margin-right: 0.25em;
+    float: left;
 }
 
 .icon-logo {
     @extend .icon-standard;
-    width: 16em;
+    width: 10em;
+    height: 3em;
+    margin-top: 0.25em;
 }
 
 .icon-middle {
