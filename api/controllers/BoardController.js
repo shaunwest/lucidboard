@@ -215,7 +215,27 @@ module.exports = {
       if (p.destPosition < 1 || p.destPosition > destStack.length+1) return res.badRequest();
       if (p.destPosition % 1 !== 0)                                  return res.badRequest();
 
-      if (r.sourceStack === null) {  // source and dest stack are the same
+      // Vaporize card if it is empty and headed for the trash
+      if (r.card.content === '' && r.destColumn.position === 0) {
+
+        console.log('VAPORIZE');
+
+        var sourceStack       = normalizeStack(r.sourceStack || r.destStack),
+            originalSourceMap = toStackMap(sourceStack),
+            card              = spliceCard(sourceStack, r.card.id);
+
+        // Actually delete the card from the db
+        jobs.push(function(cb) { Card.destroy({id: card.id}).exec(cb); });
+
+        // Save resorted source column
+        jobs = fixPositions(sourceStack, originalDestMap);
+
+        // Send specific message event to vaporize this card
+        redis.cardVaporize(boardId, card.id);
+
+        signalData[p.sourceColumn] = toStackMap(sourceStack);
+
+      } else if (r.sourceStack === null) {  // source and dest stack are the same
 
         var destStack       = normalizeStack(r.destStack),
             originalDestMap = toStackMap(destStack),
