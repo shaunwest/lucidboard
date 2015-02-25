@@ -227,6 +227,15 @@
           }
         },
 
+        cardVaporize: function(cardId) {
+          var card      = this.card(cardId),
+            sourceStack = this.column(card.column).cardSlots;
+
+          sourceStack.splice(card.position - 1, 1);
+
+          figureVotesRemaining();
+        },
+
         // Replace the column/piles with the cards of the given id's, in order.
         //
         // info is an object with keys of column id's. Corresponding vals are arrays
@@ -248,6 +257,7 @@
               slotInfo.forEach(function(cardId) {
                 var card = this.card(cardId);
                 card.position = pos;
+                card.column   = columnId;
                 slot.push(card);
               }.bind(this));
               cardStacks[columnId].push(slot);

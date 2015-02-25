@@ -1,95 +1,8 @@
 var async   = require('async'),
     _       = require('underscore'),
     redis   = require('../services/redis'),
+    util    = require('../services/util'),
     config  = require('../services/config');
-
-// Organize cards into slots. That means that
-//
-//   [{..., position: 1}, {..., position: 1}, {..., position: 2}]
-//
-// will become
-//
-//   [[{..., position: 1}, {..., position: 1}], {..., position: 2}]
-var normalizeStack = function(stack) {
-  var buffer = [], ret = [];
-
-  stack.forEach(function(card) {
-    if (buffer.length && card.position !== buffer[0].position) {
-      ret.push(buffer);
-      buffer = [];
-    }
-    buffer.push(card);
-  });
-
-  if (buffer.length) ret.push(buffer);
-
-  return ret;
-};
-
-// Splice out and return a card being dragged from the stack
-var spliceCard = function(stack, cardId) {
-  var card;
-
-  for (var x=0; x<stack.length; x++) {
-    for (var y=0; y<stack[x].length; y++) {
-      if (stack[x][y].id == cardId) {
-        card = stack[x].splice(y, 1)[0];
-        break;
-      }
-    }
-    if (card) {
-      // splice out the empty array if we took the only card from the slot
-      if (!stack[x].length) stack.splice(x, 1);
-      break;
-    }
-  }
-
-  return card;
-};
-
-// This function takes a multidimentional array of cards and returns the
-// representation that we will use to sync up our clients. So,
-//
-//   [[{id: 1, position: 1}, {id: 2, position: 1}], {id: 3, position: 2}]
-//
-// will become
-//
-//   [[1, 2], [3]]
-var toStackMap = function(stack) {
-  var ret = [];
-  stack.forEach(function(slot) { ret.push(_.pluck(slot, 'id')); });
-  return ret;
-};
-
-// Fix position settings for all elements in the collection.
-// Return an array of jobs to save all updated cards.
-var fixPositions = function(stack, origMap) {
-  var i, j, jobs = [];
-
-  for (i=0; i<stack.length; i++) {
-    for (j=0; j<stack[i].length; j++) {
-      if (!origMap[i] || !origMap[i][j] || origMap[i][j] !== stack[i][j].id) {
-        (function() {
-          var cardToSave = stack[i][j];
-          cardToSave.position = i + 1;
-          jobs.push(function(cb) { cardToSave.save(cb); });
-        })();
-      }
-    }
-  }
-
-  return jobs;
-};
-
-var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
-  Board.findOneById(id).exec(function(err, board) {
-    if (err)                           return res.serverError(err);
-    if (!board)                        return res.notFound();
-    if (board.creator !== req.user.id) return res.forbidden();
-
-    cb(board);
-  });
-};
 
 module.exports = {
 
@@ -170,7 +83,7 @@ module.exports = {
       p_lock:         req.body.p_lock
     };
 
-    boardIsLegitAndOwnedBy(id, req, res, function(board) {
+    util.boardIsLegitAndOwnedBy(id, req, res, function(board) {
       Board.update(id, bits).exec(function(err, board) {
         if (err) return res.serverError(err);
         res.jsonx(board[0]);
@@ -191,14 +104,14 @@ module.exports = {
     async.auto({
       card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
       destColumn: function(cb) {
-        Column.find({board: boardId, id: p.destColumnId}).exec(cb);
+        Column.findOne({board: boardId, id: p.destColumnId}).exec(cb);
       },
       destStack: function(cb) {
         Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
       },
       sourceColumn: ['card', function(cb, r) {
         if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
-        Column.find({board: boardId, id: r.card.column}).exec(cb);
+        Column.findOne({board: boardId, id: r.card.column}).exec(cb);
       }],
       sourceStack: ['card', function(cb, r) {
         if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
@@ -210,54 +123,53 @@ module.exports = {
       if (((r.card.column === p.destColumnId) &&  r.sourceColumn)
        || ((r.card.column !== p.destColumnId) && !r.sourceColumn))   return res.notFound();
 
-      var jobs = [], signalData = {}, destStack = normalizeStack(r.destStack);
+      var jobs = [], signalData = {}, destStack = util.normalizeStack(r.destStack);
 
       if (p.destPosition < 1 || p.destPosition > destStack.length+1) return res.badRequest();
       if (p.destPosition % 1 !== 0)                                  return res.badRequest();
 
       // Vaporize card if it is empty and headed for the trash
-      if (r.card.content === '' && r.destColumn.position === 0) {
+      if (!r.card.content && r.destColumn.position === 0) {
 
-        console.log('VAPORIZE');
-
-        var sourceStack       = normalizeStack(r.sourceStack || r.destStack),
-            originalSourceMap = toStackMap(sourceStack),
-            card              = spliceCard(sourceStack, r.card.id);
+        var sourceColumn      = r.sourceColumn || r.destColumn,
+            sourceStack       = util.normalizeStack(r.sourceStack || r.destStack),
+            originalSourceMap = util.toStackMap(sourceStack),
+            card              = util.spliceCard(sourceStack, r.card.id);
 
         // Actually delete the card from the db
         jobs.push(function(cb) { Card.destroy({id: card.id}).exec(cb); });
 
         // Save resorted source column
-        jobs = fixPositions(sourceStack, originalDestMap);
+        jobs = jobs.concat(util.fixPositions(sourceStack, originalSourceMap));
 
         // Send specific message event to vaporize this card
         redis.cardVaporize(boardId, card.id);
 
-        signalData[p.sourceColumn] = toStackMap(sourceStack);
+        signalData[sourceColumn.id] = util.toStackMap(sourceStack);
 
       } else if (r.sourceStack === null) {  // source and dest stack are the same
 
-        var destStack       = normalizeStack(r.destStack),
-            originalDestMap = toStackMap(destStack),
+        var destStack       = util.normalizeStack(r.destStack),
+            originalDestMap = util.toStackMap(destStack),
             destIdx         = p.destPosition,
-            card            = spliceCard(destStack, r.card.id);
+            card            = util.spliceCard(destStack, r.card.id);
 
         // Reinsert the cardSlot.
         destStack.splice(p.destPosition - 1, 0, [card]);
 
         // Figure out the work to actually update the db.
-        jobs = fixPositions(destStack, originalDestMap);
+        jobs = util.fixPositions(destStack, originalDestMap);
 
         // Sort out card id mapping to feed to the clients.
-        signalData[p.destColumnId] = toStackMap(destStack);
+        signalData[p.destColumnId] = util.toStackMap(destStack);
 
       } else {  // DIFFERENT source and destination stacks (columns)
 
-        var destStack         = normalizeStack(r.destStack),
-            originalDestMap   = toStackMap(destStack),
-            sourceStack       = normalizeStack(r.sourceStack),
-            originalSourceMap = toStackMap(sourceStack),
-            card              = spliceCard(sourceStack, r.card.id),
+        var destStack         = util.normalizeStack(r.destStack),
+            originalDestMap   = util.toStackMap(destStack),
+            sourceStack       = util.normalizeStack(r.sourceStack),
+            originalSourceMap = util.toStackMap(sourceStack),
+            card              = util.spliceCard(sourceStack, r.card.id),
             originalColumnId  = card.column;
 
         // set the new column id on the moving card
@@ -267,12 +179,12 @@ module.exports = {
         destStack.splice(p.destPosition - 1, 0, [card]);
 
         // Figure out the work to actually update the db.
-        jobs = fixPositions(sourceStack, originalSourceMap)
-          .concat(fixPositions(destStack, originalDestMap));
+        jobs = util.fixPositions(sourceStack, originalSourceMap)
+          .concat(util.fixPositions(destStack, originalDestMap));
 
         // Sort out card id mapping to feed to the clients.
-        signalData[p.destColumnId]   = toStackMap(destStack);
-        signalData[originalColumnId] = toStackMap(sourceStack);
+        signalData[p.destColumnId]   = util.toStackMap(destStack);
+        signalData[originalColumnId] = util.toStackMap(sourceStack);
       }
 
       async.parallel(jobs, function(err, results) {
@@ -318,15 +230,15 @@ module.exports = {
       if (((p.sourceColumnId === p.destColumnId) &&  r.destColumn)
        || ((p.sourceColumnId !== p.destColumnId) && !r.destColumn))      return res.notFound();
 
-      var sourceStack       = normalizeStack(r.sourceStack),
-          destStack         = r.destStack ? normalizeStack(r.destStack) : null;
+      var sourceStack       = util.normalizeStack(r.sourceStack),
+          destStack         = r.destStack ? util.normalizeStack(r.destStack) : null;
 
       if (p.sourcePosition < 1 || p.sourcePosition > sourceStack.length) return res.badRequest();
       if (p.destPosition   < 1 || p.destPosition   > destStack.length+1) return res.badRequest();
       if (p.sourcePosition % 1 !== 0 || p.destPosition % 1 !== 0)        return res.badRequest();
 
-      var originalSourceMap = toStackMap(sourceStack),
-          originalDestMap   = r.destStack ? toStackMap(destStack) : null,
+      var originalSourceMap = util.toStackMap(sourceStack),
+          originalDestMap   = r.destStack ? util.toStackMap(destStack) : null,
           pile              = sourceStack.splice(p.sourcePosition - 1, 1)[0],
           extra             = (p.sourcePosition < p.destPosition && !destStack) ? 1 : 0,
           jobs              = [],
@@ -344,13 +256,13 @@ module.exports = {
       (destStack || sourceStack).splice(p.destPosition - 1 - extra, 0, pile);
 
       // Figure out the work to actually update the db.
-      jobs = fixPositions(sourceStack, originalSourceMap)
-        .concat(destStack ? fixPositions(destStack, originalDestMap) : []);
+      jobs = util.fixPositions(sourceStack, originalSourceMap)
+        .concat(destStack ? util.fixPositions(destStack, originalDestMap) : []);
 
       // Sort out card id mapping to feed to the clients.
-      signalData[p.sourceColumnId] = toStackMap(sourceStack);
+      signalData[p.sourceColumnId] = util.toStackMap(sourceStack);
 
-      if (destStack) signalData[p.destColumnId] = toStackMap(destStack);
+      if (destStack) signalData[p.destColumnId] = util.toStackMap(destStack);
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
@@ -401,11 +313,11 @@ module.exports = {
 
       var sourceColumnId    = r.source.column,
           sourcePosition    = r.source.position,
-          sourceStack       = normalizeStack(r.sourceStack),
-          originalSourceMap = toStackMap(sourceStack),
+          sourceStack       = util.normalizeStack(r.sourceStack),
+          originalSourceMap = util.toStackMap(sourceStack),
           sourceIsFromPile  = sourceStack[sourcePosition - 1].length > 1,
-          card              = spliceCard(sourceStack, r.source.id),
-          jobs              = fixPositions(sourceStack, originalSourceMap),
+          card              = util.spliceCard(sourceStack, r.source.id),
+          jobs              = util.fixPositions(sourceStack, originalSourceMap),
           destPosition;
 
       // If we're joining a higher card with a lower card on the same stack, then the
@@ -444,7 +356,7 @@ module.exports = {
 
         var signalData = {
           card:           r.source,
-          sourceMap:      toStackMap(sourceStack),
+          sourceMap:      util.toStackMap(sourceStack),
           sourceColumnId: sourceColumnId
         };
 
@@ -481,12 +393,12 @@ module.exports = {
     }, function(err, r) {
       if (err) return res.serverError(err);
 
-      var sourceStack       = normalizeStack(r.sourceStack),
-          originalSourceMap = toStackMap(sourceStack),
-          destStack         = normalizeStack(r.destStack),
-          originalDestMap   = toStackMap(destStack),
+      var sourceStack       = util.normalizeStack(r.sourceStack),
+          originalSourceMap = util.toStackMap(sourceStack),
+          destStack         = util.normalizeStack(r.destStack),
+          originalDestMap   = util.toStackMap(destStack),
           pile              = sourceStack.splice(p.sourcePosition - 1, 1)[0],
-          jobs              = fixPositions(sourceStack, originalSourceMap);
+          jobs              = util.fixPositions(sourceStack, originalSourceMap);
           // destPosition;
 
       // If we're joining a higher card with a lower card on the same stack, then the
@@ -531,9 +443,9 @@ module.exports = {
         if (err) return res.serverError(err);
 
         var signalData = {};
-        signalData[r.dest.column] = toStackMap(destStack);
+        signalData[r.dest.column] = util.toStackMap(destStack);
         if (p.sourceColumnId != r.dest.column) {
-          signalData[p.sourceColumnId] = toStackMap(sourceStack);
+          signalData[p.sourceColumnId] = util.toStackMap(sourceStack);
         }
 
         res.jsonx(signalData);
