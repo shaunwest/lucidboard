@@ -10,6 +10,11 @@ module.exports.app = {
   colsets: [
     {
       id: 1,
+      name: 'Default',
+      cols: ['Column 1']
+    },
+    {
+      id: 2,
       name: 'Lean Coffee',
       cols: [
         'To Discuss',
@@ -18,7 +23,7 @@ module.exports.app = {
       ]
     },
     {
-      id: 2,
+      id: 3,
       name: 'Retro Lite',
       cols: [
         'What Went Well',
@@ -26,7 +31,7 @@ module.exports.app = {
       ]
     },
     {
-      id: 3,
+      id: 4,
       name: 'Retro Full',
       cols: [
         'Shout-outs',
