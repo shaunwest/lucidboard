@@ -81,7 +81,7 @@
           if (isBoardOwner()) {
             card.userCanWrite = true;
           } else {
-            card.userCanWrite = (card.content || card.creator === user.id());
+            card.userCanWrite = card.creator === user.id();
           }
         });
       };
@@ -216,7 +216,6 @@
           Object.keys(_card).forEach(function(k) {
             card[k] = _card[k];
           });
-          card.userCanWrite = (card.content !== '');
         },
 
         cardUpvote: function(vote) {

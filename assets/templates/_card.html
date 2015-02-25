@@ -1,57 +1,49 @@
 <div context-menu data-target="menu-{{card.id}}"
-  class="card slate-card" data-ng-show="card"
-  data-ui-draggable="true" data-drag="card"
-  data-on-drop-success="dropSuccessHandler($event)"
-  data-ng-class="{active:cardDragging, locked:!card.userCanWrite}"
-  data-ui-on-drop="combineThings($event, $data, card.id)">
+     class="card slate-card" data-ng-show="card"
+     data-ui-draggable="true" data-drag="card"
+     data-on-drop-success="dropSuccessHandler($event)"
+     data-ng-class="{active:cardDragging}"
+     data-ui-on-drop="combineThings($event, $data, card.id)">
   <div data-ng-show="card.userCanWrite || !board.p_lock()">
-    <div data-ng-if="!card.userCanWrite" class="cardcontent">
-       <pre data-ng-show="card.content && board.p_seeContent()">
+    <div class="cardcontent"
+         data-editable-textarea="card.content"
+         data-onbeforesave="checkCardContent($data, column.id, card.id)">
+      <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
 {{card.content}}
       </pre>
-      <pre data-ng-show="card.content && !board.p_seeContent()">
+      <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
 {{card.content | obfuscated}}
-      </pre>
-      <pre data-ng-show="!card.content">
-...
-      </pre>
-    </div>
-    <div data-ng-if="card.userCanWrite" class="cardcontent"
-      data-editable-textarea="card.content"
-      data-onbeforesave="checkCardContent($data, column.id, card.id)">
-      <pre data-ng-show="card.content && board.p_seeContent()">
-{{card.content}}
       </pre>
       <pre data-ng-show="!card.content">
 Click to enter comments...
       </pre>
     </div>
     <div class="handle--first">
-        <a href="#" data-ng-click="cardMenu = !cardMenu">
-            <svg class="icon-left" width="8px" height="24px" viewBox="0 0 8 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
-                    <path d="M4,15.6144578 C6.20913911,15.6144578 8,14.0609399 8,12.1445783 C8,10.2282167 6.20913911,8.6746988 4,8.6746988 C1.79086089,8.6746988 0,10.2282167 0,12.1445783 C0,14.0609399 1.79086089,15.6144578 4,15.6144578 Z M4,24 C6.20913911,24 8,22.4464821 8,20.5301205 C8,18.6137588 6.20913911,17.060241 4,17.060241 C1.79086089,17.060241 0,18.6137588 0,20.5301205 C0,22.4464821 1.79086089,24 4,24 Z M4,6.93975904 C6.20913911,6.93975904 8,5.38624115 8,3.46987952 C8,1.55351788 6.20913911,0 4,0 C1.79086089,0 0,1.55351788 0,3.46987952 C0,5.38624115 1.79086089,6.93975904 4,6.93975904 Z" id="Oval-1" sketch:type="MSShapeGroup"></path>
-                </g>
-            </svg>
-        </a>
+      <a href="#" data-ng-click="cardMenu = !cardMenu">
+        <svg class="icon-left" width="8px" height="24px" viewBox="0 0 8 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+          <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
+            <path d="M4,15.6144578 C6.20913911,15.6144578 8,14.0609399 8,12.1445783 C8,10.2282167 6.20913911,8.6746988 4,8.6746988 C1.79086089,8.6746988 0,10.2282167 0,12.1445783 C0,14.0609399 1.79086089,15.6144578 4,15.6144578 Z M4,24 C6.20913911,24 8,22.4464821 8,20.5301205 C8,18.6137588 6.20913911,17.060241 4,17.060241 C1.79086089,17.060241 0,18.6137588 0,20.5301205 C0,22.4464821 1.79086089,24 4,24 Z M4,6.93975904 C6.20913911,6.93975904 8,5.38624115 8,3.46987952 C8,1.55351788 6.20913911,0 4,0 C1.79086089,0 0,1.55351788 0,3.46987952 C0,5.38624115 1.79086089,6.93975904 4,6.93975904 Z" id="Oval-1" sketch:type="MSShapeGroup"></path>
+          </g>
+        </svg>
+      </a>
     </div>
     <div class="handle--last" title="Your votes: {{card.votes | myVotes}}">
         <span ng-show="board.p_seeVotes()">
             <strong>
-                {{card.votes.length}}
+              {{card.votes.length}}
             </strong>
         </span>
-        <a href="#" data-ng-click="upvote(card, $event)">
-            <svg class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="28" viewBox="0 0 26 28">
-                <path d="M4 21q0-0.406-0.297-0.703t-0.703-0.297q-0.422 0-0.711 0.297t-0.289 0.703q0 0.422 0.289 0.711t0.711 0.289q0.406 0 0.703-0.289t0.297-0.711zM6.5 13v10q0 0.406-0.297 0.703t-0.703 0.297h-4.5q-0.406 0-0.703-0.297t-0.297-0.703v-10q0-0.406 0.297-0.703t0.703-0.297h4.5q0.406 0 0.703 0.297t0.297 0.703zM25 13q0 1.344-0.859 2.328 0.234 0.688 0.234 1.188 0.047 1.188-0.672 2.141 0.266 0.875 0 1.828-0.234 0.891-0.844 1.469 0.141 1.75-0.766 2.828-1 1.188-3.078 1.219h-2.016q-1.031 0-2.25-0.242t-1.898-0.453-1.883-0.617q-1.922-0.672-2.469-0.688-0.406-0.016-0.703-0.305t-0.297-0.695v-10.016q0-0.391 0.281-0.68t0.672-0.32q0.375-0.031 1.188-0.922t1.578-1.891q1.062-1.359 1.578-1.875 0.281-0.281 0.484-0.75t0.273-0.758 0.211-0.945q0.109-0.609 0.195-0.953t0.305-0.812 0.531-0.781q0.297-0.297 0.703-0.297 0.719 0 1.289 0.164t0.938 0.406 0.625 0.633 0.375 0.703 0.187 0.781 0.078 0.703 0.008 0.609q0 0.594-0.148 1.188t-0.297 0.938-0.43 0.875q-0.047 0.094-0.156 0.281t-0.172 0.344-0.125 0.375h4.328q1.219 0 2.109 0.891t0.891 2.109z"></path>
-            </svg>
-        </a>
+      <a href="#" data-ng-click="upvote(card, $event)">
+        <svg class="icon-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="28" viewBox="0 0 26 28">
+          <path d="M4 21q0-0.406-0.297-0.703t-0.703-0.297q-0.422 0-0.711 0.297t-0.289 0.703q0 0.422 0.289 0.711t0.711 0.289q0.406 0 0.703-0.289t0.297-0.711zM6.5 13v10q0 0.406-0.297 0.703t-0.703 0.297h-4.5q-0.406 0-0.703-0.297t-0.297-0.703v-10q0-0.406 0.297-0.703t0.703-0.297h4.5q0.406 0 0.703 0.297t0.297 0.703zM25 13q0 1.344-0.859 2.328 0.234 0.688 0.234 1.188 0.047 1.188-0.672 2.141 0.266 0.875 0 1.828-0.234 0.891-0.844 1.469 0.141 1.75-0.766 2.828-1 1.188-3.078 1.219h-2.016q-1.031 0-2.25-0.242t-1.898-0.453-1.883-0.617q-1.922-0.672-2.469-0.688-0.406-0.016-0.703-0.305t-0.297-0.695v-10.016q0-0.391 0.281-0.68t0.672-0.32q0.375-0.031 1.188-0.922t1.578-1.891q1.062-1.359 1.578-1.875 0.281-0.281 0.484-0.75t0.273-0.758 0.211-0.945q0.109-0.609 0.195-0.953t0.305-0.812 0.531-0.781q0.297-0.297 0.703-0.297 0.719 0 1.289 0.164t0.938 0.406 0.625 0.633 0.375 0.703 0.187 0.781 0.078 0.703 0.008 0.609q0 0.594-0.148 1.188t-0.297 0.938-0.43 0.875q-0.047 0.094-0.156 0.281t-0.172 0.344-0.125 0.375h4.328q1.219 0 2.109 0.891t0.891 2.109z"></path>
+        </svg>
+      </a>
     </div>
     <div class="card-menu" id="menu-{{card.id}}" data-ng-show="cardMenu">
       <ul class="y-list" role="menu">
-          <li>
-              Move Card To
-          </li>
+        <li>
+          Move Card To
+        </li>
         <li data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
           <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
             {{col.title}}
@@ -76,9 +68,9 @@ Empty
 </div>
 <div class="dropdown" id="menu-{{card.id}}">
   <ul class="y-list dropdown-menu" role="menu">
-      <li>
-          <strong>Move Card To</strong>
-      </li>
+    <li>
+      <strong>Move Card To</strong>
+    </li>
     <li data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
       <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
         {{col.title}}
