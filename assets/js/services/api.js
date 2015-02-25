@@ -69,6 +69,7 @@
           post('/api/unsubscribe', {events: toUnsubscribe}, cb);
         },
         resubscribe: function(cb) {
+          if (!subs.length) return cb ? cb() : null;
           post('/api/subscribe', {events: subs}, cb);
         }
       };
@@ -172,20 +173,14 @@
         },
         getConfig: function(cb) { get('/api/config', cb); },
 
-        subscribe: function(events, cb)   { subscriber.subscribe(events, cb); },
+        subscribe:   function(events, cb) { subscriber.subscribe(events, cb); },
         unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },
         resubscribe: function(cb)         { subscriber.resubscribe(cb); },
-        on: function(event, fn) {
-          info('Hooking onto the ' + event + ' event.');
-          $sails.on(event, fn);
-        },
-        off: function(event, fn) {
-          info('Unhooking onto the ' + event + ' event.');
-          $sails.off(event, fn);
-        },
-        hook: function(event, scope, fn) {
+        on:          function(event, fn)  { $sails.on(event, fn); },
+        off:         function(event, fn)  { $sails.off(event, fn); },
+        hook:        function(event, scope, fn) {
           var that = this;
-          this.on(event, fn);
+          that.on(event, fn);
           scope.$on('$destroy', function() {
             that.off(event, fn);
           });

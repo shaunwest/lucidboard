@@ -4,9 +4,10 @@
 
     ngSailsModule.service('$sails', ['$rootScope', function ($rootScope) {
 
-        var socket = io.sails.connect(),
-            connected = false,
-            reconnectAttempt = null;
+        var socket           = io.sails.connect(),
+            connected        = false,
+            reconnectAttempt = null,
+            hooks            = {};
 
         socket.on('connect', function () {
             connected = true;
@@ -43,20 +44,23 @@
                 socket.emit(event, data);
             },
             on: function (event, cb) {
-                socket.on(event, function () {
+                // My sort of half-assed solution for unhooking events currently has the
+                // limitation that only one callback function can be hooked to a given event!
+                // If this warning is thrown, it just means that the previously-hooked event is
+                // unhookable.
+                if (hooks[event]) console.warn('WARNING event ' + event + ' is being rehooked!');
+
+                hooks[event] = function () {
                     var args = arguments;
                     $rootScope.$apply(function () {
                         cb.apply(socket, args);
                     });
-                });
+                };
+                socket.on(event, hooks[event]);
             },
             off: function (event, cb) {
-                socket.off(event, function () {
-                    var args = arguments;
-                    $rootScope.$apply(function () {
-                        cb.apply(socket, args);
-                    });
-                });
+                socket.off(event, hooks[event]);
+                delete hooks[event];
             },
             get: function (url, data, cb) {
                 if (cb === undefined && typeof data === 'function') {

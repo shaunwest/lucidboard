@@ -35,7 +35,6 @@
           api.refreshToken(user.token, function(data, jwr) {
             user.token = data.token || null;
             localStorageService.set('authToken', user.token);
-            console.log('USER', data);
             user = data;
             cb(data, jwr);
           });
