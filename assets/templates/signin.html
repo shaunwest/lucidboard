@@ -1,6 +1,7 @@
 <section class="tier">
-    <form ng-controller="SigninCtrl" ng-submit="signin()" class="panel--middle">
-        <div class="flag--success hide">
+    <form ng-submit="signin()" class="panel--middle">
+
+        <div class="flag--success" data-ng-show="signedOut">
             <div class="flag-media--success">
                 <svg width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">

@@ -19,8 +19,10 @@
           });
         },
         signout: function() {
+          var beganSignedIn = Boolean(this.token());
           user = { token: null };
           localStorageService.remove('authToken');
+          return beganSignedIn;
         },
         initialRefreshToken: function() {
           // When the websocket is reestablished, this method must first be
