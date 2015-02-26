@@ -44,7 +44,7 @@
         controller:  'BoardCtrl',
         resolve: {
           loadConfig: loadConfig,
-          boardData: ['board', 'user', '$stateParams', function(board, user, $stateParams) {
+          boardData: ['board', 'user', '$stateParams', '$q', function(board, user, $stateParams, $q) {
             if (!user.token()) {
               var defer = $q.defer();
               defer.reject('not_logged_in');

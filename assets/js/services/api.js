@@ -96,7 +96,7 @@
 
         var invoke = function() {
           $sails[method](target, params, function(data, jwr) {
-            info('api ' + method + ' [' + target + ']', params, data);
+            info('api ' + method + ' [' + target + ']', params, '(' + jwr.statusCode + ')', data);
             handleResponse(data, jwr, function(data, jwr) {
               if (cb) cb(data, jwr);
             });

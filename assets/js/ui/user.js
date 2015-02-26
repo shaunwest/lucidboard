@@ -3,8 +3,8 @@
 
   angular.module('hansei.ui')
 
-  .controller('SigninCtrl', ['$rootScope', '$scope', '$state', 'user', 'config',
-    function($rootScope, $scope, $state, user, config) {
+  .controller('SigninCtrl', ['$rootScope', '$scope', '$state', '$window', 'user', 'config',
+    function($rootScope, $scope, $state, $window, user, config) {
 
       $rootScope.showHeader = true;
 
@@ -20,8 +20,14 @@
         user.signin($scope.username, $scope.password, function(res) {
           if (res.status === 'error') {
             $scope.errorMessage = res.message;
+            $scope.signedOut    = false;
           } else {
-            $state.go('boards');
+            if ($rootScope.goto) {
+              $window.location.href = $rootScope.goto;
+              delete $rootScope.goto;
+            } else {
+              $state.go('boards');
+            }
           }
         });
       };

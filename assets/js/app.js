@@ -28,11 +28,12 @@
         $urlRouterProvider.otherwise('/signin');
       }
     ])
-    .run(['$rootScope', '$state', function($rootScope, $state) {
+    .run(['$rootScope', '$state', '$location', function($rootScope, $state, $location) {
       // Monitor state change errors and route accordingly
       $rootScope.$on('$stateChangeError', function(a, b, c, d, e, rejection) {
         switch(rejection) {
           case 'not_logged_in':
+            $rootScope.goto = $location.path();
             $state.go('signin');
             break;
         }
