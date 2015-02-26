@@ -11,26 +11,26 @@ var publish = function(signal, payload) {
 };
 
 module.exports = {
-  boardCreated:      function(board) { publish('board:create', board); },
-  boardUpdated:      function(board) { publish('board:update:' + board.id, board); },
-  boardDeleted:      function(boardId) { publish('board:delete:' + boardId, null); },
-  boardMoveCards:    function(boardId, info) { publish('board:moveCard:' + boardId, info); },
-  boardCombineCards: function(boardId, info) { publish('board:combineCards:' + boardId, info); },
-  boardCombinePiles: function(boardId, info) { publish('board:combinePiles:' + boardId, info); },
+  boardCreated:      function(board)           { publish('board:create', board); },
+  boardUpdated:      function(board)           { publish('board:update:' + board.id, board); },
+  boardDeleted:      function(boardId)         { publish('board:delete:' + boardId, null); },
+  boardMoveCards:    function(boardId, info)   { publish('board:moveCard:' + boardId, info); },
+  boardCombineCards: function(boardId, info)   { publish('board:combineCards:' + boardId, info); },
+  boardCombinePiles: function(boardId, info)   { publish('board:combinePiles:' + boardId, info); },
   boardFlipCard:     function(boardId, cardId) { publish('board:flipCard:' + boardId, cardId); },
+
+  columnCreated:     function(column)          { publish('column:create:' + column.board, column); },
+  columnUpdated:     function(column)          { publish('column:update:' + column.board, column); },
+  columnDeleted:     function(column)          { publish('column:delete:' + column.board, column.id); },
+
+  cardCreated:       function(boardId, card)   { publish('card:create:' + boardId, card); },
+  cardUpdated:       function(boardId, card)   { publish('card:update:' + boardId, card); },
+  cardUpvote:        function(boardId, vote)   { publish('card:upvote:' + boardId, vote); },
+  cardVaporize:      function(boardId, cardId) { publish('card:vaporize:' + boardId, cardId); },
 
   boardTimerStart: function(boardId, seconds) {
     publish('board:timerStart:' + boardId, {seconds: seconds});
   },
-
-  columnCreated:     function(column) { publish('column:create:' + column.board, column); },
-  columnUpdated:     function(column) { publish('column:update:' + column.board, column); },
-  columnDeleted:     function(column) { publish('column:delete:' + column.board, column.id); },
-
-  cardCreated:       function(boardId, card) { publish('card:create:' + boardId, card); },
-  cardUpdated:       function(boardId, card) { publish('card:update:' + boardId, card); },
-  cardDeleted:       function(boardId, card) { publish('card:delete:' + boardId, null); },
-  cardUpvote:        function(boardId, vote) { publish('card:upvote:' + boardId, vote); },
 
   socketOnConnection: function(session, socket) {
     // Create a new redis connection for the new websocket.

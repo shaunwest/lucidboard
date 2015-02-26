@@ -70,6 +70,8 @@
         // of other users looking at the card...... locking?...
       }).event('card:upvote:' + board.id(), function(vote) {
         board.cardUpvote(vote);
+      }).event('card:vaporize:' + board.id(), function(cardId) {
+        board.cardVaporize(cardId);
       }).event('board:update:' + board.id(), function(b) {
         board.update(b);
       }).event('board:moveCard:' + board.id(), function(info) {

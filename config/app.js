@@ -39,6 +39,17 @@ module.exports.app = {
         "What Didn't Go Well",
         'Opportunities'
       ]
+    },
+    {
+      id: 5,
+      name: 'Banker Board',
+      cols: [
+        'Dudebro',
+        'Dudebro',
+        'Dudebro',
+        'Dudebro',
+        'Boomski'
+      ]
     }
   ]
 

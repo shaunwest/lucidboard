@@ -1,4 +1,6 @@
-var redis = require('../services/redis');
+var async = require('async'),
+    util  = require('../services/util'),
+    redis = require('../services/redis');
 
 var getNextCardPosition = function(columnId, cb) {
   Column.findOne({id: columnId}).populate('cards').exec(function(err, column) {
@@ -43,26 +45,53 @@ module.exports = {
   },
 
   update: function(req, res) {
-    var boardId  = req.param('boardId'),
-        columnId = req.param('columnId'),
-        cardId   = req.param('cardId'),
-        content  = req.body.content,
+    var boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
+        cardId   = parseInt(req.param('cardId')),
+        content  = req.body.content.trim(),
         bits;
 
     bits = {
       content: content
     };
 
-    Card.update(cardId, bits).populate('votes').exec(function(err, card) {
-      if (err) return res.serverError(err);
+    async.auto({
+      stack:  function(cb) { Card.find({column: columnId}).sort({position: 'asc'}).exec(cb); },
+      column: function(cb) { Column.findOneById(columnId).exec(cb); }
+    }, function(err, r) {
 
-      // FIXME: why oh why do I need this?
-      card = card[0];
+      // If the card is in the trash and it is going to be empty, delete it!
+      if (r.column.position === 0 && !content) {
 
-      res.jsonx(card);
+        var stack       = util.normalizeStack(r.stack),
+            originalMap = util.toStackMap(stack),
+            jobs        = util.fixPositions(stack, originalMap);
 
-      redis.cardUpdated(boardId, card);
-    });
+        jobs.push(function(cb) { Card.destroy({id: cardId}).exec(cb); });
+
+        async.parallel(jobs, function(err, results) {
+          if (err) return res.serverError(err);
+
+          res.jsonx(null);
+
+          redis.cardVaporize(boardId, cardId);
+        });
+
+      } else {  // Normal card update...
+
+        Card.update(cardId, bits).populate('votes').exec(function(err, card) {
+          if (err) return res.serverError(err);
+
+          // FIXME: why oh why do I need this?
+          card = card[0];
+
+          res.jsonx(card);
+
+          redis.cardUpdated(boardId, card);
+        });
+      }
+
+    })
   },
 
   upvote: function(req, res) {

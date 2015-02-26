@@ -14,7 +14,7 @@
         $rootScope.signinStyle = 'userpass';
       }
 
-      user.signout();
+      $scope.signedOut = user.signout();  // Sign the user out !
 
       $scope.signin = function() {
         user.signin($scope.username, $scope.password, function(res) {

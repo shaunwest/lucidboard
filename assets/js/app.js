@@ -98,14 +98,6 @@
       editableOptions.theme = 'bs3';
     }])
 
-    .run(['$rootScope', '$state', 'user', function($rootScope, $state, user) {
-      $rootScope.signout = function($event) {
-        $event.preventDefault();
-        user.signout();
-        $state.go('signin');
-      };
-    }]);
-
 
   // APP
   angular.module('hansei', ['hansei.ui'])
