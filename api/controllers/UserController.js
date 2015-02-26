@@ -48,11 +48,11 @@ module.exports = {
 
       case 'ldap':
 
-        if (!username || !password) return res.forbidden(badLoginJson);
+        if (!username || !password) return res.json(badLoginJson);
 
         ldap.login(username, password, function(err, data) {
           if (err)   return res.serverError(err);
-          if (!data) return res.forbidden(badLoginJson);
+          if (!data) return res.json(badLoginJson);
 
           User.findOne({name: data.username}, function(err, user) {
             if (err)  return res.serverError(err);

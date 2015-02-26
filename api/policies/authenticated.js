@@ -21,7 +21,6 @@ module.exports = function(req, res, next) {
     if (req.user) return next();
 
     token = req.socket.authToken;
-    console.log('token-socket', token);
 
     if (!req.socket || !req.socket.redis) {
       redis.socketOnConnection(req.session, req.socket);
@@ -29,7 +28,6 @@ module.exports = function(req, res, next) {
 
   } else {
     token = req.headers['auth-token'];
-    console.log('token-regular', token);
   }
 
   User.findByToken(token, function(err, user) {
