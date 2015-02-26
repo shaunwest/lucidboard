@@ -27,6 +27,14 @@
   }
 }
 
+.x-list-small {
+    @extend .x-list;
+    li {
+      display: inline-block;
+      margin-bottom: 0;
+    }
+}
+
 .y-list-color {
     @include clearfix;
     @extend .y-list;

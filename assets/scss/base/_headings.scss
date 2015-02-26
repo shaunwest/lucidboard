@@ -29,12 +29,15 @@ h6, .zeta {
   font-size: $h6-size;
 }
 
-.heading-brand {
-    font-family: $font-heading-brand;
-    color: $fiord;
-}
-
 .heading-underline  {
     text-align: center;
     border-bottom: 0.2em solid rgb(52, 157, 192);
+}
+
+.heading-inverse {
+    color: $white;
+}
+
+.heading-small-height {
+    line-height: 0.9;
 }

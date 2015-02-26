@@ -17,74 +17,6 @@
         </a>
     </div>
 </div>
-<div class="tier">
-    <ul class="x-list nav-sub">
-        <li>
-            <a href="#" data-ng-click="switchTab('board')" data-ng-class="{active:currentTab === 'board'}">
-                {{board.title()}}
-            </a>
-        </li>
-        <li>
-            <label for="viewSections">
-                Column:
-            </label>
-            <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
-        </li>
-        <li>
-            <ul class="x-list">
-                <li>
-                    <a href="#" data-ng-click="goFullScreen()">
-                        Full Screen
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-ng-click="switchTab('settings')" data-ng-class="{active:currentTab === 'settings'}">
-                        Settings
-                    </a>
-                </li>
-                <li data-ng-show="board.votesPerUser() !== 0">
-                    {{board.votesRemaining()}} vote{{board.votesRemaining() === 1 ? '' : 's'}}
-                    Left
-                </li>
-                <li>
-                    <a href="#" data-ng-click="showTimerForm = !showTimerForm">
-                        {{timerLeft | formatTime}}
-                    </a>
-                    <input data-ng-show="showTimerForm" class="text-input" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                    data-ng-model="timerMinutesInput">
-                    <label for="timerMinutesInput">
-                        Min
-                    </label>
-                    <button data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)" class="btn">
-                        Start Timer
-                    </button>
-                </li>
-                <li class="aside-right">
-                    <a href="#" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
-                        data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
-                        board.nextPositionByColumnId(board.trash().id))">
-                        <svg class="icon-standard" data-ng-hide="board.trashIsEmpty()" width="24" height="24" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <g stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
-                                <path fill="ffffff" d="M16,5 C18.7544521,5 19,6 19,6 L21,6 L22,7 L21,8 L21,10 L17,9 L13,9 L12,8 L13,6 C13,5.99999997 13.9999999,5.99999982 16,5 Z" id="Path-6" stroke="#949494" stroke-width="0.2" sketch:type="MSShapeGroup"></path>
-                                <path d="M14.1662465,20.8848878 C16.9206986,20.8848878 17.1662465,21.8848878 17.1662465,21.8848878 L19.1662465,21.8848878 L20.1662465,22.8848878 L19.1662465,23.8848878 L19.1662465,25.8848878 L15.1662465,24.8848878 L11.1662465,24.8848878 L10.1662465,23.8848878 L11.1662465,21.8848878 C11.1662465,21.8848878 12.1662464,21.8848877 14.1662465,20.8848878 Z" id="Path-6-copy" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup" transform="translate(15.166247, 23.384888) rotate(-37.000000) translate(-15.166247, -23.384888) "></path>
-                                <path d="M9.34756932,8.37301156 C12.1020214,8.37301156 12.3475693,9.37301156 12.3475693,9.37301156 L14.3475693,9.37301156 L15.3475693,10.3730116 L14.3475693,11.3730116 L14.3475693,13.3730116 L10.3475693,12.3730116 L6.34756932,12.3730116 L5.34756932,11.3730116 L6.34756932,9.37301156 C6.34756932,9.37301153 7.34756923,9.37301138 9.34756932,8.37301156 Z" id="Path-6-copy" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup" transform="translate(10.347569, 10.873012) rotate(-83.000000) translate(-10.347569, -10.873012) "></path>
-                                <path d="M14.3475693,12.3730116 C17.1020214,12.3730116 17.3475693,13.3730116 17.3475693,13.3730116 L19.3475693,13.3730116 L20.3475693,14.3730116 L19.3475693,15.3730116 L19.3475693,17.3730116 L15.3475693,16.3730116 L11.3475693,16.3730116 L10.3475693,15.3730116 L11.3475693,13.3730116 C11.3475693,13.3730115 12.3475692,13.3730114 14.3475693,12.3730116 Z" id="Path-6-copy-2" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup" transform="translate(15.347569, 14.873012) rotate(-83.000000) translate(-15.347569, -14.873012) "></path>
-                                <path d="M11,14.8730116 C13.7544521,14.8730116 14,15.8730116 14,15.8730116 L16,15.8730116 L17,16.8730116 L16,17.8730116 L16,19.8730116 L12,18.8730116 L8,18.8730116 L7,17.8730116 L8,15.8730116 C8,15.8730115 8.99999991,15.8730114 11,14.8730116 Z" id="Path-6-copy-3" stroke="#949494" stroke-width="0.2" fill="#ffffff" sketch:type="MSShapeGroup" transform="translate(12.000000, 17.373012) rotate(-83.000000) translate(-12.000000, -17.373012) "></path>
-                                <path d="M7.94199465,8.37301156 C9.34584953,8.37301156 9.47099732,8.9133895 9.47099732,8.9133895 L10.4903324,8.9133895 L11,9.45376743 L10.4903324,9.99414536 L10.4903324,11.0749012 L8.45166221,10.5345233 L6.41299197,10.5345233 L5.90332441,9.99414536 L6.41299197,8.9133895 C6.41299197,8.91338948 6.92265948,8.9133894 7.94199465,8.37301156 Z" id="Path-6-copy-3" stroke="#949494" stroke-width="0.2" fill="#ffffff" sketch:type="MSShapeGroup" transform="translate(8.451662, 9.723956) rotate(34.000000) translate(-8.451662, -9.723956) "></path>
-                                <path d="M8.37818124,16.9775328 C11.1326334,16.9775328 11.3781812,18.817133 11.3781812,18.817133 L13.3781812,18.817133 L14.3781812,20.6567332 L13.3781812,22.4963334 L13.3781812,26.1755338 L9.37818124,24.3359336 L5.37818124,24.3359336 L4.37818124,22.4963334 L5.37818124,18.817133 C5.37818124,18.817133 6.37818115,18.8171327 8.37818124,16.9775328 Z" id="Path-6-copy-3" stroke="#949494" stroke-width="0.2" fill="#D1D1D1" sketch:type="MSShapeGroup" transform="translate(9.378181, 21.576533) rotate(-151.000000) translate(-9.378181, -21.576533) "></path>
-                                <path fill="#ffffff" d="M4,25 C4,26.656 5.343,28 7,28 L17,28 C18.656,28 20,26.656 20,25 L22,9 L2,9 L4,25 L4,25 Z M15,12 L17,12 L17,25 L15,25 L15,12 L15,12 Z M11,12 L13,12 L13,25 L11,25 L11,12 L11,12 Z M7,12 L9,12 L9,25 L7,25 L7,12 L7,12 Z M20.0968485,0.716594129 L13.7899262,2.28908645 C13.7899262,2.28908645 12.87139,0.456876007 12.3357867,0.590416893 L8.45460381,1.55810448 C7.91803027,1.69188728 7.96815187,3.74061782 7.96815187,3.74061782 L1.66122965,5.31311015 C0.856854495,5.5136634 0.368115655,6.32706142 0.568668907,7.13143658 L0.93155175,8.58688017 L22.2780577,3.26459846 L21.9151749,1.80915487 C21.7146216,1.00477972 20.9002533,0.516282799 20.0968485,0.716594129 L20.0968485,0.716594129 Z" id="Shape" sketch:type="MSShapeGroup"></path>
-                            </g>
-                        </svg>
-                        <svg class="icon-standard" fill="#ffffff" version="1.1" data-ng-show="board.trashIsEmpty()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="28" viewBox="0 0 22 28">
-                            <path d="M8 21.5v-11q0-0.219-0.141-0.359t-0.359-0.141h-1q-0.219 0-0.359 0.141t-0.141 0.359v11q0 0.219 0.141 0.359t0.359 0.141h1q0.219 0 0.359-0.141t0.141-0.359zM12 21.5v-11q0-0.219-0.141-0.359t-0.359-0.141h-1q-0.219 0-0.359 0.141t-0.141 0.359v11q0 0.219 0.141 0.359t0.359 0.141h1q0.219 0 0.359-0.141t0.141-0.359zM16 21.5v-11q0-0.219-0.141-0.359t-0.359-0.141h-1q-0.219 0-0.359 0.141t-0.141 0.359v11q0 0.219 0.141 0.359t0.359 0.141h1q0.219 0 0.359-0.141t0.141-0.359zM7.5 6h7l-0.75-1.828q-0.109-0.141-0.266-0.172h-4.953q-0.156 0.031-0.266 0.172zM22 6.5v1q0 0.219-0.141 0.359t-0.359 0.141h-1.5v14.812q0 1.297-0.734 2.242t-1.766 0.945h-13q-1.031 0-1.766-0.914t-0.734-2.211v-14.875h-1.5q-0.219 0-0.359-0.141t-0.141-0.359v-1q0-0.219 0.141-0.359t0.359-0.141h4.828l1.094-2.609q0.234-0.578 0.844-0.984t1.234-0.406h5q0.625 0 1.234 0.406t0.844 0.984l1.094 2.609h4.828q0.219 0 0.359 0.141t0.141 0.359z"></path>
-                        </svg>
-                        ({{board.trash().cardSlots.length}})
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
 <div class="tier" data-ng-show="currentTab === 'board'">
     <div class="column-container">
         <div class="column" data-ng-repeat="column in board.columns()" data-ng-show="getColumnViewState(column.id, columnViewSelected)">
@@ -111,7 +43,7 @@
                     </div>
                 </li>
                 <li>
-                    <button class="btn-full" data-ng-click="createCard(column)">Add New Card</button>
+                    <button class="btn-full" data-ng-click="createCard(column)">Add Card</button>
                 </li>
             </ul>
         </div>

@@ -10,22 +10,34 @@ $susy: (
 html, body {
   height: 100%;
   @extend %font--body;
+  @include container;
 }
 
 .site-container {
-  @include container;
   @include clearfix;
-  padding-left: 0.5em;
-  padding-right:0.5em;
+  padding:  0 0.5em;
   min-height: 100%;
   margin-bottom: 1em;
-  @media (min-width: 30em) {
-      padding-left: 2em;
-      padding-right:2em;
-  }
 }
 
-// layout content piece container
+.site-header {
+    @include clearfix;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    background: $oxford;
+    color: $white;
+    a {
+        color: $white;
+        display: inline-block;
+        &:hover,
+        &:active,
+        &:focus {
+            color: $white;
+            text-decoration: none;
+        }
+    }
+}
+
 .tier {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -71,13 +83,20 @@ html, body {
 }
 
 .aside-right {
-    @media (min-width: 60em) {
-        float: right;
-    }
+    float: right;
+}
+
+.aside-left {
+    float: left;
 }
 
 // general class to add brand color to elements
 .brand-color {
     color: $flamingo;
     fill: $flamingo;
+}
+
+.divided-copy {
+    border-right: 0.125em solid $white;
+    padding-right: 1.5em;
 }
