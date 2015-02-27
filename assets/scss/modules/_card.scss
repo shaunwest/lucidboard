@@ -5,20 +5,23 @@
     li {
         margin-bottom: 0;
         border-bottom: 0.0625em solid darken($cloudy-day, 25%);
+        font-weight: normal;
         a {
             display: block;
             &:hover {
                 text-decoration: none;
             }
-            padding: 0.5em 1.5em;
+            padding: 0.5em;
         }
         &.info-title {
-            padding: 0.5em 1.5em;
+            padding: 0.5em;
+            font-weight: bold;
             &:hover {
                 background-color: darken($cloudy-day, 15%);
                 cursor: pointer;
             }
             li {
+                font-weight: bold;
                 border-bottom: none;
                 margin-bottom: 0.25em;
                 padding-left: 0;
@@ -106,31 +109,32 @@
 }
 
 // card style colors
-.torch {
-    border-left-color: 0.4em solid $torch;
+.brick {
+    border-left-color: 0.4em solid $brick;
     &.swatch {
-        background: $torch;
+        background: $brick;
     }
 }
 
-.jade {
-    border-left-color: 0.4em solid $jade;
+.sea {
+    border-left-color: 0.4em solid $sea;
     &.swatch {
-        background: $jade;
+        background: $sea;
     }
 }
 
-.denium {
-    border-left-color: 0.4em solid $denim;
+.ice {
+    border-left-color: 0.4em solid $ice;
     &.swatch {
-        background: $denim;
+        background: $ice;
     }
 }
 
-.cloudy-day {
-    border-left-color: 0.4em solid $cloudy-day;
+.stormy-day {
+    border-left-color: 0.4em solid darken($cloudy-day, 15%);
     &.swatch {
-        background: $cloudy-day;
+        border: 0.0625em solid $white;
+        background: darken($cloudy-day, 15%);
     }
 }
 

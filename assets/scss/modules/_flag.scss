@@ -28,21 +28,21 @@
 // Alert message styles
 .flag-media--alert {
     @extend .flag-media;
-    background: $torch;
+    background: $brick;
 }
 
 .flag--alert {
     @extend .flag;
-    background: lighten($torch, 30%);
+    background: lighten($brick, 30%);
 }
 
 // Success message styles
 .flag-media--success {
     @extend .flag-media;
-    background: $jade;
+    background: $sea;
 }
 
 .flag--success {
     @extend .flag;
-    background: $jade-light;
+    background: $sea;
 }
