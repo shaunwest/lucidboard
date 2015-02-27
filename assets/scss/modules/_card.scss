@@ -1,10 +1,10 @@
 .card-menu {
-    background: $alto;
+    background: darken($cloudy-day, 15%);
     width: 100%;
     float: left;
     li {
         margin-bottom: 0;
-        border-bottom: 0.0625em solid darken($alto, 6%);;
+        border-bottom: 0.0625em solid darken($cloudy-day, 25%);
         a {
             display: block;
             &:hover {
@@ -12,15 +12,20 @@
             }
             padding: 0.5em 1.5em;
         }
-        &:first-child {
+        &.info-title {
             padding: 0.5em 1.5em;
-        }
-        &:hover:first-child {
-            background-color: $alto;
-            cursor: pointer;
+            &:hover {
+                background-color: darken($cloudy-day, 15%);
+                cursor: pointer;
+            }
+            li {
+                border-bottom: none;
+                margin-bottom: 0.25em;
+                padding-left: 0;
+            }
         }
         &:hover {
-            background-color: darken($alto, 6%);
+            background-color: darken($cloudy-day, 17%);
             cursor: pointer;
         }
     }
@@ -62,7 +67,7 @@
 
 .card.on-drag-hover {
     border: 0.125em dashed $alto;
- }
+}
 
  .cardjunction {
      height: 0.5em;
@@ -84,42 +89,65 @@
  }
 
 .slate-card {
-    background-color: $ziggurat;
+    background-color: $cloudy-day;
     transition: background-color 0.2s ease-in-out;
+    border: {
+        top: 0.0625em solid darken($cloudy-day, 5%);
+        right: 0.0625em solid darken($cloudy-day, 5%);
+        left: 0.4em solid darken($cloudy-day, 15%);
+        bottom: 0.0625em solid darken($cloudy-day, 5%);
+    }
     &:hover {
-        background-color: darken($ziggurat, 5%);
+        background-color: darken($cloudy-day, 5%);
     }
     &.locked {
         background-color: $detroit;
     }
-    .editable-click {
-        border-bottom: 0.125em solid $white;
+}
+
+// card style colors
+.torch {
+    border-left-color: 0.4em solid $torch;
+    &.swatch {
+        background: $torch;
+    }
+}
+
+.jade {
+    border-left-color: 0.4em solid $jade;
+    &.swatch {
+        background: $jade;
+    }
+}
+
+.denium {
+    border-left-color: 0.4em solid $denim;
+    &.swatch {
+        background: $denim;
+    }
+}
+
+.cloudy-day {
+    border-left-color: 0.4em solid $cloudy-day;
+    &.swatch {
+        background: $cloudy-day;
     }
 }
 
 .handle {
     padding: 0.5em;
     margin: 0;
-    transition: all 0.2s ease-in;
     font-style: normal;
-    &:hover, &:active, &:focus {
-        color: $flamingo;
-        fill: $flamingo;
-        font-style: normal;
+    color: $fiord;
+    a {
+        outline: none;
+        display: inline-block;
+        &:hover, &:active, &:focus {
+            color: $flamingo;
+            fill: $flamingo;
+            font-style: normal;
+        }
     }
-    .icon-left {
-        width: 1.25em;
-    }
-}
-
-.handle--last {
-    @extend .handle;
-    float: right;
-}
-
-.handle--first {
-    @extend .handle;
-    float: left;
 }
 
 .card-pile-panel {
