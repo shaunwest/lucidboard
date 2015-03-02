@@ -123,7 +123,7 @@
         promise:        function() { return defer.promise; },
 
         obj:            function() { return board; },
-        loaded:         function() { return !!board.id; },
+        loaded:         function() { return board && board.id; },
 
         id:             function() { return board.id; },
         title:          function() { return board.title; },

@@ -3,55 +3,27 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
+  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval',
+    'api', 'board', 'eventerFactory',
     function($rootScope, $scope, $state, $timeout, $interval, api, board, eventerFactory) {
 
       if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
 
-      // var regexColumnTitle = /^.{1,20}$/;
+      $scope.board = board;
+      // $scope.b = board.obj();
 
-      $scope.board             = board;
-      $scope.timerMinutesInput = 5;
-      $scope.timerLeft         = 0;
-      // $scope.timerLength = 5;//300;          // 5 minutes
+      $rootScope.currentTab   = 'board';
+      $rootScope.cardDragging = false;
+      $rootScope.switchTab    = function(tabName) { $rootScope.currentTab = tabName; };
 
-      $scope.b = board.obj();
-
-      $scope.columnViews = $scope.board.columns().map(function(column) {
-        return {
-          label: column.title,
-          id: column.id
-        };
+      $rootScope.columnViews = $scope.board.columns().map(function(column) {
+        return { label: column.title, id: column.id };
       });
-      $scope.columnViews.unshift($scope.columnViewSelected = {id: 0, label: 'View All'});
-
-      $scope.getColumnViewState = function(columnId, columnViewSelected) {
+      $rootScope.columnViews.unshift($rootScope.columnViewSelected = {id: 0, label: 'View All'});
+      $rootScope.getColumnViewState = function(columnId, columnViewSelected) {
         return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
       };
 
-      $rootScope.cardDragging = false;
-
-      var startTimer = function(bits) {
-        var sound          = new Audio();
-        sound.src          = '/sounds/ding.mp3';
-        // $scope.timerLength = bits.seconds;
-        $scope.timerLeft   = bits.seconds;
-
-        $interval.cancel(timer);
-
-        timer = $interval(function() {
-          $scope.timerLeft -= 1;
-          if ($scope.timerLeft <= 0) {
-            $scope.timerLeft = 0;
-            sound.play();
-            $interval.cancel(timer);
-          }
-        }, 1000);
-      };
-
-      if (board.timerLeft() > 0) {
-        startTimer({seconds: board.timerLeft()});
-      }
 
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
@@ -94,6 +66,7 @@
         board.combineCards(info);
       }).event('board:flipCard:' + board.id(), function(cardId) {
         board.flipCard(cardId);
+
       }).hook($scope);
 
       // $scope.debugBoard = function() {
@@ -169,14 +142,6 @@
         });
       };
       */
-
-      // --- BEGIN Tabber stuff
-
-      $scope.currentTab = 'board';
-
-      $scope.switchTab = function(tabName) {
-        $scope.currentTab = tabName;
-      };
 
       // --- BEGIN xeditable stuff
 
