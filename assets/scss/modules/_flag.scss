@@ -6,6 +6,7 @@
     margin-bottom: 1.5em;
     font-weight: bold;
     transition: all 0.2s ease-in;
+    background: $cloudy-day;
     svg {
         display: block;
     }
@@ -31,18 +32,8 @@
     background: $brick;
 }
 
-.flag--alert {
-    @extend .flag;
-    background: lighten($brick, 30%);
-}
-
 // Success message styles
 .flag-media--success {
     @extend .flag-media;
-    background: $sea;
-}
-
-.flag--success {
-    @extend .flag;
     background: $sea;
 }
