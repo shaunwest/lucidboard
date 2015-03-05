@@ -24,6 +24,9 @@
 }
 
 .small-view {
+    .select-clear {
+        border: 0.0625em solid $white;
+    }
     @media (min-width: 60em) {
         display: none;
     }
