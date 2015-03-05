@@ -21,6 +21,10 @@
 
           $scope.onShow = function() { console.log('srsly'); };
 
+          $scope.lockedByAnother = function() {
+            return card.locked && card.locked !== user.name;
+          };
+
           // $scope.dropSuccessHandler = function($event) {
           //   console.log('array', $scope.index, $scope.column.cards);
           //   array.splice(index, 1);
@@ -46,6 +50,31 @@
             // the false returned will close the editor and not update the model.
             // (model update will happen when the event is pushed from the server)
             return false;
+          };
+
+          $scope.getCardLock = function(cardId) {
+            api.cardLock(board.id(), cardId, function(gotLock) {
+              if (gotLock) {
+                board.rememberCardLock(cardId);  // so we can reestablish on websocket reconnect
+              } else {
+                $scope['cardeditor_' + cardId].$cancel();  // no lock, dude.
+              }
+            });
+          };
+
+          $scope.endCardLock = function(cardId) {
+            api.cardUnlock(board.id(), cardId, function(unlockWorked) {
+              if (unlockWorked) board.forgetCardLock(cardId);
+            });
+          };
+
+          $scope.editorShow = function(cardId) {
+            if (board.card(cardId).locked) return;
+            $scope['cardeditor_' + cardId].$show();
+          };
+
+          $scope.isEditorVisible = function(cardId) {
+            return $scope['cardeditor_' + cardId].$visible;
           };
 
           $scope.upvote = function(card, event) {

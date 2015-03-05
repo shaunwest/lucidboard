@@ -6,7 +6,8 @@
  * @docs		    :: http://sailsjs.org/#!documentation/models
  */
 
-var titleRegex = /^.{1,60}$/;
+var meta       = require('../services/meta'),
+    titleRegex = /^.{1,60}$/;
 
 module.exports = {
 
@@ -71,21 +72,21 @@ module.exports = {
       board: function(cb) {
         Board.findOneById(id).populate('columns').exec(cb);
       },
-      cards: ['board', function(cb, results) {
-        if (!results.board) {
-          results.board = false;
+      cards: ['board', function(cb, r) {
+        if (!r.board) {
+          r.board = false;
           return cb('Board not found');
         }
-        Card.find({column: _.pluck(results.board.columns, 'id')}).exec(cb);
+        Card.find({column: _.pluck(r.board.columns, 'id')}).exec(cb);
       }],
-      votes: ['cards', function(cb, results) {
-        Vote.find({card: _.pluck(results.cards, 'id')}).exec(cb);
+      votes: ['cards', function(cb, r) {
+        Vote.find({card: _.pluck(r.cards, 'id')}).exec(cb);
       }],
-      mapCards: ['cards', function(cb, results) {
-        var i, board = results.board;
+      mapCards: ['cards', function(cb, r) {
+        var i, board = r.board;
 
         for (i=0; i<board.columns.length; i++) {
-          results.cards.forEach(function(card) {
+          r.cards.forEach(function(card) {
             if (card.column === board.columns[i].id) {
               var c = card.toObject(); c.votes = [];  // wtf, mate
               board.columns[i].cards.push(c);
@@ -95,23 +96,31 @@ module.exports = {
 
         cb(null, board);
       }],
-      mapVotes: ['votes', 'mapCards', function(cb, results) {
-        results.votes.forEach(function(vote) {
-          for (var i=0; i<results.board.columns.length; i++) {
-            for (var j=0; j<results.board.columns[i].cards.length; j++) {
-              if (results.board.columns[i].cards[j].id === vote.card) {
-                results.board.columns[i].cards[j].votes.push(vote.toObject());
+      mapVotes: ['votes', 'mapCards', function(cb, r) {
+        r.votes.forEach(function(vote) {
+          for (var i=0; i<r.board.columns.length; i++) {
+            for (var j=0; j<r.board.columns[i].cards.length; j++) {
+              if (r.board.columns[i].cards[j].id === vote.card) {
+                r.board.columns[i].cards[j].votes.push(vote.toObject());
               }
             }
           }
         });
-        cb(null, results.board);
+        cb(null, r.board);
+      }],
+      final: ['mapVotes', function(cb, r) {
+        r.mapVotes.columns.forEach(function(col) {
+          col.cards.forEach(function(card) {
+            card.locked = meta.cardLockedByWhichUsername(id, card.id);
+          });
+        });
+        cb(null, r.mapVotes);
       }]
-    }, function(err, results) {
-      if (results.board === false) return _cb(null, false);
-      if (err)                     return _cb(err);
+    }, function(err, r) {
+      if (r.board === false) return _cb(null, false);
+      if (err)               return _cb(err);
 
-      _cb(null, results.mapVotes);
+      _cb(null, r.final);
     });
   },
 

@@ -1,6 +1,7 @@
 var async = require('async'),
     util  = require('../services/util'),
-    redis = require('../services/redis');
+    redis = require('../services/redis'),
+    meta  = require('../services/meta');
 
 var getNextCardPosition = function(columnId, cb) {
   Column.findOne({id: columnId}).populate('cards').exec(function(err, column) {
@@ -51,6 +52,10 @@ module.exports = {
         content  = req.body.content.trim(),
         bits;
 
+    if (meta.cardLockedBySomeoneElse(boardId, cardId, req)) {
+      return req.jsonx(false);
+    }
+
     bits = {
       content: content
     };
@@ -72,6 +77,8 @@ module.exports = {
         async.parallel(jobs, function(err, results) {
           if (err) return res.serverError(err);
 
+          meta.releaseCardLock(boardId, cardId, req);
+
           res.jsonx(null);
 
           redis.cardVaporize(boardId, cardId);
@@ -82,8 +89,9 @@ module.exports = {
         Card.update(cardId, bits).populate('votes').exec(function(err, card) {
           if (err) return res.serverError(err);
 
-          // FIXME: why oh why do I need this?
           card = card[0];
+
+          meta.releaseCardLock(boardId, cardId, req);
 
           res.jsonx(card);
 
@@ -143,7 +151,37 @@ module.exports = {
         });
       });
     });
-  }
+  },
+
+  lock: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+        cardId  = parseInt(req.param('cardId'));
+
+    util.getCardAndBoard(cardId, boardId, req, res, function(r) {
+      if (!r) return;
+
+      var gotLock = meta.getCardLock(boardId, cardId, req);
+
+      if (!gotLock) return res.jsonx(false);  // srybro, card is already locked !
+
+      res.jsonx(true);
+    });
+  },
+
+  unlock: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+        cardId  = parseInt(req.param('cardId'));
+
+    util.getCardAndBoard(cardId, boardId, req, res, function(r) {
+      if (!r) return;
+
+      var successfulRelease = meta.releaseCardLock(boardId, cardId, req);
+
+      if (!successfulRelease) return res.jsonx(false);
+
+      res.jsonx(true);
+    });
+  },
 
 };
 

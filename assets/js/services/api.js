@@ -3,6 +3,9 @@
   angular.module('hansei.services')
     .factory('api', ['$sails', '$state', function($sails, $state) {
 
+      var subs = [],           // our currently subscribed events
+          initialTokenPromise; // must wait for this to finish before doing anything!
+
       var targetsOutsideLogin = [
         '/api/config',
         '/api/signin',
@@ -31,11 +34,6 @@
       var info = function() {
         console.log.apply(console, sanitize(arguments));
       };
-
-      var subs = [];  // our currently subscribed events
-
-      // must wait for this to finish before doing anything!
-      var initialTokenPromise;
 
       var subscriber = {
         debug: function() {
@@ -167,6 +165,12 @@
         cardUpvote: function(boardId, columnId, cardId, cb) {
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             cardId + '/upvote', {}, cb);
+        },
+        cardLock: function(boardId, cardId, cb) {
+          post('/api/boards/' + boardId + '/lock-card', {cardId: cardId}, cb);
+        },
+        cardUnlock: function(boardId, cardId, cb) {
+          post('/api/boards/' + boardId + '/unlock-card', {cardId: cardId}, cb);
         },
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);

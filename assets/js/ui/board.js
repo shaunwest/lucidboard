@@ -5,11 +5,8 @@
 
   .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board', 'eventerFactory',
     function($rootScope, $scope, $state, $timeout, $interval, api, board, eventerFactory) {
-      var openEditor, timer;
 
-      if (!board.loaded()) {
-        return $state.go('boards');
-      }
+      if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
 
       // var regexColumnTitle = /^.{1,20}$/;
 
@@ -56,6 +53,13 @@
         startTimer({seconds: board.timerLeft()});
       }
 
+      // Unlock cards when our scope dies
+      $scope.$on('$destroy', function() {
+        board.getLockedCardIds().forEach(function(cardId) {
+          api.cardUnlock(board.id(), cardId);
+        });
+      });
+
       eventerFactory().event('column:create:' + board.id(), function(col) {
         board.columnCreate(col);
       }).event('column:update:' + board.id(), function(col) {
@@ -72,6 +76,14 @@
         board.cardUpvote(vote);
       }).event('card:vaporize:' + board.id(), function(cardId) {
         board.cardVaporize(cardId);
+      }).event('card:lock:' + board.id(), function(info) {
+        board.cardLock(info);
+      }).event('card:unlock:' + board.id(), function(info) {
+        board.cardUnlock(info);
+
+        // This only matters for our own locked card id's, but
+        // won't hurt for others.
+        board.forgetCardLock(info.id);
       }).event('board:update:' + board.id(), function(b) {
         board.update(b);
       }).event('board:moveCard:' + board.id(), function(info) {
@@ -109,21 +121,16 @@
 
       $scope.goFullScreen = function() {
         var element = document.documentElement;
-	if(element.requestFullscreen) {
+        if (element.requestFullscreen) {
           element.requestFullscreen();
-        } else if(element.mozRequestFullScreen) {
+        } else if (element.mozRequestFullScreen) {
           element.mozRequestFullScreen();
-        } else if(element.webkitRequestFullscreen) {
+        } else if (element.webkitRequestFullscreen) {
           element.webkitRequestFullscreen();
-        } else if(element.msRequestFullscreen) {
+        } else if (element.msRequestFullscreen) {
           element.msRequestFullscreen();
         }
       }
-
-      $scope.timerStart = function(minutes) {
-        $scope.showTimerForm = false;
-        api.timerStart(board.id(), minutes * 60);
-      };
 
       /*
       $scope.waitAndSave = function() {

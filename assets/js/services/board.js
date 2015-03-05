@@ -2,11 +2,13 @@
   'use strict';
   angular.module('hansei.services')
     .factory('board', ['$rootScope', 'api', 'user', '$q', function($rootScope, api, user, $q) {
-      var board, defer, votesRemaining, eventCb, _ = {
-        pluck:   $rootScope.pluck,
-        flatten: $rootScope.flatten,
-        sortBy:  $rootScope.sortBy
-      };
+      var board, defer, votesRemaining, eventCb,
+          locks = [],  // card ids that this client has locked
+          _ = {
+            pluck:   $rootScope.pluck,
+            flatten: $rootScope.flatten,
+            sortBy:  $rootScope.sortBy
+          };
 
       var cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
@@ -14,6 +16,7 @@
       };
 
       var isBoardOwner = function() { return user.id() === board.creator; };
+
 
       var loadBoard = function(b) {
         board = b;
@@ -33,9 +36,9 @@
       };
 
       var fixColumn = function(column) {
-        var j,
-            buffer   = [],
-            origlist = _.sortBy(_.sortBy(column.cards, 'id'), 'position');
+        var buffer   = [],
+            origlist = _.sortBy(_.sortBy(column.cards, 'id'), 'position'),
+            j;
 
         // We'll use cardSlots instead.
         delete column.cards;
@@ -97,6 +100,7 @@
           });
         });
       };
+
 
       return {
         setEventCb: function(_cb) {
@@ -222,18 +226,39 @@
           var card = this.card(vote.card);
           card.votes.push(vote);
 
-          if (vote.user === user.obj().id) {
+          if (vote.user === user.id()) {
             votesRemaining--;
           }
         },
 
         cardVaporize: function(cardId) {
-          var card      = this.card(cardId),
-            sourceStack = this.column(card.column).cardSlots;
+          var card        = this.card(cardId),
+              sourceStack = this.column(card.column).cardSlots;
 
           sourceStack.splice(card.position - 1, 1);
 
           figureVotesRemaining();
+        },
+
+        cardLock: function(info) {
+          this.card(info.id).locked = info.username;
+        },
+
+        cardUnlock: function(info) {
+          this.card(info.id).locked = null;
+        },
+
+        rememberCardLock: function(cardId) {
+          if (locks.indexOf(cardId) === -1) locks.push(cardId);
+        },
+
+        forgetCardLock: function(cardId) {
+          var idx = locks.indexOf(cardId);
+          if (idx !== -1) locks.splice(idx, 1);
+        },
+
+        getLockedCardIds: function() {
+          return locks;
         },
 
         // Replace the column/piles with the cards of the given id's, in order.

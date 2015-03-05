@@ -1,3 +1,5 @@
+var async = require('async');
+
 // Organize cards into slots. That means that
 //
 //   [{..., position: 1}, {..., position: 1}, {..., position: 2}]
@@ -76,13 +78,49 @@ var fixPositions = function(stack, origMap) {
   return jobs;
 };
 
+// If there is no board passed to the callback, you can assume we've already handled res.
 var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
   Board.findOneById(id).exec(function(err, board) {
-    if (err)                           return res.serverError(err);
-    if (!board)                        return res.notFound();
-    if (board.creator !== req.user.id) return res.forbidden();
+    var failed = false;
+    res.on('finish', function() { failed = true; });
+
+    if (err)                                res.serverError(err);
+    else if (!board)                        res.notFound();
+    else if (board.creator !== req.user.id) res.forbidden();
+
+    cb(failed ? null : board);
+
+    /*
+    if (err) {
+      res.serverError(err);
+    } else if (!board) {
+      res.notFound();
+    } else if (board.creator !== req.user.id) {
+      res.forbidden();
+      board = null;
+    }
 
     cb(board);
+    */
+  });
+};
+
+// If the callback gets null, you can assume we've already handled res.
+var getCardAndBoard = function(cardId, boardId, req, res, cb) {
+  async.auto({
+    board:  function(_cb) { Board.findOneById(boardId).exec(_cb); },
+    card:   function(_cb) { Card.findOneById(cardId).exec(_cb); },
+    column: ['card', function(_cb, r) { Column.findOneById(r.card.column).exec(_cb); }]
+  }, function(err, r) {
+    var failed = false;
+    res.on('finish', function() { failed = true; });
+
+    if (err)                                   res.serverError(err);
+    else if (!r.card || !r.column || !r.board) res.notFound();
+    else if (r.card.column !== r.column.id)    res.notFound();
+    else if (r.column.board !== r.board.id)    res.notFound();
+
+    cb(failed ? null : r);
   });
 };
 
@@ -91,5 +129,6 @@ module.exports = {
   spliceCard:             spliceCard,
   toStackMap:             toStackMap,
   fixPositions:           fixPositions,
-  boardIsLegitAndOwnedBy: boardIsLegitAndOwnedBy
+  boardIsLegitAndOwnedBy: boardIsLegitAndOwnedBy,
+  getCardAndBoard:        getCardAndBoard
 };

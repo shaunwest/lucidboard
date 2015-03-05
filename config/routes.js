@@ -116,6 +116,18 @@ module.exports.routes = {
     action:     'timerStart'
   },
 
+  // Board: Lock a card
+  'POST /api/boards/:id/lock-card': {
+    controller: 'CardController',
+    action:     'lock'
+  },
+
+  // Board: Unlock a card
+  'POST /api/boards/:id/unlock-card': {
+    controller: 'CardController',
+    action:     'unlock'
+  },
+
   // Column Create
   'POST /api/boards/:boardId/columns': {
     controller: 'ColumnController',

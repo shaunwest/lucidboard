@@ -57,8 +57,8 @@
       'angular-lodash/utils/sortBy',
     ])
 
-    .run(['$rootScope', '$sails', '$state', 'user', 'api',
-      function($rootScope, $sails, $state, user, api) {
+    .run(['$rootScope', '$sails', '$state', 'user', 'api', 'board',
+      function($rootScope, $sails, $state, user, api, board) {
 
         function initialSetup() {
           // This clues the api library into the status of the initial token setup
@@ -77,7 +77,13 @@
 
         $sails.on('reconnect', function() {
           initialSetup();
-          api.resubscribe();
+
+          api.resubscribe();  // resubscribe to websocket events
+
+          // Re-lock all our locked cards
+          board.getLockedCardIds().forEach(function(cardId) {
+            api.cardLock(board.id(), cardId);
+          });
         });
 
         initialSetup();

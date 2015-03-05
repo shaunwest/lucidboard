@@ -28,6 +28,9 @@ module.exports = {
   cardUpvote:        function(boardId, vote)   { publish('card:upvote:' + boardId, vote); },
   cardVaporize:      function(boardId, cardId) { publish('card:vaporize:' + boardId, cardId); },
 
+  cardLock:          function(boardId, info)   { publish('card:lock:' + boardId, info); },
+  cardUnlock:        function(boardId, info)   { publish('card:unlock:' + boardId, info); },
+
   boardTimerStart: function(boardId, seconds) {
     publish('board:timerStart:' + boardId, {seconds: seconds});
   },

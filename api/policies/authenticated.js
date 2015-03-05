@@ -7,6 +7,10 @@
  * @docs        :: http://sailsjs.org/#!documentation/policies
  *
  */
+
+var redis = require('../services/redis'),
+    meta  = require('../services/meta');
+
 module.exports = function(req, res, next) {
 
   var token;
@@ -25,6 +29,10 @@ module.exports = function(req, res, next) {
     if (!req.socket || !req.socket.redis) {
       redis.socketOnConnection(req.session, req.socket);
     }
+
+    req.socket.on('disconnect', function() {
+      meta.unlockAllViaSocketId(req.socket.id);
+    });
 
   } else {
     token = req.headers['auth-token'];

@@ -28,10 +28,8 @@ module.exports = {
   },
 
   create: function(req, res) {
-    var user = req.user;
-
     var bits = {
-      creator:        user.id,
+      creator:        req.user.id,
       colsetId:       req.body.colsetId,
       title:          req.body.title,
       votesPerUser:   req.body.votesPerUser,
@@ -84,6 +82,7 @@ module.exports = {
     };
 
     util.boardIsLegitAndOwnedBy(id, req, res, function(board) {
+      if (!board) return;
       Board.update(id, bits).exec(function(err, board) {
         if (err) return res.serverError(err);
         res.jsonx(board[0]);

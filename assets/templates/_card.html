@@ -1,14 +1,21 @@
+<div ng-show="card.locked">locked: {{card.locked}}</div>
 <div context-menu data-target="menu-{{card.id}}"
      class="card slate-card" data-ng-show="card"
      data-ui-draggable="true" data-drag="card"
      data-on-drop-success="dropSuccessHandler($event)"
      data-ng-class="{active:cardDragging}"
      data-ui-on-drop="combineThings($event, $data, card.id)">
-  <div data-ng-show="card.userCanWrite || !board.p_lock()">
-    <div class="cardcontent"
-         data-editable-textarea="card.content"
-         data-onbeforesave="checkCardContent($data, column.id, card.id)">
-      <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
+     <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother()">
+         <div class="cardcontent"
+             data-e-form="cardeditor_{{card.id}}"
+             data-ng-click="editorShow(card.id)"
+             data-ng-hide="isEditorVisible(card.id)"
+             data-editable-textarea="card.content"
+             data-onshow="getCardLock(card.id)"
+             data-onhide="endCardLock(card.id)"
+             data-onbeforesave="checkCardContent($data, column.id, card.id)"
+             data-ng-disabled="true">
+             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
 {{card.content}}
       </pre>
       <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">

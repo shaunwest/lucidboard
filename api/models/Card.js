@@ -41,7 +41,8 @@ module.exports = {
         position:   this.position,
         topOfPile:  this.topOfPile,
         column:     this.column,
-        votes:      this.votes
+        votes:      this.votes,
+        locked:     this.locked || null
       };
     }
   }
