@@ -16,6 +16,19 @@
       $scope.timerLeft         = 0;
       $scope.showTimerForm     = false;
 
+      $rootScope.currentTab   = 'board';
+      $rootScope.switchTab    = function(tabName) { $rootScope.currentTab = tabName; };
+      $rootScope.cardDragging = false;
+
+      $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
+        $rootScope.cardDragging = true;
+      });
+
+      $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
+        $rootScope.cardDragging = false;
+      });
+
+
       var startTimer = function(bits) {
         var sound          = new Audio();
         sound.src          = '/sounds/ding.mp3';

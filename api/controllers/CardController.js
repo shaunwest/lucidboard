@@ -53,7 +53,7 @@ module.exports = {
         bits;
 
     if (meta.cardLockedBySomeoneElse(boardId, cardId, req)) {
-      return req.jsonx(false);
+      return req.badRequest('Card is locked by another user.');
     }
 
     bits = {

@@ -14,7 +14,9 @@
           cardDragging: '='
         },
         controller: ['$scope', 'api', 'user', function($scope, api, user) {
-          var board = $scope.board;
+
+          var board = $scope.board,
+              card  = $scope.card;
 
           $scope.user = user;
           $scope.cardMenu = false;
@@ -52,34 +54,36 @@
             return false;
           };
 
-          $scope.getCardLock = function(cardId) {
-            api.cardLock(board.id(), cardId, function(gotLock) {
+          $scope.getCardLock = function() {
+            api.cardLock(board.id(), card.id, function(gotLock) {
               if (gotLock) {
-                board.rememberCardLock(cardId);  // so we can reestablish on websocket reconnect
+                board.rememberCardLock(card.id);  // so we can reestablish on websocket reconnect
               } else {
-                $scope['cardeditor_' + cardId].$cancel();  // no lock, dude.
+                $scope.editform.$cancel();  // no lock, dude.
               }
             });
           };
 
-          $scope.endCardLock = function(cardId) {
-            api.cardUnlock(board.id(), cardId, function(unlockWorked) {
-              if (unlockWorked) board.forgetCardLock(cardId);
+          $scope.endCardLock = function() {
+            api.cardUnlock(board.id(), card.id, function(unlockWorked) {
+              if (unlockWorked) board.forgetCardLock(card.id);
             });
           };
 
-          $scope.editorShow = function(cardId) {
-            if (board.card(cardId).locked) return;
-            $scope['cardeditor_' + cardId].$show();
+          $scope.editorShow = function() {
+            if (board.card(card.id).locked) return;
+            $scope.editform.$show();
           };
 
-          $scope.isEditorVisible = function(cardId) {
-            return $scope['cardeditor_' + cardId].$visible;
+          $scope.isEditorVisible = function() {
+            if (!$scope.editform) return false;
+            return $scope.editform.$visible;
           };
 
           $scope.upvote = function(card, event) {
             event.stopPropagation();
             event.preventDefault();
+            if (board.card(cardId).locked) return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
 
@@ -88,13 +92,24 @@
           // });
 
           $scope.moveTo = function(column, card) {
+            if (board.card(cardId).locked) return;
             api.boardMoveCard(board.id(), {
               cardId:       card.id,
               destColumnId: column.id,
               destPosition: column.cardSlots.length + 1
             });
           };
-        }]
+
+        }],
+        link: function(scope, element) {
+
+          console.log('scope', scope.card);
+          if (scope.card.openForEditWhenReady) {
+            scope.editform.$show();
+            delete scope.card.openForEditWhenReady;
+          }
+
+        }
       };
     }])
 })();

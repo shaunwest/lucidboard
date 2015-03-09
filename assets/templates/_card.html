@@ -6,12 +6,12 @@
      data-ui-on-drop="combineThings($event, $data, card.id)">
      <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother() && !card.locked">
          <div class="cardcontent"
-             data-e-form="cardeditor_{{card.id}}"
-             data-ng-click="editorShow(card.id)"
-             data-ng-hide="isEditorVisible(card.id)"
+             data-e-form="editform"
+             data-ng-click="editorShow()"
+             data-ng-hide="isEditorVisible()"
              data-editable-textarea="card.content"
-             data-onshow="getCardLock(card.id)"
-             data-onhide="endCardLock(card.id)"
+             data-onshow="getCardLock()"
+             data-onhide="endCardLock()"
              data-onbeforesave="checkCardContent($data, column.id, card.id)"
              data-ng-disabled="true">
              <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">

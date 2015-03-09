@@ -1,14 +1,20 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('board', ['$rootScope', 'api', 'user', '$q', function($rootScope, api, user, $q) {
+    .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user',
+      function($rootScope, $q, $timeout, api, user) {
       var board, defer, votesRemaining, eventCb,
-          locks = [],  // card ids that this client has locked
+          locks   = [],  // card ids that this client has locked
           _ = {
             pluck:   $rootScope.pluck,
             flatten: $rootScope.flatten,
             sortBy:  $rootScope.sortBy
-          };
+          },
+
+          // When the user adds a new card, this will be a timer that will hint the
+          // application to put the card into edit mode as soon as the new card is
+          // actually pushed to us.
+          awaitingOurNewCard = null;
 
       var cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
@@ -142,7 +148,18 @@
 
         votesRemaining: function() { return votesRemaining; },
 
-        isBoardOwner:   isBoardOwner,
+        isWaitingForNewCard:    function() { return Boolean(awaitingOurNewCard); },
+        startWaitingForNewCard: function() {
+          // This will allow us to recognize when the card:create message comes back
+          // so we can trigger its editor
+          awaitingOurNewCard = $timeout(function() { awaitingOurNewCard = null; }, 5000);
+        },
+        clearWaitingForNewCard: function() {
+          if (awaitingOurNewCard.cancel) awaitingOurNewCard.cancel();
+          awaitingOurNewCard = null;
+        },
+
+        isBoardOwner: isBoardOwner,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);

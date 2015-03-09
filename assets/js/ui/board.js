@@ -3,18 +3,21 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval',
-    'api', 'board', 'eventerFactory',
-    function($rootScope, $scope, $state, $timeout, $interval, api, board, eventerFactory) {
+  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$interval', 'api',
+    'user', 'board', 'eventerFactory',
+    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory) {
 
       if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
 
       $scope.board = board;
       // $scope.b = board.obj();
 
-      $rootScope.currentTab   = 'board';
-      $rootScope.cardDragging = false;
-      $rootScope.switchTab    = function(tabName) { $rootScope.currentTab = tabName; };
+      $scope.board             = board;
+      $scope.timerMinutesInput = 5;
+      $scope.timerLeft         = 0;
+      // $scope.timerLength = 5;//300;          // 5 minutes
+
+      $scope.b = board.obj();
 
       $rootScope.columnViews = $scope.board.columns().map(function(column) {
         return { label: column.title, id: column.id };
@@ -37,6 +40,13 @@
       }).event('column:update:' + board.id(), function(col) {
         board.columnUpdate(col);
       }).event('card:create:' + board.id(), function(card) {
+        // Open the editor if we think it's pretty likely the user just initiated
+        // the creation of this card.
+        if (board.isWaitingForNewCard() && (card.creator === user.id())) {
+          board.clearWaitingForNewCard();
+          card.openForEditWhenReady = true;
+        }
+
         board.cardCreate(card);
       }).event('card:update:' + board.id(), function(card) {
         board.cardUpdate(card);
@@ -119,17 +129,8 @@
       */
 
       $scope.createCard = function(column) {
-        api.cardCreate(board.id(), column.id, {}, function(card) {
-          // TODO: Open edit automatically
-          //
-          // vv old junk vv
-          // openEditor({
-          //   title:   'Creating new card under ' + column.title,
-          //   content: '',
-          //   id:      card.id,
-          //   column:  column.id
-          // });
-        });
+        board.startWaitingForNewCard();
+        api.cardCreate(board.id(), column.id, {});
       };
 
       /*
@@ -158,14 +159,6 @@
       //   console.log('a', a);
       //   console.log('b', b);
       // });
-
-      $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
-        $rootScope.cardDragging = true;
-      });
-
-      $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
-        $rootScope.cardDragging = false;
-      });
 
       $scope.moveSlot = function($event, $data, cardSlots, destColumnId, position) {
 
