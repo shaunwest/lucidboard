@@ -1,11 +1,10 @@
-<div ng-show="card.locked">locked: {{card.locked}}</div>
 <div context-menu data-target="menu-{{card.id}}"
      class="card slate-card" data-ng-show="card"
      data-ui-draggable="true" data-drag="card"
      data-on-drop-success="dropSuccessHandler($event)"
      data-ng-class="{active:cardDragging}"
      data-ui-on-drop="combineThings($event, $data, card.id)">
-     <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother()">
+     <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother() && !card.locked">
          <div class="cardcontent"
              data-e-form="cardeditor_{{card.id}}"
              data-ng-click="editorShow(card.id)"
@@ -84,7 +83,7 @@ Click to enter comments...
             </ul>
         </div>
     </div>
-    <div data-ng-show="!card.userCanWrite && board.p_lock()">
+    <div data-ng-show="!card.userCanWrite && board.p_lock() && !card.locked">
         <div class="cardcontent">
             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
 {{card.content}}
@@ -97,16 +96,12 @@ Empty
             </pre>
         </div>
     </div>
-</div>
-<div class="dropdown" id="menu-{{card.id}}">
-    <ul class="y-list dropdown-menu" role="menu">
-        <li>
-            <strong>Move Card To</strong>
-        </li>
-        <li data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
-            <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
-              {{col.title}}
-            </a>
-        </li>
-    </ul>
+    <div class="card-locked" data-ng-show="card.locked">
+        <svg class="icon-standard" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+          <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+          <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+            <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur=".8s" repeatCount="indefinite" />
+          </path>
+        </svg>
+    </div>
 </div>
