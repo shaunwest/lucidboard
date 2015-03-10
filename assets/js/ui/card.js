@@ -7,11 +7,10 @@
         restrict: 'E',
         templateUrl: '/templates/_card.html',
         scope: {
-          board:        '=',
-          card:         '=',
-          column:       '=',
-          index:        '=',
-          cardDragging: '='
+          board:  '=',
+          card:   '=',
+          column: '=',
+          index:  '='
         },
         controller: ['$scope', 'api', 'user', function($scope, api, user) {
 
@@ -20,6 +19,10 @@
 
           $scope.user = user;
           $scope.cardMenu = false;
+
+          // $scope.$watch('cardDragging', function(a) {
+          //   console.log('YAYY', a);
+          // });
 
           $scope.onShow = function() { console.log('srsly'); };
 
@@ -82,10 +85,6 @@
             if (board.card(card.id).locked) return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
-
-          // $scope.$watch('cardDragging', function(a) {
-          //   console.log('YAYY', a);
-          // });
 
           $scope.moveTo = function(column, card) {
             if (board.card(cardId).locked) return;

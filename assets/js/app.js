@@ -96,7 +96,6 @@
       'hansei.services',
       'xeditable',
       'ang-drag-drop',
-      'ng-context-menu',
       'monospaced.elastic'
     ])
 
