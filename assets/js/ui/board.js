@@ -40,13 +40,6 @@
       }).event('column:update:' + board.id(), function(col) {
         board.columnUpdate(col);
       }).event('card:create:' + board.id(), function(card) {
-        // Open the editor if we think it's pretty likely the user just initiated
-        // the creation of this card.
-        if (board.isWaitingForNewCard() && (card.creator === user.id())) {
-          board.clearWaitingForNewCard();
-          card.openForEditWhenReady = true;
-        }
-
         board.cardCreate(card);
       }).event('card:update:' + board.id(), function(card) {
         board.cardUpdate(card);
@@ -129,7 +122,6 @@
       */
 
       $scope.createCard = function(column) {
-        board.startWaitingForNewCard();
         api.cardCreate(board.id(), column.id, {});
       };
 

@@ -4,35 +4,46 @@ var
   client      = redisModule.createClient(),
   redisUser   = require('./redis/user.js')(client);
 
-var publish = function(signal, payload) {
-  var stringified = JSON.stringify(payload);
+
+var publish = function(signal, payload, req) {
+  var obj = {};
+
+  Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
+    obj[k] = payload[k];
+  });
+
+  if (req && req.socket) {
+    obj.socketId = req.socket.id;
+  }
+
+  var stringified = JSON.stringify(obj);
   console.log('publishing ' + signal, stringified);
   client.publish(signal, stringified);
 };
 
 module.exports = {
-  boardCreated:      function(board)           { publish('board:create', board); },
-  boardUpdated:      function(board)           { publish('board:update:' + board.id, board); },
-  boardDeleted:      function(boardId)         { publish('board:delete:' + boardId, null); },
-  boardMoveCards:    function(boardId, info)   { publish('board:moveCard:' + boardId, info); },
-  boardCombineCards: function(boardId, info)   { publish('board:combineCards:' + boardId, info); },
-  boardCombinePiles: function(boardId, info)   { publish('board:combinePiles:' + boardId, info); },
-  boardFlipCard:     function(boardId, cardId) { publish('board:flipCard:' + boardId, cardId); },
+  boardCreated:      function(board, r)           { publish('board:create', board, r); },
+  boardUpdated:      function(board, r)           { publish('board:update:' + board.id, board, r); },
+  boardDeleted:      function(boardId, r)         { publish('board:delete:' + boardId, null, r); },
+  boardMoveCards:    function(boardId, info, r)   { publish('board:moveCard:' + boardId, info, r); },
+  boardCombineCards: function(boardId, info, r)   { publish('board:combineCards:' + boardId, info, r); },
+  boardCombinePiles: function(boardId, info, r)   { publish('board:combinePiles:' + boardId, info, r); },
+  boardFlipCard:     function(boardId, cardId, r) { publish('board:flipCard:' + boardId, cardId, r); },
 
-  columnCreated:     function(column)          { publish('column:create:' + column.board, column); },
-  columnUpdated:     function(column)          { publish('column:update:' + column.board, column); },
-  columnDeleted:     function(column)          { publish('column:delete:' + column.board, column.id); },
+  columnCreated:     function(column, r)          { publish('column:create:' + column.board, column, r); },
+  columnUpdated:     function(column, r)          { publish('column:update:' + column.board, column, r); },
+  columnDeleted:     function(column, r)          { publish('column:delete:' + column.board, column.id, r); },
 
-  cardCreated:       function(boardId, card)   { publish('card:create:' + boardId, card); },
-  cardUpdated:       function(boardId, card)   { publish('card:update:' + boardId, card); },
-  cardUpvote:        function(boardId, vote)   { publish('card:upvote:' + boardId, vote); },
-  cardVaporize:      function(boardId, cardId) { publish('card:vaporize:' + boardId, cardId); },
+  cardCreated:       function(boardId, card, r)   { publish('card:create:' + boardId, card, r); },
+  cardUpdated:       function(boardId, card, r)   { publish('card:update:' + boardId, card, r); },
+  cardUpvote:        function(boardId, vote, r)   { publish('card:upvote:' + boardId, vote, r); },
+  cardVaporize:      function(boardId, cardId, r) { publish('card:vaporize:' + boardId, cardId, r); },
 
-  cardLock:          function(boardId, info)   { publish('card:lock:' + boardId, info); },
-  cardUnlock:        function(boardId, info)   { publish('card:unlock:' + boardId, info); },
+  cardLock:          function(boardId, info, r)   { publish('card:lock:' + boardId, info, r); },
+  cardUnlock:        function(boardId, info, r)   { publish('card:unlock:' + boardId, info, r); },
 
-  boardTimerStart: function(boardId, seconds) {
-    publish('board:timerStart:' + boardId, {seconds: seconds});
+  boardTimerStart: function(boardId, seconds, r) {
+    publish('board:timerStart:' + boardId, {seconds: seconds}, r);
   },
 
   socketOnConnection: function(session, socket) {
@@ -46,9 +57,21 @@ module.exports = {
     // When a redis event comes in that the client has subscribed to,
     // forward it along over the websocket.
     socket.redis.on('message', function(channel, message) {
+      message = JSON.parse(message);
+
+      // If the message included a socketId key, replace it with a 'you' key.
+      // This will be true for the socket belonging to the defined socketId
+      // and false otherwise.
+      if (message.socketId) {
+        message.you = message.socketId === socket.id;
+        delete message.socketId;
+      }
+
       // console.log('redis->socket[' + socket.handshake.sessionID + '] ' +
-      //   channel + ': ' + message);
-      socket.emit(channel, JSON.parse(message));
+      console.log('redis->socket[' + socket.id + '] ' + channel +
+        ':', JSON.stringify(message));
+
+      socket.emit(channel, message);
     });
   },
 };

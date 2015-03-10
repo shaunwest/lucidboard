@@ -23,10 +23,6 @@
 
           $scope.onShow = function() { console.log('srsly'); };
 
-          $scope.lockedByAnother = function() {
-            return card.locked && card.locked !== user.name;
-          };
-
           // $scope.dropSuccessHandler = function($event) {
           //   console.log('array', $scope.index, $scope.column.cards);
           //   array.splice(index, 1);
@@ -83,7 +79,7 @@
           $scope.upvote = function(card, event) {
             event.stopPropagation();
             event.preventDefault();
-            if (board.card(cardId).locked) return;
+            if (board.card(card.id).locked) return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
 
@@ -103,8 +99,8 @@
         }],
         link: function(scope, element) {
 
-          console.log('scope', scope.card);
-          if (scope.card.openForEditWhenReady) {
+          // If we were the one who created this card, let's edit it!
+          if (scope.card.you) {
             scope.editform.$show();
             delete scope.card.openForEditWhenReady;
           }

@@ -9,12 +9,7 @@
             pluck:   $rootScope.pluck,
             flatten: $rootScope.flatten,
             sortBy:  $rootScope.sortBy
-          },
-
-          // When the user adds a new card, this will be a timer that will hint the
-          // application to put the card into edit mode as soon as the new card is
-          // actually pushed to us.
-          awaitingOurNewCard = null;
+          };
 
       var cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
@@ -92,6 +87,10 @@
           } else {
             card.userCanWrite = card.creator === user.id();
           }
+
+          // Assumption being that this routine only ever runs when the board
+          // first opens. In this case, we know this user hasn't locked anything.
+          if (card.locked) card.lockedByAnother = true;
         });
       };
 
@@ -147,17 +146,6 @@
         timerLeft:      function() { return board.timerLeft; },
 
         votesRemaining: function() { return votesRemaining; },
-
-        isWaitingForNewCard:    function() { return Boolean(awaitingOurNewCard); },
-        startWaitingForNewCard: function() {
-          // This will allow us to recognize when the card:create message comes back
-          // so we can trigger its editor
-          awaitingOurNewCard = $timeout(function() { awaitingOurNewCard = null; }, 5000);
-        },
-        clearWaitingForNewCard: function() {
-          if (awaitingOurNewCard.cancel) awaitingOurNewCard.cancel();
-          awaitingOurNewCard = null;
-        },
 
         isBoardOwner: isBoardOwner,
 
@@ -258,11 +246,15 @@
         },
 
         cardLock: function(info) {
-          this.card(info.id).locked = info.username;
+          var card = this.card(info.id);
+          card.locked = info.username;
+          card.lockedByAnother = !info.you;
         },
 
         cardUnlock: function(info) {
-          this.card(info.id).locked = null;
+          var card = this.card(info.id);
+          card.locked = null;
+          delete card.lockedByAnother;
         },
 
         rememberCardLock: function(cardId) {

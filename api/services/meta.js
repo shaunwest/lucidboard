@@ -66,7 +66,7 @@ var getCardLock = function(boardId, cardId, req) {  // true if a lock was succes
   cardLocks[boardId]['usernames'].push(req.user.name);
   cardLocks[boardId]['socketIds'].push(req.socket ? req.socket.id : null);
 
-  redis.cardLock(boardId, {id: cardId, username: req.user.name});
+  redis.cardLock(boardId, {id: cardId, username: req.user.name}, req);
 
   return true;
 };
@@ -81,7 +81,7 @@ var releaseCardLock = function(boardId, cardId, req) {   // true if the lock was
 
   doUnlockSplices(boardId, idx);
 
-  redis.cardUnlock(boardId, {id: cardId});
+  redis.cardUnlock(boardId, {id: cardId}, req);
 
   return true;
 };
@@ -96,13 +96,13 @@ var cardLockedByWhichIdx = function(boardId, cardId) {
 
 var cardLockedByWhichUserId = function(boardId, cardId) {
   var idx = cardLockedByWhichIdx(boardId, cardId);
-  if (!idx) return null;
+  if (idx === null) return null;
   return cardLocks[boardId]['userIds'][idx];
 };
 
 var cardLockedByWhichUsername = function(boardId, cardId) {
   var idx = cardLockedByWhichIdx(boardId, cardId);
-  if (!idx) return null;
+  if (idx === null) return null;
   return cardLocks[boardId]['usernames'][idx];
 };
 
@@ -129,7 +129,7 @@ module.exports = {
   getCardLock:               getCardLock,
   releaseCardLock:           releaseCardLock,
   cardLockedByWhichUserId:   cardLockedByWhichUserId,
-  cardLockedByWhichUsername: cardLockedByWhichUserId,
+  cardLockedByWhichUsername: cardLockedByWhichUsername,
   cardLockedBySomeoneElse:   cardLockedBySomeoneElse,
   unlockAllViaSocketId:      unlockAllViaSocketId
 };

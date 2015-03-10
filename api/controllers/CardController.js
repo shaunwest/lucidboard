@@ -40,7 +40,7 @@ module.exports = {
 
         res.jsonx(card);
 
-        redis.cardCreated(boardId, card);
+        redis.cardCreated(boardId, card, req);
       });
     });
   },
@@ -81,7 +81,7 @@ module.exports = {
 
           res.jsonx(null);
 
-          redis.cardVaporize(boardId, cardId);
+          redis.cardVaporize(boardId, cardId, req);
         });
 
       } else {  // Normal card update...
@@ -95,7 +95,7 @@ module.exports = {
 
           res.jsonx(card);
 
-          redis.cardUpdated(boardId, card);
+          redis.cardUpdated(boardId, card, req);
         });
       }
 
