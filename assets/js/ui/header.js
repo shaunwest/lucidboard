@@ -5,17 +5,16 @@
 
   .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board',
     function($rootScope, $scope, $state, $timeout, $interval, api, board) {
+
+      if (!board.loaded()) return;  // No more logic things if there is no board.
+
       var timer;
 
-      if (!board.loaded()) {
-        return $state.go('boards');
-      }
-
       $scope.board             = board;
+      // $scope.b                 = board.obj();
       $scope.timerMinutesInput = 5;
       $scope.timerLeft         = 0;
-
-      $scope.b = board.obj();
+      $scope.showTimerForm     = false;
 
       var startTimer = function(bits) {
         var sound          = new Audio();
@@ -43,12 +42,5 @@
         api.timerStart(board.id(), minutes * 60);
       };
 
-      // --- BEGIN Tabber stuff
-
-      $scope.currentTab = 'board';
-
-      $scope.switchTab = function(tabName) {
-        $scope.currentTab = tabName;
-      };
     }]);
 })();

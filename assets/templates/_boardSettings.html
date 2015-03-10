@@ -13,7 +13,7 @@
       <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
     </li>
     <li data-ng-if="!b.id">
-      <label for="colset">Column Set</label>
+      <label for="colset">Board Type</label>
       <select id="colset" data-ng-model="b.colsetId">
         <option data-ng-repeat="s in colsets" value="{{s.id}}">{{s.name}} ({{s.cols.join(', ')}})</option>
       </select>

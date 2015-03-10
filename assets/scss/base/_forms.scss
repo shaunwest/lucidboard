@@ -52,3 +52,9 @@ input[type="checkbox"] {
         }
     }
 }
+
+// removes select dropdown browser defaults
+.select-clear {
+    background: transparent;
+    border: 0;
+}
