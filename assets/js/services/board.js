@@ -88,9 +88,8 @@
             card.userCanWrite = card.creator === user.id();
           }
 
-          // Assumption being that this routine only ever runs when the board
-          // first opens. In this case, we know this user hasn't locked anything.
-          if (card.locked) card.lockedByAnother = true;
+          card.locked          = true;
+          card.lockedByAnother = !!card.locked;
         });
       };
 
@@ -247,14 +246,14 @@
 
         cardLock: function(info) {
           var card = this.card(info.id);
-          card.locked = info.username;
+          card.locked          = info.username;
           card.lockedByAnother = !info.you;
         },
 
         cardUnlock: function(info) {
           var card = this.card(info.id);
-          card.locked = null;
-          delete card.lockedByAnother;
+          card.locked          = false;
+          card.lockedByAnother = false;
         },
 
         rememberCardLock: function(cardId) {
