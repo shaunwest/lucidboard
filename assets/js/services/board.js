@@ -81,6 +81,7 @@
       };
 
       var parseCards = function() {
+        // Set up some card properties that exist purely on the client side
         spiderCards(function(card) {
           if (isBoardOwner()) {
             card.userCanWrite = true;
@@ -88,7 +89,6 @@
             card.userCanWrite = card.creator === user.id();
           }
 
-          card.locked          = true;
           card.lockedByAnother = !!card.locked;
         });
       };
