@@ -4,20 +4,13 @@
   angular.module('hansei.ui')
 
   .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$interval', 'api',
-    'user', 'board', 'eventerFactory',
-    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory) {
+    'user', 'board', 'eventerFactory', 'timer',
+    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory, timer) {
 
       if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
 
-      $scope.board = board;
-      // $scope.b = board.obj();
-
       $scope.board             = board;
       $scope.timerMinutesInput = 5;
-      $scope.timerLeft         = 0;
-      // $scope.timerLength = 5;//300;          // 5 minutes
-
-      $scope.b = board.obj();
 
       $rootScope.columnViews = $scope.board.columns().map(function(column) {
         return { label: column.title, id: column.id };
@@ -64,7 +57,7 @@
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
       }).event('board:timerStart:' + board.id(), function(bits) {
-        startTimer(bits);
+        timer.start(bits.seconds);
       }).event('board:combineCards:' + board.id(), function(info) {
         board.combineCards(info);
       }).event('board:flipCard:' + board.id(), function(cardId) {
