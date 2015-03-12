@@ -65,29 +65,6 @@
 
       }).hook($scope);
 
-      // $scope.debugBoard = function() {
-      //   console.log(board.obj());
-      // };
-
-      /*
-      openEditor = function(bits) {
-        console.log('opening', bits);
-        $scope.editor = bits;
-      };
-
-      for (var i=0; i<board.columns().length; i++) {
-        (function() {
-          var ii = i;
-          $scope.$watch('board.columns[' + ii + '].title', function(newVal, oldVal) {
-            api.columnUpdate(board.id(), {
-              id:    board.columns()[ii].id,
-              title: newVal
-            });
-          });
-        })();
-      }
-      */
-
       $scope.goFullScreen = function() {
         var element = document.documentElement;
         if (element.requestFullscreen) {
@@ -101,33 +78,9 @@
         }
       }
 
-      /*
-      $scope.waitAndSave = function() {
-        if (watcher) $timeout.cancel(watcher);
-
-        watcher = $timeout(function() {
-          api.cardUpdate(board.id(), $scope.editor.column, {
-            id:       $scope.editor.id,
-            content:  $scope.editor.content
-          });
-        }, 1000);
-      };
-      */
-
       $scope.createCard = function(column) {
         api.cardCreate(board.id(), column.id, {});
       };
-
-      /*
-      $scope.openCard = function(card) {
-        openEditor({
-          title:    'Editing card under ' + board.column(card.column).title,
-          content:  card.content,
-          id:       card.id,
-          column:   card.column
-        });
-      };
-      */
 
       // --- BEGIN xeditable stuff
 
@@ -139,11 +92,6 @@
       };
 
       // --- BEGIN drag-drop stuff
-
-      // $rootScope.$watch('cardDragging', function(newVal, oldVal) {
-      //   console.log('a', a);
-      //   console.log('b', b);
-      // });
 
       $scope.moveSlot = function($event, $data, cardSlots, destColumnId, position) {
 
