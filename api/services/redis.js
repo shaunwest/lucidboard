@@ -6,17 +6,22 @@ var
 
 
 var publish = function(signal, payload, req) {
-  var obj = {};
 
-  Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
-    obj[k] = payload[k];
-  });
+  if (typeof payload === 'object') {
+    var obj = {};
 
-  if (req && req.socket) {
-    obj.socketId = req.socket.id;
+    Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
+      obj[k] = payload[k];
+    });
+
+    if (req && req.socket) {
+      obj.socketId = req.socket.id;
+    }
+
+    payload = obj;
   }
 
-  var stringified = JSON.stringify(obj);
+  var stringified = JSON.stringify(payload);
   console.log('publishing ' + signal, stringified);
   client.publish(signal, stringified);
 };

@@ -4,20 +4,13 @@
   angular.module('hansei.ui')
 
   .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$interval', 'api',
-    'user', 'board', 'eventerFactory',
-    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory) {
+    'user', 'board', 'eventerFactory', 'timer',
+    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory, timer) {
 
       if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
 
-      $scope.board = board;
-      // $scope.b = board.obj();
-
       $scope.board             = board;
       $scope.timerMinutesInput = 5;
-      $scope.timerLeft         = 0;
-      // $scope.timerLength = 5;//300;          // 5 minutes
-
-      $scope.b = board.obj();
 
       $rootScope.columnViews = $scope.board.columns().map(function(column) {
         return { label: column.title, id: column.id };
@@ -64,36 +57,13 @@
       }).event('board:moveCard:' + board.id(), function(info) {
         board.moveCard(info);
       }).event('board:timerStart:' + board.id(), function(bits) {
-        startTimer(bits);
+        timer.start(bits.seconds);
       }).event('board:combineCards:' + board.id(), function(info) {
         board.combineCards(info);
       }).event('board:flipCard:' + board.id(), function(cardId) {
         board.flipCard(cardId);
 
       }).hook($scope);
-
-      // $scope.debugBoard = function() {
-      //   console.log(board.obj());
-      // };
-
-      /*
-      openEditor = function(bits) {
-        console.log('opening', bits);
-        $scope.editor = bits;
-      };
-
-      for (var i=0; i<board.columns().length; i++) {
-        (function() {
-          var ii = i;
-          $scope.$watch('board.columns[' + ii + '].title', function(newVal, oldVal) {
-            api.columnUpdate(board.id(), {
-              id:    board.columns()[ii].id,
-              title: newVal
-            });
-          });
-        })();
-      }
-      */
 
       $scope.goFullScreen = function() {
         var element = document.documentElement;
@@ -108,33 +78,9 @@
         }
       }
 
-      /*
-      $scope.waitAndSave = function() {
-        if (watcher) $timeout.cancel(watcher);
-
-        watcher = $timeout(function() {
-          api.cardUpdate(board.id(), $scope.editor.column, {
-            id:       $scope.editor.id,
-            content:  $scope.editor.content
-          });
-        }, 1000);
-      };
-      */
-
       $scope.createCard = function(column) {
         api.cardCreate(board.id(), column.id, {});
       };
-
-      /*
-      $scope.openCard = function(card) {
-        openEditor({
-          title:    'Editing card under ' + board.column(card.column).title,
-          content:  card.content,
-          id:       card.id,
-          column:   card.column
-        });
-      };
-      */
 
       // --- BEGIN xeditable stuff
 
@@ -146,11 +92,6 @@
       };
 
       // --- BEGIN drag-drop stuff
-
-      // $rootScope.$watch('cardDragging', function(newVal, oldVal) {
-      //   console.log('a', a);
-      //   console.log('b', b);
-      // });
 
       $scope.moveSlot = function($event, $data, cardSlots, destColumnId, position) {
 
