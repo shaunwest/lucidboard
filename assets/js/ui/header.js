@@ -5,6 +5,7 @@
 
   .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board',
     function($rootScope, $scope, $state, $timeout, $interval, api, board) {
+
       function showBoardNav() {
         var timer;
 
@@ -54,12 +55,12 @@
         };
       }
 
-      if($state.current.name === 'board') {
+      if ($state.current.name === 'board') {
         showBoardNav();
       }
 
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
-        if(toState.name === 'board') {
+        if (toState.name === 'board') {
           showBoardNav();
         } else {
           $scope.showBoardNav = false;
