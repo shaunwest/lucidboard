@@ -54,8 +54,10 @@
         board.forgetCardLock(info.id);
       }).event('board:update:' + board.id(), function(b) {
         board.update(b);
-      }).event('board:moveCard:' + board.id(), function(info) {
-        board.moveCard(info);
+      }).event('board:moveCards:' + board.id(), function(info) {
+        board.cardMove(info);
+      }).event('board:moveColumns:' + board.id(), function(info) {
+        board.columnMove(info);
       }).event('board:timerStart:' + board.id(), function(bits) {
         timer.start(bits.seconds);
       }).event('board:combineCards:' + board.id(), function(info) {
@@ -123,5 +125,10 @@
           });
         }
       };
+
+      $scope.moveColumn = function(column, position) {
+        api.columnMove(board.id(), column.id, position);
+      };
+
     }]);
 })();

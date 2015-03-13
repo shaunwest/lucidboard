@@ -140,6 +140,12 @@ module.exports.routes = {
     action:     'update'
   },
 
+  // Column Move
+  'POST /api/boards/:boardId/columns/:columnId/move': {
+    controller: 'ColumnController',
+    action:     'move'
+  },
+
   // Card Create
   'POST /api/boards/:boardId/columns/:columnId/cards': {
     controller: 'CardController',

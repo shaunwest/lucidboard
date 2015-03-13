@@ -68,9 +68,9 @@ module.exports = {
       // If the card is in the trash and it is going to be empty, delete it!
       if (r.column.position === 0 && !content) {
 
-        var stack       = util.normalizeStack(r.stack),
-            originalMap = util.toStackMap(stack),
-            jobs        = util.fixPositions(stack, originalMap);
+        var stack       = util.normalizeCardStack(r.stack),
+            originalMap = util.toCardStackMap(stack),
+            jobs        = util.fixCardPositions(stack, originalMap);
 
         jobs.push(function(cb) { Card.destroy({id: cardId}).exec(cb); });
 

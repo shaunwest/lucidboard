@@ -213,6 +213,20 @@
           });
         },
 
+        columnMove: function(columnIds) {  // info is an array of column id's in the target order
+          var pos = 0, cols = [];  // new column array
+
+          columnIds.forEach(function(id) {
+            var col = this.column(id);
+            col.position = pos;
+            pos++;
+            cols.push(col);
+          }.bind(this));
+
+          board.columns.splice.apply(board.columns, [0, Number.MAX_VALUE].concat(cols));
+
+        },
+
         cardCreate: function(card) {
           var column = this.column(card.column);
           column.cardSlots.push([card]);
@@ -310,7 +324,7 @@
 
         },
 
-        moveCard: function(info) {
+        cardMove: function(info) {
           this.rebuildColumn(info);
         },
 

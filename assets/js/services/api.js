@@ -151,6 +151,10 @@
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },
+        columnMove: function(boardId, columnId, destPosition, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/move',
+              {destPosition: destPosition}, cb);
+        },
         columnUpdate: function(boardId, column, cb) {
           post('/api/boards/' + boardId + '/columns/' + column.id, column, cb);
         },
