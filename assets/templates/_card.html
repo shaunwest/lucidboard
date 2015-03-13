@@ -26,25 +26,17 @@ Click to enter comments...
         </div>
         <div class="handle aside-right">
             <a href="#" data-ng-click="cardMenu = !cardMenu">
-                <svg class="icon-standard" width="28px" height="8px" viewBox="0 0 28 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                        <g id="dots" sketch:type="MSLayerGroup" transform="translate(0.000000, 1.000000)" fill="#3f5866">
-                            <g id="Page-1" sketch:type="MSShapeGroup">
-                                <g id="dots">
-                                    <g id="Page-1">
-                                        <path d="M4,6.939759 C6.20913911,6.939759 8,5.16238348 8,2.96987948 C8,0.777375484 6.20913911,-1.00000004 4,-1.00000004 C1.79086089,-1.00000004 0,0.777375484 0,2.96987948 C0,5.16238348 1.79086089,6.939759 4,6.939759 L4,6.939759 L4,6.939759 Z M24,7 C26.2091391,7 28,5.22262448 28,3.03012048 C28,0.83761637 26.2091391,-0.93975904 24,-0.93975904 C21.7908609,-0.93975904 20,0.83761637 20,3.03012048 C20,5.22262448 21.7908609,7 24,7 L24,7 L24,7 Z M14,6.93975904 C16.2091391,6.93975904 18,5.16238354 18,2.96987952 C18,0.777375491 16.2091391,-1 14,-1 C11.7908609,-1 10,0.777375491 10,2.96987952 C10,5.16238354 11.7908609,6.93975904 14,6.93975904 L14,6.93975904 L14,6.93975904 Z" id="Shape"></path>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                    </g>
+                <svg class="icon-standard">
+                    <desc>Card menu toggle icon</desc>
+                    <use xlink:href="#card-menu"></use>
                 </svg>
             </a>
         </div>
         <div class="handle aside-left" title="{{card.votes | myVotes}}">
             <a href="#" data-ng-click="upvote(card, $event)">
-                <svg class="icon-standard aside-left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="28" viewBox="0 0 26 28">
-                  <path d="M4 21q0-0.406-0.297-0.703t-0.703-0.297q-0.422 0-0.711 0.297t-0.289 0.703q0 0.422 0.289 0.711t0.711 0.289q0.406 0 0.703-0.289t0.297-0.711zM6.5 13v10q0 0.406-0.297 0.703t-0.703 0.297h-4.5q-0.406 0-0.703-0.297t-0.297-0.703v-10q0-0.406 0.297-0.703t0.703-0.297h4.5q0.406 0 0.703 0.297t0.297 0.703zM25 13q0 1.344-0.859 2.328 0.234 0.688 0.234 1.188 0.047 1.188-0.672 2.141 0.266 0.875 0 1.828-0.234 0.891-0.844 1.469 0.141 1.75-0.766 2.828-1 1.188-3.078 1.219h-2.016q-1.031 0-2.25-0.242t-1.898-0.453-1.883-0.617q-1.922-0.672-2.469-0.688-0.406-0.016-0.703-0.305t-0.297-0.695v-10.016q0-0.391 0.281-0.68t0.672-0.32q0.375-0.031 1.188-0.922t1.578-1.891q1.062-1.359 1.578-1.875 0.281-0.281 0.484-0.75t0.273-0.758 0.211-0.945q0.109-0.609 0.195-0.953t0.305-0.812 0.531-0.781q0.297-0.297 0.703-0.297 0.719 0 1.289 0.164t0.938 0.406 0.625 0.633 0.375 0.703 0.187 0.781 0.078 0.703 0.008 0.609q0 0.594-0.148 1.188t-0.297 0.938-0.43 0.875q-0.047 0.094-0.156 0.281t-0.172 0.344-0.125 0.375h4.328q1.219 0 2.109 0.891t0.891 2.109z"></path>
+                <svg class="icon-standard">
+                    <desc>Card upvote icon</desc>
+                    <use xlink:href="#vote"></use>
                 </svg>
                 <span ng-show="board.p_seeVotes()">
                     {{card.votes.length}}
@@ -97,11 +89,9 @@ Empty
         </div>
     </div>
     <div class="card-locked" data-ng-show="card.lockedByAnother">
-        <svg class="icon-standard" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-          <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
-          <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
-            <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur=".8s" repeatCount="indefinite" />
-          </path>
+        <svg class="icon-standard">
+            <desc>Card is locked loading icon</desc>
+            <use xlink:href="#loading"></use>
         </svg>
     </div>
 </div>
