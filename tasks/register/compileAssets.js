@@ -7,6 +7,7 @@ module.exports = function (gulp, plugins) {
       'autoprefix:dev',
 			'copy:dev',
 			'coffee:dev',
+      'svg:dev',
 			cb
 		);
 	});
