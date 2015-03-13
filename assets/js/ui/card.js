@@ -20,16 +20,7 @@
           $scope.user = user;
           $scope.cardMenu = false;
 
-          // $scope.$watch('cardDragging', function(a) {
-          //   console.log('YAYY', a);
-          // });
-
           $scope.onShow = function() { console.log('srsly'); };
-
-          // $scope.dropSuccessHandler = function($event) {
-          //   console.log('array', $scope.index, $scope.column.cards);
-          //   array.splice(index, 1);
-          // };
 
           $scope.combineThings = function($event, $data, destCardId) {
             if ($data.pile) {

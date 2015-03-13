@@ -1,13 +1,14 @@
 var
   redisModule = require('redis'),
-  async       = require('async')
+  async       = require('async'),
+  _           = require('underscore'),
   client      = redisModule.createClient(),
   redisUser   = require('./redis/user.js')(client);
 
 
 var publish = function(signal, payload, req) {
 
-  if (typeof payload === 'object') {
+  if (_.isObject(payload) && !_.isArray(payload)) {
     var obj = {};
 
     Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
@@ -30,7 +31,8 @@ module.exports = {
   boardCreated:      function(board, r)           { publish('board:create', board, r); },
   boardUpdated:      function(board, r)           { publish('board:update:' + board.id, board, r); },
   boardDeleted:      function(boardId, r)         { publish('board:delete:' + boardId, null, r); },
-  boardMoveCards:    function(boardId, info, r)   { publish('board:moveCard:' + boardId, info, r); },
+  boardMoveCards:    function(boardId, info, r)   { publish('board:moveCards:' + boardId, info, r); },
+  boardMoveColumns:  function(boardId, info, r)   { publish('board:moveColumns:' + boardId, info, r); },
   boardCombineCards: function(boardId, info, r)   { publish('board:combineCards:' + boardId, info, r); },
   boardCombinePiles: function(boardId, info, r)   { publish('board:combinePiles:' + boardId, info, r); },
   boardFlipCard:     function(boardId, cardId, r) { publish('board:flipCard:' + boardId, cardId, r); },

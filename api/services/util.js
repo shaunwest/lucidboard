@@ -7,7 +7,7 @@ var async = require('async');
 // will become
 //
 //   [[{..., position: 1}, {..., position: 1}], {..., position: 2}]
-var normalizeStack = function(stack) {
+var normalizeCardStack = function(stack) {
   var buffer = [], ret = [];
 
   stack.forEach(function(card) {
@@ -23,25 +23,25 @@ var normalizeStack = function(stack) {
   return ret;
 };
 
-// Splice out and return a card being dragged from the stack
-var spliceCard = function(stack, cardId) {
-  var card;
+// Splice out and return an item being dragged from the stack
+var spliceItem = function(stack, id) {
+  var item;
 
   for (var x=0; x<stack.length; x++) {
     for (var y=0; y<stack[x].length; y++) {
-      if (stack[x][y].id == cardId) {
-        card = stack[x].splice(y, 1)[0];
+      if (stack[x][y].id == id) {
+        item = stack[x].splice(y, 1)[0];
         break;
       }
     }
-    if (card) {
+    if (item) {
       // splice out the empty array if we took the only card from the slot
       if (!stack[x].length) stack.splice(x, 1);
       break;
     }
   }
 
-  return card;
+  return item;
 };
 
 // This function takes a multidimentional array of cards and returns the
@@ -52,24 +52,24 @@ var spliceCard = function(stack, cardId) {
 // will become
 //
 //   [[1, 2], [3]]
-var toStackMap = function(stack) {
+var toCardStackMap = function(stack) {
   var ret = [];
   stack.forEach(function(slot) { ret.push(_.pluck(slot, 'id')); });
   return ret;
 };
 
-// Fix position settings for all elements in the collection.
+// Fix position settings for all cards in the collection.
 // Return an array of jobs to save all updated cards.
-var fixPositions = function(stack, origMap) {
+var fixCardPositions = function(stack, origMap) {
   var i, j, jobs = [];
 
   for (i=0; i<stack.length; i++) {
     for (j=0; j<stack[i].length; j++) {
       if (!origMap[i] || !origMap[i][j] || origMap[i][j] !== stack[i][j].id) {
         (function() {
-          var cardToSave = stack[i][j];
-          cardToSave.position = i + 1;
-          jobs.push(function(cb) { cardToSave.save(cb); });
+          var toSave = stack[i][j];
+          toSave.position = i + 1;
+          jobs.push(function(cb) { toSave.save(cb); });
         })();
       }
     }
@@ -77,6 +77,25 @@ var fixPositions = function(stack, origMap) {
 
   return jobs;
 };
+
+// Fix position settings for all columns in the collection.
+// Return an array of jobs to save all updated columns.
+var fixColumnPositions = function(stack, origMap) {
+  var i, j, jobs = [];
+
+  for (i=0; i<stack.length; i++) {
+    if (!origMap[i] || origMap[i] !== stack[i].id) {
+      (function() {
+        var toSave = stack[i];
+        toSave.position = i;
+        jobs.push(function(cb) { toSave.save(cb); });
+      })();
+    }
+  }
+
+  return jobs;
+};
+
 
 // If there is no board passed to the callback, you can assume we've already handled res.
 var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
@@ -125,10 +144,11 @@ var getCardAndBoard = function(cardId, boardId, req, res, cb) {
 };
 
 module.exports = {
-  normalizeStack:         normalizeStack,
-  spliceCard:             spliceCard,
-  toStackMap:             toStackMap,
-  fixPositions:           fixPositions,
+  normalizeCardStack:     normalizeCardStack,
+  spliceItem:             spliceItem,
+  toCardStackMap:         toCardStackMap,
+  fixCardPositions:       fixCardPositions,
+  fixColumnPositions:     fixColumnPositions,
   boardIsLegitAndOwnedBy: boardIsLegitAndOwnedBy,
   getCardAndBoard:        getCardAndBoard
 };
