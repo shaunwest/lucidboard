@@ -131,11 +131,11 @@
     }
 }
 
-.stormy-day {
-    border-left-color: 0.4em solid darken($cloudy-day, 15%);
+.storm {
+    border-left-color: 0.4em solid $storm;
     &.swatch {
         border: 0.0625em solid $white;
-        background: darken($cloudy-day, 15%);
+        background: $storm;
     }
 }
 
