@@ -21,6 +21,9 @@
     @media (min-width: 70em) {
         display: table-cell;
     }
+    .delta {
+        cursor: grab;
+    }
 }
 
 .editable-click {
@@ -56,5 +59,15 @@
     @include span(12 of 12 omega);
     @media (min-width: 70em) {
         @include span(4 of 12);
+    }
+}
+
+.columnjunction {
+    display: table-cell;
+    width: 0.6em;
+    transition: all 0.2s ease-in-out;
+    &.on-drag-hover {
+        width: 5em;
+        border: 0.125em dashed $storm;
     }
 }

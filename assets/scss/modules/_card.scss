@@ -4,7 +4,6 @@
     border-radius: 0.15em;
     font-weight: bold;
     width: 100%;
-    max-width: 49.375em;
     textarea {
         margin-left: 0.5em;
         margin-top: 0.5em;
@@ -38,19 +37,15 @@
 }
 
  .cardjunction {
-     height: 0.5em;
+     height: 0.75em;
      transition: all 0.2s ease-in-out;
      &.top {
          height: 0;
      }
-     &.active {
-         height: 0.75em;
-     }
      &.on-drag-hover {
-         background-color: $alto;
-         height: 6em;
+         height: 7em;
          border-radius: 0.15em;
-         border: 0.125em dashed $alto;
+         border: 0.125em dashed $storm;
          margin-top: 0.375em;
          margin-bottom: 0.375em;
      }
