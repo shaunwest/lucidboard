@@ -39,9 +39,6 @@
  .cardjunction {
      height: 0.75em;
      transition: all 0.2s ease-in-out;
-     &.top {
-         height: 0;
-     }
      &.on-drag-hover {
          height: 7em;
          border-radius: 0.15em;
