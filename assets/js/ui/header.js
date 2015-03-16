@@ -3,9 +3,10 @@
 
   angular.module('hansei.ui')
 
-  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api', 'board', 'timer',
-    function($rootScope, $scope, $state, $timeout, api, board, timer) {
+  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api', 'user', 'board', 'timer',
+    function($rootScope, $scope, $state, $timeout, api, user, board, timer) {
 
+      $scope.user          = user;
       $scope.showTimerForm = false;
       $scope.timer         = timer;
 
@@ -44,7 +45,9 @@
         showBoardNav();
       }
 
+      $scope.current = $state.current;
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+        $scope.current = toState;
         if (toState.name === 'board') {
           showBoardNav();
         } else {

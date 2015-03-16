@@ -7,11 +7,12 @@
           initialTokenDefer;
 
       return {
-        obj:    function() { return user; },
-        id:     function() { return user.id; },
-        name:   function() { return user.name; },
-        token:  function() { return user.token; },
-        signin: function(username, pass, cb) {
+        obj:      function() { return user; },
+        id:       function() { return user.id; },
+        name:     function() { return user.name; },
+        token:    function() { return user.token; },
+        signedIn: function() { return Boolean(user.token); },
+        signin:   function(username, pass, cb) {
           api.signin(username, pass, function(data, jwr) {
             localStorageService.set('authToken', data.token);
             initialTokenDefer.resolve();

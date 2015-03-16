@@ -132,12 +132,11 @@ var getCardAndBoard = function(cardId, boardId, req, res, cb) {
     column: ['card', function(_cb, r) { Column.findOneById(r.card.column).exec(_cb); }]
   }, function(err, r) {
     var failed = false;
-    res.on('finish', function() { failed = true; });
 
-    if (err)                                   res.serverError(err);
-    else if (!r.card || !r.column || !r.board) res.notFound();
-    else if (r.card.column !== r.column.id)    res.notFound();
-    else if (r.column.board !== r.board.id)    res.notFound();
+    if (err)                                   { res.serverError(err); failed = true; }
+    else if (!r.card || !r.column || !r.board) { res.notFound();       failed = true; }
+    else if (r.card.column !== r.column.id)    { res.notFound();       failed = true; }
+    else if (r.column.board !== r.board.id)    { res.notFound();       failed = true; }
 
     cb(failed ? null : r);
   });

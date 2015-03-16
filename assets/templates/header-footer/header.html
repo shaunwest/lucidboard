@@ -15,12 +15,12 @@
                     </svg>
                 </a>
             </li>
-            <li>
+            <li data-ng-show="user.signedIn() && current.name !== 'boards'">
                 <a href="/boards">
                     All Boards
                 </a>
             </li>
-            <li>
+            <li data-ng-show="user.signedIn()">
                 <a href="" data-ng-click="signout($event)">
                     Sign Out
                 </a>
@@ -106,8 +106,8 @@
                     <use xlink:href="#lucidboard"></use>
                 </svg>
             </a>
-            <ul class="x-list-small aside-right">
-                <li>
+            <ul class="x-list-small aside-right" data-ng-show="user.signedIn()">
+                <li data-ng-show="current.name !== 'boards'">
                     <a class="divided-copy" href="/boards">
                         All Boards
                     </a>
