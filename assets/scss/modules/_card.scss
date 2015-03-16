@@ -171,14 +171,13 @@
     display: block;
     margin-bottom: 0.5em;
     .btn-primary {
-        background: $sea;
         &:after {
             content: 'Save';
         }
     }
     .btn-default {
         @extend .btn-primary;
-        background: $brick;
+        background: $flamingo;
         &:after {
             content: 'Cancel';
         }
