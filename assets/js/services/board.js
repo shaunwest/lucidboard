@@ -36,6 +36,25 @@
         }
       };
 
+      var sortByVotes = function() {
+        for (var i=0; i<board.columns.length; i++) {
+          board.columns[i].cardSlots.sort(function(a, b) {
+            var votesA = 0, votesB = 0;
+            a.forEach(function(c) { votesA += c.votes.length; });
+            b.forEach(function(c) { votesB += c.votes.length; });
+            return votesB - votesA;
+          });
+        }
+      };
+
+      var sortByReality = function() {
+        for (var i=0; i<board.columns.length; i++) {
+          board.columns[i].cardSlots.sort(function(a, b) {
+            return a[0].position > b[0].position;
+          });
+        }
+      };
+
       var fixColumn = function(column) {
         var buffer   = [],
             origlist = _.sortBy(_.sortBy(column.cards, 'id'), 'position'),
@@ -124,6 +143,11 @@
           return defer.promise;
         },
 
+        sortByVotes:    sortByVotes,
+        sortByReality:  sortByReality,
+
+        isBoardOwner:   isBoardOwner,
+
         promise:        function() { return defer.promise; },
 
         obj:            function() { return board; },
@@ -145,8 +169,6 @@
         timerLeft:      function() { return board.timerLeft; },
 
         votesRemaining: function() { return votesRemaining; },
-
-        isBoardOwner: isBoardOwner,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
