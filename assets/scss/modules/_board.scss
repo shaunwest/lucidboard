@@ -28,7 +28,7 @@
 
 .editable-click {
     color: $font-body-color;
-    border-bottom: 0.0625em solid $storm;
+    border-bottom: 0;
     &:hover, &:active, &:focus {
         color: initial;
         border-bottom-color: $white;
