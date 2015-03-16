@@ -36,17 +36,17 @@
         }
       };
 
+      // Call this after initial load to sort the cards by votes
       var sortByVotes = function() {
         for (var i=0; i<board.columns.length; i++) {
           board.columns[i].cardSlots.sort(function(a, b) {
-            var votesA = 0, votesB = 0;
-            a.forEach(function(c) { votesA += c.votes.length; });
-            b.forEach(function(c) { votesB += c.votes.length; });
-            return votesB - votesA;
+            return b.reduce(function(memo, card) { return memo += card.votes.length; }, 0) -
+                   a.reduce(function(memo, card) { return memo += card.votes.length; }, 0);
           });
         }
       };
 
+      // Call this after initial load to sort the cards by actual position
       var sortByReality = function() {
         for (var i=0; i<board.columns.length; i++) {
           board.columns[i].cardSlots.sort(function(a, b) {
