@@ -34,9 +34,10 @@
                 </li>
                 <li>
                     <div class="cardjunction top"
+                        data-drop-channel="card"
                         data-ng-class="{active:cardDragging}"
-                        data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)"
-                        data-drop-channel="card">
+                        data-on-drop-success="dropSuccessHandler($event)"
+                        data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
                     </div>
                 </li>
                 <li>

@@ -58,11 +58,13 @@
         </div>
         <div class="tier">
             <ul class="x-list-small">
+              <!--
                 <li>
                     <a href="#">
                         <select class="select-clear copy-inverse" id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                     </a>
                 </li>
+                -->
                 <li>
                     <a href="#" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -87,7 +89,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" data-ng-click="switchTab('settings')" data-ng-class="{active:currentTab === 'settings'}">
+                    <a href="#" data-ng-click="switchTab('settings')"
+                      data-ng-class="{active:currentTab === 'settings'}"
+                      data-ng-show="board.isBoardOwner()">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Board Settings Icon</desc>
                             <use xlink:href="#settings"></use>
@@ -126,11 +130,13 @@
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
+              <!--
                 <li>
                     <button class="btn">
                         <select class="select-clear copy-inverse" id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                     </button>
                 </li>
+                -->
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -154,6 +160,7 @@
                         {{board.votesRemaining()}}
                     </a>
                 </li>
+                <!--
                 <li>
                     <a href="#" class="btn" data-ng-click="goFullScreen()">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -163,8 +170,11 @@
                         Fullscreen
                     </a>
                 </li>
+                -->
                 <li>
-                    <a href="#" class="btn" data-ng-click="switchTab('settings')" data-ng-class="{active:currentTab === 'settings'}">
+                    <a href="#" class="btn" data-ng-click="switchTab('settings')"
+                      data-ng-class="{active:currentTab === 'settings'}"
+                      data-ng-show="board.isBoardOwner()">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Board Settings Icon</desc>
                             <use xlink:href="#settings"></use>
