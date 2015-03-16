@@ -270,6 +270,10 @@
           card.lockedByAnother = false;
         },
 
+        cardColor: function(bits) {
+          this.card(bits.id).color = bits.color;
+        },
+
         rememberCardLock: function(cardId) {
           if (locks.indexOf(cardId) === -1) locks.push(cardId);
         },

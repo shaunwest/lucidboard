@@ -52,6 +52,8 @@
         // This only matters for our own locked card id's, but
         // won't hurt for others.
         board.forgetCardLock(info.id);
+      }).event('card:color:' + board.id(), function(bits) {
+        board.cardColor(bits);
       }).event('board:update:' + board.id(), function(b) {
         board.update(b);
       }).event('board:moveCards:' + board.id(), function(info) {

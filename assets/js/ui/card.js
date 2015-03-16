@@ -86,6 +86,10 @@
             });
           };
 
+          $scope.color = function(card, color) {
+            api.cardColor(board.id(), card.column, card.id, color);
+          };
+
         }],
         link: function(scope, element) {
 

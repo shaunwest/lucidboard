@@ -1,12 +1,12 @@
 <div
-     class="card slate-card"
+     class="card slate-card {{card.color || 'default'}}"
+     data-ng-class="{active:cardDragging}"
      data-ng-show="card"
      data-ui-draggable="true"
      data-drag="card"
      data-drag-channel="card"
      data-drop-channel="card"
      data-on-drop-success="dropSuccessHandler($event)"
-     data-ng-class="{active:cardDragging}"
      data-ui-on-drop="combineThings($event, $data, card.id)">
      <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother">
          <div class="cardcontent"
@@ -55,16 +55,20 @@ Click to enter comments...
                             Card Color:
                         </li>
                         <li>
-                            <button class="btn sea swatch">Sea</button>
+                            <button class="btn sea swatch" data-ng-click="color(card, 'sea')">
+                              Sea</button>
                         </li>
                         <li>
-                            <button class="btn brick swatch">Brick</button>
+                            <button class="btn brick swatch" data-ng-click="color(card, 'brick')">
+                              Brick</button>
                         </li>
                         <li>
-                            <button class="btn ice swatch">Ice</button>
+                            <button class="btn ice swatch" data-ng-click="color(card, 'ice')">
+                              Ice</button>
                         </li>
                         <li>
-                            <button class="btn default swatch">Default</button>
+                            <button class="btn default swatch" data-ng-click="color(card, 'default')">
+                              Default</button>
                         </li>
                     </ul>
                 </li>

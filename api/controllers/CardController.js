@@ -21,9 +21,11 @@ module.exports = {
 
   create: function(req, res) {
     var user     = req.user,
-        boardId  = req.param('boardId'),
-        columnId = req.param('columnId'),
-        content  = req.body.content;
+        boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
+        content  = (req.body.content || '');
+
+    if (!boardId || !columnId) return res.badRequest('Invalid parameters.');
 
     getNextCardPosition(columnId, function(err, nextpos) {
       if (err) return res.serverError(err);
@@ -52,7 +54,9 @@ module.exports = {
         content  = (req.body.content || '').trim(),
         bits;
 
-    if (meta.cardLockedBySomeoneElse(boardId, cardId, req)) {
+    if (!boardId || !columnId || !cardId) {
+      return res.badRequest('Invalid parameters.');
+    } else if (meta.cardLockedBySomeoneElse(boardId, cardId, req)) {
       return req.badRequest('Card is locked by another user.');
     }
 
@@ -104,13 +108,15 @@ module.exports = {
 
   upvote: function(req, res) {
     var user     = req.user,
-        boardId  = req.param('boardId'),
-        columnId = req.param('columnId'),
-        cardId   = req.param('cardId');
+        boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
+        cardId   = parseInt(req.param('cardId'));
 
     // FIXME: especially when we implement permissions, be sure and revisit ensuring
     //        that the card belongs to the column, which belongs to be board that we
     //        expect! Also, check this sort of thing with the other methods.
+
+    if (!boardId || !columnId || !cardId) return res.badRequest('Invalid parameters.');
 
     // Let's make sure they haven't voted too much. This probably could be faster...
     Board.loadFullById(boardId, function(err, board) {
@@ -157,6 +163,8 @@ module.exports = {
     var boardId = parseInt(req.param('id')),
         cardId  = parseInt(req.param('cardId'));
 
+    if (!boardId || !cardId) return res.badRequest('Invalid parameters.');
+
     util.getCardAndBoard(cardId, boardId, req, res, function(r) {
       if (!r) return;
 
@@ -172,6 +180,8 @@ module.exports = {
     var boardId = parseInt(req.param('id')),
         cardId  = parseInt(req.param('cardId'));
 
+    if (!boardId || !cardId) return res.badRequest('Invalid parameters.');
+
     util.getCardAndBoard(cardId, boardId, req, res, function(r) {
       if (!r) return;
 
@@ -182,6 +192,37 @@ module.exports = {
       res.jsonx(true);
     });
   },
+
+  color: function(req, res) {
+    var boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
+        cardId   = parseInt(req.param('cardId')),
+        color    = req.body.color;
+
+    if (!boardId || !columnId || !cardId || !color) return res.badRequest('Invalid parameters.');
+
+    async.auto({
+      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
+      column: function(cb) { Column.find({id: columnId, board: boardId}).exec(cb); },
+      card:   function(cb) { Card.find({id: cardId, column: columnId}).exec(cb); }
+    }, function(err, r) {
+      if (err)                              return res.serverError(err);
+      if (!r.board || !r.column || !r.card) return res.notFound();
+
+      var card = r.card[0];
+
+      card.color = color;
+
+      card.save(function(err, c) {
+        if (err) return res.serverError(err);
+
+        res.jsonx(c);
+
+        redis.cardColor(boardId, {id: cardId, color: color});
+      });
+    });
+
+  }
 
 };
 

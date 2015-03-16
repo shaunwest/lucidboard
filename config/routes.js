@@ -164,6 +164,12 @@ module.exports.routes = {
     action:     'upvote'
   },
 
+  // Card Colorize
+  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/color': {
+    controller: 'CardController',
+    action:     'color'
+  },
+
   // Get the config
   'GET /api/config': {
     controller: 'BoardController',

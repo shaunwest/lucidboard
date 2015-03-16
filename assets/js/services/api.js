@@ -170,6 +170,10 @@
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             cardId + '/upvote', {}, cb);
         },
+        cardColor: function(boardId, columnId, cardId, color, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
+            cardId + '/color', {color: color}, cb);
+        },
         cardLock: function(boardId, cardId, cb) {
           post('/api/boards/' + boardId + '/lock-card', {cardId: cardId}, cb);
         },

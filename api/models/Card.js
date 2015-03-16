@@ -33,6 +33,12 @@ module.exports = {
       via:        'card'
     },
 
+    color: {
+      type:       'string',
+      defaultsTo: 'default',
+      maxLength:  20
+    },
+
     toJSON: function() {
       return {
         id:         this.id,
@@ -42,6 +48,7 @@ module.exports = {
         topOfPile:  this.topOfPile,
         column:     this.column,
         votes:      this.votes,
+        color:      this.color,
         locked:     this.locked || null
       };
     }
