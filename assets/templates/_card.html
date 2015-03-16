@@ -48,37 +48,31 @@ Click to enter comments...
             </a>
         </div>
         <div class="card-menu" data-ng-show="cardMenu">
-            <ul class="y-list" role="menu">
-                <li class="info-title">
-                    <ul class="x-list-small">
+            <ul class="card-menu-items" role="menu">
+                <li>
+                    Card Color
+                    <ul class="x-list" role="menu">
                         <li>
-                            Card Color:
+                            <a href="#" class="sea swatch" data-ng-click="color(card, 'sea')"></a>
                         </li>
                         <li>
-                            <button class="btn sea swatch" data-ng-click="color(card, 'sea')">
-                              Sea</button>
+                            <a href="#" class="brick swatch" data-ng-click="color(card, 'brick')"></a>
                         </li>
                         <li>
-                            <button class="btn brick swatch" data-ng-click="color(card, 'brick')">
-                              Brick</button>
+                            <a href="#" class="ice swatch" data-ng-click="color(card, 'ice')"></a>
                         </li>
                         <li>
-                            <button class="btn ice swatch" data-ng-click="color(card, 'ice')">
-                              Ice</button>
-                        </li>
-                        <li>
-                            <button class="btn default swatch" data-ng-click="color(card, 'default')">
-                              Default</button>
+                            <a href="#" class="default swatch" data-ng-click="color(card, 'default')"></a>
                         </li>
                     </ul>
                 </li>
-                <li class="info-title">
+                <li>
                     Move Card To
-                </li>
-                <li data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
-                    <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
-                        {{col.title}}
-                    </a>
+                    <div data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
+                        <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
+                            {{col.title}}
+                        </a>
+                    </div>
                 </li>
             </ul>
         </div>
