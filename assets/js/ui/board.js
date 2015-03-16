@@ -69,19 +69,6 @@
 
       }).hook($scope);
 
-      $scope.goFullScreen = function() {
-        var element = document.documentElement;
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-          element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-          element.msRequestFullscreen();
-        }
-      }
-
       $scope.createCard = function(column) {
         api.cardCreate(board.id(), column.id, {});
       };
