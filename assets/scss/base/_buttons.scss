@@ -4,7 +4,7 @@
     outline: 0;
     cursor: pointer;
     display: inline-block;
-    background-color: $jungle-green;
+    background-color: $flamingo;
     border-radius: 0.15em;
     border: none;
     padding: 0.5em 1em;
@@ -12,7 +12,7 @@
     text-align: center;
     text-decoration: none;
     &:hover {
-        background: darken($jungle-green, 5%);
+        background: darken($flamingo, 5%);
         color: $white;
         text-decoration: none;
     }
