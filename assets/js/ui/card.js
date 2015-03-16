@@ -87,6 +87,7 @@
           };
 
           $scope.color = function(card, color) {
+            $scope.cardMenu = false;
             api.cardColor(board.id(), card.column, card.id, color);
           };
 
