@@ -20,7 +20,7 @@
           });
         },
         signout: function() {
-          var beganSignedIn = Boolean(this.token());
+          var beganSignedIn = Boolean(user.token);
           user = { token: null };
           localStorageService.remove('authToken');
           return beganSignedIn;

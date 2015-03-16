@@ -16,6 +16,8 @@
 
       $scope.board = board;
 
+      $scope.signout = function(event) { $state.go('signin'); };
+
       function showBoardNav() {
         $scope.timerMinutesInput = 5;
         $scope.timerLeft         = timer.remaining;
