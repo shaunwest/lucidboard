@@ -224,15 +224,17 @@ module.exports = {
       }
     }, function(err, r) {
       if (err)                                                           return res.serverError(err);
-      if (!r.sourceColumn || !r.destColumn)                              return res.notFound();
-      if (((p.sourceColumnId === p.destColumnId) &&  r.destColumn)
-       || ((p.sourceColumnId !== p.destColumnId) && !r.destColumn))      return res.notFound();
+      if (!r.sourceColumn)                                               return res.notFound();
+      if (!r.destColumn && p.sourceColumnId !== p.destColumnId)          return res.notFound();
+      if (((p.sourceColumnId === p.destColumnId) &&  r.destColumn) ||
+          ((p.sourceColumnId !== p.destColumnId) && !r.destColumn))      return res.notFound();
 
       var sourceStack       = util.normalizeCardStack(r.sourceStack),
           destStack         = r.destStack ? util.normalizeCardStack(r.destStack) : null;
 
       if (p.sourcePosition < 1 || p.sourcePosition > sourceStack.length) return res.badRequest();
-      if (p.destPosition   < 1 || p.destPosition   > destStack.length+1) return res.badRequest();
+      if (destStack &&
+          (p.destPosition < 1 || p.destPosition > destStack.length+1))   return res.badRequest();
 
       var originalSourceMap = util.toCardStackMap(sourceStack),
           originalDestMap   = r.destStack ? util.toCardStackMap(destStack) : null,

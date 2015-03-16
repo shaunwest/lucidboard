@@ -49,7 +49,7 @@ module.exports = {
     var boardId  = parseInt(req.param('boardId')),
         columnId = parseInt(req.param('columnId')),
         cardId   = parseInt(req.param('cardId')),
-        content  = req.body.content.trim(),
+        content  = (req.body.content || '').trim(),
         bits;
 
     if (meta.cardLockedBySomeoneElse(boardId, cardId, req)) {
