@@ -28,7 +28,7 @@
 Click to enter comments...
             </pre>
         </div>
-        <div class="handle aside-right">
+        <div data-ng-hide="isEditorVisible()" class="handle aside-right">
             <a href="#" data-ng-click="cardMenu = !cardMenu">
                 <svg class="icon-standard">
                     <desc>Card menu toggle icon</desc>
@@ -36,7 +36,7 @@ Click to enter comments...
                 </svg>
             </a>
         </div>
-        <div class="handle aside-left" title="{{card.votes | myVotes}}">
+        <div data-ng-hide="isEditorVisible()" class="handle aside-left" title="{{card.votes | myVotes}}">
             <a href="#" data-ng-click="upvote(card, $event)">
                 <svg class="icon-standard aside-left">
                     <desc>Card upvote icon</desc>
