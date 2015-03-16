@@ -182,7 +182,7 @@
     }
     .btn-default {
         @extend .btn-primary;
-        background: $jungle-green;
+        background: $flamingo;
         &:after {
             content: 'Cancel';
         }
