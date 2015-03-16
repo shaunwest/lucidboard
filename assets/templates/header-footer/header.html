@@ -171,10 +171,9 @@
                     </a>
                 </li>
                 -->
-                <li>
+                <li data-ng-show="board.isBoardOwner()">
                     <a href="#" class="btn" data-ng-click="switchTab('settings')"
-                      data-ng-class="{active:currentTab === 'settings'}"
-                      data-ng-show="board.isBoardOwner()">
+                      data-ng-class="{active:currentTab === 'settings'}">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Board Settings Icon</desc>
                             <use xlink:href="#settings"></use>
