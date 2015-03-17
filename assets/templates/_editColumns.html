@@ -2,7 +2,7 @@
 <ul class="y-list-color">
     <li data-ng-repeat="c in board.columns()">
         <a href="#">
-            <svg class="icon-standard icon-small aside-left" fill="#ffffff">
+            <svg data-ng-click="deleteToggle = !deleteToggle" class="icon-standard icon-small aside-left" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#minus-alt"></use>
             </svg>
@@ -11,7 +11,7 @@
                 <desc>Move Icon</desc>
                 <use xlink:href="#site-menu"></use>
             </svg>
-            <div class="item-delete">
+            <div data-ng-show="deleteToggle" class="item-delete">
                 Delete {{c.title}}
             </div>
         </a>
