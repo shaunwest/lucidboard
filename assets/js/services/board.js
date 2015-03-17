@@ -17,7 +17,7 @@
         eventCb(type, bits);
       };
 
-      var isBoardOwner = function() { return user.id() === board.creator; };
+      var isBoardOwner = function() { return user.id() == board.creator; };
 
 
       var loadBoard = function(b) {
