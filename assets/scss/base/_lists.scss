@@ -58,7 +58,7 @@
             padding: 0.5em 1em;
             color: $white;
             display: block;
-            &:hover {
+            &:hover, &:active, &:focus {
                 text-decoration: none;
             }
         }
