@@ -36,7 +36,7 @@
     border: 0.125em dashed $alto;
 }
 
- .cardjunction {
+.cardjunction {
      height: 0.75em;
      transition: all 0.2s ease-in-out;
      &.on-drag-hover {
@@ -46,7 +46,7 @@
          margin-top: 0.375em;
          margin-bottom: 0.375em;
      }
- }
+}
 
 .slate-card {
     background-color: $cloudy-day;
