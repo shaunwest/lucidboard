@@ -15,8 +15,8 @@
       border-radius: 0.3125em;
       box-sizing: border-box;
       &:focus, &:active, &:hover {
-          border: 0.125em solid $fiord;
-          background: lighten($fiord, 50%);
+          border: 0.125em solid $oxford;
+          background: lighten($oxford, 50%);
       }
   }
 }

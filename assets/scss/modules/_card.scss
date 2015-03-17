@@ -138,7 +138,7 @@
     padding: 0.5em;
     margin: 0;
     font-style: normal;
-    color: $fiord;
+    color: $oxford;
     a {
         outline: none;
         display: inline-block;
@@ -154,12 +154,14 @@
     @include clearfix;
     margin-top:  0.125em;
     background: $fiord;
+    font-size: 1.25em;
     color: $white;
     max-width: 49.375em;
     a {
         color: $white;
-        &:hover {
+        &:hover, &:active, &:focus {
             text-decoration: none;
+            outline: 0;
         }
     }
     border-bottom-right-radius: 0.1875em;
