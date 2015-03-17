@@ -74,13 +74,13 @@
             event.stopPropagation();
             event.preventDefault();
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks)         return;
+            if (board.hasCardLocks())       return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
 
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks)         return;
+            if (board.hasCardLocks())       return;
             api.boardMoveCard(board.id(), {
               cardId:       card.id,
               destColumnId: column.id,
@@ -90,7 +90,7 @@
 
           $scope.color = function(card, color) {
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks)         return;
+            if (board.hasCardLocks())       return;
             $scope.cardMenu = false;
             api.cardColor(board.id(), card.column, card.id, color);
           };
@@ -99,7 +99,7 @@
         link: function(scope, element) {
 
           // If we were the one who created this card, let's edit it!
-          if (scope.card.you) {
+          if (scope.card.openForEditWhenReady) {
             scope.editform.$show();
             delete scope.card.openForEditWhenReady;
           }

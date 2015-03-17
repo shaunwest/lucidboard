@@ -33,6 +33,7 @@
       }).event('column:update:' + board.id(), function(col) {
         board.columnUpdate(col);
       }).event('card:create:' + board.id(), function(card) {
+        if (card.you) card.openForEditWhenReady = true;
         board.cardCreate(card);
       }).event('card:update:' + board.id(), function(card) {
         board.cardUpdate(card);
