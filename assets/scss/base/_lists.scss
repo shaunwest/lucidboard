@@ -43,25 +43,36 @@
     float: left;
     width: 100%;
     font-size: 1.25em;
+    font-family: $font-heading;
     li {
+        position: relative;
         margin-bottom: 0.5em;
         cursor: pointer;
         transition: background 500ms;
-        background: $fiord;
+        background: $oxford;
         border-radius: 0.15em;
         &:hover {
-            background: lighten($fiord, 5%);
+            background: lighten($oxford, 5%);
         }
         a {
-            padding: 1em 0em;
-            text-align: center;
+            padding: 0.5em 1em;
             color: $white;
             display: block;
-            text-transform: uppercase;
-            font-weight: bold;
             &:hover {
                 text-decoration: none;
             }
         }
     }
+}
+
+.item-delete {
+    background: $brick;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0.5em 1em;
+    animation-name: slide-right;
 }
