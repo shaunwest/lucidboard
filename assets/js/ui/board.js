@@ -23,7 +23,7 @@
 
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
-        board.getLockedCardIds().forEach(function(cardId) {
+        board.locks.forEach(function(cardId) {
           api.cardUnlock(board.id(), cardId);
         });
       });
@@ -36,10 +36,6 @@
         board.cardCreate(card);
       }).event('card:update:' + board.id(), function(card) {
         board.cardUpdate(card);
-        // Purposefully deciding not to update the editor. Users will end up
-        // fighting over the content as they both overwrite each other's changes.
-        // Maybe we'll have some notification that this is happening... or a list
-        // of other users looking at the card...... locking?...
       }).event('card:upvote:' + board.id(), function(vote) {
         board.cardUpvote(vote);
       }).event('card:vaporize:' + board.id(), function(cardId) {

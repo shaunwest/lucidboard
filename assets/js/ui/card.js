@@ -44,28 +44,28 @@
             return false;
           };
 
-          $scope.getCardLock = function() {
-            api.cardLock(board.id(), card.id, function(gotLock) {
+          $scope.getCardLock = function(c) {
+            api.cardLock(board.id(), c.id, function(gotLock) {
               if (gotLock) {
-                board.rememberCardLock(card.id);  // so we can reestablish on websocket reconnect
+                board.rememberCardLock(c.id);  // so we can reestablish on websocket reconnect
               } else {
                 $scope.editform.$cancel();  // no lock, dude.
               }
             });
           };
 
-          $scope.endCardLock = function() {
-            api.cardUnlock(board.id(), card.id, function(unlockWorked) {
-              if (unlockWorked) board.forgetCardLock(card.id);
+          $scope.endCardLock = function(c) {
+            api.cardUnlock(board.id(), c.id, function(unlockWorked) {
+              if (unlockWorked) board.forgetCardLock(c.id);
             });
           };
 
-          $scope.editorShow = function() {
-            if (board.card(card.id).locked) return;
+          $scope.editorShow = function(c) {
+            if (board.card(c.id).locked) return;
             $scope.editform.$show();
           };
 
-          $scope.isEditorVisible = function() {
+          $scope.isEditorVisible = function(c) {
             if (!$scope.editform) return false;
             return $scope.editform.$visible;
           };
@@ -74,11 +74,13 @@
             event.stopPropagation();
             event.preventDefault();
             if (board.card(card.id).locked) return;
+            if (board.hasCardLocks)         return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
           };
 
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
+            if (board.hasCardLocks)         return;
             api.boardMoveCard(board.id(), {
               cardId:       card.id,
               destColumnId: column.id,
@@ -87,6 +89,8 @@
           };
 
           $scope.color = function(card, color) {
+            if (board.card(card.id).locked) return;
+            if (board.hasCardLocks)         return;
             $scope.cardMenu = false;
             api.cardColor(board.id(), card.column, card.id, color);
           };

@@ -2,7 +2,7 @@
      class="card slate-card {{card.color || 'default'}}"
      data-ng-class="{active:cardDragging}"
      data-ng-show="card"
-     data-ui-draggable="true"
+     data-ui-draggable="{{board.locks.length === 0}}"
      data-drag="card"
      data-drag-channel="card"
      data-drop-channel="card"
@@ -11,11 +11,11 @@
      <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother">
          <div class="cardcontent"
              data-e-form="editform"
-             data-ng-click="editorShow()"
-             data-ng-hide="isEditorVisible()"
+             data-ng-click="editorShow(card)"
+             data-ng-hide="isEditorVisible(card)"
              data-editable-textarea="card.content"
-             data-onshow="getCardLock()"
-             data-onhide="endCardLock()"
+             data-onshow="getCardLock(card)"
+             data-onhide="endCardLock(card)"
              data-onbeforesave="checkCardContent($data, column.id, card.id)"
              data-ng-disabled="true">
              <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">

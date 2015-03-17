@@ -4,7 +4,8 @@
     .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user',
       function($rootScope, $q, $timeout, api, user) {
       var board, defer, votesRemaining, eventCb,
-          locks   = [],  // card ids that this client has locked
+          locks    = [],  // card ids that this client has locked
+          theQueue = [],  // array of functions to exec when user is done with locks
           _ = {
             pluck:   $rootScope.pluck,
             flatten: $rootScope.flatten,
@@ -105,15 +106,17 @@
         });
       };
 
+      var queue = function(fn) { theQueue.push(fn); };
+
+      var maybeDefer = function(fn) {
+        locks.length ? queue(fn) : fn();
+      };
+
 
       return {
         setEventCb: function(_cb) {
           eventCb = _cb;
         },
-
-        // log: function(text, type, extra) {
-        //   log.push({date: new Date(), text: text, type: type, extra: extra});
-        // },
 
         load: function(boardId) {
           defer = $q.defer();
@@ -191,87 +194,106 @@
         },
 
         update: function(b) {
-          board.title          = b.title;
-          board.votesPerUser   = b.votesPerUser;
-          board.p_seeVotes     = b.p_seeVotes;
-          board.p_seeContent   = b.p_seeContent;
-          board.p_combineCards = b.p_combineCards;
-          board.p_lock         = b.p_lock;
+          maybeDefer(function() {
+            board.title          = b.title;
+            board.votesPerUser   = b.votesPerUser;
+            board.p_seeVotes     = b.p_seeVotes;
+            board.p_seeContent   = b.p_seeContent;
+            board.p_combineCards = b.p_combineCards;
+            board.p_lock         = b.p_lock;
 
-          figureVotesRemaining();
+            figureVotesRemaining();
+          }.bind(this));
         },
 
         columnCreate: function(_column) {
-          board.columns.push(fixColumn(_column));
+          maybeDefer(function() {
+            board.columns.push(fixColumn(_column));
+          }.bind(this));
         },
 
         columnUpdate: function(_column) {
-          var column = this.column(_column.id);
-          Object.keys(_column).forEach(function(k) {
-            if (k === 'cards') return;
-            column[k] = _column[k];
-          });
+          maybeDefer(function() {
+            var column = this.column(_column.id);
+            Object.keys(_column).forEach(function(k) {
+              if (k === 'cards') return;
+              column[k] = _column[k];
+            });
+          }.bind(this));
         },
 
         columnMove: function(columnIds) {  // info is an array of column id's in the target order
-          var pos = 0, cols = [];  // new column array
+          maybeDefer(function() {
+            var pos = 0, cols = [];  // new column array
 
-          columnIds.forEach(function(id) {
-            var col = this.column(id);
-            col.position = pos;
-            pos++;
-            cols.push(col);
+            columnIds.forEach(function(id) {
+              var col = this.column(id);
+              col.position = pos;
+              pos++;
+              cols.push(col);
+            }.bind(this));
+
+            board.columns.splice.apply(board.columns, [0, Number.MAX_VALUE].concat(cols));
           }.bind(this));
-
-          board.columns.splice.apply(board.columns, [0, Number.MAX_VALUE].concat(cols));
-
         },
 
         cardCreate: function(card) {
-          var column = this.column(card.column);
-          column.cardSlots.push([card]);
-          parseCards();
+          maybeDefer(function() {
+            var column = this.column(card.column);
+            column.cardSlots.push([card]);
+            parseCards();
+          }.bind(this));
         },
 
         cardUpdate: function(_card) {
-          var card = this.card(_card.id);
-          Object.keys(_card).forEach(function(k) {
-            card[k] = _card[k];
-          });
+          maybeDefer(function() {
+            var card = this.card(_card.id);
+            Object.keys(_card).forEach(function(k) {
+              card[k] = _card[k];
+            });
+          }.bind(this));
         },
 
         cardUpvote: function(vote) {
-          var card = this.card(vote.card);
-          card.votes.push(vote);
+          maybeDefer(function() {
+            var card = this.card(vote.card);
+            card.votes.push(vote);
 
-          if (vote.user === user.id()) {
-            votesRemaining--;
-          }
+            if (vote.user === user.id()) {
+              votesRemaining--;
+            }
+          }.bind(this));
         },
 
         cardVaporize: function(cardId) {
-          var card        = this.card(cardId),
-              sourceStack = this.column(card.column).cardSlots;
+          maybeDefer(function() {
+            var card        = this.card(cardId),
+                sourceStack = this.column(card.column).cardSlots;
 
-          sourceStack.splice(card.position - 1, 1);
+            sourceStack.splice(card.position - 1, 1);
 
-          figureVotesRemaining();
+            figureVotesRemaining();
+          }.bind(this));
         },
 
         cardLock: function(info) {
-          var card = this.card(info.id);
-          card.locked          = info.username;
-          card.lockedByAnother = !info.you;
+          maybeDefer(function() {
+            var card = this.card(info.id);
+            card.locked          = info.username;
+            card.lockedByAnother = !info.you;
+          }.bind(this));
         },
 
         cardUnlock: function(info) {
-          var card = this.card(info.id);
-          card.locked          = false;
-          card.lockedByAnother = false;
+          maybeDefer(function() {
+            var card = this.card(info.id);
+            card.locked          = false;
+            card.lockedByAnother = false;
+          }.bind(this));
         },
 
         cardColor: function(bits) {
-          this.card(bits.id).color = bits.color;
+          maybeDefer(function() { this.card(bits.id).color = bits.color; }.bind(this));
         },
 
         rememberCardLock: function(cardId) {
@@ -281,10 +303,12 @@
         forgetCardLock: function(cardId) {
           var idx = locks.indexOf(cardId);
           if (idx !== -1) locks.splice(idx, 1);
-        },
 
-        getLockedCardIds: function() {
-          return locks;
+          // Flush the event queue if we're done with the locks.
+          if (locks.length === 0) {
+            var fn;
+            while (fn = theQueue.shift()) fn();
+          }
         },
 
         // Replace the column/piles with the cards of the given id's, in order.
@@ -329,49 +353,86 @@
         },
 
         cardMove: function(info) {
-          this.rebuildColumn(info);
+          maybeDefer(function() { this.rebuildColumn(info); }.bind(this));
         },
 
         combineCards: function(info) {
-          var cardInfo       = info.card,
-              sourceMap      = info.sourceMap,
-              sourceColumnId = info.sourceColumnId,
-              destColumn     = this.column(cardInfo.column),
-              card           = this.card(cardInfo.id),
-              remap          = {};
+          maybeDefer(function() {
+            var cardInfo       = info.card,
+                sourceMap      = info.sourceMap,
+                sourceColumnId = info.sourceColumnId,
+                destColumn     = this.column(cardInfo.column),
+                card           = this.card(cardInfo.id),
+                remap          = {};
 
-          // Reorder the source column, removing the the dragged card if it's there
-          remap[sourceColumnId] = sourceMap.map(function(s) {
-            return s.filter(function(id) { return id != card.id; });
-          });
-          this.rebuildColumn(remap);
-
-          // If topOfPile is coming down flipped on, make sure the others in the
-          // relevant pile are flipped off.
-          if (cardInfo.topOfPile) {
-            destColumn.cardSlots.forEach(function(s) {
-              if (!s.length || s[0].position !== cardInfo.position) return;
-              s.forEach(function(c) { c.topOfPile = false; });
+            // Reorder the source column, removing the the dragged card if it's there
+            remap[sourceColumnId] = sourceMap.map(function(s) {
+              return s.filter(function(id) { return id != card.id; });
             });
-          }
+            this.rebuildColumn(remap);
 
-          // Update some things on the live card.
-          card.column    = cardInfo.column;
-          card.position  = cardInfo.position;
-          card.topOfPile = cardInfo.topOfPile;
+            // If topOfPile is coming down flipped on, make sure the others in the
+            // relevant pile are flipped off.
+            if (cardInfo.topOfPile) {
+              destColumn.cardSlots.forEach(function(s) {
+                if (!s.length || s[0].position !== cardInfo.position) return;
+                s.forEach(function(c) { c.topOfPile = false; });
+              });
+            }
 
-          // Add the card to the target slot!
-          destColumn.cardSlots[card.position - 1].push(card);
+            // Update some things on the live card.
+            card.column    = cardInfo.column;
+            card.position  = cardInfo.position;
+            card.topOfPile = cardInfo.topOfPile;
+
+            // Add the card to the target slot!
+            destColumn.cardSlots[card.position - 1].push(card);
+          }.bind(this));
         },
 
         flipCard: function(cardId) {
-          var card = this.card(cardId),
-              pile = this.column(card.column).cardSlots[card.position - 1];
+          maybeDefer(function() {
+            var card = this.card(cardId),
+                pile = this.column(card.column).cardSlots[card.position - 1];
 
-          pile.forEach(function(c) {
-            c.topOfPile = Boolean(c.id === card.id);
-          });
-        }
+            pile.forEach(function(c) {
+              c.topOfPile = Boolean(c.id === card.id);
+            });
+          }.bind(this));
+        },
+
+        // Because card operations that make changes above this card can cause
+        // positions to change, this function will determine if the given cardId
+        // occurs above any cards which are locked by this user.
+        cardIdInterferesWithLock: function(cardId) {
+          var ret  = false,
+              card = this.card(cardId);
+
+          locks.forEach(function(cid) {
+            var c          = this.card(cid),
+                colCardIds = this.column(c.column).map(function(ca) { return ca.id; });
+
+            if (colCardIds.slice(0, colCardIds.indexOf(cid) + 1).indexOf(cardId) !== -1) {
+              ret = true;  // we has a conflict
+            }
+          }.bind(this));
+
+          return ret;
+        },
+
+        colIdAndPositionInterferesWithLock: function(columnId, position) {
+          return Boolean(locks.length);
+        },
+
+        cardMapIntereferesWithLock: function(info) {
+          return Boolean(locks.length);
+        },
+
+        hasCardLocks: function() {
+          return Boolean(locks.length);
+        },
+
+        locks: locks
 
       };
     }])
