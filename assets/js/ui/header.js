@@ -32,21 +32,10 @@
         }
       }
 
-      $scope.toggleSortByVotes = function() {
-        if ($scope.voteSort) {
-          board.sortByReality();
-          $scope.voteSort = false;
-        } else {
-          board.sortByVotes();
-          $scope.voteSort = true;
-        }
-      };
-
       function showBoardNav() {
         $scope.timerMinutesInput = 5;
         $scope.timerLeft         = timer.remaining;
         $scope.showBoardNav      = true;
-        $scope.voteSort          = false;
 
         $rootScope.currentTab   = 'board';
         $rootScope.switchTab    = function(tabName) { $rootScope.currentTab = tabName; };

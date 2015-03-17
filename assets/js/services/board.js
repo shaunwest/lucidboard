@@ -36,25 +36,6 @@
         }
       };
 
-      // Call this after initial load to sort the cards by votes
-      var sortByVotes = function() {
-        for (var i=0; i<board.columns.length; i++) {
-          board.columns[i].cardSlots.sort(function(a, b) {
-            return b.reduce(function(memo, card) { return memo += card.votes.length; }, 0) -
-                   a.reduce(function(memo, card) { return memo += card.votes.length; }, 0);
-          });
-        }
-      };
-
-      // Call this after initial load to sort the cards by actual position
-      var sortByReality = function() {
-        for (var i=0; i<board.columns.length; i++) {
-          board.columns[i].cardSlots.sort(function(a, b) {
-            return a[0].position > b[0].position;
-          });
-        }
-      };
-
       var fixColumn = function(column) {
         var buffer   = [],
             origlist = _.sortBy(_.sortBy(column.cards, 'id'), 'position'),
@@ -142,9 +123,6 @@
           });
           return defer.promise;
         },
-
-        sortByVotes:    sortByVotes,
-        sortByReality:  sortByReality,
 
         isBoardOwner:   isBoardOwner,
 
