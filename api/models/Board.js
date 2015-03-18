@@ -33,7 +33,7 @@ module.exports = {
 
     votesPerUser: {
       type:       'integer',
-      min:        0,
+      min:        -1,
       defaultsTo: 0
     },
 

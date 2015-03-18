@@ -6,8 +6,6 @@
   .controller('BoardsCtrl', ['$scope', 'boards', 'user', 'api', 'config', 'eventerFactory',
     function($scope, boards, user, api, config, eventerFactory) {
 
-      // if (!user.token()) return;
-
       $scope.boards  = boards;
       $scope.colsets = config.colsets();
 

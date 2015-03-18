@@ -10,7 +10,7 @@
       </li>
     <li>
       <label for="title">Board Title</label>
-      <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
+      <input id="title" type="text" data-ng-model="b.title" placeholder="Title" maxlength="60">
     </li>
     <li data-ng-if="!b.id">
       <label for="colset">Board Type</label>
@@ -23,7 +23,8 @@
         Vote Limit Per User
       </label>
       <select id="votesPerUser" data-ng-model="b.votesPerUser">
-        <option value="0">Vote Limit</option>
+        <option value="-1">Unlimited</option>
+        <option value="0">No Votes Allowed</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>

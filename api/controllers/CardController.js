@@ -124,7 +124,7 @@ module.exports = {
 
       var cool = false;
 
-      if (board.votesPerUser === 0) {  // no vote limit
+      if (board.votesPerUser === -1) {  // no vote limit
         cool = true;
 
       } else {

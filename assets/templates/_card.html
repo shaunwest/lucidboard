@@ -36,7 +36,8 @@ Click to enter comments...
                 </svg>
             </a>
         </div>
-        <div data-ng-hide="isEditorVisible()" class="handle aside-left" title="{{card.votes | myVotes}}">
+        <div class="handle aside-left" title="{{card.votes | myVotes}}"
+          data-ng-show="!isEditorVisible() && board.votesEnabled()">
             <a href="#" data-ng-click="upvote(card, $event); upVote = !upVote">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': upVote, '': !upVote }">
                     <desc>Card upvote icon</desc>

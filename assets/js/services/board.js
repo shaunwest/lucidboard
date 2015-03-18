@@ -66,12 +66,9 @@
       };
 
       var figureVotesRemaining = function() {
-        if (board.votesPerUser === 0) {
-          votesRemaining = -1;  // infinite votes
-          return;
-        }
-
         votesRemaining = board.votesPerUser;
+
+        if (votesRemaining === -1) return;
 
         spiderCards(function(card) {
           card.votes.forEach(function(v) {
@@ -141,6 +138,7 @@
         trashIsEmpty:   function() { return (this.trash().cardSlots.length === 0); },
         allColumns:     function() { return board.columns; },
 
+        votesEnabled:   function() { return board.votesPerUser !== 0; },
         votesPerUser:   function() { return board.votesPerUser; },
         p_seeVotes:     function() { return board.p_seeVotes; },
         p_seeContent:   function() { return board.p_seeContent; },
@@ -286,7 +284,7 @@
             var card = this.card(vote.card);
             card.votes.push(vote);
 
-            if (vote.user === user.id()) {
+            if (board.votesPerUser > 0 && vote.user === user.id()) {
               votesRemaining--;
             }
           }.bind(this));

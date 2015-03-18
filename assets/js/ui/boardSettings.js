@@ -39,7 +39,7 @@
           $scope.submit = function(data) {
 
             if (!$scope.b.title) return alert('You must enter a title.');
-            if (!String($scope.b.votesPerUser).match(/^\d+$/)) return alert('Invalid max votes.');
+            if (!String($scope.b.votesPerUser).match(/^(\d+|-1)$/)) return alert('Invalid max votes.');
 
             var bits = {
               title:          $scope.b.title,

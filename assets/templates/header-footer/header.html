@@ -79,13 +79,13 @@
                         Start
                     </button>
                 </li>
-                <li>
-                    <a href="#" data-ng-show="board.votesPerUser() !== 0">
+                <li data-ng-show="board.votesEnabled()">
+                    <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
                             <use xlink:href="#vote"></use>
                         </svg>
-                        {{board.votesRemaining()}}
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
                     </a>
                 </li>
                 <li>
@@ -154,13 +154,13 @@
                         </span> -->
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="btn" data-ng-show="board.votesPerUser() !== 0">
+                <li data-ng-show="board.votesEnabled()">
+                    <a href="#" class="btn">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
                             <use xlink:href="#vote"></use>
                         </svg>
-                        {{board.votesRemaining()}}
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
                     </a>
                 </li>
                 <!--
