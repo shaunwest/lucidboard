@@ -129,7 +129,10 @@ var getCardAndBoard = function(cardId, boardId, req, res, cb) {
   async.auto({
     board:  function(_cb) { Board.findOneById(boardId).exec(_cb); },
     card:   function(_cb) { Card.findOneById(cardId).exec(_cb); },
-    column: ['card', function(_cb, r) { Column.findOneById(r.card.column).exec(_cb); }]
+    column: ['card', function(_cb, r) {
+      if (!r.card) return _cb();
+      Column.findOneById(r.card.column).exec(_cb);
+    }]
   }, function(err, r) {
     var failed = false;
 
