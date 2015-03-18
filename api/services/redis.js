@@ -54,6 +54,10 @@ module.exports = {
     publish('board:timerStart:' + boardId, {seconds: seconds}, r);
   },
 
+  trashCardsAndDeleteColumn: function(boardId, columnId, r) {
+    publish('board:trashCardsAndDeleteColumn:' + boardId, {columnId: columnId}, r);
+  },
+
   socketOnConnection: function(session, socket) {
     // Create a new redis connection for the new websocket.
     socket.redis = redisModule.createClient();

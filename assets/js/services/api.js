@@ -120,6 +120,10 @@
         handleRequest('post', target, params, cb);
       };
 
+      var doDelete = function(target, cb)  {
+        handleRequest('delete', target, {}, cb);
+      };
+
       return {
         setInitialTokenPromise: function(itp) { initialTokenPromise = itp; },
         signin: function(user, pass, cb) {
@@ -154,6 +158,9 @@
         columnMove: function(boardId, columnId, destPosition, cb) {
           post('/api/boards/' + boardId + '/columns/' + columnId + '/move',
               {destPosition: destPosition}, cb);
+        },
+        columnDelete: function(boardId, columnId, cb) {
+          doDelete('/api/boards/' + boardId + '/columns/' + columnId, cb);
         },
         columnUpdate: function(boardId, column, cb) {
           post('/api/boards/' + boardId + '/columns/' + column.id, column, cb);

@@ -57,6 +57,8 @@
         board.cardMove(info);
       }).event('board:moveColumns:' + board.id(), function(info) {
         board.columnMove(info);
+      }).event('board:trashCardsAndDeleteColumn:' + board.id(), function(info) {
+        board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id(), function(bits) {
         timer.start(bits.seconds);
       }).event('board:combineCards:' + board.id(), function(info) {

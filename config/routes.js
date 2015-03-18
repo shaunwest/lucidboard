@@ -146,6 +146,12 @@ module.exports.routes = {
     action:     'move'
   },
 
+  // Column Delete
+  'DELETE /api/boards/:boardId/columns/:columnId': {
+    controller: 'ColumnController',
+    action:     'delete'
+  },
+
   // Card Create
   'POST /api/boards/:boardId/columns/:columnId/cards': {
     controller: 'CardController',

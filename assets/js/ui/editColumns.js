@@ -12,8 +12,12 @@
         link: function(scope, elm, attr) {
           scope.error = false;
 
+          scope.deleteColumn = function(column) {
+            api.columnDelete(scope.board.id(), column.id);
+          };
+
           scope.createColumn = function() {
-            if(!scope.title) {
+            if (!scope.title) {
               scope.error = true;
               return;
             }

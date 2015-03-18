@@ -55,6 +55,7 @@
       'angular-lodash/utils/pluck',
       'angular-lodash/utils/flatten',
       'angular-lodash/utils/sortBy',
+      'angular-lodash/utils/findIndex',
     ])
 
     .run(['$rootScope', '$sails', '$state', 'user', 'api', 'board',

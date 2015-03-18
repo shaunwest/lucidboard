@@ -2,14 +2,15 @@
   'use strict';
   angular.module('hansei.services')
     .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user',
-      function($rootScope, $q, $timeout, api, user) {
+    function($rootScope, $q, $timeout, api, user) {
       var board, defer, votesRemaining, eventCb,
           locks    = [],  // card ids that this client has locked
           theQueue = [],  // array of functions to exec when user is done with locks
           _ = {
-            pluck:   $rootScope.pluck,
-            flatten: $rootScope.flatten,
-            sortBy:  $rootScope.sortBy
+            pluck:     $rootScope.pluck,
+            flatten:   $rootScope.flatten,
+            sortBy:    $rootScope.sortBy,
+            findIndex: $rootScope.findIndex
           };
 
       var cb = function(type, bits) {
@@ -234,6 +235,32 @@
             }.bind(this));
 
             board.columns.splice.apply(board.columns, [0, Number.MAX_VALUE].concat(cols));
+          }.bind(this));
+        },
+
+        // (1) Move cards within this column to the trash, in order
+        // (2) Delete the column in question
+        // (3) Renumber column positions
+        columnDeleteAndTrashCards: function(columnId) {
+          maybeDefer(function() {
+            var nextPosition = board.columns.length,
+                idx          = _.findIndex(board.columns, function(c) { return c.id === columnId; }),
+                column       = board.columns.splice(idx, 1)[0],
+                trash        = this.trash();
+            column.cardSlots.forEach(function(cs) {  // move cards to trash
+              cs.forEach(function(c) {
+                c.position = (trash.cardSlots.length
+                  ? trash.cardSlots[trash.cardSlots.length - 1][0].position
+                  : 0
+                ) + 1;
+                c.column = trash.id;
+                trash.cardSlots.push([c]);
+              });
+            });
+            for (var i=idx; i<board.columns.length; i++) {  // renumber latter columns
+              board.columns[i].position = nextPosition;
+              nextPosition++;
+            }
           }.bind(this));
         },
 

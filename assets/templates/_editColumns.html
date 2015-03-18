@@ -11,7 +11,7 @@
                 <desc>Move Icon</desc>
                 <use xlink:href="#site-menu"></use>
             </svg>
-            <div data-ng-show="deleteToggle" class="item-delete">
+            <div class="item-delete" data-ng-show="deleteToggle" data-ng-click="deleteColumn(c)">
                 Delete {{c.title}}
             </div>
         </a>

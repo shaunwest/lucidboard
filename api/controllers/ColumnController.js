@@ -96,6 +96,67 @@ module.exports = {
         redis.boardMoveColumns(boardId, signalData);
       });
     });
+  },
+
+  delete: function(req, res) {
+    var boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId'));
+
+    if (!boardId || !columnId) return res.badRequest();
+
+    async.auto({
+      board:   function(cb) { Board.findOneById(boardId).exec(cb); },
+      columns: function(cb) { Column.find({board: boardId}).sort({position: 'asc'}).exec(cb); },
+      cards:   function(cb) { Card.find({column: columnId}).sort({position: 'asc'}).exec(cb); },
+      trash:   function(cb) { Column.findOne({board: boardId, position: 0}).exec(cb); },
+      trCards: ['trash', function(cb, r) {
+        Card.find({column: r.trash.id}).sort({position: 'asc'}).exec(cb);
+      }]
+    }, function(err, r) {
+      if (err)                                return res.serverError(err);
+      if (!r.board || !r.columns || !r.trash) return res.badRequest();
+
+      var nextPosition = r.trCards.length + 1,
+          columns      = r.columns,
+          idx          = _.findIndex(columns, function(c) { return c.id === columnId; }),
+          column       = columns.splice(idx, 1)[0],
+          jobs         = [];
+
+      if (idx === undefined)     return res.badRequest();  // columnId wasn't on specified board!
+      if (column.position === 0) return res.badRequest();  // no deleting the Trash!
+
+      // Move all cards to the trash
+      r.cards.forEach(function(c) {
+        (function() {
+          var card = c;
+          card.column   = r.trash.id;
+          card.position = nextPosition;
+          nextPosition++;
+          jobs.push(function(cb) { card.save(cb); });
+        })();
+      });
+
+      // Renumber column positions to make up for the gap
+      for (var i=idx; i<columns.length; i++) {
+        (function() {
+          var col = columns[i];
+          col.position--;
+          jobs.push(function(cb) { col.save(cb); });
+        })();
+      }
+
+      // Delete the column
+      jobs.push(function(cb) { column.destroy(cb); });
+
+      async.parallel(jobs, function(err, results) {
+        if (err) return res.serverError(err);
+
+        res.jsonx(true);
+
+        redis.trashCardsAndDeleteColumn(boardId, columnId);
+      });
+    });
+
   }
 
 };
