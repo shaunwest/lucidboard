@@ -21,6 +21,7 @@ module.exports = {
       }
 
       res.jsonx({
+        id:       user.id,
         username: user.name,
         email:    user.email,
         token:    user.buildToken()
