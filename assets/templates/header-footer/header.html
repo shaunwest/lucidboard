@@ -1,5 +1,5 @@
 <div ng-controller="HeaderCtrl">
-    <div class="slide-out" data-ng-show="menuToggle" data-ng-class="{'animate-close-slide-right': !menuToggle, 'animate-slide-right': menuToggle }">
+    <div class="slide-out" data-ng-class="{'close': menuState=='close', 'open': menuState=='open' }">
         <ul class="y-list">
             <li>
                 <a href="/">
@@ -8,7 +8,7 @@
                         <use xlink:href="#lucidboard"></use>
                     </svg>
                 </a>
-                <a href="#" data-ng-click="menuToggle = !menuToggle" class="aside-right">
+                <a href="#" data-ng-click="toggleMenu()" class="aside-right">
                     <svg class="icon-standard" fill="#ffffff">
                         <desc>Site menu icon</desc>
                         <use xlink:href="#site-menu"></use>
@@ -44,7 +44,7 @@
     </div>
     <div class="tier small-view" data-ng-if="showBoardNav">
         <div class="tier mbm">
-            <a href="#" class="aside-left" data-ng-click="menuToggle = !menuToggle">
+            <a href="#" class="aside-left" data-ng-click="toggleMenu()">
                 <svg class="icon-standard" fill="#ffffff">
                     <desc>Site menu icon</desc>
                     <use xlink:href="#site-menu"></use>

@@ -5,10 +5,15 @@
 
   .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api', 'user', 'board', 'timer',
     function($rootScope, $scope, $state, $timeout, api, user, board, timer) {
-
       $scope.user          = user;
       $scope.showTimerForm = false;
       $scope.timer         = timer;
+      $scope.menuState     = '';
+
+      $scope.toggleMenu = function() {
+        $scope.menuState = ($scope.menuState === 'open') ? 'close' : 'open';
+        //$scope.menuVisible = !$scope.menuVisible;
+      };
 
       $scope.timerStart = function(minutes) {
         $scope.showTimerForm = false;
