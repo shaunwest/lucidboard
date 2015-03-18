@@ -134,6 +134,22 @@
     }
 }
 
+.gold-money {
+    border-left: 0.4em solid $gold-money;
+    &.swatch {
+        border: 0.15em solid $gold-money;
+        background: $gold-money;
+    }
+}
+
+.eggplant {
+    border-left: 0.4em solid $eggplant;
+    &.swatch {
+        border: 0.15em solid $eggplant;
+        background: $eggplant;
+    }
+}
+
 .handle {
     padding: 0.5em;
     margin: 0;
