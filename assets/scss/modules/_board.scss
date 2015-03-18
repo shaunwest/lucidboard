@@ -1,8 +1,5 @@
 .board-container {
     padding-top: 2em;
-    @media (min-width: 60em) {
-        padding-top: 1.5em;
-    }
 }
 // Column container displays as table for screens >70em
 .column-container {
