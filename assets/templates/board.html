@@ -1,84 +1,86 @@
-<div class="tier">
-    <div class="flag hide">
-        <div class="flag-media--alert">
-            <svg class="icon-alert" fill="#ffffff">
-                <desc>Board Clock Timer Icon</desc>
-                <use xlink:href="#clock"></use>
-            </svg>
-        </div>
-        <div class="flag-body">
-            Time's up!
-        </div>
-    </div>
-</div>
-<div class="tier" data-ng-show="currentTab === 'board'">
-    <div class="column-container">
-        <div class="columnjunction" data-ng-class="{active:columnDragging}"
-          data-ui-on-drop="moveColumn($data, 1)"
-          data-drop-channel="column">
-        </div>
-        <div class="column"
-          data-ng-repeat-start="column in board.columns()"
-          data-ng-show="getColumnViewState(column.id, columnViewSelected)">
-            <ul class="form-fields--blank">
-                <li class="brand-underline">
-                    <h4 class="mtn mbn delta" data-editable-text="column.title" data-buttons="no"
-                        data-onbeforesave="checkColumnTitle($data, column.id)"
-                        data-ui-draggable="true"
-                        data-drag="column"
-                        data-ng-class="{active:columnDragging}"
-                        data-drag-channel="column"
-                        >
-                        {{column.title}}
-                    </h4>
-                </li>
-                <li>
-                    <div class="cardjunction top"
-                        data-drop-channel="card"
-                        data-ng-class="{active:cardDragging}"
-                        data-on-drop-success="dropSuccessHandler($event)"
-                        data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
-                    </div>
-                </li>
-                <li>
-                    <card-slot data-ng-repeat-start="slot in column.cardSlots track by $index"
-                        board="board" item="slot" column="column" index="$index">
-                    </card-slot>
-                    <div data-ng-repeat-end class="cardjunction"
-                        data-drop-channel="card"
-                        data-ng-class="{active:cardDragging}"
-                        data-on-drop-success="dropSuccessHandler($event)"
-                        data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, slot[0].position + 1)">
-                    </div>
-                </li>
-                <li>
-                    <button class="btn" data-ng-click="createCard(column)">Add Card</button>
-                </li>
-            </ul>
-        </div>
-        <div class="columnjunction"
-          data-ng-repeat-end
-          data-drop-channel="column"
-          data-ng-class="{active:columnDragging}"
-          data-ui-on-drop="moveColumn($data, column.position + 1)">
+<div class="board-container">
+    <div class="tier">
+        <div class="flag hide">
+            <div class="flag-media--alert">
+                <svg class="icon-alert" fill="#ffffff">
+                    <desc>Board Clock Timer Icon</desc>
+                    <use xlink:href="#clock"></use>
+                </svg>
+            </div>
+            <div class="flag-body">
+                Time's up!
+            </div>
         </div>
     </div>
-</div>
-<div data-ng-show="currentTab === 'settings'" class="tier-padded">
-    <board-settings class="panel" board="board"></board-settings>
-</div>
-<div class="trash" data-ng-show="currentTab === 'trash'"
-    data-ng-class="{dropready:cardDragging}"
-    data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
-    board.nextPositionByColumnId(board.trash().id))">
-    <div class="cardjunction top"
-        data-ng-class="{active:cardDragging}"
-        data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
+    <div class="tier" data-ng-show="currentTab === 'board'">
+        <div class="column-container">
+            <div class="columnjunction" data-ng-class="{active:columnDragging}"
+              data-ui-on-drop="moveColumn($data, 1)"
+              data-drop-channel="column">
+            </div>
+            <div class="column"
+              data-ng-repeat-start="column in board.columns()"
+              data-ng-show="getColumnViewState(column.id, columnViewSelected)">
+                <ul class="form-fields--blank">
+                    <li class="brand-underline">
+                        <h4 class="mtn mbn delta" data-editable-text="column.title" data-buttons="no"
+                            data-onbeforesave="checkColumnTitle($data, column.id)"
+                            data-ui-draggable="true"
+                            data-drag="column"
+                            data-ng-class="{active:columnDragging}"
+                            data-drag-channel="column"
+                            >
+                            {{column.title}}
+                        </h4>
+                    </li>
+                    <li>
+                        <div class="cardjunction top"
+                            data-drop-channel="card"
+                            data-ng-class="{active:cardDragging}"
+                            data-on-drop-success="dropSuccessHandler($event)"
+                            data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
+                        </div>
+                    </li>
+                    <li>
+                        <card-slot data-ng-repeat-start="slot in column.cardSlots track by $index"
+                            board="board" item="slot" column="column" index="$index">
+                        </card-slot>
+                        <div data-ng-repeat-end class="cardjunction"
+                            data-drop-channel="card"
+                            data-ng-class="{active:cardDragging}"
+                            data-on-drop-success="dropSuccessHandler($event)"
+                            data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, slot[0].position + 1)">
+                        </div>
+                    </li>
+                    <li>
+                        <button class="btn" data-ng-click="createCard(column)">Add Card</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="columnjunction"
+              data-ng-repeat-end
+              data-drop-channel="column"
+              data-ng-class="{active:columnDragging}"
+              data-ui-on-drop="moveColumn($data, column.position + 1)">
+            </div>
+        </div>
     </div>
-    <card-slot data-ng-repeat-start="slot in board.trash().cardSlots track by $index"
-        board="board" item="slot" column="board.trash()" index="$index"></card-slot>
-    <div data-ng-repeat-end class="cardjunction"
-        data-ng-class="{active:cardDragging}"
-        data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id, slot[0].position + 1)">
+    <div data-ng-show="currentTab === 'settings'" class="tier-padded">
+        <board-settings class="panel" board="board"></board-settings>
+    </div>
+    <div class="trash" data-ng-show="currentTab === 'trash'"
+        data-ng-class="{dropready:cardDragging}"
+        data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
+        board.nextPositionByColumnId(board.trash().id))">
+        <div class="cardjunction top"
+            data-ng-class="{active:cardDragging}"
+            data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
+        </div>
+        <card-slot data-ng-repeat-start="slot in board.trash().cardSlots track by $index"
+            board="board" item="slot" column="board.trash()" index="$index"></card-slot>
+        <div data-ng-repeat-end class="cardjunction"
+            data-ng-class="{active:cardDragging}"
+            data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id, slot[0].position + 1)">
+        </div>
     </div>
 </div>

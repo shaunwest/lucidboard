@@ -15,7 +15,7 @@ html, body {
 
 .site-container {
   @include clearfix;
-  padding:  0 0.5em;
+  padding:  5em 0.5em;
   min-height: 100%;
   margin-bottom: 1em;
 }
@@ -23,7 +23,6 @@ html, body {
 .site-header {
     @include clearfix;
     padding: 0.5em;
-    margin-bottom: 1em;
     background: $oxford;
     color: $white;
     a {
@@ -34,6 +33,9 @@ html, body {
         &:focus {
             color: $white;
             text-decoration: none;
+        }
+        &.aside-left {
+            height: 2em;
         }
     }
 }
@@ -98,9 +100,17 @@ html, body {
 
 .divided-copy {
     border-right: 0.125em solid $white;
-    padding-right: 1em;
+    padding-right: 1.5em;
 }
 
 .copy-inverse {
     color: $white;
+}
+
+.item-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
 }

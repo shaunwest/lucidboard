@@ -51,6 +51,9 @@ input[type="checkbox"] {
             box-shadow: 0;
         }
     }
+    .delta {
+        cursor: grab;
+    }
 }
 
 // removes select dropdown browser defaults

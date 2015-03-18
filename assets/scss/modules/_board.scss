@@ -1,3 +1,9 @@
+.board-container {
+    padding-top: 2em;
+    @media (min-width: 60em) {
+        padding-top: 1.5em;
+    }
+}
 // Column container displays as table for screens >70em
 .column-container {
     @extend .tier;
@@ -15,14 +21,12 @@
 
 // Individual columns
 .column {
+    position: relative;
     padding: 0 0.75em;
     width: 100%;
     margin-bottom: 1.5em;
     @media (min-width: 70em) {
         display: table-cell;
-    }
-    .delta {
-        cursor: grab;
     }
 }
 
