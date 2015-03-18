@@ -139,17 +139,20 @@
                 -->
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
+                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
                             <desc>Board Clock Timer Icon</desc>
                             <use xlink:href="#clock"></use>
                         </svg>
                         {{timer.remaining | formatTime}}
+                        <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+                            data-ng-model="timerMinutesInput">
+                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                            Start
+                        </span>
+                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                            Reset
+                        </span>
                     </a>
-                    <input data-ng-show="showTimerForm" class="text-input" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                        data-ng-model="timerMinutesInput">
-                    <button data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)" class="btn">
-                        Start
-                    </button>
                 </li>
                 <li>
                     <a href="#" class="btn" data-ng-show="board.votesPerUser() !== 0">
