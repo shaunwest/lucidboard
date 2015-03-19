@@ -503,6 +503,83 @@ module.exports = {
     });
   },
 
+  sortByVotes: function(req, res) {
+    var boardId = parseInt(req.param('id'));
+
+    if (!boardId) return res.badRequest();
+
+    async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); },
+      columns: ['board', function(cb, r) {
+        Column.find({board: r.board.id}).sort({position: 'asc'}).exec(cb);
+      }],
+      rawCards: ['columns', function(cb, r) {
+        async.parallel(r.columns.map(function(col) {
+          return function(_cb) {
+            Card.find({column: col.id}).sort({position: 'asc'}).exec(_cb);
+          };
+        }), cb);
+      }],
+      votes: ['rawCards', function(cb, r) {
+        async.parallel(_.flatten(r.rawCards).reduce(function(memo, c) {
+          memo[c.id] = function(_cb) { Vote.count({card: c.id}).exec(_cb); };
+          return memo;
+        }, {}), cb);
+      }],
+      cards: ['votes', function(cb, r) {  // add the vote counts
+        r.rawCards.forEach(function(cards) {
+          cards.forEach(function(card) {
+            card.voteCount = r.votes[card.id] || 0;
+          });
+        });
+        cb(null, r.rawCards);
+      }]
+    }, function(err, r) {
+      if (err)                    return err.serverError(err);
+      if (!r.board || !r.columns) return err.badRequest();
+
+      var cards      = _.indexBy(r.cards, 'column'),
+          jobs       = [],
+          signalData = {};
+
+      r.columns.forEach(function(column) {
+        var stack    = util.normalizeCardStack(r.cards[column.position]),
+            modified = false,
+            position = 1;
+
+        // Do the sort!
+        stack.sort(function(a, b) {
+          var votesA = a.reduce(function(memo, c) { return memo + c.voteCount; }, 0);
+          var votesB = b.reduce(function(memo, c) { return memo + c.voteCount; }, 0);
+          return votesB - votesA;
+        });
+
+        // Queue any updates we need to fix positions
+        stack.forEach(function(pile) {
+          pile.forEach(function(card) {
+            if (card.position !== position) {
+              card.position = position;
+              jobs.push(function(cb) { card.save(cb); });
+              modified = true;
+            }
+          });
+          position++;
+        });
+
+        // If we made any changes to this column, add it to the signal!
+        if (modified) signalData[column.id] = util.toCardStackMap(stack);
+      });
+
+      async.parallel(jobs, function(err, r) {
+        if (err) return err.serverError(err);
+
+        res.jsonx(signalData);
+
+        if (!_.isEmpty(signalData)) redis.boardMoveCards(boardId, signalData);
+      });
+    });
+  },
+
   config: function(req, res) {
     res.jsonx(config.all());
   }

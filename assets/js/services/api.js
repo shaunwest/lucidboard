@@ -152,6 +152,9 @@
         boardCardFlip: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/card-flip', bits, cb);
         },
+        boardSortByVotes: function(boardId, cb) {
+          post('/api/boards/' + boardId + '/sort-by-votes', {}, cb);
+        },
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },

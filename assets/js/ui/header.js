@@ -20,6 +20,10 @@
       $scope.signout           = function(event) { $state.go('signin'); };
       $scope.current           = $state.current;
 
+      $scope.sortByVotes = function() {
+        api.boardSortByVotes(board.id());
+      };
+
       $scope.goFullScreen = function() {
         var element = document.documentElement;
         if (element.requestFullscreen) {

@@ -116,6 +116,12 @@ module.exports.routes = {
     action:     'timerStart'
   },
 
+  // Board: Sort by Votes
+  'POST /api/boards/:id/sort-by-votes': {
+    controller: 'BoardController',
+    action:     'sortByVotes'
+  },
+
   // Board: Lock a card
   'POST /api/boards/:id/lock-card': {
     controller: 'CardController',
