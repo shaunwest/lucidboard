@@ -141,15 +141,6 @@
                         </span> -->
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled()">
-                    <a href="#" class="btn">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
-                        </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
-                    </a>
-                </li>
                 <!--
                 <li>
                     <a href="#" class="btn" data-ng-click="goFullScreen()">
@@ -170,6 +161,15 @@
                         </svg>
                         Settings
                     </a>
+                </li>
+                <li data-ng-show="board.votesEnabled()">
+                    <div>
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                    </div>
                 </li>
             </ul>
         </div>
