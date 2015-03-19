@@ -385,6 +385,12 @@
             sourceStack.splice.apply(sourceStack,
               [0, Number.MAX_VALUE].concat(cardStacks[columnId]));
 
+            // Animate the cards in this column!
+            _.flatten(sourceStack).forEach(function(card) { card.shake = true; });
+            $timeout(function() {
+              _.flatten(sourceStack).forEach(function(card) { card.shake = false; });
+            }, 500);
+
           }.bind(this));
 
         },
