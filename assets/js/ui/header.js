@@ -39,11 +39,6 @@
         }
       }
 
-      $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {
-        return { id: column.id, label: column.title, position: column.position };
-      });
-      $rootScope.columnViewSelected = {id: 0, label: 'View All', position: null};
-      $rootScope.columnViews.unshift($rootScope.columnViewSelected);
       $rootScope.getColumnViewState = function(columnId, columnPosition, columnViewSelected) {
         // console.log('checking', columnId, columnViewSelected);
         // hide trash from all columns view
