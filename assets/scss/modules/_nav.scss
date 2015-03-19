@@ -24,9 +24,6 @@
 }
 
 .small-view {
-    @media (min-width: 60em) {
-        display: none;
-    }
     .delta {
         font-size: $h5-size;
         margin-top: 0.2em;
@@ -34,6 +31,13 @@
     .x-list-small li:first-child {
         width: 100%;
         margin-bottom: 0.5em;
+    }
+    @media (min-width: 60em) {
+        display: none;
+        .x-list-small li:first-child {
+            width: auto;
+            margin-bottom: 0;
+        }
     }
 }
 

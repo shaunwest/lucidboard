@@ -28,6 +28,7 @@
 }
 
 .x-list-small {
+    @include clearfix;
     @extend .x-list;
     li {
       padding-left: 0;

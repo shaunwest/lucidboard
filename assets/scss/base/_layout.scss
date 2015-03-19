@@ -37,11 +37,6 @@ html, body {
             color: $white;
             text-decoration: none;
         }
-        @media (min-width: 60em) {
-            &.aside-left {
-                height: 2em;
-            }
-        }
     }
     @media (min-width: 60em) {
         padding: 0.5em 1.7em;
@@ -108,7 +103,7 @@ html, body {
 
 .divided-copy {
     border-right: 0.125em solid $white;
-    padding-right: 1.5em;
+    padding-right: 1em;
 }
 
 .copy-inverse {
