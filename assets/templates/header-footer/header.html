@@ -129,9 +129,7 @@
             </a>
             <ul class="x-list-small aside-right">
                 <li>
-                    <button class="btn">
-                        <select class="select-clear copy-inverse" id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
-                    </button>
+                    <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                 </li>
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
