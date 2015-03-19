@@ -7,7 +7,7 @@
  */
 
 var meta       = require('../services/meta'),
-    titleRegex = /^.{1,60}$/;
+    titleRegex = /^.{1,50}$/;
 
 module.exports = {
 
