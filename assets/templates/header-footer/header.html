@@ -43,6 +43,7 @@
         </div>
         <div class="tier">
             <ul class="x-list-small">
+              <!--
                 <li>
                     <a href="#">
                         <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
@@ -60,9 +61,19 @@
                         <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
                             Start
                         </span>
-                        <!-- <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                        < ! - - <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
                             Reset
-                        </span> -->
+                        </span> - - >
+                    </a>
+                </li>
+                -->
+                <li data-ng-show="board.votesEnabled()">
+                    <a href="#">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
                     </a>
                 </li>
                 <li>
@@ -116,14 +127,17 @@
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
+            <!--
                 <li>
                     <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                 </li>
+                -->
                 <li>
                     <a class="btn" href="#" data-ng-click="sortByVotes()">
                         Sort by Votes
                     </a>
                 </li>
+                <!--
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
@@ -136,9 +150,19 @@
                         <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
                             Start
                         </span>
-                        <!-- <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                        < ! - - <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
                             Reset
-                        </span> -->
+                        </span> - - >
+                    </a>
+                </li>
+                -->
+                <li data-ng-show="board.votesEnabled()">
+                    <a href="#" class="btn">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
                     </a>
                 </li>
                 <!--
