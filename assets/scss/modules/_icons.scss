@@ -19,22 +19,11 @@
     height: 2em;
 }
 
-.icon-middle {
-    @extend .icon-standard;
+.icon-middle-small {
+    width: 10em;
+    height: 7em;
     display: block;
     margin: 0 auto;
-}
-
-.icon-middle-small {
-    @extend .icon-middle;
-    width: 7em;
-    height: 7em;
-}
-
-.icon-middle-large {
-    @extend .icon-middle;
-    width: 32em;
-    height: 16em;
 }
 
 .icon-alert {
