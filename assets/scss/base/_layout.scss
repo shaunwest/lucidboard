@@ -15,9 +15,12 @@ html, body {
 
 .site-container {
   @include clearfix;
-  padding:  5em 0.5em;
+  padding:  6.5em 0.75em;
   min-height: 100%;
   margin-bottom: 1em;
+  @media (min-width: 60em) {
+      padding:  5em 0.5em;
+  }
 }
 
 .site-header {
@@ -34,9 +37,14 @@ html, body {
             color: $white;
             text-decoration: none;
         }
-        &.aside-left {
-            height: 2em;
+        @media (min-width: 60em) {
+            &.aside-left {
+                height: 2em;
+            }
         }
+    }
+    @media (min-width: 60em) {
+        padding: 0.5em 1.7em;
     }
 }
 

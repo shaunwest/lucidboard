@@ -25,21 +25,6 @@
                     Sign Out
                 </a>
             </li>
-            <li data-ng-if="showBoardNav">
-                <a href="#" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
-                    data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
-                    board.nextPositionByColumnId(board.trash().id))">
-                    <svg class="icon-standard aside-left" data-ng-hide="board.trashIsEmpty()">
-                        <desc>Full Trash</desc>
-                        <use xlink:href="#trash"></use>
-                    </svg>
-                    <svg class="icon-standard aside-left" data-ng-show="board.trashIsEmpty()">
-                        <desc>Empty Trash</desc>
-                        <use xlink:href="#empty-trash"></use>
-                    </svg>
-                    ({{board.trash().cardSlots.length}})
-                </a>
-            </li>
         </ul>
     </div>
     <div class="tier small-view" data-ng-if="showBoardNav">
