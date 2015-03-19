@@ -12,15 +12,6 @@
       $scope.board             = board;
       $scope.timerMinutesInput = 5;
 
-      $rootScope.columnViews = $scope.board.columns().map(function(column) {
-        return { label: column.title, id: column.id };
-      });
-      $rootScope.columnViews.unshift($rootScope.columnViewSelected = {id: 0, label: 'View All'});
-      $rootScope.getColumnViewState = function(columnId, columnViewSelected) {
-        return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
-      };
-
-
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
         board.locks.forEach(function(cardId) {

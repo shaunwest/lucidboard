@@ -33,6 +33,14 @@
         }
       }
 
+      $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {
+        return { label: column.title, id: column.id };
+      });
+      $rootScope.columnViews.unshift($rootScope.columnViewSelected = {id: 0, label: 'View All'});
+      $rootScope.getColumnViewState = function(columnId, columnViewSelected) {
+        return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
+      };
+
       function showBoardNav() {
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;

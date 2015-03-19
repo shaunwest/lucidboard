@@ -58,13 +58,11 @@
         </div>
         <div class="tier">
             <ul class="x-list-small">
-              <!--
                 <li>
                     <a href="#">
                         <select class="select-clear copy-inverse" id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                     </a>
                 </li>
-                -->
                 <li>
                     <a href="#" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -130,13 +128,11 @@
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
-              <!--
                 <li>
                     <button class="btn">
                         <select class="select-clear copy-inverse" id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                     </button>
-                </li> -->
-
+                </li>
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
@@ -182,21 +178,6 @@
                             <use xlink:href="#settings"></use>
                         </svg>
                         Settings
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="btn" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
-                        data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
-                        board.nextPositionByColumnId(board.trash().id))">
-                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-hide="board.trashIsEmpty()">
-                            <desc>Trash Full Icon</desc>
-                            <use xlink:href="#trash"></use>
-                        </svg>
-                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-show="board.trashIsEmpty()">
-                            <desc>Trash Empty Icon</desc>
-                            <use xlink:href="#empty-trash"></use>
-                        </svg>
-                        View Trash
                     </a>
                 </li>
             </ul>
