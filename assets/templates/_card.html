@@ -38,8 +38,8 @@ Click to enter comments...
         </div>
         <div class="handle aside-left" title="{{card.myVoteCount}}"
           data-ng-show="!isEditorVisible() && board.votesEnabled()">
-            <a href="#" data-ng-click="upvote(card, $event); upVote = !upVote">
-                <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': upVote, '': !upVote }">
+            <a href="#" data-ng-click="upvote(card, $event)">
+                <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
                     <use xlink:href="#vote"></use>
                 </svg>

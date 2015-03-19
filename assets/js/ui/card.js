@@ -12,7 +12,7 @@
           column: '=',
           index:  '='
         },
-        controller: ['$scope', 'api', 'user', function($scope, api, user) {
+        controller: ['$scope', '$timeout', 'api', 'user', function($scope, $timeout, api, user) {
 
           var board = $scope.board,
               card  = $scope.card;
@@ -71,11 +71,13 @@
           };
 
           $scope.upvote = function(card, event) {
+            $scope.votePop = true;
             event.stopPropagation();
             event.preventDefault();
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks())       return;
             api.cardUpvote(board.id(), board.column(card.column).id, card.id);
+            $timeout(function() { $scope.votePop = false; }, 500);
           };
 
           $scope.moveTo = function(column, card) {

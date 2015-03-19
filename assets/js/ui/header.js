@@ -11,8 +11,10 @@
       $scope.timer         = timer;
 
       $scope.timerStart = function(minutes) {
+        $scope.clockPop = true;
         $scope.showTimerForm = false;
         api.timerStart(board.id(), minutes * 60);
+        $timeout(function() { $scope.clockPop = false; }, 500);
       };
 
       $scope.board             = board;

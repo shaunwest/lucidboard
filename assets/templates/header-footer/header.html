@@ -133,7 +133,7 @@
                         {{timer.remaining | formatTime}}
                         <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
                             data-ng-model="timerMinutesInput">
-                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
                             Start
                         </span>
                         <!-- <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
