@@ -47,13 +47,16 @@
         // console.log('k', (columnViewSelected.id === 0 || columnViewSelected.id === columnId));
         return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
       };
+      $rootScope.columnViewSelected = null;
       $rootScope.$watch('columnViewSelected', function(newo) { console.log('right', newo); });
 
       function showBoardNav() {
         $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {
-          return { label: column.title, id: column.id };
+          return {id: column.id, label: column.title, position: column.position};
         });
-        $rootScope.columnViews.unshift($rootScope.columnViewSelected = {id: 0, label: 'View All'});
+        $rootScope.columnViews.unshift({id: 0, label: 'View All', position: null});
+        $rootScope.columnViewSelected = $rootScope.columnViews[0];
+        $timeout(function() { $rootScope.columnViewSelected = $rootScope.columnViews[1]; }, 1000);
 
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;

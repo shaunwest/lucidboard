@@ -126,10 +126,11 @@
                     {{board.title()}}
                 </h1>
             </a>
+            ({{columnViewSelected}})
             <ul class="x-list-small aside-right">
             <!--
                 <li>
-                    <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
+                    <select id="viewSections" data-ng-model="columnViewSelected" data-ng-options="columnView.label for columnView in columnViews"></select>
                 </li>
                 -->
                 <li data-ng-show="board.isBoardOwner()">
