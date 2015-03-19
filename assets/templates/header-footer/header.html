@@ -67,7 +67,7 @@
                     </a>
                 </li>
                 -->
-                <li data-ng-show="board.votesEnabled()">
+                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
                     <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
@@ -87,7 +87,7 @@
                         Settings
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled()">
+                <li data-ng-show="board.votesEnabled() && !board.isBoardOwner()">
                     <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
@@ -132,7 +132,7 @@
                     <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
                 </li>
                 -->
-                <li>
+                <li data-ng-show="board.isBoardOwner()">
                     <a class="btn" href="#" data-ng-click="sortByVotes()">
                         Sort by Votes
                     </a>
@@ -156,7 +156,7 @@
                     </a>
                 </li>
                 -->
-                <li data-ng-show="board.votesEnabled()">
+                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
                     <a href="#" class="btn">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
@@ -186,7 +186,7 @@
                         Settings
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled()">
+                <li data-ng-show="board.votesEnabled() && !board.isBoardOwner()">
                     <div>
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
