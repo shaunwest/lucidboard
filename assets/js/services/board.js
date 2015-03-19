@@ -155,6 +155,7 @@
         p_lock:         function() { return board.p_lock; },
 
         seeVotes:       function() { return this.isBoardOwner() || this.p_seeVotes(); },
+        seeContent:     function() { return this.isBoardOwner() || this.p_seeContent(); },
 
         timerLength:    function() { return board.timerLength; },
         timerLeft:      function() { return board.timerLeft; },

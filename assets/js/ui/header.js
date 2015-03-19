@@ -39,9 +39,20 @@
         }
       }
 
-      $rootScope.getColumnViewState = function(columnId, columnViewSelected) {
+      $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {
+        return { id: column.id, label: column.title, position: column.position };
+      });
+      $rootScope.columnViewSelected = {id: 0, label: 'View All', position: null};
+      $rootScope.columnViews.unshift($rootScope.columnViewSelected);
+      $rootScope.getColumnViewState = function(columnId, columnPosition, columnViewSelected) {
+        // console.log('checking', columnId, columnViewSelected);
+        // hide trash from all columns view
+        if (columnViewSelected.id === 0 && columnPosition === 0) return false;
+
+        // console.log('k', (columnViewSelected.id === 0 || columnViewSelected.id === columnId));
         return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
       };
+      $rootScope.$watch('columnViewSelected', function(newo) { console.log('right', newo); });
 
       function showBoardNav() {
         $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {

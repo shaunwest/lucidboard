@@ -19,8 +19,8 @@
               data-drop-channel="column">
             </div>
             <div class="column"
-              data-ng-repeat-start="column in board.columns()"
-              data-ng-show="getColumnViewState(column.id, columnViewSelected)">
+              data-ng-repeat-start="column in board.columns({withTrash: true})"
+              data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
                     <li class="brand-underline">
                         <h4 class="mtn mbn delta" data-editable-text="column.title" data-buttons="no"
@@ -67,20 +67,5 @@
     </div>
     <div data-ng-show="currentTab === 'settings'" class="tier-padded">
         <board-settings class="panel" board="board"></board-settings>
-    </div>
-    <div class="trash" data-ng-show="currentTab === 'trash'"
-        data-ng-class="{dropready:cardDragging}"
-        data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
-        board.nextPositionByColumnId(board.trash().id))">
-        <div class="cardjunction top"
-            data-ng-class="{active:cardDragging}"
-            data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, 1)">
-        </div>
-        <card-slot data-ng-repeat-start="slot in board.trash().cardSlots track by $index"
-            board="board" item="slot" column="board.trash()" index="$index"></card-slot>
-        <div data-ng-repeat-end class="cardjunction"
-            data-ng-class="{active:cardDragging}"
-            data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id, slot[0].position + 1)">
-        </div>
     </div>
 </div>

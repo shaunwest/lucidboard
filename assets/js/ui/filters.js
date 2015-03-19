@@ -21,19 +21,19 @@
       return txt.replace(/./g, '*');
     };
 
-  })
+  });
 
-  .filter('myVotes', ['user', function(user) {
-
-    return function(votes) {
-      if (!votes) return null;
-      var myVotes = 0;
-      votes.forEach(function(v) {
-        if (v.user === user.id()) myVotes++;
-      });
-      return myVotes;
-    };
-
-  }]);
+  // .filter('myVotes', ['user', function(user) {
+  //
+  //   return function(votes) {
+  //     if (!votes) return null;
+  //     var myVotes = 0;
+  //     votes.forEach(function(v) {
+  //       if (v.user === user.id()) myVotes++;
+  //     });
+  //     return myVotes;
+  //   };
+  //
+  // }]);
 
 })();
