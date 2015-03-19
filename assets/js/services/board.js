@@ -89,7 +89,15 @@
           }
 
           card.lockedByAnother = !!card.locked;
+          card.myVoteCount     = countOwnVotes(card);
         });
+      };
+
+      var countOwnVotes = function(card) {
+        var uid = user.id();
+        return card.votes.reduce(function(memo, v) {
+          return v.user === uid ? memo + 1 : memo;
+        }, 0);
       };
 
       var spiderCards = function(cb) {
@@ -144,6 +152,8 @@
         p_seeContent:   function() { return board.p_seeContent; },
         p_combineCards: function() { return board.p_combineCards; },
         p_lock:         function() { return board.p_lock; },
+
+        seeVotes:       function() { return this.isBoardOwner() || this.p_seeVotes(); },
 
         timerLength:    function() { return board.timerLength; },
         timerLeft:      function() { return board.timerLeft; },
@@ -283,6 +293,8 @@
           maybeDefer(function() {
             var card = this.card(vote.card);
             card.votes.push(vote);
+
+            card.myVoteCount = countOwnVotes(card);
 
             if (board.votesPerUser > 0 && vote.user === user.id()) {
               votesRemaining--;
