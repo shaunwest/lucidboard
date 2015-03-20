@@ -12,7 +12,10 @@
           column: '=',
           index:  '='
         },
-        controller: ['$scope', 'api', function($scope, api) {
+        controller: ['$scope', 'api', 'view', function($scope, api, view) {
+
+          $scope.getTopCard = getTopCard;
+          $scope.view       = view;
 
           // Calculate the total number of votes for the pile
           $scope.votes = 0;
@@ -65,8 +68,6 @@
             if (idx < 0) idx = $scope.pile.length - 1;
             flip(idx);
           };
-
-          $scope.getTopCard = getTopCard;
 
         }]
       };

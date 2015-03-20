@@ -12,12 +12,13 @@
           column: '=',
           index:  '='
         },
-        controller: ['$scope', '$timeout', 'api', 'user', function($scope, $timeout, api, user) {
+        controller: ['$scope', '$timeout', 'api', 'user', 'view', function($scope, $timeout, api, user, view) {
 
           var board = $scope.board,
               card  = $scope.card;
 
-          $scope.user = user;
+          $scope.view     = view;
+          $scope.user     = user;
           $scope.cardMenu = false;
 
           $scope.onShow = function() { console.log('srsly'); };
@@ -101,10 +102,10 @@
         link: function(scope, element) {
 
           // If we were the one who created this card, let's edit it!
-          if (scope.card.openForEditWhenReady) {
-            scope.editform.$show();
-            delete scope.card.openForEditWhenReady;
-          }
+          // if (scope.card.openForEditWhenReady) {
+          //   scope.editform.$show();
+          //   delete scope.card.openForEditWhenReady;
+          // }
 
         }
       };

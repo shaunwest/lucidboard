@@ -1,6 +1,6 @@
 <div
      class="card slate-card {{card.color || 'default'}}"
-     data-ng-class="{active:cardDragging,'animate-shake':card.shake}"
+     data-ng-class="{active:view.cardDragging,'animate-shake':card.shake}"
      data-ng-show="card"
      data-ui-draggable="{{board.locks.length === 0}}"
      data-drag="card"

@@ -3,12 +3,18 @@
 
   angular.module('hansei.ui')
 
-  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api', 'user', 'board', 'timer',
-    function($rootScope, $scope, $state, $timeout, api, user, board, timer) {
+  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api',
+    'user', 'board', 'timer', 'view',
+    function($rootScope, $scope, $state, $timeout, api, user, board, timer, view) {
 
-      $scope.user          = user;
-      $scope.showTimerForm = false;
-      $scope.timer         = timer;
+      $scope.user              = user;
+      $scope.board             = board;
+      $scope.timer             = timer;
+      $scope.view              = view;
+      $scope.showTimerForm     = false;
+      $scope.timerMinutesInput = 5;
+      $scope.signout           = function(event) { $state.go('signin'); };
+      $scope.current           = $state.current;
 
       $scope.timerStart = function(minutes) {
         $scope.clockPop = true;
@@ -16,11 +22,6 @@
         api.timerStart(board.id(), minutes * 60);
         $timeout(function() { $scope.clockPop = false; }, 500);
       };
-
-      $scope.board             = board;
-      $scope.timerMinutesInput = 5;
-      $scope.signout           = function(event) { $state.go('signin'); };
-      $scope.current           = $state.current;
 
       $scope.sortByVotes = function() {
         api.boardSortByVotes(board.id());
@@ -39,24 +40,10 @@
         }
       }
 
-      $rootScope.getColumnViewState = function(columnId, columnPosition, columnViewSelected) {
-        // console.log('checking', columnId, columnViewSelected);
-        // hide trash from all columns view
-        if (columnViewSelected.id === 0 && columnPosition === 0) return false;
-
-        // console.log('k', (columnViewSelected.id === 0 || columnViewSelected.id === columnId));
-        return (columnViewSelected.id === 0 || columnViewSelected.id === columnId);
-      };
-      $rootScope.columnViewSelected = null;
-      $rootScope.$watch('columnViewSelected', function(newo) { console.log('right', newo); });
-
       function showBoardNav() {
-        $rootScope.columnViews = $scope.board.columns({withTrash: true}).map(function(column) {
+        view.column.setOptions(board.columns({withTrash: true}).map(function(column) {
           return {id: column.id, label: column.title, position: column.position};
-        });
-        $rootScope.columnViews.unshift({id: 0, label: 'View All', position: null});
-        $rootScope.columnViewSelected = $rootScope.columnViews[0];
-        $timeout(function() { $rootScope.columnViewSelected = $rootScope.columnViews[1]; }, 1000);
+        }));
 
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;
@@ -79,16 +66,12 @@
         }
       });
 
-      $rootScope.currentTab   = 'board';
-      $rootScope.switchTab    = function(tabName) { $rootScope.currentTab = tabName; };
-      $rootScope.cardDragging = false;
-
       $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
-        $rootScope.cardDragging = true;
+        view.cardDragging = true;
       });
 
       $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
-        $rootScope.cardDragging = false;
+        view.cardDragging = false;
       });
     }]);
 })();

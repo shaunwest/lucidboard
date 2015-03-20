@@ -3,21 +3,11 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$rootScope', '$scope', '$state', '$interval', 'api',
-    'user', 'board', 'eventerFactory', 'timer',
-    function($rootScope, $scope, $state, $interval, api, user, board, eventerFactory, timer) {
+  .controller('BoardCtrl', ['$scope', '$state', '$interval', 'api',
+    'user', 'board', 'eventerFactory', 'timer', 'view',
+    function($scope, $state, $interval, api, user, board, eventerFactory, timer, view) {
 
       if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
-
-      $scope.board             = board;
-      $scope.timerMinutesInput = 5;
-
-      // Unlock cards when our scope dies
-      $scope.$on('$destroy', function() {
-        board.locks.forEach(function(cardId) {
-          api.cardUnlock(board.id(), cardId);
-        });
-      });
 
       eventerFactory().event('column:create:' + board.id(), function(col) {
         board.columnCreate(col);
@@ -58,6 +48,27 @@
         board.flipCard(cardId);
 
       }).hook($scope);
+
+      view.init();
+
+      $scope.board             = board;
+      $scope.view              = view;
+      $scope.timerMinutesInput = 5;
+
+
+      // Unlock cards when our scope dies
+      $scope.$on('$destroy', function() {
+        board.locks.forEach(function(cardId) {
+          api.cardUnlock(board.id(), cardId);
+        });
+      });
+
+      $scope.getColumnViewState = function(columnId, columnPosition, columnViewSelected) {
+        // hide trash from all columns view
+        if (view.column.current.id === 0 && columnPosition === 0) return false;
+
+        return (view.column.current.id === 0 || view.column.current.id === columnId);
+      };
 
       $scope.createCard = function(column) {
         api.cardCreate(board.id(), column.id, {});

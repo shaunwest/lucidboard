@@ -29,7 +29,6 @@
       };
 
       var boardSort = function() {
-        console.log('k');
         board.columns = _.sortBy(board.columns, 'position');
 
         // Per column, cards are sorted by position, but if a position value
