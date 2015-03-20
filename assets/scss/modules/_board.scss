@@ -47,8 +47,9 @@
 }
 
 .editable-wrap .editable-controls>input {
-    font-size: 1.75em;
-    font-weight: bold;
+    @extend %font--heading;
+    font-size: $h4-size;
+    padding: 0;
 }
 
 .editable-controls, .editable-wrap {
