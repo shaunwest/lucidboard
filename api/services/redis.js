@@ -67,6 +67,14 @@ module.exports = {
     publish('board:timerStart:' + boardId, {seconds: seconds}, r);
   },
 
+  boardTimerPause: function(boardId) {
+    publish('board:timerPause:' + boardId, {});
+  },
+
+  boardTimerReset: function(boardId, seconds, r) {
+    publish('board:timerReset:' + boardId, {seconds: seconds}, r);
+  },
+
   trashCardsAndDeleteColumn: function(boardId, columnId, r) {
     publish('board:trashCardsAndDeleteColumn:' + boardId, {columnId: columnId}, r);
   },

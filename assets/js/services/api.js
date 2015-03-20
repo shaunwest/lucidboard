@@ -202,6 +202,12 @@
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
+        timerPause: function(boardId, cb) {
+          post('/api/boards/' + boardId + '/timer-pause', {}, cb);
+        },
+        timerReset: function(boardId, seconds, cb) {
+          post('/api/boards/' + boardId + '/timer-reset', {seconds: seconds}, cb);
+        },
         getConfig: function(cb) { get('/api/config', cb); },
 
         delegateAdmin: function(username, password, cb) {

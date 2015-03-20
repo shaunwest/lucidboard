@@ -1,0 +1,19 @@
+<div>
+  <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
+    <desc>Board Clock Timer Icon</desc>
+    <use xlink:href="#clock"></use>
+  </svg>
+  {{timer.remaining | secondsToMinutes}}
+  <form>
+    <input class="text-input-clear mlm" type="text" size="4" data-ng-model-options="{ getterSetter: true }" data-ng-model="timer.startMinutes">
+    <a href="#" class="outline mlm" data-ng-show="showTimerStart" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+      Start
+    </a>
+    <a href="#" class="outline mlm" data-ng-show="!showTimerStart" data-ng-click="timerPause(); clockPop = !clockPop">
+      Pause
+    </a>
+    <a href="#" class="outline mlm" data-ng-click="timerReset(timerMinutesInput); clockPop = !clockPop">
+      Reset
+    </a>
+  </form>
+</div>

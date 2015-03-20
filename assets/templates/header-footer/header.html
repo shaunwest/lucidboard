@@ -41,6 +41,7 @@
                 </h1>
             </a>
         </div>
+<<<<<<< HEAD
         <ul class="x-list-inline">
             <li class="nav-full" data-ng-show="board.votesEnabled && board.isFacilitator">
                 <div>
@@ -96,6 +97,75 @@
         </ul>
         <div class="board-menu" data-ng-show="view.boardMenu.shown">
             <ul class="y-list">
+=======
+        <div class="tier">
+            <ul class="x-list-small">
+                <li>
+                    <a href="#">
+                        <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
+                    </a>
+                </li>
+                <li>
+                    <!--<a href="#" data-ng-click="showTimerForm = !showTimerForm">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Board Clock Timer Icon</desc>
+                            <use xlink:href="#clock"></use>
+                        </svg>
+                        {{timer.remaining | secondsToMinutes}}
+                    </a>
+                    <input data-ng-show="showTimerForm" class="text-input" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+                           data-ng-model="timerMinutesInput">
+                    <button data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)" class="btn">
+                        Start
+                    </button>-->
+                </li>
+                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
+                    <a href="#">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
+                      data-ng-class="{active:view.tab.current === 'settings'}"
+                      data-ng-show="board.isBoardOwner()">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Board Settings Icon</desc>
+                            <use xlink:href="#settings"></use>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+                <li data-ng-show="board.votesEnabled() && !board.isBoardOwner()">
+                    <a href="#">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tier large-view">
+        <div class="tier">
+            <a href="/boards" class="aside-left">
+                <svg class="icon-logo">
+                    <desc>Logo</desc>
+                    <use xlink:href="#lucidboard"></use>
+                </svg>
+            </a>
+            <ul class="x-list-small aside-right" data-ng-show="user.signedIn()">
+                <li>
+                    <a class="divided-copy" href="/boards">
+                        All Boards
+                    </a>
+                </li>
+>>>>>>> added pause/reset to timer
                 <li>
                     <a href="#" data-ng-click="view.closeMenus(); goFullScreen();">
                         Go Fullscreen
@@ -107,11 +177,43 @@
                     </a>
                 </li>
                 <li>
+<<<<<<< HEAD
                     <a href="/boards/{{board.id}}/export/csv"
                       data-ng-click="view.closeMenus()"
                       target="_self"
                       >
                         Export to CSV
+=======
+                    <!--<a href="#" class="btn" data-ng-click="toggleTimerForm($event)">
+                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
+                            <desc>Board Clock Timer Icon</desc>
+                            <use xlink:href="#clock"></use>
+                        </svg>
+                        {{timer.remaining | secondsToMinutes}}
+                      </a>
+                      <form data-ng-show="showTimerForm">
+                        <input class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+                            data-ng-model="timerMinutesInput">
+                        <a href="#" class="outline mlm" data-ng-show="showTimerStart" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                            Start
+                        </a>
+                        <a href="#" class="outline mlm" data-ng-show="!showTimerStart" data-ng-click="timerPause(); clockPop = !clockPop">
+                            Pause
+                        </a>
+                        <a href="#" class="outline mlm" data-ng-click="timerReset(timerMinutesInput); clockPop = !clockPop">
+                            Reset
+                        </a>
+                      </form>-->
+                    <timer-widget></timer-widget>
+              </li>
+              <li data-ng-show="board.votesEnabled()">
+                  <a href="#" class="btn">
+                      <svg class="aside-left icon-standard" fill="#ffffff">
+                          <desc>Vote icon</desc>
+                          <use xlink:href="#vote"></use>
+                      </svg>
+                      {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+>>>>>>> added pause/reset to timer
                     </a>
                 </li>
                 <li>

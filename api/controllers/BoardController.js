@@ -656,6 +656,49 @@ module.exports = {
     });
   },
 
+  /*timerStart: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+      seconds = parseInt(req.param('seconds'));
+
+    var bits = {
+      timerStart:  new Date(),
+      timerLength: seconds
+    };
+
+    Board.update(boardId, bits).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+
+      redis.boardTimerStart(boardId, seconds);
+    });
+  },*/
+
+  timerPause: function(req, res) {
+    var boardId = parseInt(req.param('id'));
+    redis.boardTimerPause(boardId);
+  },
+
+  timerReset: function(req, res) {
+    //var boardId = parseInt(req.param('id'));
+    //redis.boardTimerReset(boardId);
+    var boardId = parseInt(req.param('id')),
+        seconds = parseInt(req.param('seconds'));
+
+    var bits = {
+      timerStart:  new Date(),
+      timerLength: seconds
+    };
+
+    Board.update(boardId, bits).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+
+      redis.boardTimerReset(boardId, seconds);
+    });
+  },
+
   config: function(req, res) {
     res.jsonx(config.all());
   }
