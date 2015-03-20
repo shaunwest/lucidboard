@@ -82,7 +82,7 @@
           api.resubscribe();  // resubscribe to websocket events
 
           // Re-lock all our locked cards
-          board.getLockedCardIds().forEach(function(cardId) {
+          board.locks.forEach(function(cardId) {
             api.cardLock(board.id(), cardId);
           });
         });
