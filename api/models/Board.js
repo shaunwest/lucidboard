@@ -51,11 +51,18 @@ module.exports = {
 
     toJSON: function() {
       var timerLeft = 0;
+      var timerRunning = false;
 
       if (this.timerStart) {
+        timerRunning = true;
         timerLeft = parseInt(this.timerLength
           - (new Date().getTime() - this.timerStart.getTime())
           / 1000);
+
+        if(timerLeft < 0) {
+          timerLeft = 0;
+          timerRunning = false;
+        }
       }
 
       return {
@@ -63,6 +70,7 @@ module.exports = {
         title:           this.title,
         columns:         this.columns,
         creator:         this.creator,
+        timerRunning:   timerRunning,
         timerLength:     this.timerLength,
         timerLeft:       timerLeft,
         votesPerUser:    this.votesPerUser,

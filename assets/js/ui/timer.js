@@ -19,9 +19,20 @@
             scope.showTimerStart = true;
           });
 
-          if (board.timerLeft() > 0) {
+          console.log('timer running');
+          console.log(board.timerRunning());
+          // Timer is set (start it)
+          if (board.timerRunning()) {
             timer.remaining = board.timerLeft();
+            console.log('timer left');
+            console.log(board.timerLeft());
             timer.start();
+            // Not running
+          } else {
+            scope.showTimerStart = true;
+            console.log('timer length');
+            console.log(board.timerLength());
+            timer.remaining = board.timerLength();
           }
 
           scope.timerStart = function () {

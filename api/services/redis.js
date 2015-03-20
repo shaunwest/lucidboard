@@ -67,8 +67,8 @@ module.exports = {
     publish('board:timerStart:' + boardId, {seconds: seconds}, r);
   },
 
-  boardTimerPause: function(boardId) {
-    publish('board:timerPause:' + boardId, {});
+  boardTimerPause: function(boardId, r) {
+    publish('board:timerPause:' + boardId, {}, r);
   },
 
   boardTimerReset: function(boardId, seconds, r) {

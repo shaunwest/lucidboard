@@ -202,8 +202,8 @@
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
-        timerPause: function(boardId, cb) {
-          post('/api/boards/' + boardId + '/timer-pause', {}, cb);
+        timerPause: function(boardId, seconds, cb) {
+          post('/api/boards/' + boardId + '/timer-pause', {seconds: seconds}, cb);
         },
         timerReset: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-reset', {seconds: seconds}, cb);
