@@ -26,7 +26,6 @@
         },
 
         pause: function () {
-          console.log('pause');
           $interval.cancel(timer);
           stopCallbacks.forEach(function(cb) {
             cb();
@@ -34,7 +33,6 @@
         },
 
         reset: function (seconds) {
-          console.log('reset');
           this.remaining = seconds || this.startTime;
         },
 
@@ -47,7 +45,6 @@
         },
 
         start: function start () {
-          console.log('start');
           var sound = new Audio();
           var seconds = this.remaining || this.startTime;
 
