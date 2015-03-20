@@ -22,10 +22,12 @@
 
 
       var loadBoard = function(b) {
+        if (!b) return false;
         board = b;
         boardSort();
         figureVotesRemaining();
         parseCards();
+        return true;
       };
 
       var boardSort = function() {
@@ -127,8 +129,11 @@
         load: function(boardId) {
           defer = $q.defer();
           api.boardGet(boardId, function(b) {
-            loadBoard(b);
-            defer.resolve(board);
+            if (loadBoard(b)) {
+              defer.resolve(board);
+            } else {
+              defer.reject('board_not_found');
+            }
           });
           return defer.promise;
         },

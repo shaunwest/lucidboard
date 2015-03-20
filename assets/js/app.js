@@ -36,6 +36,10 @@
             $rootScope.goto = $location.path();
             $state.go('signin');
             break;
+          case 'board_not_found':
+            alert("Sorry, that board doesn't seem to exist.");
+            $state.go('boards');
+            break;
         }
       });
 
