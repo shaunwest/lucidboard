@@ -43,7 +43,6 @@
         </div>
         <div class="tier">
             <ul class="x-list-small">
-              <!--
                 <li>
                     <a href="#">
                         <select id="viewSections" data-ng-options="columnView.label for columnView in columnViews" data-ng-model="columnViewSelected"></select>
@@ -66,7 +65,6 @@
                         </span> - - >
                     </a>
                 </li>
-                -->
                 <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
                     <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -127,17 +125,38 @@
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
+                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
+                    <div>
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Vote icon</desc>
+                            <use xlink:href="#vote"></use>
+                        </svg>
+                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                    </div>
+                </li>
                 <li>
                     <select id="viewSections" data-ng-model="view.column.current"
                       data-ng-options="columnView.label for columnView in view.column.options">
                     </select>
                 </li>
                 <li data-ng-show="board.isBoardOwner()">
-                    <a class="btn" href="#" data-ng-click="sortByVotes()">
+                    <a href="#" class="btn" data-ng-click="sortByVotes()">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Sort icon</desc>
+                            <use xlink:href="#sort-amount-desc"></use>
+                        </svg>
                         Sort by Votes
                     </a>
                 </li>
-                <!--
+                <li>
+                    <a href="#" class="btn" data-ng-click="goFullScreen()">
+                        <svg class="aside-left icon-standard" fill="#ffffff">
+                            <desc>Fullscreen icon</desc>
+                            <use xlink:href="#enlarge"></use>
+                        </svg>
+                        Fullscreen
+                    </a>
+                </li>
                 <li>
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
@@ -150,32 +169,11 @@
                         <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
                             Start
                         </span>
-                        < ! - - <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
                             Reset
-                        </span> - - >
+                        </span>
                     </a>
                 </li>
-                -->
-                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
-                    <a href="#" class="btn">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
-                        </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
-                    </a>
-                </li>
-                <!--
-                <li>
-                    <a href="#" class="btn" data-ng-click="goFullScreen()">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Fullscreen icon</desc>
-                            <use xlink:href="#fullscreen"></use>
-                        </svg>
-                        Fullscreen
-                    </a>
-                </li>
-                -->
                 <li data-ng-show="board.isBoardOwner()">
                     <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
                       data-ng-class="{active:view.tab.current === 'settings'}">
@@ -186,14 +184,13 @@
                         Settings
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled() && !board.isBoardOwner()">
-                    <div>
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
+                <li>
+                    <a href="#" data-ng-click="cardMenu = !cardMenu">
+                        <svg class="icon-standard">
+                            <desc>Card menu toggle icon</desc>
+                            <use xlink:href="#card-menu"></use>
                         </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
-                    </div>
+                    </a>
                 </li>
             </ul>
         </div>
