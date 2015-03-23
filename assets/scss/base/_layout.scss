@@ -46,6 +46,7 @@ html, body {
 .tier {
     @include clearfix;
     @include span(12 of 12 omega);
+    position: relative;
 }
 
 .tier-padded {

@@ -73,3 +73,35 @@
         border: 0.125em dashed $storm;
     }
 }
+
+.board-menu {
+    z-index: 998;
+    background: $white;
+    position: absolute;
+    right: 0;
+    top: 1.75em;
+    border: 0.04em solid $cloudy-day;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 0.125em 0.5em 0;
+    a {
+        display: block;
+        color: $fiord;
+        &:hover,
+        &:active,
+        &:focus {
+            color: $fiord-darken;
+        }
+    }
+    li {
+        cursor: pointer;
+        padding: 0.5em 1em 0.5em 0.5em;
+        margin-bottom: 0;
+        border: 0.0625em solid $cloudy-day;
+        transition: background 0.2s ease-in-out;
+        &:hover {
+            background: darken($white, 5%);
+        }
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+}
