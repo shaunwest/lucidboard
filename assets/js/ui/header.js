@@ -19,12 +19,12 @@
       $scope.timerStart = function(minutes) {
         $scope.clockPop = true;
         $scope.showTimerForm = false;
-        api.timerStart(board.id(), minutes * 60);
+        api.timerStart(board.id, minutes * 60);
         $timeout(function() { $scope.clockPop = false; }, 500);
       };
 
       $scope.sortByVotes = function() {
-        api.boardSortByVotes(board.id());
+        api.boardSortByVotes(board.id);
       };
 
       $scope.goFullScreen = function() {
@@ -41,21 +41,32 @@
       }
 
       function showBoardNav() {
-        view.column.setOptions(board.columns({withTrash: true}).map(function(column) {
+        var options = board.columns.map(function(column) {
           return {id: column.id, label: column.title, position: column.position};
-        }));
+        });
+
+        options.push(options.shift());  // Move trash from the beginning to the end
+        view.column.setOptions(options);
 
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;
 
-        if (board.timerLeft() > 0) {
-          timer.start(board.timerLeft());
+        if (board.timerLeft > 0) {
+          timer.start(board.timerLeft);
         }
       }
 
       if ($state.current.name === 'board') {
         showBoardNav();
       }
+
+      $scope.checkBoardTitle = function(title) {
+        api.boardUpdate(board.id, {title: title});
+        // the false returned will close the editor and not update the model.
+        // (model update will happen when the event is pushed from the server)
+        return false;
+      };
+
 
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
         $scope.current = toState;

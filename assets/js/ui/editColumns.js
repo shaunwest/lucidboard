@@ -13,7 +13,7 @@
           scope.error = false;
 
           scope.deleteColumn = function(column) {
-            api.columnDelete(scope.board.id(), column.id);
+            api.columnDelete(scope.board.id, column.id);
           };
 
           scope.createColumn = function() {
@@ -21,7 +21,7 @@
               scope.error = true;
               return;
             }
-            api.columnCreate(board.id(), {title: scope.title});
+            api.columnCreate(board.id, {title: scope.title});
             scope.title = '';
             scope.error = false;
           };

@@ -11,18 +11,19 @@
         },
         controller: ['$scope', '$state', 'api', 'config', function($scope, $state, api, config) {
 
-          $scope.colsets = config.colsets();
+          $scope.colsets = config.colsets;
 
           if ($scope.board) {
-            $scope.b = {
-              id:             $scope.board.id(),
-              title:          $scope.board.title(),
-              votesPerUser:   $scope.board.votesPerUser(),
-              p_seeVotes:     $scope.board.p_seeVotes(),
-              p_seeContent:   $scope.board.p_seeContent(),
-              p_combineCards: $scope.board.p_combineCards(),
-              p_lock:         $scope.board.p_lock()
-            };
+            $scope.b = $scope.board;
+            // $scope.b = {
+            //   id:             $scope.board.id(),
+            //   title:          $scope.board.title(),
+            //   votesPerUser:   $scope.board.votesPerUser(),
+            //   p_seeVotes:     $scope.board.p_seeVotes(),
+            //   p_seeContent:   $scope.board.p_seeContent(),
+            //   p_combineCards: $scope.board.p_combineCards(),
+            //   p_lock:         $scope.board.p_lock()
+            // };
           } else {
             $scope.b = {
               id:             null,

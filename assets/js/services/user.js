@@ -3,27 +3,37 @@
   angular.module('hansei.services')
     .factory('user', ['$q', 'api', 'localStorageService', function($q, api, localStorageService) {
 
-      var user = { token: localStorageService.get('authToken') },
-          initialTokenDefer;
+      var fetchLSToken = function() {
+        return localStorageService.get('authToken');
+      };
 
-      return {
-        obj:      function() { return user; },
-        id:       function() { return user.id; },
-        name:     function() { return user.name; },
-        token:    function() { return user.token; },
-        signedIn: function() { return Boolean(user.token); },
+      var user, initialTokenDefer, initialToken = fetchLSToken();
+
+      user = {
+        id:       null,
+        name:     null,
+        token:    initialToken,
+        signedIn: Boolean(initialToken),
+
+        refresh: function(data) {
+          this.id       = data.id;
+          this.name     = data.name;
+          this.token    = data.token;
+          this.signedIn = Boolean(data.token);
+        },
         signin:   function(username, pass, cb) {
           api.signin(username, pass, function(data, jwr) {
             localStorageService.set('authToken', data.token);
             initialTokenDefer.resolve();
-            user = data;
+            this.refresh(data);
             cb(data, jwr);
-          });
+          }.bind(this));
         },
         signout: function() {
-          var beganSignedIn = Boolean(user.token);
-          user = { token: null };
+          var beganSignedIn = Boolean(this.token);
           localStorageService.remove('authToken');
+          this.token = null;
+          this.signedIn = false
           return beganSignedIn;
         },
         initialRefreshToken: function() {
@@ -36,12 +46,12 @@
           return initialTokenDefer.promise;
         },
         refreshToken: function(cb) {
-          api.refreshToken(user.token, function(data, jwr) {
-            user.token = data.token || null;
-            localStorageService.set('authToken', user.token);
-            user = data;
+          api.refreshToken(this.token, function(data, jwr) {
+            this.token = data.token || fetchLSToken() || null;
+            localStorageService.set('authToken', this.token);
+            this.refresh(data);
             cb(data, jwr);
-          });
+          }.bind(this));
         },
         initialTokenPromise: function() {
           return initialTokenDefer.promise;
@@ -53,5 +63,6 @@
         },
       };
 
+      return user;
     }])
 })();

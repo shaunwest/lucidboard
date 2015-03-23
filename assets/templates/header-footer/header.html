@@ -15,12 +15,12 @@
                     </svg>
                 </a>
             </li>
-            <li data-ng-show="user.signedIn()">
+            <li data-ng-show="user.signedIn">
                 <a href="/boards">
                     All Boards
                 </a>
             </li>
-            <li data-ng-show="user.signedIn()">
+            <li data-ng-show="user.signedIn">
                 <a href="" data-ng-click="signout($event)">
                     Sign Out
                 </a>
@@ -50,13 +50,13 @@
                         </select>
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
+                <li data-ng-show="board.votesEnabled && board.isFacilitator">
                     <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
                             <use xlink:href="#vote"></use>
                         </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
                     </a>
                 </li>
                 <li>
@@ -79,7 +79,7 @@
                 <li>
                     <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
                       data-ng-class="{active:view.tab.current === 'settings'}"
-                      data-ng-show="board.isBoardOwner()">
+                      data-ng-show="board.isFacilitator">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Board Settings Icon</desc>
                             <use xlink:href="#settings"></use>
@@ -87,13 +87,13 @@
                         Settings
                     </a>
                 </li>
-                <li data-ng-show="board.votesEnabled() && !board.isBoardOwner()">
+                <li data-ng-show="board.votesEnabled && !board.isFacilitator">
                     <a href="#">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
                             <use xlink:href="#vote"></use>
                         </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
                     </a>
                 </li>
             </ul>
@@ -127,13 +127,13 @@
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
-                <li data-ng-show="board.votesEnabled() && board.isBoardOwner()">
+                <li data-ng-show="board.votesEnabled && board.isFacilitator">
                     <div>
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Vote icon</desc>
                             <use xlink:href="#vote"></use>
                         </svg>
-                        {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
                     </div>
                 </li>
                 <li>
@@ -158,7 +158,7 @@
                         </span>
                     </a>
                 </li>
-                <li data-ng-show="board.isBoardOwner()">
+                <li data-ng-show="board.isFacilitator">
                     <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
                       data-ng-class="{active:view.tab.current === 'settings'}">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -188,7 +188,7 @@
                             Fullscreen
                         </a>
                     </li>
-                    <li data-ng-show="board.isBoardOwner()">
+                    <li data-ng-show="board.isFacilitator">
                         <a href="#" data-ng-click="sortByVotes()">
                             <svg class="aside-left icon-standard">
                                 <desc>Sort icon</desc>

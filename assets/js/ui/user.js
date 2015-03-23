@@ -8,9 +8,9 @@
 
       $rootScope.showHeader = true;
 
-      if (config.signin() === 'dumb') {
+      if (config.signin === 'dumb') {
         $rootScope.signinStyle = 'user';
-      } else if (config.signin() === 'ldap') {
+      } else if (config.signin === 'ldap') {
         $rootScope.signinStyle = 'userpass';
       }
 

@@ -2,8 +2,7 @@
   'use strict';
 
   var loadConfig = ['config', function(config) {
-    config.load();
-    return config.promise();
+    return config.load();
   }];
 
   angular.module('hansei.routes')
@@ -27,11 +26,10 @@
           }],
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
-            if (user.token()) {
-              api.boardsGetList(function(boards) {
-                defer.resolve(boards);
-              });
+            if (user.signedIn) {
+              api.boardsGetList(function(boards) { defer.resolve(boards); });
             } else {
+              console.log('notloggedisuser, ', user);
               defer.reject('not_logged_in');
             }
             return defer.promise;
@@ -45,7 +43,7 @@
         resolve: {
           loadConfig: loadConfig,
           boardData: ['board', 'user', '$stateParams', '$q', function(board, user, $stateParams, $q) {
-            if (!user.token()) {
+            if (!user.signedIn) {
               var defer = $q.defer();
               defer.reject('not_logged_in');
               return defer.promise;

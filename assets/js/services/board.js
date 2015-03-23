@@ -3,7 +3,7 @@
   angular.module('hansei.services')
     .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user',
     function($rootScope, $q, $timeout, api, user) {
-      var board, defer, votesRemaining, eventCb,
+      var board, defer, eventCb,
           locks    = [],  // card ids that this client has locked
           theQueue = [],  // array of functions to exec when user is done with locks
           _ = {
@@ -18,12 +18,12 @@
         eventCb(type, bits);
       };
 
-      var isBoardOwner = function() { return user.id() == board.creator; };
 
-
-      var loadBoard = function(b) {
-        if (!b) return false;
-        board = b;
+      // copy a board data object into the live board model, set some things,
+      // and forget about the obj.
+      var loadBoard = function(boardObj) {
+        if (!boardObj) return false;
+        setPropertiesFrom(boardObj);
         boardSort();
         figureVotesRemaining();
         parseCards();
@@ -38,6 +38,8 @@
         for (var i=0; i<board.columns.length; i++) {
           board.columns[i] = fixColumn(board.columns[i]);
         }
+
+        board.updateTrashIsEmpty();
       };
 
       var fixColumn = function(column) {
@@ -68,14 +70,14 @@
       };
 
       var figureVotesRemaining = function() {
-        votesRemaining = board.votesPerUser;
+        board.votesRemaining = board.votesPerUser;
 
-        if (votesRemaining === -1) return;
+        if (board.votesRemaining === -1) return;
 
         spiderCards(function(card) {
           card.votes.forEach(function(v) {
-            if (v.user === user.obj().id) {
-              votesRemaining--;
+            if (v.user === user.id) {
+              board.votesRemaining--;
             }
           });
         });
@@ -84,19 +86,13 @@
       var parseCards = function() {
         // Set up some card properties that exist purely on the client side
         spiderCards(function(card) {
-          if (isBoardOwner()) {
-            card.userCanWrite = true;
-          } else {
-            card.userCanWrite = card.creator === user.id();
-          }
-
           card.lockedByAnother = !!card.locked;
           card.myVoteCount     = countOwnVotes(card);
         });
       };
 
       var countOwnVotes = function(card) {
-        var uid = user.id();
+        var uid = user.id;
         return card.votes.reduce(function(memo, v) {
           return v.user === uid ? memo + 1 : memo;
         }, 0);
@@ -105,23 +101,38 @@
       var spiderCards = function(cb) {
         board.columns.forEach(function(col) {
           col.cardSlots.forEach(function(slot) {
-            if (angular.isArray(slot)) {
-              slot.forEach(function(c) { cb(c); });
-            } else {
-              cb(slot);
-            }
+            slot.forEach(function(c) { cb(c); });
           });
         });
       };
 
-      var queue = function(fn) { theQueue.push(fn); };
+      var setPropertiesFrom = function(obj) {
+        var isFacilitator = user.id == obj.creator;
 
-      var maybeDefer = function(fn) {
-        locks.length ? queue(fn) : fn();
+        board.loaded           = true;
+        board.id               = obj.id;
+        board.title            = obj.title;
+        board.columns          = obj.columns;
+        board.trash            = obj.columns[0];
+        board.votesEnabled     = obj.votesPerUser !== 0;
+        board.votesAreInfinite = obj.votesPerUser === -1;
+        board.votesPerUser     = obj.votesPerUser;
+        board.p_seeVotes       = obj.p_seeVotes;
+        board.p_seeContent     = obj.p_seeContent;
+        board.p_combineCards   = obj.p_combineCards;
+        board.p_lock           = obj.p_lock;
+        board.isFacilitator    = isFacilitator;
+        board.seeVotes         = isFacilitator || obj.p_seeVotes;
+        board.seeContent       = isFacilitator || obj.p_seeContent;
+        board.timerLength      = obj.timerLength;
+        board.timerLeft        = obj.timerLeft;
       };
 
+      var queue      = function(fn) { theQueue.push(fn); };
+      var maybeDefer = function(fn) { board.hasCardLocks ? queue(fn) : fn(); };
 
-      return {
+
+      board = {
         setEventCb: function(_cb) {
           eventCb = _cb;
         },
@@ -138,33 +149,10 @@
           return defer.promise;
         },
 
-        isBoardOwner:   isBoardOwner,
+        promise: function() { return defer.promise; },
 
-        promise:        function() { return defer.promise; },
-
-        obj:            function() { return board; },
-        loaded:         function() { return board && board.id; },
-
-        id:             function() { return board.id; },
-        title:          function() { return board.title; },
-        trash:          function() { return board.columns[0]; },
-        trashIsEmpty:   function() { return (this.trash().cardSlots.length === 0); },
-        allColumns:     function() { return board.columns; },
-
-        votesEnabled:   function() { return board.votesPerUser !== 0; },
-        votesPerUser:   function() { return board.votesPerUser; },
-        p_seeVotes:     function() { return board.p_seeVotes; },
-        p_seeContent:   function() { return board.p_seeContent; },
-        p_combineCards: function() { return board.p_combineCards; },
-        p_lock:         function() { return board.p_lock; },
-
-        seeVotes:       function() { return this.isBoardOwner() || this.p_seeVotes(); },
-        seeContent:     function() { return this.isBoardOwner() || this.p_seeContent(); },
-
-        timerLength:    function() { return board.timerLength; },
-        timerLeft:      function() { return board.timerLeft; },
-
-        votesRemaining: function() { return votesRemaining; },
+        hasCardLocks: false,
+        locks:        locks,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
@@ -176,18 +164,8 @@
           return column.cardSlots[column.cardSlots.length - 1].position + 1;
         },
 
-        columns: function(o) {
-          var ret = board.columns.slice(1);
-
-          if (o && o.withTrash) {
-            ret.push(board.columns.slice(0, 1)[0]);
-          }
-
-          if (o && o.excludingId) {
-            ret = ret.filter(function(c) { return c.id !== o.excludingId; });
-          }
-
-          return ret;
+        updateTrashIsEmpty: function() {
+          this.trashIsEmpty = this.columns[0].cardSlots.length === 0;
         },
 
         column: function(id) {
@@ -275,6 +253,7 @@
               board.columns[i].position = nextPosition;
               nextPosition++;
             }
+            board.updateTrashIsEmpty();
           }.bind(this));
         },
 
@@ -302,8 +281,8 @@
 
             card.myVoteCount = countOwnVotes(card);
 
-            if (board.votesPerUser > 0 && vote.user === user.id()) {
-              votesRemaining--;
+            if (board.votesPerUser > 0 && vote.user === user.id) {
+              board.votesRemaining--;
             }
           }.bind(this));
         },
@@ -340,7 +319,10 @@
         },
 
         rememberCardLock: function(cardId) {
-          if (locks.indexOf(cardId) === -1) locks.push(cardId);
+          if (locks.indexOf(cardId) === -1) {
+            locks.push(cardId);
+            this.hasCardLocks = true;
+          }
         },
 
         forgetCardLock: function(cardId) {
@@ -351,6 +333,7 @@
           if (locks.length === 0) {
             var fn;
             while (fn = theQueue.shift()) fn();
+            this.hasCardLocks = false;
           }
         },
 
@@ -399,6 +382,7 @@
 
           }.bind(this));
 
+          this.updateTrashIsEmpty();
         },
 
         cardMove: function(info) {
@@ -467,22 +451,9 @@
           }.bind(this));
 
           return ret;
-        },
-
-        colIdAndPositionInterferesWithLock: function(columnId, position) {
-          return Boolean(locks.length);
-        },
-
-        cardMapIntereferesWithLock: function(info) {
-          return Boolean(locks.length);
-        },
-
-        hasCardLocks: function() {
-          return Boolean(locks.length);
-        },
-
-        locks: locks
-
+        }
       };
+
+      return board;
     }])
 })();

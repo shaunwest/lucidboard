@@ -8,7 +8,7 @@
      data-drop-channel="card"
      data-on-drop-success="dropSuccessHandler($event)"
      data-ui-on-drop="combineThings($event, $data, card.id)">
-     <div data-ng-show="(card.userCanWrite || !board.p_lock()) && !card.lockedByAnother">
+     <div data-ng-show="(card.userCanWrite || !board.p_lock) && !card.lockedByAnother">
          <div class="cardcontent"
              data-e-form="editform"
              data-ng-click="editorShow(card)"
@@ -18,10 +18,10 @@
              data-onhide="endCardLock(card)"
              data-onbeforesave="checkCardContent($data, column.id, card.id)"
              data-ng-disabled="true">
-             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
+             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
 {{card.content}}
             </pre>
-            <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
+            <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent">
 {{card.content | obfuscated}}
             </pre>
             <pre data-ng-show="!card.content">
@@ -37,16 +37,16 @@ Click to enter comments...
             </a>
         </div>
         <div class="handle aside-left" title="{{card.myVoteCount}}"
-          data-ng-show="!isEditorVisible() && board.votesEnabled()">
+          data-ng-show="!isEditorVisible() && board.votesEnabled">
             <a href="#" data-ng-click="upvote(card, $event)">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
                     <use xlink:href="#vote"></use>
                 </svg>
-                <span data-ng-show="board.seeVotes()">
+                <span data-ng-show="board.seeVotes">
                     {{card.votes.length}}
                 </span>
-                <span data-ng-show="!board.seeVotes() && card.myVoteCount">
+                <span data-ng-show="!board.seeVotes && card.myVoteCount">
                     ({{card.myVoteCount}})
                 </span>
             </a>
@@ -78,8 +78,11 @@ Click to enter comments...
                 </li>
                 <li>
                     Move Card To
-                    <div data-ng-repeat="col in board.columns({withTrash: true, excludingId: card.column})">
-                        <a class="pointer" role="menuitem" tabindex="1" data-ng-click="moveTo(col, card)" href="#">
+                    <div data-ng-repeat="col in board.columns">
+                        <a class="pointer" role="menuitem" tabindex="1"
+                          data-ng-show="col.title !== column.title"
+                          data-ng-click="moveTo(col, card)" href="#"
+                          >
                             {{col.title}}
                         </a>
                     </div>
@@ -87,12 +90,12 @@ Click to enter comments...
             </ul>
         </div>
     </div>
-    <div data-ng-show="!card.userCanWrite && board.p_lock() && !card.lockedByAnother">
+    <div data-ng-show="!card.userCanWrite && board.p_lock && !card.lockedByAnother">
         <div class="cardcontent">
-            <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
+            <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
 {{card.content}}
             </pre>
-            <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent()">
+            <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent">
 {{card.content | obfuscated}}
             </pre>
             <pre data-ng-show="!card.content">

@@ -18,7 +18,7 @@
                routes,
                localStorageServiceProvider) {
 
-        localStorageServiceProvider.setPrefix('niftyboard');
+        localStorageServiceProvider.setPrefix('lucidboard');
 
         angular.forEach(routes, function(stateConfig, key) {
           $stateProvider
@@ -71,9 +71,7 @@
           // authenticated.
           user.resetInitialTokenPromise();
 
-          if (!user.token()) {
-            return;
-          }
+          if (!user.signedIn) return;
 
           // We have a token in local storage, so let's reauthenticate with it for
           // this fresh websocket connection.

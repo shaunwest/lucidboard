@@ -25,13 +25,13 @@
 
           $scope.combineThings = function($event, $data, destCardId) {
             if ($data.pile) {
-              api.boardCombinePiles(board.id(), {
+              api.boardCombinePiles(board.id, {
                 sourceColumnId: $data.sourceColumnId,
                 sourcePosition: $data.sourcePosition,
                 destCardId:     destCardId
               });
             } else {
-              api.boardCombineCards(board.id(), {
+              api.boardCombineCards(board.id, {
                 sourceCardId: $data.id,
                 destCardId:   destCardId
               });
@@ -39,14 +39,14 @@
           };
 
           $scope.checkCardContent = function(content, columnId, id) {
-            api.cardUpdate(board.id(), columnId, {id: id, content: content});
+            api.cardUpdate(board.id, columnId, {id: id, content: content});
             // the false returned will close the editor and not update the model.
             // (model update will happen when the event is pushed from the server)
             return false;
           };
 
           $scope.getCardLock = function(c) {
-            api.cardLock(board.id(), c.id, function(gotLock) {
+            api.cardLock(board.id, c.id, function(gotLock) {
               if (gotLock) {
                 board.rememberCardLock(c.id);  // so we can reestablish on websocket reconnect
               } else {
@@ -56,7 +56,7 @@
           };
 
           $scope.endCardLock = function(c) {
-            api.cardUnlock(board.id(), c.id, function(unlockWorked) {
+            api.cardUnlock(board.id, c.id, function(unlockWorked) {
               if (unlockWorked) board.forgetCardLock(c.id);
             });
           };
@@ -76,15 +76,15 @@
             event.stopPropagation();
             event.preventDefault();
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks())       return;
-            api.cardUpvote(board.id(), board.column(card.column).id, card.id);
+            if (board.hasCardLocks)         return;
+            api.cardUpvote(board.id, board.column(card.column).id, card.id);
             $timeout(function() { $scope.votePop = false; }, 500);
           };
 
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks())       return;
-            api.boardMoveCard(board.id(), {
+            if (board.hasCardLocks)         return;
+            api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
               destPosition: column.cardSlots.length + 1
@@ -93,9 +93,9 @@
 
           $scope.color = function(card, color) {
             if (board.card(card.id).locked) return;
-            if (board.hasCardLocks())       return;
+            if (board.hasCardLocks)         return;
             $scope.cardMenu = false;
-            api.cardColor(board.id(), card.column, card.id, color);
+            api.cardColor(board.id, card.column, card.id, color);
           };
 
         }],

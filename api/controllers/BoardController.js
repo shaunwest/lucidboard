@@ -70,16 +70,18 @@ module.exports = {
 
   update: function(req, res) {
     var id    = parseInt(req.param('id')),
-        title = req.body.title;
+        title = req.body.title,
+        bits  = {};
 
-    var bits = {
-      title:          req.body.title,
-      votesPerUser:   req.body.votesPerUser,
-      p_seeVotes:     req.body.p_seeVotes,
-      p_seeContent:   req.body.p_seeContent,
-      p_combineCards: req.body.p_combineCards,
-      p_lock:         req.body.p_lock
-    };
+    [ 'title',
+      'votesPerUser',
+      'p_seeVotes',
+      'p_seeContent',
+      'p_combineCards',
+      'p_lock'
+    ].forEach(function(field) {
+      if (req.body[field] !== undefined) bits[field] = req.body[field];
+    });
 
     util.boardIsLegitAndOwnedBy(id, req, res, function(board) {
       if (!board) return;

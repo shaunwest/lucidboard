@@ -3,25 +3,24 @@
   angular.module('hansei.services')
     .factory('config', ['$q', 'api', function($q, api) {
 
-      var defer = $q.defer(),
-          config;
+      var defer = $q.defer();
 
       return {
-        load: function() {
-          if (!config) {
-            api.getConfig(function(_config) {
-              config = _config;
+        signin:  null,
+        colsets: null,
+        loaded:  false,
+        promise: function() { return defer.promise; },
+        load:    function() {
+          if (!this.loaded) {
+            api.getConfig(function(config) {
+              this.signin  = config.signin;
+              this.colsets = config.colsets;
+              this.loaded  = true;
               defer.resolve();
-            });
+            }.bind(this));
           }
           return defer.promise;
-        },
-        all: function() {
-          return config;
-        },
-        signin:  function() { return config.signin; },
-        colsets: function() { return config.colsets; },
-        promise: function() { return defer.promise; }
+        }
       };
 
     }])

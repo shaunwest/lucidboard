@@ -20,7 +20,7 @@
               data-drop-channel="column">
             </div>
             <div class="column"
-              data-ng-repeat-start="column in board.columns({withTrash: true})"
+              data-ng-repeat-start="column in board.columns"
               data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
                     <li class="brand-underline">

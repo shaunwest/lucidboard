@@ -7,44 +7,44 @@
     'user', 'board', 'eventerFactory', 'timer', 'view',
     function($scope, $state, $interval, api, user, board, eventerFactory, timer, view) {
 
-      if (!board.loaded()) return $state.go('boards');  // If we has no board, go to boards list
+      if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
 
-      eventerFactory().event('column:create:' + board.id(), function(col) {
+      eventerFactory().event('column:create:' + board.id, function(col) {
         board.columnCreate(col);
-      }).event('column:update:' + board.id(), function(col) {
+      }).event('column:update:' + board.id, function(col) {
         board.columnUpdate(col);
-      }).event('card:create:' + board.id(), function(card) {
+      }).event('card:create:' + board.id, function(card) {
         if (card.you) card.openForEditWhenReady = true;
         board.cardCreate(card);
-      }).event('card:update:' + board.id(), function(card) {
+      }).event('card:update:' + board.id, function(card) {
         board.cardUpdate(card);
-      }).event('card:upvote:' + board.id(), function(vote) {
+      }).event('card:upvote:' + board.id, function(vote) {
         board.cardUpvote(vote);
-      }).event('card:vaporize:' + board.id(), function(cardId) {
+      }).event('card:vaporize:' + board.id, function(cardId) {
         board.cardVaporize(cardId);
-      }).event('card:lock:' + board.id(), function(info) {
+      }).event('card:lock:' + board.id, function(info) {
         board.cardLock(info);
-      }).event('card:unlock:' + board.id(), function(info) {
+      }).event('card:unlock:' + board.id, function(info) {
         board.cardUnlock(info);
 
         // This only matters for our own locked card id's, but
         // won't hurt for others.
         board.forgetCardLock(info.id);
-      }).event('card:color:' + board.id(), function(bits) {
+      }).event('card:color:' + board.id, function(bits) {
         board.cardColor(bits);
-      }).event('board:update:' + board.id(), function(b) {
+      }).event('board:update:' + board.id, function(b) {
         board.update(b);
-      }).event('board:moveCards:' + board.id(), function(info) {
+      }).event('board:moveCards:' + board.id, function(info) {
         board.cardMove(info);
-      }).event('board:moveColumns:' + board.id(), function(info) {
+      }).event('board:moveColumns:' + board.id, function(info) {
         board.columnMove(info);
-      }).event('board:trashCardsAndDeleteColumn:' + board.id(), function(info) {
+      }).event('board:trashCardsAndDeleteColumn:' + board.id, function(info) {
         board.columnDeleteAndTrashCards(info.columnId);
-      }).event('board:timerStart:' + board.id(), function(bits) {
+      }).event('board:timerStart:' + board.id, function(bits) {
         timer.start(bits.seconds);
-      }).event('board:combineCards:' + board.id(), function(info) {
+      }).event('board:combineCards:' + board.id, function(info) {
         board.combineCards(info);
-      }).event('board:flipCard:' + board.id(), function(cardId) {
+      }).event('board:flipCard:' + board.id, function(cardId) {
         board.flipCard(cardId);
 
       }).hook($scope);
@@ -59,7 +59,7 @@
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
         board.locks.forEach(function(cardId) {
-          api.cardUnlock(board.id(), cardId);
+          api.cardUnlock(board.id, cardId);
         });
       });
 
@@ -71,13 +71,13 @@
       };
 
       $scope.createCard = function(column) {
-        api.cardCreate(board.id(), column.id, {});
+        api.cardCreate(board.id, column.id, {});
       };
 
       // --- BEGIN xeditable stuff
 
       $scope.checkColumnTitle = function(title, id) {
-        api.columnUpdate(board.id(), {id: id, title: title});
+        api.columnUpdate(board.id, {id: id, title: title});
         // the false returned will close the editor and not update the model.
         // (model update will happen when the event is pushed from the server)
         return false;
@@ -89,7 +89,7 @@
 
         if ($data.pile) {
 
-          api.boardMovePile(board.id(), {
+          api.boardMovePile(board.id, {
             sourceColumnId: $data.sourceColumnId,
             sourcePosition: $data.sourcePosition,
             destColumnId:   destColumnId,
@@ -108,7 +108,7 @@
             extra = 1;
           }
 
-          api.boardMoveCard(board.id(), {
+          api.boardMoveCard(board.id, {
             cardId:       $data.id,
             destColumnId: destColumnId,
             destPosition: position - extra
@@ -117,7 +117,7 @@
       };
 
       $scope.moveColumn = function(column, position) {
-        api.columnMove(board.id(), column.id, position);
+        api.columnMove(board.id, column.id, position);
       };
 
     }]);

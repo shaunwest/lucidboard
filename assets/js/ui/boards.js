@@ -7,7 +7,7 @@
     function($scope, boards, user, api, config, eventerFactory) {
 
       $scope.boards  = boards;
-      $scope.colsets = config.colsets();
+      $scope.colsets = config.colsets;
 
       // reverse the array to order boards by descending create date
       $scope.boards.reverse();
