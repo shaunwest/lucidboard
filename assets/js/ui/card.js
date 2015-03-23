@@ -102,10 +102,10 @@
         link: function(scope, element) {
 
           // If we were the one who created this card, let's edit it!
-          // if (scope.card.openForEditWhenReady) {
-          //   scope.editform.$show();
-          //   delete scope.card.openForEditWhenReady;
-          // }
+          if (scope.card.openForEditWhenReady) {
+            scope.editform.$show();
+            delete scope.card.openForEditWhenReady;
+          }
 
         }
       };

@@ -37,7 +37,7 @@
             </a>
             <a href="#" class="aside-left" data-ng-click="view.tab.switch('board')" data-ng-class="{active:view.tab.current === 'board'}">
                 <h1 class="delta copy-inverse heading-small-height mbn">
-                    {{board.title()}}
+                    {{board.title}}
                 </h1>
             </a>
         </div>
@@ -107,7 +107,7 @@
                     <use xlink:href="#lucidboard"></use>
                 </svg>
             </a>
-            <ul class="x-list-small aside-right" data-ng-show="user.signedIn()">
+            <ul class="x-list-small aside-right" data-ng-show="user.signedIn">
                 <li>
                     <a class="divided-copy" href="/boards">
                         All Boards
@@ -123,7 +123,7 @@
         <div data-ng-if="showBoardNav" class="tier mtm mbs">
             <a href="#" class="aside-left" data-ng-click="view.tab.switch('board')" data-ng-class="{active:view.tab.current === 'board'}">
                 <h1 class="delta copy-inverse mbn">
-                    {{board.title()}}
+                    {{board.title}}
                 </h1>
             </a>
             <ul class="x-list-small aside-right">
@@ -198,7 +198,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/boards/{{board.id()}}/export/csv" target="_self">
+                        <a href="/boards/{{board.id}}/export/csv" target="_self">
                             <svg class="aside-left icon-standard">
                                 <desc>Document icon</desc>
                                 <use xlink:href="#document"></use>
