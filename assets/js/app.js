@@ -56,6 +56,8 @@
   angular.module('hansei.services', [
       'hansei.routes',
       'ngSails',
+      'angular-lodash/utils/map',
+      'angular-lodash/utils/find',
       'angular-lodash/utils/pluck',
       'angular-lodash/utils/flatten',
       'angular-lodash/utils/sortBy',

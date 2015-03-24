@@ -208,7 +208,7 @@
             <div class="board-menu" ng-init="boardMenuToggle = false" data-ng-show="boardMenuToggle">
                 <ul class="y-list">
                     <li>
-                        <a href="#" data-ng-click="goFullScreen()">
+                        <a href="#" data-ng-click="goFullScreen(); boardMenuToggle = false">
                             <svg class="aside-left icon-standard">
                                 <desc>Fullscreen icon</desc>
                                 <use xlink:href="#enlarge"></use>
@@ -217,7 +217,7 @@
                         </a>
                     </li>
                     <li data-ng-show="board.isFacilitator">
-                        <a href="#" data-ng-click="sortByVotes()">
+                        <a href="#" data-ng-click="sortByVotes(); boardMenuToggle = false">
                             <svg class="aside-left icon-standard">
                                 <desc>Sort icon</desc>
                                 <use xlink:href="#sort-amount-desc"></use>
@@ -226,7 +226,10 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/boards/{{board.id}}/export/csv" target="_self">
+                        <a href="/boards/{{board.id}}/export/csv"
+                          data-ng-click="boardMenuToggle = false"
+                          target="_self"
+                          >
                             <svg class="aside-left icon-standard">
                                 <desc>Document icon</desc>
                                 <use xlink:href="#document"></use>

@@ -28,6 +28,7 @@
       };
 
       $scope.sortByVotes = function() {
+        console.log('uh');
         api.boardSortByVotes(board.id);
       };
 

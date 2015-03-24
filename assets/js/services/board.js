@@ -7,6 +7,8 @@
           locks    = [],  // card ids that this client has locked
           theQueue = [],  // array of functions to exec when user is done with locks
           _ = {
+            map:       $rootScope.map,
+            find:      $rootScope.find,
             pluck:     $rootScope.pluck,
             flatten:   $rootScope.flatten,
             sortBy:    $rootScope.sortBy,
@@ -344,8 +346,9 @@
         // array contains card ids. If there is more than one, then it's a pile.
         // (Note that multiple columns can be updated with one invocation.)
         //
-        rebuildColumn: function(info) {
-          var cardStacks = {};
+        rebuildColumn: function(info, animateWholeColumns) {
+          var cardStacks          = {},
+              animateWholeColumns = Boolean(animateWholeColumns);
 
           Object.keys(info).forEach(function(columnId) {
             var pos = 1, sourceStack = this.column(columnId).cards;
@@ -367,18 +370,50 @@
 
           }.bind(this));
 
+          console.log('CARDSTACKS', cardStacks);
           // replace the entire contents of each column with our new stack of cardSlots
           Object.keys(cardStacks).forEach(function(columnId) {
-            var sourceStack = this.column(columnId).cardSlots;
+            var sourceStack = this.column(columnId).cardSlots,
+                sourceMap   = _.map(_.flatten(sourceStack), 'id'),
+                animateCard = null;
+          console.log('sourcest', JSON.stringify(sourceStack));
+          console.log('sourcemap', JSON.stringify(sourceMap));
 
+            // Think about animating...
+            if (!animateWholeColumns) {
+              if (Object.keys(cardStacks).length === 1) {  // Find the first out-of-place card
+                var newFlattened = _.flatten(cardStacks[columnId]);
+                for (var i=0; i<newFlattened.length; i++) {
+                  if (newFlattened[i].id !== sourceMap[i]) {
+                    animateCard = newFlattened[i];
+                    break;
+                  }
+                }
+              } else {  // Find the first new card in this column, if any
+                console.log('cardstack', JSON.stringify(cardStacks[columnId]));
+                _.flatten(cardStacks[columnId]).forEach(function(c) {
+                  if (animateCard) return;  // only the first pls
+                  if (sourceMap.indexOf(c.id) === -1) animateCard = c;
+                });
+              }
+            }
+
+            // DO EET
             sourceStack.splice.apply(sourceStack,
               [0, Number.MAX_VALUE].concat(cardStacks[columnId]));
 
-            // Animate the cards in this column!
-            _.flatten(sourceStack).forEach(function(card) { card.shake = true; });
-            $timeout(function() {
-              _.flatten(sourceStack).forEach(function(card) { card.shake = false; });
-            }, 500);
+            // Actually animate.
+            if (!animateWholeColumns && animateCard) {
+              console.log('animating', animateCard.id);
+              animateCard.shake = true;
+              $timeout(function() { animateCard.shake = false; }, 500);
+            } else if (animateWholeColumns) {
+              // Animate the cards in this column!
+              _.flatten(sourceStack).forEach(function(card) { card.shake = true; });
+              $timeout(function() {
+                _.flatten(sourceStack).forEach(function(card) { card.shake = false; });
+              }, 500);
+            }
 
           }.bind(this));
 
