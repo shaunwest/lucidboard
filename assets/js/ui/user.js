@@ -22,6 +22,11 @@
       $scope.signedOut = user.clearJustSignedOut();
 
       $scope.signin = function() {
+        if (!$scope.username.match(config.regex.username)) {
+          $scope.signedOut    = false;
+          $scope.errorMessage = 'Please enter a valid username.';
+          return;
+        }
         user.signin($scope.username, $scope.password, function(res) {
           if (res.status === 'error') {
             $scope.errorMessage = res.message;
