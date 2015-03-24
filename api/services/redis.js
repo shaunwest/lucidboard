@@ -2,8 +2,14 @@ var
   redisModule = require('redis'),
   async       = require('async'),
   _           = require('underscore'),
-  client      = redisModule.createClient(),
-  redisUser   = require('./redis/user.js')(client);
+  client      = redisModule.createClient();
+
+
+// I seem to get redis timeout errors after some time of server inactivity. Some forum guys
+// said something like this worked for him to prevent it.
+setInterval(function() {
+  client.set('_please_dont_drop_me', '1');
+}, 300000);
 
 
 var publish = function(signal, payload, req) {
