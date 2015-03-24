@@ -14,7 +14,12 @@
         $rootScope.signinStyle = 'userpass';
       }
 
-      $scope.signedOut = user.signout();  // Sign the user out !
+      // If the user is signed in, take them to the boards !
+      if (user.signedIn) return $state.go('boards');
+
+      // This will be true if the user just clicked the signout link. The function
+      // also clears the flag so a reload won't repeat the message.
+      $scope.signedOut = user.clearJustSignedOut();
 
       $scope.signin = function() {
         user.signin($scope.username, $scope.password, function(res) {

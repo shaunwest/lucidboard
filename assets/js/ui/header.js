@@ -13,8 +13,12 @@
       $scope.view              = view;
       $scope.showTimerForm     = false;
       $scope.timerMinutesInput = 5;
-      $scope.signout           = function(event) { $state.go('signin'); };
       $scope.current           = $state.current;
+
+      $scope.signout = function(event) {
+        user.signout();
+        $state.go('signin');
+      };
 
       $scope.timerStart = function(minutes) {
         $scope.clockPop = true;

@@ -29,7 +29,6 @@
             if (user.signedIn) {
               api.boardsGetList(function(boards) { defer.resolve(boards); });
             } else {
-              console.log('notloggedisuser, ', user);
               defer.reject('not_logged_in');
             }
             return defer.promise;

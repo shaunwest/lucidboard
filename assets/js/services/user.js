@@ -32,9 +32,15 @@
         signout: function() {
           var beganSignedIn = Boolean(this.token);
           localStorageService.remove('authToken');
+          localStorageService.set('justSignedOut', true);
           this.token = null;
           this.signedIn = false
           return beganSignedIn;
+        },
+        clearJustSignedOut: function() {
+          var ret = localStorageService.get('justSignedOut');
+          localStorageService.remove('justSignedOut');
+          return Boolean(ret);
         },
         initialRefreshToken: function() {
           // When the websocket is reestablished, this method must first be
