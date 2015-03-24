@@ -101,26 +101,12 @@ var fixColumnPositions = function(stack, origMap) {
 var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
   Board.findOneById(id).exec(function(err, board) {
     var failed = false;
-    res.on('finish', function() { failed = true; });
 
-    if (err)                                res.serverError(err);
-    else if (!board)                        res.notFound();
-    else if (board.creator !== req.user.id) res.forbidden();
+    if (err)                                { res.serverError(err); failed = true; }
+    else if (!board)                        { res.notFound();       failed = true; }
+    else if (board.creator !== req.user.id) { res.forbidden();      failed = true; }
 
     cb(failed ? null : board);
-
-    /*
-    if (err) {
-      res.serverError(err);
-    } else if (!board) {
-      res.notFound();
-    } else if (board.creator !== req.user.id) {
-      res.forbidden();
-      board = null;
-    }
-
-    cb(board);
-    */
   });
 };
 

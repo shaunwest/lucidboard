@@ -35,12 +35,20 @@
                     <use xlink:href="#site-menu"></use>
                 </svg>
             </a>
-            <a href="#" class="aside-left"
-              data-ng-click="view.tab.switch('board')"
+            <h1 class="delta copy-inverse heading-small-height mbn aside-left"
+              data-ng-if="board.isFacilitator"
               data-ng-class="{active:view.tab.current === 'board'}"
               data-editable-text="board.title"
               data-buttons="no"
+              data-e-maxlength="50"
               data-onbeforesave="checkBoardTitle($data)"
+              >
+                {{board.title}}
+            </h1>
+            <a href="#" class="aside-left"
+              data-ng-if="!board.isFacilitator"
+              data-ng-click="view.tab.switch('board', 'settings')"
+              data-ng-class="{active:view.tab.current === 'board'}"
               >
                 <h1 class="delta copy-inverse heading-small-height mbn">
                     {{board.title}}
@@ -83,7 +91,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
+                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
                       data-ng-class="{active:view.tab.current === 'settings'}"
                       data-ng-show="board.isFacilitator">
                         <svg class="aside-left icon-standard" fill="#ffffff">
@@ -127,10 +135,19 @@
             </ul>
         </div>
         <div data-ng-if="showBoardNav" class="tier mtm mbs">
-            <a href="#" class="aside-left"
+            <h1 class="delta copy-inverse mbn aside-left"
+              data-ng-if="board.isFacilitator"
+              data-ng-class="{active:view.tab.current === 'board'}"
               data-editable-text="board.title"
               data-buttons="no"
+              data-e-maxlength="50"
               data-onbeforesave="checkBoardTitle($data)"
+              >
+                {{board.title}}
+            </h1>
+            <a href="#" class="aside-left"
+              data-ng-if="!board.isFacilitator"
+              data-ng-click="view.tab.switch('board', 'settings')"
               data-ng-class="{active:view.tab.current === 'board'}"
               >
                 <h1 class="delta copy-inverse mbn">
@@ -170,7 +187,7 @@
                     </a>
                 </li>
                 <li data-ng-show="board.isFacilitator">
-                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings')"
+                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
                       data-ng-class="{active:view.tab.current === 'settings'}">
                         <svg class="aside-left icon-standard" fill="#ffffff">
                             <desc>Board Settings Icon</desc>

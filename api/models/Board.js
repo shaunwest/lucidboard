@@ -13,6 +13,8 @@ module.exports = {
 
   schema: true,
 
+  titleRegex: titleRegex,
+
   attributes: {
 
     title: {

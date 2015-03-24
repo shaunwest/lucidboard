@@ -24,12 +24,21 @@
               data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
                     <li class="brand-underline">
-                        <h4 class="mtn mbn delta" data-editable-text="column.title" data-buttons="no"
+                        <h4 class="mtn mbn delta"
+                            data-ng-if="board.isFacilitator"
+                            data-editable-text="column.title"
+                            data-buttons="no"
                             data-onbeforesave="checkColumnTitle($data, column.id)"
                             data-ui-draggable="true"
                             data-drag="column"
                             data-ng-class="{active:view.columnDragging}"
                             data-drag-channel="column"
+                            data-e-maxlength="25"
+                            >
+                            {{column.title}}
+                        </h4>
+                        <h4 class="mtn mbn delta"
+                            data-ng-if="!board.isFacilitator"
                             >
                             {{column.title}}
                         </h4>

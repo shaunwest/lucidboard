@@ -1,5 +1,6 @@
-var User   = require('../models/User'),
+var Board  = require('../models/Board'),
     Column = require('../models/Column'),
+    User   = require('../models/User'),
     conf   = sails.config.app;
 
 var stringifyRegex = function(regex) {
@@ -8,7 +9,8 @@ var stringifyRegex = function(regex) {
 
 conf.regex = {
   username:    stringifyRegex(User.usernameRegex),
-  columnTitle: stringifyRegex(Column.titleRegex)
+  columnTitle: stringifyRegex(Column.titleRegex),
+  boardTitle:  stringifyRegex(Board.titleRegex)
 };
 
 module.exports = {

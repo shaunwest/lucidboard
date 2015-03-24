@@ -43,17 +43,25 @@ module.exports = {
   update: function(req, res) {
     var boardId  = req.param('boardId'),
         columnId = req.param('columnId'),
-        title    = req.body.title;
+        title    = req.body.title,
+        user     = req.user;
 
-    Column.update(columnId, {title: title}).exec(function(err, column) {
-      if (err) return res.serverError(err);
+    async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); }
+    }, function(err, r) {
+      if (err)                         return res.serverError(err);
+      if (r.board.creator !== user.id) return res.forbidden();
 
-      // FIXME: why oh why do I need this?
-      column = column[0];
+      Column.update(columnId, {title: title}).exec(function(err, column) {
+        if (err) return res.serverError(err);
 
-      res.jsonx(column);
+        // FIXME: why oh why do I need this?
+        column = column[0];
 
-      redis.columnUpdated(column);
+        res.jsonx(column);
+
+        redis.columnUpdated(column);
+      });
     });
   },
 

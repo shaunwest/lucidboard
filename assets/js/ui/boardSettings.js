@@ -9,7 +9,8 @@
         scope: {
           board: '='
         },
-        controller: ['$scope', '$state', 'api', 'config', function($scope, $state, api, config) {
+        controller: ['$scope', '$state', 'api', 'config',
+        function($scope, $state, api, config) {
 
           $scope.colsets = config.colsets;
 

@@ -35,6 +35,10 @@ module.exports.policies = {
     '*': 'authenticated'
   },
 
+  ColumnController: {
+    '*': 'authenticated'
+  },
+
   UserController: {
     subscribe:   'authenticated',
     unsubscribe: 'authenticated'

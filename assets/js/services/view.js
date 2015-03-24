@@ -18,8 +18,12 @@
 
         tab: {
           current: 'board',
-          switch: function(tabName) {
-            this.current = tabName;
+          switch: function(tabName, otherwise) {
+            if (this.current === tabName) {
+              this.current = otherwise;
+            } else {
+              this.current = tabName;
+            }
           }
         },
 

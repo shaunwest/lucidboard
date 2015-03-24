@@ -4,8 +4,8 @@
   angular.module('hansei.ui')
 
   .controller('BoardCtrl', ['$scope', '$state', '$interval', 'api',
-    'user', 'board', 'eventerFactory', 'timer', 'view',
-    function($scope, $state, $interval, api, user, board, eventerFactory, timer, view) {
+    'user', 'board', 'eventerFactory', 'timer', 'view', 'config',
+    function($scope, $state, $interval, api, user, board, eventerFactory, timer, view, config) {
 
       if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
 
@@ -77,6 +77,7 @@
       // --- BEGIN xeditable stuff
 
       $scope.checkColumnTitle = function(title, id) {
+        if (!title.match(config.regex.columnTitle)) return 'Invalid title';
         api.columnUpdate(board.id, {id: id, title: title});
         // the false returned will close the editor and not update the model.
         // (model update will happen when the event is pushed from the server)
