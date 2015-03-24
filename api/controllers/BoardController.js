@@ -537,9 +537,9 @@ module.exports = {
         cb(null, r.rawCards);
       }]
     }, function(err, r) {
-      if (err)                           return res.serverError(err);
-      if (!r.board || !r.columns)        return res.badRequest();
-      if (r.board.owner !== req.user.id) return res.forbidden();
+      if (err)                             return res.serverError(err);
+      if (!r.board || !r.columns)          return res.badRequest();
+      if (r.board.creator !== req.user.id) return res.forbidden();
 
       var cards      = _.indexBy(r.cards, 'column'),
           jobs       = [],

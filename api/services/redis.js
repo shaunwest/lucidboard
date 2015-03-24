@@ -9,7 +9,7 @@ var
 // said something like this worked for him to prevent it.
 setInterval(function() {
   client.set('_please_dont_drop_me', '1');
-}, 300000);
+}, 300000);  // 5 minutes
 
 
 var publish = function(signal, payload, req) {
