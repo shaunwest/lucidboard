@@ -66,7 +66,7 @@
             $scope.editform.$show();
           };
 
-          $scope.isEditorVisible = function(c) {
+          $scope.isEditorVisible = function() {
             if (!$scope.editform) return false;
             return $scope.editform.$visible;
           };

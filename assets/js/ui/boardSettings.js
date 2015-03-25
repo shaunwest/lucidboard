@@ -54,7 +54,7 @@
             };
 
             if ($scope.board) {
-              api.boardUpdate($scope.board.id(), bits);
+              api.boardUpdate($scope.board.id, bits);
             } else {
               api.boardCreate(bits, function(board) {
                 $state.go('board', {boardId: board.id});

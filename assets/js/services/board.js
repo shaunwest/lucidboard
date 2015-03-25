@@ -25,9 +25,8 @@
       // and forget about the obj.
       var loadBoard = function(boardObj) {
         if (!boardObj) return false;
-        setPropertiesFrom(boardObj);
+        setAllPropertiesFrom(boardObj);
         boardSort();
-        figureVotesRemaining();
         parseCards();
         return true;
       };
@@ -108,14 +107,19 @@
         });
       };
 
+      var setAllPropertiesFrom = function(obj) {
+        setPropertiesFrom(obj);
+
+        board.loaded  = true;
+        board.id      = obj.id;
+        board.columns = obj.columns;
+        board.trash   = obj.columns[0];
+      };
+
       var setPropertiesFrom = function(obj) {
         var isFacilitator = user.id == obj.creator;
 
-        board.loaded           = true;
-        board.id               = obj.id;
         board.title            = obj.title;
-        board.columns          = obj.columns;
-        board.trash            = obj.columns[0];
         board.votesEnabled     = obj.votesPerUser !== 0;
         board.votesAreInfinite = obj.votesPerUser === -1;
         board.votesPerUser     = obj.votesPerUser;
@@ -128,6 +132,8 @@
         board.seeContent       = isFacilitator || obj.p_seeContent;
         board.timerLength      = obj.timerLength;
         board.timerLeft        = obj.timerLeft;
+
+        figureVotesRemaining();
       };
 
       var queue      = function(fn) { theQueue.push(fn); };
@@ -153,8 +159,9 @@
 
         promise: function() { return defer.promise; },
 
-        hasCardLocks: false,
-        locks:        locks,
+        hasCardLocks:     false,
+        locks:            locks,
+        loaded:           false,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
@@ -189,16 +196,7 @@
         },
 
         update: function(b) {
-          maybeDefer(function() {
-            board.title          = b.title;
-            board.votesPerUser   = b.votesPerUser;
-            board.p_seeVotes     = b.p_seeVotes;
-            board.p_seeContent   = b.p_seeContent;
-            board.p_combineCards = b.p_combineCards;
-            board.p_lock         = b.p_lock;
-
-            figureVotesRemaining();
-          }.bind(this));
+          maybeDefer(function() { setPropertiesFrom(b); });
         },
 
         columnCreate: function(_column) {
