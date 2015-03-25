@@ -370,14 +370,11 @@
 
           }.bind(this));
 
-          console.log('CARDSTACKS', cardStacks);
           // replace the entire contents of each column with our new stack of cardSlots
           Object.keys(cardStacks).forEach(function(columnId) {
             var sourceStack = this.column(columnId).cardSlots,
                 sourceMap   = _.map(_.flatten(sourceStack), 'id'),
                 animateCard = null;
-          console.log('sourcest', JSON.stringify(sourceStack));
-          console.log('sourcemap', JSON.stringify(sourceMap));
 
             // Think about animating...
             if (!animateWholeColumns) {
@@ -390,7 +387,6 @@
                   }
                 }
               } else {  // Find the first new card in this column, if any
-                console.log('cardstack', JSON.stringify(cardStacks[columnId]));
                 _.flatten(cardStacks[columnId]).forEach(function(c) {
                   if (animateCard) return;  // only the first pls
                   if (sourceMap.indexOf(c.id) === -1) animateCard = c;
@@ -404,7 +400,6 @@
 
             // Actually animate.
             if (!animateWholeColumns && animateCard) {
-              console.log('animating', animateCard.id);
               animateCard.shake = true;
               $timeout(function() { animateCard.shake = false; }, 500);
             } else if (animateWholeColumns) {
