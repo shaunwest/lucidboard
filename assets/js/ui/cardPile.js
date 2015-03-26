@@ -13,31 +13,19 @@
           index:  '='
         },
         controller: ['$scope', 'api', 'view', function($scope, api, view) {
+          var _ = { findIndex: $rootScope.findIndex };
 
           // Get the card model for the top-most card. If getIndexOnly is true,
           // then return only the index of the $scope.pile array.
           var getTopCard = function(getIndexOnly) {
-            var i, index, highIdCard;
 
-            for (i=0; i<$scope.pile.length; i++) {
-              if ($scope.pile[i].topOfPile) {
-                $scope.curCard = i + 1;
-                if (getIndexOnly) return i;
-                return $scope.pile[i];
-              } else if (!highIdCard) {
-                index      = i;
-                highIdCard = $scope.pile[i];
-                $scope.curCard = i + 1;
-              } else if (highIdCard.id < $scope.pile[i].id) {
-                index      = i;
-                highIdCard = $scope.pile[i];
-                $scope.curCard = i + 1;
-              }
-            }
+            var cardOrIdx = board.getTopCard($scope.pile, getIndexOnly),
+                curCard   = getIndexOnly ? cardOrIdx : _.findIndex($scope.pile,
+                  function(c) { return c.id === cardOrIdx.id; }) + 1;
 
-            if (getIndexOnly) return index;
+            $scope.curCard = curCard;
 
-            return highIdCard;
+            return cardOrIdx;
           };
 
           var flip = function(idx) {
@@ -58,13 +46,13 @@
           });
 
           $scope.forward = function() {
-            var idx = getTopCard(true) + 1;
+            var idx = board.getTopCard($scope.pile, true) + 1;
             if (idx >= $scope.pile.length) idx = 0;
             flip(idx);
           };
 
           $scope.back = function() {
-            var idx = getTopCard(true) - 1;
+            var idx = board.getTopCard($scope.pile, true) - 1;
             if (idx < 0) idx = $scope.pile.length - 1;
             flip(idx);
           };

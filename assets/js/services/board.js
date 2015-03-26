@@ -28,6 +28,7 @@
         setAllPropertiesFrom(boardObj);
         boardSort();
         parseCards();
+        figureVotesRemaining();
         return true;
       };
 
@@ -108,12 +109,12 @@
       };
 
       var setAllPropertiesFrom = function(obj) {
-        setPropertiesFrom(obj);
-
         board.loaded  = true;
         board.id      = obj.id;
         board.columns = obj.columns;
         board.trash   = obj.columns[0];
+
+        setPropertiesFrom(obj);
       };
 
       var setPropertiesFrom = function(obj) {
@@ -132,12 +133,11 @@
         board.seeContent       = isFacilitator || obj.p_seeContent;
         board.timerLength      = obj.timerLength;
         board.timerLeft        = obj.timerLeft;
-
-        figureVotesRemaining();
       };
 
       var queue      = function(fn) { theQueue.push(fn); };
       var maybeDefer = function(fn) { board.hasCardLocks ? queue(fn) : fn(); };
+
 
 
       board = {
@@ -195,8 +195,31 @@
           throw 'Failed to find card id ' + id;
         },
 
+        // Get the card model for the top-most card. If getIndexOnly is true,
+        // then return only the index of the pile array.
+        getTopCard: function(pile, getIndexOnly) {
+          var i, index, highIdCard;
+
+          for (i=0; i<pile.length; i++) {
+            if (pile[i].topOfPile) {
+              if (getIndexOnly) return i;
+              return pile[i];
+            } else if (!highIdCard) {
+              index      = i;
+              highIdCard = pile[i];
+            } else if (highIdCard.id < pile[i].id) {
+              index      = i;
+              highIdCard = pile[i];
+            }
+          }
+
+          if (getIndexOnly) return index;
+
+          return highIdCard;
+        },
+
         update: function(b) {
-          maybeDefer(function() { setPropertiesFrom(b); });
+          maybeDefer(function() { setPropertiesFrom(b); figureVotesRemaining(); });
         },
 
         columnCreate: function(_column) {
@@ -344,9 +367,17 @@
         // array contains card ids. If there is more than one, then it's a pile.
         // (Note that multiple columns can be updated with one invocation.)
         //
-        rebuildColumn: function(info, animateWholeColumns) {
-          var cardStacks          = {},
-              animateWholeColumns = Boolean(animateWholeColumns);
+        // Also inside info could be animateCardIds or animatePiles. These will be set
+        // aside before dealing with the aforementioned column id keys.
+        //
+        rebuildColumn: function(info) {
+          var cardStacks     = {},
+              animateCardIds = [],
+              animatePiles   = [];
+
+          // Pull these bits out for later, if they exist
+          if (info.animateCardIds) { animateCardIds = info.animateCardIds; delete info.animateCardIds; }
+          if (info.animatePiles)   { animatePiles   = info.animatePiles;   delete info.animatePiles;   }
 
           Object.keys(info).forEach(function(columnId) {
             var pos = 1, sourceStack = this.column(columnId).cards;
@@ -370,38 +401,16 @@
 
           // replace the entire contents of each column with our new stack of cardSlots
           Object.keys(cardStacks).forEach(function(columnId) {
-            var sourceStack = this.column(columnId).cardSlots,
-                sourceMap   = _.map(_.flatten(sourceStack), 'id'),
-                animateCard = null;
-
-            // Think about animating...
-            if (!animateWholeColumns) {
-              if (Object.keys(cardStacks).length === 1) {  // Find the first out-of-place card
-                var newFlattened = _.flatten(cardStacks[columnId]);
-                for (var i=0; i<newFlattened.length; i++) {
-                  if (newFlattened[i].id !== sourceMap[i]) {
-                    animateCard = newFlattened[i];
-                    break;
-                  }
-                }
-              } else {  // Find the first new card in this column, if any
-                _.flatten(cardStacks[columnId]).forEach(function(c) {
-                  if (animateCard) return;  // only the first pls
-                  if (sourceMap.indexOf(c.id) === -1) animateCard = c;
-                });
-              }
-            }
+            var sourceStack = this.column(columnId).cardSlots;
 
             // DO EET
             sourceStack.splice.apply(sourceStack,
               [0, Number.MAX_VALUE].concat(cardStacks[columnId]));
 
-            // Actually animate.
-            if (!animateWholeColumns && animateCard) {
-              animateCard.shake = true;
-              $timeout(function() { animateCard.shake = false; }, 500);
-            } else if (animateWholeColumns) {
-              // Animate the cards in this column!
+            // Animate any modified column in the case where particular cards/piles
+            // aren't called out to be animated.
+            if (animateCardIds.length === 0 && animatePiles.length === 0) {
+              // Animate all cards in this column!
               _.flatten(sourceStack).forEach(function(card) { card.shake = true; });
               $timeout(function() {
                 _.flatten(sourceStack).forEach(function(card) { card.shake = false; });
@@ -409,6 +418,23 @@
             }
 
           }.bind(this));
+
+          if (animateCardIds.length > 0) {
+            animateCardIds.forEach(function(cId) {
+              var card = this.card(cId);
+              if (!card) return;  // shrug.. shouldn't happen...
+              card.shake = true;
+              $timeout(function() { card.shake = false; }, 500);
+            }.bind(this));
+          } else if (animatePiles.length > 0) {
+            animatePiles.forEach(function(i) {
+              var topCard, column = this.column(i.columnId);
+              if (!column || !column.cardSlots[i.destPosition - 1]) return;
+              topCard = this.getTopCard(column.cardSlots[i.destPosition - 1]);
+              topCard.shake = true;
+              $timeout(function() { topCard.shake = false; }, 500);
+            }.bind(this));
+          }
 
           this.updateTrashIsEmpty();
         },

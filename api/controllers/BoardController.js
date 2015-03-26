@@ -187,6 +187,8 @@ module.exports = {
         signalData[originalColumnId] = util.toCardStackMap(sourceStack);
       }
 
+      signalData.animateCardIds = [p.cardId];
+
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
@@ -263,6 +265,8 @@ module.exports = {
       signalData[p.sourceColumnId] = util.toCardStackMap(sourceStack);
 
       if (destStack) signalData[p.destColumnId] = util.toCardStackMap(destStack);
+
+      signalData.animatePiles = [{columnId: p.destColumnId, position: p.destPosition}];
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
@@ -438,6 +442,8 @@ module.exports = {
       }
 
       destStack[destPosition - 1] = (destStack[destPosition - 1] || []).concat(pile);
+
+      signalData.animatePiles = [{columnId: r.dest.column, position: destPosition}];
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
