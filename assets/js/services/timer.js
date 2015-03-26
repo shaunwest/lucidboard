@@ -9,6 +9,11 @@
       return {
         remaining: 0,
 
+        init: function() {
+          this.remaining = 0;
+          $interval.cancel(timer);
+        },
+
         start: function start(seconds) {
           var sound = new Audio();
 

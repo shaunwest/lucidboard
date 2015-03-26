@@ -13,13 +13,24 @@
           index:  '='
         },
         controller: ['$rootScope', '$scope', 'api', 'view', function($rootScope, $scope, api, view) {
-          var _ = { findIndex: $rootScope.findIndex };
+          var board = $scope.board,
+              _     = { findIndex: $rootScope.findIndex };
+
+          var flip = function(idx) {
+            api.boardCardFlip(board.id, {
+              cardId:   $scope.pile[idx].id,
+              columnId: $scope.column.id,
+              position: $scope.index + 1
+            });
+          };
+
+          $scope.view = view;
 
           // Get the card model for the top-most card. If getIndexOnly is true,
           // then return only the index of the $scope.pile array.
-          var getTopCard = function(getIndexOnly) {
+          $scope.getTopCard = function(getIndexOnly) {
 
-            var cardOrIdx = $scope.board.getTopCard($scope.pile, getIndexOnly),
+            var cardOrIdx = board.getTopCard($scope.pile, getIndexOnly),
                 curCard   = getIndexOnly ? cardOrIdx : _.findIndex($scope.pile,
                   function(c) { return c.id === cardOrIdx.id; }) + 1;
 
@@ -27,17 +38,6 @@
 
             return cardOrIdx;
           };
-
-          var flip = function(idx) {
-            api.boardCardFlip($scope.board.id, {
-              cardId:   $scope.pile[idx].id,
-              columnId: $scope.column.id,
-              position: $scope.index + 1
-            });
-          };
-
-          $scope.getTopCard = getTopCard;
-          $scope.view       = view;
 
           // Calculate the total number of votes for the pile
           $scope.votes = 0;

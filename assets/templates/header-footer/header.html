@@ -73,7 +73,7 @@
                         {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
                     </a>
                 </li>
-                <li>
+                <li data-ng-show="board.isFacilitator">
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
                             <desc>Board Clock Timer Icon</desc>
@@ -169,7 +169,7 @@
                       data-ng-options="columnView.label for columnView in view.column.options">
                     </select>
                 </li>
-                <li>
+                <li data-ng-show="board.isFacilitator">
                     <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                         <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
                             <desc>Board Clock Timer Icon</desc>

@@ -41,16 +41,18 @@ module.exports = {
   },
 
   update: function(req, res) {
-    var boardId  = req.param('boardId'),
-        columnId = req.param('columnId'),
+    var boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
         title    = req.body.title,
         user     = req.user;
 
     async.auto({
-      board: function(cb) { Board.findOneById(boardId).exec(cb); }
+      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
+      column: function(cb) { Column.findOneById(columnId).exec(cb); },
     }, function(err, r) {
-      if (err)                         return res.serverError(err);
-      if (r.board.creator !== user.id) return res.forbidden();
+      if (err)                           return res.serverError(err);
+      if (r.column.board !== r.board.id) return res.notFound();
+      if (r.board.creator !== user.id)   return res.forbidden();
 
       Column.update(columnId, {title: title}).exec(function(err, column) {
         if (err) return res.serverError(err);
@@ -68,14 +70,18 @@ module.exports = {
   move: function(req, res) {
     var boardId      = parseInt(req.param('boardId')),
         columnId     = parseInt(req.param('columnId')),
-        destPosition = parseInt(req.body.destPosition);
+        destPosition = parseInt(req.body.destPosition),
+        user         = req.user;
 
     async.auto({
+      board:   function(cb) { Board.findOneById(boardId).exec(cb); },
       columns: function(cb) { Column.find({board: boardId}).sort({position: 'asc'}).exec(cb); },
     }, function(err, r) {
       if (err)                             return res.serverError(err);
+      if (!r.board)                        return res.notFound();
       if (destPosition < 1)                return res.badRequest();
       if (destPosition > r.columns.length) return res.badRequest();
+      if (r.board.creator !== user.id)     return res.forbidden();
 
       var columns     = r.columns,
           originalMap = _.pluck(columns, 'id'),
@@ -108,7 +114,8 @@ module.exports = {
 
   delete: function(req, res) {
     var boardId  = parseInt(req.param('boardId')),
-        columnId = parseInt(req.param('columnId'));
+        columnId = parseInt(req.param('columnId')),
+        user     = req.user;
 
     if (!boardId || !columnId) return res.badRequest();
 
@@ -123,6 +130,7 @@ module.exports = {
     }, function(err, r) {
       if (err)                                return res.serverError(err);
       if (!r.board || !r.columns || !r.trash) return res.badRequest();
+      if (r.board.creator !== user.id)        return res.forbidden();
 
       var nextPosition = r.trCards.length + 1,
           columns      = r.columns,

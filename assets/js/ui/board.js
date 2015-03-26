@@ -50,6 +50,7 @@
       }).hook($scope);
 
       view.init();
+      timer.init();
 
       $scope.board             = board;
       $scope.view              = view;

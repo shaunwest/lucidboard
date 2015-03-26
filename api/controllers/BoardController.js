@@ -20,7 +20,7 @@ module.exports = {
     var id = req.param('id');
 
     Board.loadFullById(id, function(err, board) {
-      if (err) return res.serverError(err);
+      if (err)             return res.serverError(err);
       if (board === false) return res.notFound();
 
       res.jsonx(board);
@@ -30,9 +30,9 @@ module.exports = {
   create: function(req, res) {
     var bits = {
       creator:        req.user.id,
-      colsetId:       req.body.colsetId,
+      colsetId:       parseInt(req.body.colsetId),
       title:          req.body.title,
-      votesPerUser:   req.body.votesPerUser,
+      votesPerUser:   parseInt(req.body.votesPerUser),
       p_seeVotes:     req.body.p_seeVotes,
       p_seeContent:   req.body.p_seeContent,
       p_combineCards: req.body.p_combineCards,
@@ -94,13 +94,17 @@ module.exports = {
   },
 
   moveCard: function(req, res) {
-    var boardId = req.param('id');
+    var boardId = parseInt(req.param('id'));
 
     var p = {
       cardId:       parseInt(req.param('cardId')),
       destColumnId: parseInt(req.param('destColumnId')),
       destPosition: parseInt(req.param('destPosition'))
     };
+
+    if (!boardId || !p.cardId || !p.destColumnId || !p.destPosition) {
+      return res.badRequest('Missing or invalid parameters.');
+    }
 
     async.auto({
       card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
@@ -281,7 +285,8 @@ module.exports = {
   },
 
   combineCards: function(req, res) {
-    var boardId = parseInt(req.param('id'));
+    var boardId = parseInt(req.param('id')),
+        user    = req.user;
 
     var p = {
       sourceCardId: parseInt(req.param('sourceCardId')),
@@ -304,8 +309,8 @@ module.exports = {
       sourceStack: ['source', function(cb, r) {
         Card.find({column: r.source.column}).sort({position: 'asc'}).exec(cb);
       }],
-      destStack: ['dest', function(cb, r) {
-        Column.findOneById(r.dest.column).exec(cb);
+      destStack: ['board', 'dest', function(cb, r) {
+        Column.find({id: r.dest.column, board: r.board.id}).exec(cb);
       }],
       destStackStack: ['dest', function(cb, r) {
         Card.find({column: r.dest.column, position: r.dest.position}).exec(cb);
@@ -313,7 +318,9 @@ module.exports = {
     }, function(err, r) {
       if (err) return res.serverError(err);
 
-      // TODO - continue my work in security things here
+      if (!r.board || !r.source || !r.dest)       return res.notFound();
+      if (!r.sourceColumn || r.sourceStack === 0) return res.notFound();
+      if (r.board.creator !== user.id)            return res.forbidden();
 
       var sourceColumnId    = r.source.column,
           sourcePosition    = r.source.position,
@@ -372,7 +379,8 @@ module.exports = {
   },
 
   combinePiles: function(req, res) {
-    var boardId = req.param('id');
+    var boardId = parseInt(req.param('id')),
+        user    = req.user;
 
     var p = {
       sourceColumnId: parseInt(req.param('sourceColumnId')),
@@ -380,26 +388,33 @@ module.exports = {
       destCardId:     parseInt(req.param('destCardId'))
     };
 
-    if (!p.sourceColumnId || !p.sourcePosition || !p.destCardId) {
-      return res.badRequest('Invalid or missing parameters.');
+    if (!boardId || !p.sourceColumnId || !p.sourcePosition || !p.destCardId) {
+      return res.badRequest('Missing or invalid parameters.');
     }
 
     async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); },
       dest: function(cb) { Card.findOneById(p.destCardId).exec(cb); },
-      sourceStack: function(cb, r) {
+      destColumn: ['dest', function(cb, r) {
+        Column.findOne({id: r.dest.column, board: boardId}).exec(cb);
+      }],
+      sourceColumn: function(cb) { Column.findOneById(p.sourceColumnId).exec(cb); },
+      sourceStack: function(cb) {
         Card.find({column: p.sourceColumnId}).sort({position: 'asc'}).exec(cb);
       },
       destStack: ['dest', function(cb, r) {
         Card.find({column: r.dest.column}).sort({position: 'asc'}).exec(cb);
       }]
     }, function(err, r) {
-      if (err) return res.serverError(err);
+      if (err)                                   return res.serverError(err);
+      if (!r.board || !r.dest || !r.destColumn)  return res.notFound('a');
+      if (r.sourceStack.length === 0)            return res.notFound('b');
+      if (r.sourceColumn.board !== boardId)      return res.notFound('c');
+      if (r.board.creator !== user.id)           return res.forbidden();
 
       var sourceStack       = util.normalizeCardStack(r.sourceStack);
 
-      if (p.sourcePosition > sourceStack.length) {
-        return res.badRequest('Invalid sourcePosition.');
-      }
+      if (p.sourcePosition > sourceStack.length) return res.badRequest();
 
       var originalSourceMap = util.toCardStackMap(sourceStack),
           destStack         = util.normalizeCardStack(r.destStack),
@@ -443,13 +458,15 @@ module.exports = {
 
       destStack[destPosition - 1] = (destStack[destPosition - 1] || []).concat(pile);
 
-      signalData.animatePiles = [{columnId: r.dest.column, position: destPosition}];
-
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
-        var signalData = {};
+        var signalData = {
+          animatePiles: [{columnId: r.dest.column, position: destPosition}]
+        };
+
         signalData[r.dest.column] = util.toCardStackMap(destStack);
+
         if (p.sourceColumnId != r.dest.column) {
           signalData[p.sourceColumnId] = util.toCardStackMap(sourceStack);
         }
@@ -470,14 +487,27 @@ module.exports = {
         condition = {column: columnId, position: position},
         jobs      = [];
 
-    Card.find(condition).sort({id: 'desc'}).exec(function(err, cards) {
-      if (err) return res.serverError(err);
+    if (!boardId || !cardId || !columnId || !position) {
+      return res.badRequest('Missing or invalid parameters.');
+    }
 
-      cards.forEach(function(card) {
-        if (card.topOfPile && card.id != cardId) {
+    async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); },
+      column: function(cb) { Column.findOneById(columnId).exec(cb); },
+      cards:  function(cb) {
+        Card.find({column: columnId, position: position}).sort({id: 'desc'}).exec(cb);
+      }
+    }, function(err, r) {
+      if (err)                           return res.serverError(err);
+      if (!r.board || !r.column)         return res.notFound();
+      if (r.cards.length === 0)          return res.notFound();
+      if (r.column.board !== r.board.id) return res.notFound();
+
+      r.cards.forEach(function(card) {
+        if (card.topOfPile && card.id !== cardId) {
           card.topOfPile = false;
           jobs.push(function(cb) { card.save(cb); });
-        } else if (!card.topOfPile && card.id == cardId) {
+        } else if (!card.topOfPile && card.id === cardId) {
           card.topOfPile = true;
           jobs.push(function(cb) { card.save(cb); });
         }
@@ -495,19 +525,28 @@ module.exports = {
 
   timerStart: function(req, res) {
     var boardId = parseInt(req.param('id')),
-        seconds = parseInt(req.param('seconds'));
+        seconds = parseInt(req.param('seconds')),
+        user    = req.user;
 
-    var bits = {
-      timerStart:  new Date(),
-      timerLength: seconds
-    };
+    if (!boardId || seconds <= 0) return res.badRequest();
 
-    Board.update(boardId, bits).exec(function(err, board) {
-      if (err) return res.serverError(err);
+    Board.findOneById(boardId).exec(function(err, board) {
+      if (err)                       return res.serverError(err);
+      if (!board)                    return res.notFound();
+      if (board.creator !== user.id) return res.forbidden();
 
-      res.jsonx(board);
+      var bits = {
+        timerStart:  new Date(),
+        timerLength: seconds
+      };
 
-      redis.boardTimerStart(boardId, seconds);
+      Board.update(boardId, bits).exec(function(err, board) {
+        if (err) return res.serverError(err);
+
+        res.jsonx(board);
+
+        redis.boardTimerStart(boardId, seconds);
+      });
     });
   },
 
