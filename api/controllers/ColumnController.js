@@ -18,24 +18,33 @@ var getNextColumnPosition = function(boardId, cb) {
 module.exports = {
 
   create: function(req, res) {
-    var boardId = req.param('boardId'),
-        title   = req.body.title;
+    var boardId = parseInt(req.param('boardId')),
+        title   = req.body.title,
+        user    = req.user;
 
-    getNextColumnPosition(boardId, function(err, nextpos) {
-      if (err) return res.serverError(err);
+    if (!boardId) return res.badRequest();
 
-      var attributes = {
-        title:    title,
-        position: nextpos,
-        board:    boardId
-      };
+    Board.findOneById(boardId).exec(function(err, board) {
+      if (err)                       return res.serverError(err);
+      if (!board)                    return res.notFound();
+      if (board.creator !== user.id) return res.forbidden();
 
-      Column.create(attributes, function(err, column) {
+      getNextColumnPosition(boardId, function(err, nextpos) {
         if (err) return res.serverError(err);
 
-        res.jsonx(column);
+        var attributes = {
+          title:    title,
+          position: nextpos,
+          board:    boardId
+        };
 
-        redis.columnCreated(column);
+        Column.create(attributes, function(err, column) {
+          if (err) return res.serverError(err);
+
+          res.jsonx(column);
+
+          redis.columnCreated(column);
+        });
       });
     });
   },
@@ -57,12 +66,9 @@ module.exports = {
       Column.update(columnId, {title: title}).exec(function(err, column) {
         if (err) return res.serverError(err);
 
-        // FIXME: why oh why do I need this?
-        column = column[0];
+        res.jsonx(column[0]);
 
-        res.jsonx(column);
-
-        redis.columnUpdated(column);
+        redis.columnUpdated(column[0]);
       });
     });
   },

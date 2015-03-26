@@ -102,9 +102,7 @@ module.exports = {
       destPosition: parseInt(req.param('destPosition'))
     };
 
-    if (!boardId || !p.cardId || !p.destColumnId || !p.destPosition) {
-      return res.badRequest('Missing or invalid parameters.');
-    }
+    if (!boardId || !p.cardId || !p.destColumnId || !p.destPosition) return res.badRequest();
 
     async.auto({
       card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
@@ -389,7 +387,7 @@ module.exports = {
     };
 
     if (!boardId || !p.sourceColumnId || !p.sourcePosition || !p.destCardId) {
-      return res.badRequest('Missing or invalid parameters.');
+      return res.badRequest();
     }
 
     async.auto({
@@ -487,9 +485,7 @@ module.exports = {
         condition = {column: columnId, position: position},
         jobs      = [];
 
-    if (!boardId || !cardId || !columnId || !position) {
-      return res.badRequest('Missing or invalid parameters.');
-    }
+    if (!boardId || !cardId || !columnId || !position) return res.badRequest();
 
     async.auto({
       board: function(cb) { Board.findOneById(boardId).exec(cb); },
