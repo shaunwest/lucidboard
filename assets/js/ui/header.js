@@ -17,6 +17,7 @@
 
       $scope.signout = function(event) {
         user.signout();
+        $state.go('signin');
       };
 
       $scope.timerStart = function(minutes) {
