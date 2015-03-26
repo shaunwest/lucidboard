@@ -12,14 +12,14 @@
           column: '=',
           index:  '='
         },
-        controller: ['$scope', 'api', 'view', function($scope, api, view) {
+        controller: ['$rootScope', '$scope', 'api', 'view', function($rootScope, $scope, api, view) {
           var _ = { findIndex: $rootScope.findIndex };
 
           // Get the card model for the top-most card. If getIndexOnly is true,
           // then return only the index of the $scope.pile array.
           var getTopCard = function(getIndexOnly) {
 
-            var cardOrIdx = board.getTopCard($scope.pile, getIndexOnly),
+            var cardOrIdx = $scope.board.getTopCard($scope.pile, getIndexOnly),
                 curCard   = getIndexOnly ? cardOrIdx : _.findIndex($scope.pile,
                   function(c) { return c.id === cardOrIdx.id; }) + 1;
 
