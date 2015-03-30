@@ -19,7 +19,7 @@
         tab: {
           current: 'board',
           switch: function(tabName, otherwise) {
-            if (this.current === tabName) {
+            if (this.current === tabName && otherwise) {
               this.current = otherwise;
             } else {
               this.current = tabName;
