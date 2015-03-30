@@ -19,6 +19,14 @@ module.exports.bootstrap = function(cb) {
     process.exit(1);
   }
 
+  Board.find({}).exec(function(err, boards) {
+    if (err) throw err;
+    boards.forEach(function(b) {
+      if (b.archived === true || b.archived === false) return;
+      Board.update({id: b.id}, {archived: false});
+    });
+  });
+
   /*
   User.findOne({id:2}).exec(function(err, u) {
     console.log('ok', err, u);
