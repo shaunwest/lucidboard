@@ -7,12 +7,9 @@ var async   = require('async'),
 module.exports = {
 
   getList: function(req, res) {
-    Board.find({}).exec(function(err, boards) {
+    Board.getList(function(err, boards) {
       if (err) return res.serverError(err);
-
-      res.jsonx(boards.map(function(b) {
-        return {id: b.id, title: b.title};
-      }));
+      res.jsonx(boards);
     });
   },
 

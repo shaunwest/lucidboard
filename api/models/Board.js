@@ -7,6 +7,7 @@
  */
 
 var meta       = require('../services/meta'),
+    _          = require('underscore'),
     titleRegex = /^.{1,50}$/;
 
 module.exports = {
@@ -125,5 +126,36 @@ module.exports = {
       _cb(null, r.final);
     });
   },
+
+  getList: function(cb) {
+    async.auto({
+      boards:  function(_cb) { Board.find({}).exec(_cb); },
+      userMap: ['boards', function(_cb, r) {
+        var uIds = _.uniq(_.pluck(r.boards, 'creator'));
+        async.parallel(uIds.reduce(function(memo, uid) {
+          memo[uid] = function(__cb) { User.findOneById(uid).exec(__cb); };
+          return memo;
+        }, {}), _cb);
+      }],
+      final: ['userMap', function(_cb, r) {
+        _cb(null, r.boards.map(function(b) {
+          b.creatorUsername = r.userMap[b.creator].name;
+          b.creatorEmail    = r.userMap[b.creator].email;
+          return b;
+        }));
+      }]
+    }, function(err, r) {
+      if (err) cb(err);
+      cb(null, r.final.map(function(b) {
+        return {
+          id:              b.id,
+          title:           b.title,
+          creatorUsername: b.creatorUsername,
+          creatorEmail:    b.creatorEmail,
+          createdAt:       b.createdAt
+        };
+      }));
+    });
+  }
 
 };
