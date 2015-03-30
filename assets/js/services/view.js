@@ -35,6 +35,13 @@
             this.options = [defaultColumn].concat(opts);
             this.current = this.options[0];
           }
+        },
+
+        modal: {
+          reconnecting: {
+            show:      false,
+            closeable: false
+          }
         }
       };
 

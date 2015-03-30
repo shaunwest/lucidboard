@@ -64,8 +64,8 @@
       'angular-lodash/utils/findIndex',
     ])
 
-    .run(['$rootScope', '$sails', '$state', 'user', 'api', 'board',
-      function($rootScope, $sails, $state, user, api, board) {
+    .run(['$rootScope', '$sails', '$state', 'user', 'api', 'board', 'view',
+      function($rootScope, $sails, $state, user, api, board, view) {
 
         function initialSetup() {
           // This clues the api library into the status of the initial token setup
@@ -80,6 +80,10 @@
           user.initialRefreshToken();
         }
 
+        $sails.on('disconnect', function() {
+          view.modal.reconnecting.show = true;
+        });
+
         $sails.on('reconnect', function() {
           initialSetup();
 
@@ -89,6 +93,8 @@
           board.locks.forEach(function(cardId) {
             api.cardLock(board.id(), cardId);
           });
+
+          view.modal.reconnecting.show = false;
         });
 
         initialSetup();
