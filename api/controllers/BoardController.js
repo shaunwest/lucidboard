@@ -7,7 +7,11 @@ var async   = require('async'),
 module.exports = {
 
   getList: function(req, res) {
-    Board.getList(function(err, boards) {
+    var criteria = {};
+
+    if (req.body.archived !== undefined) criteria.archived = !!req.body.archived;
+
+    Board.getList(criteria, function(err, boards) {
       if (err) return res.serverError(err);
       res.jsonx(boards);
     });

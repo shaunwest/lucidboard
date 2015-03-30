@@ -1,7 +1,7 @@
 <div class="tier">
     <section class="panel-half">
         <h1 class="gamma heading-underline">
-            Current Boards
+            Archived Boards
         </h1>
         <p>
           <input type="text" data-ng-model="query" placeholder="Filter by"
@@ -11,16 +11,9 @@
           <li data-ng-repeat="b in boards | filter:query">
             <a href="/boards/{{b.id}}">
               {{b.title}}
-              <small style="float:right">/{{b.creatorUsername}}</small>
+              <small style="float:right">by {{b.creatorUsername}}</small>
             </a>
           </li>
         </ul>
-        &laquo; <a href="/archived-boards">Archived Boards</a>
-    </section>
-    <section class="panel-half last">
-        <h1 class="gamma heading-underline">
-            Create New Board
-        </h1>
-        <board-settings></board-settings>
     </section>
 </div>

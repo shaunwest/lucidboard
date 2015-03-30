@@ -45,7 +45,10 @@ module.exports = {
     p_combineCards: 'boolean',
     p_lock:         'boolean',
 
-    archived:       'boolean',
+    archived: {
+      type:       'boolean',
+      defaultsTo: false
+    },
 
     toJSON: function() {
       var timerLeft = 0;
@@ -130,9 +133,9 @@ module.exports = {
     });
   },
 
-  getList: function(cb) {
+  getList: function(criteria, cb) {
     async.auto({
-      boards:  function(_cb) { Board.find({}).exec(_cb); },
+      boards:  function(_cb) { Board.find(criteria).exec(_cb); },
       userMap: ['boards', function(_cb, r) {
         var uIds = _.uniq(_.pluck(r.boards, 'creator'));
         async.parallel(uIds.reduce(function(memo, uid) {

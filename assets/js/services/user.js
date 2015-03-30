@@ -53,11 +53,11 @@
         },
         refreshToken: function(cb) {
           api.refreshToken(this.token, function(data, jwr) {
-            this.token = data.token || fetchLSToken() || null;
+            this.token = data.token || null;
             localStorageService.set('authToken', this.token);
             this.refresh(data);
             cb(data, jwr);
-          }.bind(this));
+          }.bind(this), true);
         },
         initialTokenPromise: function() {
           return initialTokenDefer.promise;

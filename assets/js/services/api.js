@@ -81,23 +81,30 @@
         //   FlashService.show(data.message);
         // }
         switch (jwr.statusCode) {
-          case 403: return $state.go('signin');
+          case 403:
+            $state.go('signin');
+            break;
           case 500:
             console.log('oh noes', data, jwr);
-            return alert('oh noes!');
+            alert('oh noes!');
+            break;
         };
 
         cb(data, jwr);
       };
 
-      var handleRequest = function(method, target, params, cb) {
+      var handleRequest = function(method, target, params, cb, cbOverride) {
 
         var invoke = function() {
           $sails[method](target, params, function(data, jwr) {
             info('api ' + method + ' [' + target + ']', params, '(' + jwr.statusCode + ')', data);
-            handleResponse(data, jwr, function(data, jwr) {
+            if (cbOverride) {
               if (cb) cb(data, jwr);
-            });
+            } else {
+              handleResponse(data, jwr, function(data, jwr) {
+                if (cb) cb(data, jwr);
+              });
+            }
           });
         };
 
@@ -112,16 +119,17 @@
 
       };
 
-      var get = function(target, cb) {
-        handleRequest('get', target, {}, cb);
+      var get = function(target, params, cb, cbOverride) {
+        if (typeof params === 'function') { cb = params; params = {}; }
+        handleRequest('get', target, params, cb, cbOverride);
       };
 
-      var post = function(target, params, cb) {
-        handleRequest('post', target, params, cb);
+      var post = function(target, params, cb, cbOverride) {
+        handleRequest('post', target, params, cb, cbOverride);
       };
 
-      var doDelete = function(target, cb)  {
-        handleRequest('delete', target, {}, cb);
+      var doDelete = function(target, cb, cbOverride)  {
+        handleRequest('delete', target, {}, cb, cbOverride);
       };
 
       return {
@@ -130,10 +138,11 @@
           post('/api/signin', {username: user, password: pass}, cb);
         },
         refreshToken: function(token, cb) {
-          post('/api/refresh-token', {token: token}, cb);
+          post('/api/refresh-token', {token: token}, cb, true);
         },
 
-        boardsGetList: function(cb) { get('/api/boards', cb); },
+        boardsGetUnarchivedList: function(cb) { get('/api/boards', {archived: false}, cb); },
+        boardsGetArchivedList: function(cb) { get('/api/boards', {archived: true}, cb); },
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
         boardUpdate: function(boardId, bits, cb) { post('/api/boards/' + boardId, bits, cb); },

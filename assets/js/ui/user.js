@@ -6,8 +6,6 @@
   .controller('SigninCtrl', ['$rootScope', '$scope', '$state', '$window', 'user', 'config',
     function($rootScope, $scope, $state, $window, user, config) {
 
-      $rootScope.showHeader = true;
-
       if (config.signin === 'dumb') {
         $rootScope.signinStyle = 'user';
       } else if (config.signin === 'ldap') {

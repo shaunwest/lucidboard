@@ -21,13 +21,27 @@
         controller:  'BoardsCtrl',
         resolve: {
           loadConfig: loadConfig,
-          hideHeader: ['$rootScope', function($rootScope) {
-            $rootScope.showHeader = false;
-          }],
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.signedIn) {
-              api.boardsGetList(function(boards) { defer.resolve(boards); });
+              api.boardsGetUnarchivedList(function(boards) { defer.resolve(boards); });
+            } else {
+              defer.reject('not_logged_in');
+            }
+            return defer.promise;
+          }]
+        }
+      },
+      archivedBoards: {
+        url:         '/archived-boards',
+        templateUrl: '/templates/archivedBoards.html',
+        controller:  'ArchivedBoardsCtrl',
+        resolve: {
+          loadConfig: loadConfig,
+          theArchivedBoards: ['$q', 'api', 'user', function($q, api, user) {
+            var defer = $q.defer();
+            if (user.signedIn) {
+              api.boardsGetArchivedList(function(boards) { defer.resolve(boards); });
             } else {
               defer.reject('not_logged_in');
             }
