@@ -45,6 +45,8 @@ module.exports = {
     p_combineCards: 'boolean',
     p_lock:         'boolean',
 
+    archived:       'boolean',
+
     toJSON: function() {
       var timerLeft = 0;
 
@@ -65,7 +67,8 @@ module.exports = {
         p_seeVotes:     this.p_seeVotes,
         p_seeContent:   this.p_seeContent,
         p_combineCards: this.p_combineCards,
-        p_lock:         this.p_lock
+        p_lock:         this.p_lock,
+        archived:       this.archived
       };
     }
   },

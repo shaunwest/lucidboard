@@ -11,7 +11,6 @@
       $scope.board             = board;
       $scope.timer             = timer;
       $scope.view              = view;
-      console.log('$scope.view', $scope.view);
       $scope.showTimerForm     = false;
       $scope.timerMinutesInput = 5;
       $scope.current           = $state.current;

@@ -16,15 +16,6 @@
 
           if ($scope.board) {
             $scope.b = $scope.board;
-            // $scope.b = {
-            //   id:             $scope.board.id(),
-            //   title:          $scope.board.title(),
-            //   votesPerUser:   $scope.board.votesPerUser(),
-            //   p_seeVotes:     $scope.board.p_seeVotes(),
-            //   p_seeContent:   $scope.board.p_seeContent(),
-            //   p_combineCards: $scope.board.p_combineCards(),
-            //   p_lock:         $scope.board.p_lock()
-            // };
           } else {
             $scope.b = {
               id:             null,
@@ -34,7 +25,8 @@
               p_seeVotes:     true,
               p_seeContent:   true,
               p_combineCards: true,
-              p_lock:         false
+              p_lock:         false,
+              archived:       false
             };
           }
 
@@ -51,6 +43,7 @@
               p_seeContent:   !!$scope.b.p_seeContent,
               p_combineCards: !!$scope.b.p_combineCards,
               p_lock:         !!$scope.b.p_lock,
+              archived:       !!$scope.b.archived
             };
 
             if ($scope.board) {

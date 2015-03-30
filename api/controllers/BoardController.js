@@ -75,7 +75,8 @@ module.exports = {
       'p_seeVotes',
       'p_seeContent',
       'p_combineCards',
-      'p_lock'
+      'p_lock',
+      'archived'
     ].forEach(function(field) {
       if (req.body[field] !== undefined) bits[field] = req.body[field];
     });
