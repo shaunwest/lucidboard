@@ -3,9 +3,9 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardCtrl', ['$scope', '$state', '$interval', 'api',
+  .controller('BoardCtrl', ['$scope', '$state', '$interval', '$anchorScroll', 'api',
     'user', 'board', 'eventerFactory', 'timer', 'view', 'config',
-    function($scope, $state, $interval, api, user, board, eventerFactory, timer, view, config) {
+    function($scope, $state, $interval, $anchorScroll, api, user, board, eventerFactory, timer, view, config) {
 
       if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
 
@@ -60,6 +60,9 @@
       $scope.$watch('view.column.current', function() {
         view.tab.current = 'board';
       });
+
+      // Scroll to top whenever the tab changes
+      $scope.$watch('view.tab.current', function() { $anchorScroll(); });
 
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
