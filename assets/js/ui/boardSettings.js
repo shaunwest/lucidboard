@@ -9,8 +9,8 @@
         scope: {
           board: '='
         },
-        controller: ['$scope', '$state', 'api', 'config',
-        function($scope, $state, api, config) {
+        controller: ['$scope', '$state', 'api', 'view', 'config',
+        function($scope, $state, api, view, config) {
 
           $scope.colsets = config.colsets;
 
@@ -45,7 +45,9 @@
             };
 
             if ($scope.board) {
-              api.boardUpdate($scope.board.id, bits);
+              api.boardUpdate($scope.board.id, bits, function(board) {
+                view.tab.switch('board');
+              });
             } else {
               api.boardCreate(bits, function(board) {
                 $state.go('board', {boardId: board.id});

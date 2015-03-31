@@ -138,6 +138,11 @@
       var queue      = function(fn) { theQueue.push(fn); };
       var maybeDefer = function(fn) { board.hasCardLocks ? queue(fn) : fn(); };
 
+      var animateCard = function(card) {
+        card.shake = true;
+        $timeout(function() { card.shake = false; }, 500);
+      };
+
 
 
       board = {
@@ -307,6 +312,8 @@
             if (board.votesPerUser > 0 && vote.user === user.id) {
               board.votesRemaining--;
             }
+
+            animateCard(card);
           }.bind(this));
         },
 
@@ -411,10 +418,7 @@
             // aren't called out to be animated.
             if (animateCardIds.length === 0 && animatePiles.length === 0) {
               // Animate all cards in this column!
-              _.flatten(sourceStack).forEach(function(card) { card.shake = true; });
-              $timeout(function() {
-                _.flatten(sourceStack).forEach(function(card) { card.shake = false; });
-              }, 500);
+              _.flatten(sourceStack).forEach(function(card) { animateCard(card); });
             }
 
           }.bind(this));
