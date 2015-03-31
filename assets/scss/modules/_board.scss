@@ -1,5 +1,9 @@
 .board-container {
-    padding-top: 4em;
+    @include clearfix;
+    padding-top: 8em;
+    @media (min-width: 60em) {
+        padding-top: 4em;
+    }
 }
 // Column container displays as table for screens >70em
 .column-container {
@@ -46,7 +50,7 @@
     }
 }
 
-.editable-wrap .editable-controls>input {
+.editable-wrap .editable-controls > input {
     @extend %font--heading;
     font-size: $h4-size;
     padding: 0;
@@ -108,4 +112,17 @@
             border-bottom: 0;
         }
     }
+}
+
+.clear-title {
+    .editable-controls input {
+        color: $white;
+        font-size: $h5-size;
+
+    }
+    .form-inline {
+        float: left;
+        width: auto;
+    }
+
 }

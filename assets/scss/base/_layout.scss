@@ -43,6 +43,7 @@ html, body {
     }
 }
 
+// full width container
 .tier {
     @include clearfix;
     @include span(12 of 12 omega);
@@ -51,10 +52,10 @@ html, body {
 
 .tier-padded {
     @extend .tier;
-    padding: 1em;
+    padding: 0 1em;
 }
 
-// 1/3
+// small = full width, medium = 1/2 width, large = 1/3 width
 .panel {
     @extend .tier;
     @media (min-width: 40em) {
@@ -68,59 +69,23 @@ html, body {
     }
 }
 
-// 1/2
+// small = full width, medium & up = 1/2 width,
 .panel-half {
     @extend .tier;
     @media (min-width: 40em) {
         @include span(6 of 12);
     }
+    // add last to set as last piece
     &.last {
         @include omega;
     }
 }
 
-// 1/3 centered
+// small = full width, medium & up = 1/3 width that is centered
 .panel--middle {
     @extend .tier;
     @media (min-width: 40em) {
         @include span(4 of 12);
         @include squish(4 of 12);
     }
-}
-
-.aside-right {
-    float: right;
-}
-
-.aside-left {
-    float: left;
-}
-
-// general class to add brand color to elements
-.brand-color {
-    color: $flamingo;
-    fill: $flamingo;
-}
-
-.divided-copy {
-    border-right: 0.125em solid $white;
-    padding-right: 1em;
-}
-
-.copy-inverse {
-    color: $white;
-    &.editable-click {
-        color: $white;
-        &:hover {
-            color: $white;
-        }
-    }
-}
-
-.item-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
 }

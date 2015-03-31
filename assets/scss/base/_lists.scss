@@ -27,7 +27,7 @@
   }
 }
 
-.x-list-small {
+.x-list-inline {
     @include clearfix;
     @extend .x-list;
     li {

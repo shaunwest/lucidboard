@@ -1,41 +1,27 @@
-<div ng-controller="HeaderCtrl" data-ng-class="{archived:board.archived}">
-    <div class="slide-out" data-ng-show="menuToggle" data-ng-class="{'animate-close-slide-right': !menuToggle, 'animate-slide-right': menuToggle }">
-        <ul class="y-list">
+<div class="nav" ng-controller="HeaderCtrl" data-ng-class="{archived:board.archived}">
+    <div class="tier">
+        <a href="/boards" class="aside-left">
+            <svg class="icon-logo">
+                <desc>Logo</desc>
+                <use xlink:href="#lucidboard"></use>
+            </svg>
+        </a>
+        <ul class="x-list-inline nav-links" data-ng-show="user.signedIn">
             <li>
-                <a href="/">
-                    <svg class="icon-logo">
-                        <desc>Logo</desc>
-                        <use xlink:href="#lucidboard"></use>
-                    </svg>
-                </a>
-                <a href="#" data-ng-click="menuToggle = !menuToggle" class="aside-right">
-                    <svg class="icon-standard" fill="#ffffff">
-                        <desc>Site menu icon</desc>
-                        <use xlink:href="#site-menu"></use>
-                    </svg>
-                </a>
-            </li>
-            <li data-ng-show="user.signedIn">
-                <a href="/boards">
+                <a class="divided-copy" href="/boards">
                     All Boards
                 </a>
             </li>
-            <li data-ng-show="user.signedIn">
-                <a href="" data-ng-click="signout($event)">
+            <li>
+                <a href="#" data-ng-click="signout($event)">
                     Sign Out
                 </a>
             </li>
         </ul>
     </div>
-    <div class="tier small-view form" data-ng-if="showBoardNav">
-        <div class="tier mbm">
-            <a href="#" class="aside-left" data-ng-click="menuToggle = !menuToggle">
-                <svg class="icon-standard" fill="#ffffff">
-                    <desc>Site menu icon</desc>
-                    <use xlink:href="#site-menu"></use>
-                </svg>
-            </a>
-            <h1 class="delta copy-inverse heading-small-height mbn aside-left"
+    <div data-ng-if="showBoardNav" class="tier mbs">
+        <div class="clear-title">
+            <h1 class="delta"
               data-ng-if="board.isFacilitator"
               data-ng-class="{active:view.tab.current === 'board'}"
               data-editable-text="board.title"
@@ -47,210 +33,92 @@
             </h1>
             <a href="#" class="aside-left"
               data-ng-if="!board.isFacilitator"
+              data-ng-click="view.tab.switch('board')"
               data-ng-class="{active:view.tab.current === 'board'}"
               >
-                <h1 class="delta copy-inverse heading-small-height mbn">
+                <h1 class="delta">
                     {{board.title}}
                 </h1>
             </a>
         </div>
-        <div class="tier">
-            <ul class="x-list-small">
-                <li>
-                    <a href="#">
-                        <select id="viewSections" data-ng-model="view.column.current"
-                          data-ng-options="columnView.label for columnView in view.column.options">
-                        </select>
-                    </a>
-                </li>
-                <li data-ng-show="board.votesEnabled && board.isFacilitator">
-                    <a href="#">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
-                        </svg>
-                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
-                    </a>
-                </li>
-                <li data-ng-show="board.isFacilitator">
-                    <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
-                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
-                            <desc>Board Clock Timer Icon</desc>
-                            <use xlink:href="#clock"></use>
-                        </svg>
-                        {{timer.remaining | formatTime}}
-                        <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                            data-ng-model="timerMinutesInput">
-                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
-                            Start
-                        </span>
-                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
-                            Reset
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
-                      data-ng-class="{active:view.tab.current === 'settings'}"
-                      data-ng-show="board.isFacilitator">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Board Settings Icon</desc>
-                            <use xlink:href="#settings"></use>
-                        </svg>
-                        Settings
-                    </a>
-                </li>
-                <li data-ng-show="board.votesEnabled && !board.isFacilitator">
-                    <a href="#">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
-                        </svg>
-                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="tier large-view">
-        <div class="tier">
-            <a href="/boards" class="aside-left">
-                <svg class="icon-logo">
-                    <desc>Logo</desc>
-                    <use xlink:href="#lucidboard"></use>
-                </svg>
-            </a>
-            <ul class="x-list-small aside-right" data-ng-show="user.signedIn">
-                <li>
-                    <a class="divided-copy" href="/boards">
-                        All Boards
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-ng-click="signout($event)">
-                        Sign Out
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div data-ng-if="showBoardNav" class="tier mtm mbs">
-            <div class="clear-title">
-                <h1 class="delta copy-inverse mbn aside-left"
-                  data-ng-if="board.isFacilitator"
-                  data-ng-class="{active:view.tab.current === 'board'}"
-                  data-editable-text="board.title"
-                  data-buttons="no"
-                  data-e-maxlength="50"
-                  data-onbeforesave="checkBoardTitle($data)"
-                  >
-                    {{board.title}}
-                </h1>
-                <a href="#" class="aside-left"
-                  data-ng-if="!board.isFacilitator"
-                  data-ng-click="view.tab.switch('board')"
-                  data-ng-class="{active:view.tab.current === 'board'}"
-                  >
-                    <h1 class="delta copy-inverse mbn">
-                        {{board.title}}
-                    </h1>
+        <ul class="x-list-inline">
+            <li class="nav-full" data-ng-show="board.votesEnabled && board.isFacilitator">
+                <div>
+                    <svg class="aside-left icon-standard" fill="#ffffff">
+                        <desc>Vote icon</desc>
+                        <use xlink:href="#vote"></use>
+                    </svg>
+                    {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
+                </div>
+            </li>
+            <li class="nav-full">
+                <select id="viewSections" data-ng-model="view.column.current"
+                  data-ng-options="columnView.label for columnView in view.column.options">
+                </select>
+            </li>
+            <li data-ng-show="board.isFacilitator">
+                <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
+                    <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
+                        <desc>Board Clock Timer Icon</desc>
+                        <use xlink:href="#clock"></use>
+                    </svg>
+                    {{timer.remaining | formatTime}}
+                    <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
+                        data-ng-model="timerMinutesInput">
+                    <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
+                        Start
+                    </span>
+                    <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
+                        Reset
+                    </span>
                 </a>
-            </div>
-            <ul class="x-list-small aside-right">
-                <li data-ng-show="board.votesEnabled && board.isFacilitator">
-                    <div>
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Vote icon</desc>
-                            <use xlink:href="#vote"></use>
-                        </svg>
-                        {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
-                    </div>
-                </li>
+            </li>
+            <li data-ng-show="board.isFacilitator">
+                <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
+                  data-ng-class="{active:view.tab.current === 'settings'}">
+                    <svg class="aside-left icon-standard" fill="#ffffff">
+                        <desc>Board Settings Icon</desc>
+                        <use xlink:href="#settings"></use>
+                    </svg>
+                    Settings
+                </a>
+            </li>
+            <li class="board-menu-item">
+                <a href="#" data-ng-click="boardMenuToggle = !boardMenuToggle">
+                    <svg class="icon-alert" fill="#ffffff" data-ng-class="{'active-icon':boardMenuToggle}">
+                        <desc>Tools Menu Icon</desc>
+                        <use xlink:href="#site-menu"></use>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <div class="board-menu" ng-init="boardMenuToggle = false" data-ng-show="boardMenuToggle">
+            <ul class="y-list">
                 <li>
-                    <select id="viewSections" data-ng-model="view.column.current"
-                      data-ng-options="columnView.label for columnView in view.column.options">
-                    </select>
-                </li>
-                <li data-ng-show="board.isFacilitator">
-                    <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
-                        <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
-                            <desc>Board Clock Timer Icon</desc>
-                            <use xlink:href="#clock"></use>
-                        </svg>
-                        {{timer.remaining | formatTime}}
-                        <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                            data-ng-model="timerMinutesInput">
-                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
-                            Start
-                        </span>
-                        <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
-                            Reset
-                        </span>
+                    <a href="#" data-ng-click="goFullScreen(); boardMenuToggle = false">
+                        Go Fullscreen
                     </a>
                 </li>
                 <li data-ng-show="board.isFacilitator">
-                    <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
-                      data-ng-class="{active:view.tab.current === 'settings'}">
-                        <svg class="aside-left icon-standard" fill="#ffffff">
-                            <desc>Board Settings Icon</desc>
-                            <use xlink:href="#settings"></use>
-                        </svg>
-                        Settings
+                    <a href="#" data-ng-click="sortByVotes(); boardMenuToggle = false">
+                        Sort by Votes
                     </a>
                 </li>
                 <li>
-                    <a href="#" data-ng-click="boardMenuToggle = !boardMenuToggle">
-                        <svg class="icon-alert" fill="#ffffff">
-                            <desc>Card menu toggle icon</desc>
-                            <use xlink:href="#card-menu"></use>
-                        </svg>
+                    <a href="/boards/{{board.id}}/export/csv"
+                      data-ng-click="boardMenuToggle = false"
+                      target="_self"
+                      >
+                        Export to CSV
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"
+                      data-ng-click="boardMenuToggle = false">
+                        Email Board
                     </a>
                 </li>
             </ul>
-            <div class="board-menu" ng-init="boardMenuToggle = false" data-ng-show="boardMenuToggle">
-                <ul class="y-list">
-                    <li>
-                        <a href="#" data-ng-click="goFullScreen(); boardMenuToggle = false">
-                            <svg class="aside-left icon-standard">
-                                <desc>Fullscreen icon</desc>
-                                <use xlink:href="#enlarge"></use>
-                            </svg>
-                            Fullscreen
-                        </a>
-                    </li>
-                    <li data-ng-show="board.isFacilitator">
-                        <a href="#" data-ng-click="sortByVotes(); boardMenuToggle = false">
-                            <svg class="aside-left icon-standard">
-                                <desc>Sort icon</desc>
-                                <use xlink:href="#sort-amount-desc"></use>
-                            </svg>
-                            Sort by Votes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/boards/{{board.id}}/export/csv"
-                          data-ng-click="boardMenuToggle = false"
-                          target="_self"
-                          >
-                            <svg class="aside-left icon-standard">
-                                <desc>Document icon</desc>
-                                <use xlink:href="#document"></use>
-                            </svg>
-                            Export to CSV
-                        </a>
-                    </li>
-                    <li>
-                    <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"
-                          data-ng-click="boardMenuToggle = false"
-                          >
-                            <svg class="aside-left icon-standard">
-                                <desc>Document icon</desc>
-                                <use xlink:href="#document"></use>
-                            </svg>
-                            Email Board Link
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

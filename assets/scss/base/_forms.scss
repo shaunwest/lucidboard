@@ -28,10 +28,12 @@
     font-weight: bold;
 }
 
+// space out all checkboxes from copy
 input[type="checkbox"] {
     margin-right: 0.5em;
 }
 
+// crazyness for transparent form fields-needs cleaning....
 .form-fields--blank {
     list-style-type: none;
     margin: 0;

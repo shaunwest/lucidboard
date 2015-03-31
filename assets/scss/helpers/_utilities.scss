@@ -39,3 +39,36 @@
 .underline  {
     border-bottom: 0.2em solid $oxford;
 }
+
+.aside-right {
+    float: right;
+}
+
+.aside-left {
+    float: left;
+}
+
+.divided-copy {
+    border-right: 0.125em solid $white;
+    padding-right: 1em;
+}
+
+// ensures inverse color of copy
+.copy-inverse {
+    color: $white;
+    &.editable-click {
+        color: $white;
+        &:hover {
+            color: $white;
+        }
+    }
+}
+
+// currently used on site header
+.item-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}

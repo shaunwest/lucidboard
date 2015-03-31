@@ -1,50 +1,56 @@
-.slide-out {
+.nav {
     @include clearfix;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
-    color: $white;
-    background: $oxford;
-    li {
-        margin-bottom: 0;
-        border-bottom: 1px solid lighten($oxford, 5%);
+    @include span(12 of 12 omega);
+    position: relative;
+    .nav-links {
+        float: right;
     }
-    margin-bottom: 0;
-    a {
-      padding: 0.5em;
-      color: $white;
-      display: inline-block;
-    }
-    @media (min-width: 40em) {
-        display: none;
-    }
-}
-
-.small-view {
     .delta {
         font-size: $h5-size;
         margin-top: 0.2em;
-    }
-    .x-list-small li:first-child {
-        width: 100%;
-        margin-bottom: 0.5em;
-    }
-    @media (min-width: 60em) {
-        display: none;
-        .x-list-small li:first-child {
-            width: auto;
-            margin-bottom: 0;
+        float: left;
+        color: $white;
+        margin-bottom: 0;
+        &:hover {
+            color: $white;
         }
     }
-}
-
-.large-view {
-    display: none;
-    position: relative;
+    .tier {
+        margin-bottom: 0.25em;
+    }
+    .nav-full {
+        @include clearfix;
+        width: 100%;
+    }
+    .x-list-inline {
+        li {
+            @include clearfix;
+            margin-bottom: 0.5em;
+        }
+        .active {
+            background-color: $storm;
+        }
+        .active-icon {
+            fill: $storm;
+        }
+    }
+    // hide board tools dropdown area
+    .board-menu-item {
+        display: none;
+    }
     @media (min-width: 60em) {
-        display: block;
+        .x-list-inline {
+            float: right;
+            li {
+                margin-bottom: 0;
+            }
+        }
+        // show board tools dropdown in larger viewports
+        .board-menu-item {
+            display: inline-block;
+        }
+        .nav-full {
+            width: auto;
+        }
     }
 }
