@@ -3,9 +3,9 @@
 
   angular.module('hansei.ui')
 
-  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', 'api',
-    'user', 'board', 'timer', 'view',
-    function($rootScope, $scope, $state, $timeout, api, user, board, timer, view) {
+  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$location',
+    'api', 'user', 'board', 'timer', 'view', 'config',
+    function($rootScope, $scope, $state, $timeout, $location, api, user, board, timer, view, config) {
 
       $scope.user              = user;
       $scope.board             = board;
@@ -45,7 +45,16 @@
       }
 
       function showBoardNav() {
-        view.column.setOptionsByBoard(board);
+        // Update the column switcher when the column updates (and the first time)
+        $scope.$watch('board.columns', function() {
+          view.column.setOptionsByBoard(board);
+        }, true);
+
+        $scope.$watch('board.title', function() {
+          $scope.mailtoSubject = config.appname + ': ' + board.title;
+          $scope.mailtoBody = user.name + ' would like to share a link to a board: ' +
+            $location.protocol() + '://' + $location.host() + '/boards/' + board.id;
+        });
 
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;

@@ -1,5 +1,10 @@
 module.exports.app = {
   /*
+   * The name of the application
+   */
+  appname: 'Lucidboard',
+
+  /*
    * Sigin methods:
    *
    *   - ldap: edit config/ldap.js to configure

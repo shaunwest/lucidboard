@@ -61,11 +61,6 @@
         view.tab.current = 'board';
       });
 
-      // Update the column switcher when the column updates
-      $scope.$watch('board.columns', function() {
-        view.column.setOptionsByBoard(board);
-      }, true);
-
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {
         board.locks.forEach(function(cardId) {
