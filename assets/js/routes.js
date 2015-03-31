@@ -64,6 +64,11 @@
             return board.load($stateParams.boardId);
           }]
         }
+      },
+      adminDelegation: {
+        url:         '/admin-delegation',
+        templateUrl: '/templates/adminDelegation.html',
+        controller:  'AdminDelegationCtrl'
       }
     });
 })();

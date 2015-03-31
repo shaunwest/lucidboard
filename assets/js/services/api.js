@@ -204,6 +204,10 @@
         },
         getConfig: function(cb) { get('/api/config', cb); },
 
+        delegateAdmin: function(username, password, cb) {
+          post('/api/delegate-admin', {username: username, password: password}, cb);
+        },
+
         subscribe:   function(events, cb) { subscriber.subscribe(events, cb); },
         unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },
         resubscribe: function(cb)         { subscriber.resubscribe(cb); },
