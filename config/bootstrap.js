@@ -19,6 +19,7 @@ module.exports.bootstrap = function(cb) {
     process.exit(1);
   }
 
+  // Remove this later
   Board.find({}).exec(function(err, boards) {
     if (err) throw err;
     boards.forEach(function(b) {
