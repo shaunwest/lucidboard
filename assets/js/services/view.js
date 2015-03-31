@@ -8,9 +8,10 @@
 
       return {
         init: function() {
-          this.tab.current = 'board';
-          this.column.options = [defaultColumn];
-          this.column.current = defaultColumn;
+          this.tab.current      = 'board';
+          this.column.options   = [defaultColumn];
+          this.column.current   = defaultColumn;
+          this.cardMenu.current = null;
         },
 
         cardDragging:   false,
@@ -47,6 +48,13 @@
           reconnecting: {
             show:      false,
             closeable: false
+          }
+        },
+
+        cardMenu: {
+          current: null,  // card id of open menu
+          switch: function(cId) {
+            this.current = this.current === cId ? null : cId;
           }
         }
       };

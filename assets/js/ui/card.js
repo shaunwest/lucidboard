@@ -17,9 +17,8 @@
           var board = $scope.board,
               card  = $scope.card;
 
-          $scope.view     = view;
-          $scope.user     = user;
-          $scope.cardMenu = false;
+          $scope.view = view;
+          $scope.user = user;
 
           $scope.onShow = function() { console.log('srsly'); };
 
@@ -84,7 +83,6 @@
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
-            $scope.cardMenu = false;
             api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
@@ -95,7 +93,6 @@
           $scope.color = function(card, color) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
-            $scope.cardMenu = false;
             api.cardColor(board.id, card.column, card.id, color);
           };
 

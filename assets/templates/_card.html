@@ -29,7 +29,7 @@ Click to enter comments...
             </pre>
         </div>
         <div data-ng-hide="isEditorVisible()" class="handle aside-right">
-            <a href="#" data-ng-click="cardMenu = !cardMenu">
+            <a href="#" data-ng-click="view.cardMenu.switch(card.id)">
                 <svg class="icon-standard">
                     <desc>Card menu toggle icon</desc>
                     <use xlink:href="#site-menu"></use>
@@ -51,7 +51,7 @@ Click to enter comments...
                 </span>
             </a>
         </div>
-        <div class="card-menu" data-ng-show="cardMenu">
+        <div class="card-menu" data-ng-show="view.cardMenu.current === card.id">
             <ul class="card-menu-items" role="menu">
                 <li>
                     Card Color
