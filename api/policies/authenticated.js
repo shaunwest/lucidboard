@@ -16,7 +16,7 @@ module.exports = function(req, res, next) {
   var token;
 
   var fail = function() {
-    res.forbidden('You are not permitted to perform this action.');
+    res.unauthorized('You are not permitted to perform this action.');
   };
 
   if (req.isSocket) {

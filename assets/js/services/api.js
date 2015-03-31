@@ -81,7 +81,7 @@
         //   FlashService.show(data.message);
         // }
         switch (jwr.statusCode) {
-          case 403:
+          case 401:
             $state.go('signin');
             break;
           case 500:
