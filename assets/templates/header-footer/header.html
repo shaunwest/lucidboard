@@ -27,7 +27,7 @@
             </li>
         </ul>
     </div>
-    <div class="tier small-view" data-ng-if="showBoardNav">
+    <div class="tier small-view form" data-ng-if="showBoardNav">
         <div class="tier mbm">
             <a href="#" class="aside-left" data-ng-click="menuToggle = !menuToggle">
                 <svg class="icon-standard" fill="#ffffff">
@@ -134,25 +134,27 @@
             </ul>
         </div>
         <div data-ng-if="showBoardNav" class="tier mtm mbs">
-            <h1 class="delta copy-inverse mbn aside-left"
-              data-ng-if="board.isFacilitator"
-              data-ng-class="{active:view.tab.current === 'board'}"
-              data-editable-text="board.title"
-              data-buttons="no"
-              data-e-maxlength="50"
-              data-onbeforesave="checkBoardTitle($data)"
-              >
-                {{board.title}}
-            </h1>
-            <a href="#" class="aside-left"
-              data-ng-if="!board.isFacilitator"
-              data-ng-click="view.tab.switch('board')"
-              data-ng-class="{active:view.tab.current === 'board'}"
-              >
-                <h1 class="delta copy-inverse mbn">
+            <div class="board-title">
+                <h1 class="delta copy-inverse mbn aside-left"
+                  data-ng-if="board.isFacilitator"
+                  data-ng-class="{active:view.tab.current === 'board'}"
+                  data-editable-text="board.title"
+                  data-buttons="no"
+                  data-e-maxlength="50"
+                  data-onbeforesave="checkBoardTitle($data)"
+                  >
                     {{board.title}}
                 </h1>
-            </a>
+                <a href="#" class="aside-left"
+                  data-ng-if="!board.isFacilitator"
+                  data-ng-click="view.tab.switch('board')"
+                  data-ng-class="{active:view.tab.current === 'board'}"
+                  >
+                    <h1 class="delta copy-inverse mbn">
+                        {{board.title}}
+                    </h1>
+                </a>
+            </div>
             <ul class="x-list-small aside-right">
                 <li data-ng-show="board.votesEnabled && board.isFacilitator">
                     <div>

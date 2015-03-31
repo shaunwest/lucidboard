@@ -50,6 +50,10 @@
     @extend %font--heading;
     font-size: $h4-size;
     padding: 0;
+    outline: 0;
+    background: transparent;
+    box-sizing: border-box;
+    border: 0;
 }
 
 .editable-controls, .editable-wrap {

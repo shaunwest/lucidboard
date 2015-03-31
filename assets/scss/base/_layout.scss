@@ -109,6 +109,12 @@ html, body {
 
 .copy-inverse {
     color: $white;
+    &.editable-click {
+        color: $white;
+        &:hover {
+            color: $white;
+        }
+    }
 }
 
 .item-fixed {
