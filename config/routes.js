@@ -203,6 +203,7 @@ module.exports.routes = {
   'GET /':                jsapp,
   'GET /signin':          jsapp,
   'GET /boards':          jsapp,
+  'GET /archived-boards': jsapp,
   'GET /boards/:boardId': jsapp,
 
   // Board Export (CSV)
