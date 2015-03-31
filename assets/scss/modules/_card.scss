@@ -67,6 +67,7 @@
 
 .card-menu {
     background: $storm;
+    font-size: 0.8em;
     @include span(12 of 12 omega);
     @include clearfix;
     &:hover {
