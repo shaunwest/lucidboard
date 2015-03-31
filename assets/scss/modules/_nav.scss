@@ -48,6 +48,10 @@
         // show board tools dropdown in larger viewports
         .board-menu-item {
             display: inline-block;
+            .board-menu-item-icon {
+                padding-top: 0.5em;
+
+            }
         }
         .nav-full {
             width: auto;
