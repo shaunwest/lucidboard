@@ -84,6 +84,7 @@
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
+            $scope.cardMenu = false;
             api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
