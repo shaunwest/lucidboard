@@ -23,7 +23,9 @@ module.exports.bootstrap = function(cb) {
   Board.find({}).exec(function(err, boards) {
     if (err) throw err;
     boards.forEach(function(b) {
+      console.log('b', b.id);
       if (b.archived === true || b.archived === false) return;
+      console.log('updating', b.id);
       Board.update({id: b.id}, {archived: false});
     });
   });
