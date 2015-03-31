@@ -41,8 +41,10 @@
       </div>
     </li>
     <li data-ng-show="b.id">
-      <label for="archived">Board is Archived:</label>
-      <input type="checkbox" data-ng-model="b.archived">
+      <label for="archived">
+          <input type="checkbox" data-ng-model="b.archived">
+          Board is Archived
+      </label>
     </li>
     <li>
       <input class="btn" type="submit" value="{{b.id ? 'Update' : 'Create'}} Board">

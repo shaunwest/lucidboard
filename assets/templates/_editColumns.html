@@ -2,21 +2,18 @@
 <ul class="y-list-color">
     <li data-ng-repeat="c in board.columns"
       >
-        <a href="#" data-ng-if="c.position !== 0"
-          data-editable-text="c.title"
-          data-buttons="no"
-          data-e-maxlength="25"
-          data-onbeforesave="checkColumnTitle($data, c.id)"
-          >
+        <a href="#" data-ng-if="c.position !== 0" class="clear-title">
             <svg data-ng-click="getDeleteConfirm(c)" class="icon-standard icon-small aside-left" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#minus-alt"></use>
             </svg>
-            {{c.title}}
-            <svg class="aside-right icon-standard" fill="#ffffff">
+            <span data-editable-text="c.title" data-buttons="no" data-e-maxlength="25" data-onbeforesave="checkColumnTitle($data, c.id)">
+                {{c.title}}
+            </span>
+            <!-- <svg class="aside-right icon-standard" fill="#ffffff">
                 <desc>Move Menu icon</desc>
                 <use xlink:href="#menu2"></use>
-            </svg>
+            </svg> -->
             <div class="item-delete" data-ng-show="deleteToggles[c.id]" data-ng-click="deleteColumn(c)">
                 Delete {{c.title}}
             </div>

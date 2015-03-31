@@ -3,10 +3,11 @@
         <h1 class="gamma heading-underline">
             Current Boards
         </h1>
-        <p>
-          <input type="text" data-ng-model="query" placeholder="Filter by"
-            style="width: 100%" autofocus>
-        </p>
+        <ul class="form-fields">
+            <li>
+                <input type="text" data-ng-model="query" placeholder="Filter boards">
+            </li>
+        </ul>
         <ul class="y-list-color">
           <li data-ng-repeat="b in boards | filter:query">
             <a href="/boards/{{b.id}}">
