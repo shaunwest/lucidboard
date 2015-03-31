@@ -6,7 +6,7 @@
         float: right;
     }
     .delta {
-        font-size: $h5-size;
+        font-size: $h6-size;
         margin-top: 0.2em;
         float: left;
         color: $white;
@@ -51,6 +51,9 @@
         }
         .nav-full {
             width: auto;
+        }
+        .delta {
+            font-size: $h5-size;
         }
     }
 }
