@@ -36,7 +36,6 @@ module.exports = {
       votesPerUser:   parseInt(req.body.votesPerUser),
       p_seeVotes:     req.body.p_seeVotes,
       p_seeContent:   req.body.p_seeContent,
-      p_combineCards: req.body.p_combineCards,
       p_lock:         req.body.p_lock
     };
 
@@ -78,7 +77,6 @@ module.exports = {
       'votesPerUser',
       'p_seeVotes',
       'p_seeContent',
-      'p_combineCards',
       'p_lock',
       'archived'
     ].forEach(function(field) {

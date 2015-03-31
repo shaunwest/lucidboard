@@ -126,7 +126,6 @@
         board.votesPerUser     = obj.votesPerUser;
         board.p_seeVotes       = obj.p_seeVotes;
         board.p_seeContent     = obj.p_seeContent;
-        board.p_combineCards   = obj.p_combineCards;
         board.p_lock           = obj.p_lock;
         board.archived         = obj.archived;
         board.isFacilitator    = isFacilitator;

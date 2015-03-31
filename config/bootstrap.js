@@ -26,7 +26,10 @@ module.exports.bootstrap = function(cb) {
       console.log('b', b.id);
       if (b.archived === true || b.archived === false) return;
       console.log('updating', b.id);
-      Board.update({id: b.id}, {archived: false});
+      Board.update({id: b.id}, {archived: false}, function(err, gg) {
+        console.log('er', err);
+        console.log('gg', gg);
+      });
     });
   });
 

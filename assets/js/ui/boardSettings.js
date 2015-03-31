@@ -24,7 +24,6 @@
               votesPerUser:   '0',
               p_seeVotes:     true,
               p_seeContent:   true,
-              p_combineCards: true,
               p_lock:         false,
               archived:       false
             };
@@ -41,7 +40,6 @@
               votesPerUser:   $scope.b.votesPerUser,
               p_seeVotes:     !!$scope.b.p_seeVotes,
               p_seeContent:   !!$scope.b.p_seeContent,
-              p_combineCards: !!$scope.b.p_combineCards,
               p_lock:         !!$scope.b.p_lock,
               archived:       !!$scope.b.archived
             };

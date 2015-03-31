@@ -42,7 +42,6 @@ module.exports = {
 
     p_seeVotes:     'boolean',
     p_seeContent:   'boolean',
-    p_combineCards: 'boolean',
     p_lock:         'boolean',
 
     archived: {
@@ -69,7 +68,6 @@ module.exports = {
         votesPerUser:   this.votesPerUser,
         p_seeVotes:     this.p_seeVotes,
         p_seeContent:   this.p_seeContent,
-        p_combineCards: this.p_combineCards,
         p_lock:         this.p_lock,
         archived:       this.archived
       };
