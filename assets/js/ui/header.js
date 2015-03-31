@@ -45,12 +45,7 @@
       }
 
       function showBoardNav() {
-        var options = board.columns.map(function(column) {
-          return {id: column.id, label: column.title, position: column.position};
-        });
-
-        options.push(options.shift());  // Move trash from the beginning to the end
-        view.column.setOptions(options);
+        view.column.setOptionsByBoard(board);
 
         $scope.showBoardNav = true;
         $scope.timerLeft    = timer.remaining;

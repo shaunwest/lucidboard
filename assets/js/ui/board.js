@@ -57,9 +57,14 @@
       $scope.timerMinutesInput = 5;
 
       // Change to the board when the column view dropdown changes
-      $scope.$watch('view.column.current', function(newVal, oldVal) {
+      $scope.$watch('view.column.current', function() {
         view.tab.current = 'board';
       });
+
+      // Update the column switcher when the column updates
+      $scope.$watch('board.columns', function() {
+        view.column.setOptionsByBoard(board);
+      }, true);
 
       // Unlock cards when our scope dies
       $scope.$on('$destroy', function() {

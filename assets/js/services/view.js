@@ -31,8 +31,14 @@
           options: [defaultColumn],
           current: defaultColumn,
           isAll: function() { return this.current && this.current.id === 0; },
-          setOptions: function(opts) {
-            this.options = [defaultColumn].concat(opts);
+          setOptionsByBoard: function(board) {
+            var options = board.columns.map(function(column) {
+              return {id: column.id, label: column.title, position: column.position};
+            });
+
+            options.push(options.shift());  // Move trash from the beginning to the end
+
+            this.options = [defaultColumn].concat(options);
             this.current = this.options[0];
           }
         },
