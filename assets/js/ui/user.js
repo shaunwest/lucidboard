@@ -6,10 +6,13 @@
   .controller('SigninCtrl', ['$rootScope', '$scope', '$state', '$window', 'user', 'config',
     function($rootScope, $scope, $state, $window, user, config) {
 
+      $scope.username = '';
+
       if (config.signin === 'dumb') {
         $rootScope.signinStyle = 'user';
       } else if (config.signin === 'ldap') {
         $rootScope.signinStyle = 'userpass';
+        $scope.password = '';
       }
 
       // If the user is signed in, take them to the boards !
