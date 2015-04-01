@@ -22,13 +22,16 @@ A user can be flagged as an admin, giving them special abilities on the Lucidboa
 
   - Actually deleting from the database archived boards
 
-To flag a user, add the following lines to your config/local.js file, changing the adminMakerPassword:
+To flag a user, add the following lines to the appSecret section of your config/local.js file, changing the adminMakerPassword:
 
-    // Is the admin delegation screen available?
-    adminMakerEnabled: true,
-    adminMakerPassword: 'secretpassword',  // admin delegation password
+    ...
+    appSecret: {
+      adminMakerEnabled: true,               // Is the admin delegation screen available?
+      adminMakerPassword: 'secretpassword',  // admin delegation password
+    }
+    ...
 
-Using this special password, you will be able to delegate a user as an admin by visiting the `/admin-delegation` page on your installation.
+Using this special password, you will be able to delegate a user as an admin by visiting the `/admin-delegation` page of your installation.
 
 ## Credits
 

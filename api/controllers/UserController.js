@@ -122,8 +122,9 @@ module.exports = {
     var user = req.body.username,
         pass = req.body.password;
 
-    if (!config.adminMakerEnabled)          return res.notFound();
-    if (pass !== config.adminMakerPassword) return res.forbidden();
+    if (!sails.config.appSecret)                            return res.notFound();
+    if (!sails.config.appSecret.adminMakerEnabled)          return res.notFound();
+    if (pass !== sails.config.appSecret.adminMakerPassword) return res.forbidden();
 
     User.findOne({name: user}).exec(function(err, obj) {
       if (err)  return res.serverError(err);

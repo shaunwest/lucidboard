@@ -8,10 +8,12 @@ module.exports = {
      *   - dumb: username input only
      */
     signin: 'ldap',
+  },
 
-    // Is the admin delegation screen available?
-    adminMakerEnabled: true,
+  // This app config stuff should not to leak from the backend
+  appSecret: {
+    adminMakerEnabled:  true,        // Is the admin delegation screen available?
     adminMakerPassword: 'changeme',  // admin delegation password
-  }
+ }
 
 };

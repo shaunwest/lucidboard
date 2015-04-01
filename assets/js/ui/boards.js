@@ -3,8 +3,13 @@
 
   angular.module('hansei.ui')
 
-  .controller('BoardsCtrl', ['$scope', 'boards', 'user', 'api', 'config', 'eventerFactory',
-    function($scope, boards, user, api, config, eventerFactory) {
+  .controller('BoardsCtrl', ['$rootScope', '$scope', 'boards', 'user', 'api',
+    'config', 'eventerFactory',
+    function($rootScope, $scope, boards, user, api, config, eventerFactory) {
+
+      var _ = {
+        findIndex: $rootScope.findIndex
+      };
 
       $scope.boards  = boards;
       $scope.colsets = config.colsets;
