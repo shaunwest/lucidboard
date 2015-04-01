@@ -27,7 +27,6 @@
           loadConfig: loadConfig,
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
-            console.log('alright', user);
             if (user.signedIn) {
               api.boardsGetUnarchivedList(function(boards) { defer.resolve(boards); });
             } else {
