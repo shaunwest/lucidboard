@@ -19,3 +19,8 @@ $font-body: 'Open Sans', sans-serif;;
   font-size: $base-font-size;
   line-height: $base-line-height;
 }
+
+.small-muted {
+    font-size: $micro-text;
+    color: $cloudy-day;
+}
