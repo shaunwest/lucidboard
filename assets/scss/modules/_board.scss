@@ -7,7 +7,7 @@
 }
 // Column container displays as table for screens >70em
 .column-container {
-    @extend .tier;
+    width: 100%;
     @media (min-width: 70em) {
         display: table;
         table-layout: fixed;
@@ -87,7 +87,7 @@
     background: $white;
     position: absolute;
     right: 0;
-    top: 70%;
+    top: 80%;
     border: 0.04em solid $cloudy-day;
     box-shadow: rgba(0, 0, 0, 0.2) 0 0.125em 0.5em 0;
     a {
