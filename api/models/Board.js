@@ -71,7 +71,8 @@ module.exports = {
         p_lock:          this.p_lock,
         archived:        this.archived,
         creatorUsername: this.creatorUsername,
-        creatorEmail:    this.creatorEmail
+        creatorEmail:    this.creatorEmail,
+        createdAt:       this.createdAt
       };
     },
 
@@ -182,7 +183,7 @@ module.exports = {
           title:           b.title,
           creatorUsername: b.creatorUsername,
           creatorEmail:    b.creatorEmail,
-          // createdAt:       b.createdAt,
+          createdAt:       b.createdAt,
           archived:        b.archived
         };
       }));
