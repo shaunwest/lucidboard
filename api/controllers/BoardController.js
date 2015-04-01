@@ -561,7 +561,6 @@ module.exports = {
     Board.findOneById(boardId).exec(function(err, board) {
       if (err)                       return res.serverError(err);
       if (!board)                    return res.notFound();
-      if (board.creator !== user.id) return res.forbidden();
 
       var bits = {
         timerStart:  new Date(),
@@ -656,24 +655,6 @@ module.exports = {
     });
   },
 
-  /*timerStart: function(req, res) {
-    var boardId = parseInt(req.param('id')),
-      seconds = parseInt(req.param('seconds'));
-
-    var bits = {
-      timerStart: new Date(),
-      timerLength: seconds
-    };
-
-    Board.update(boardId, bits).exec(function(err, board) {
-      if (err) return res.serverError(err);
-
-      res.jsonx(board);
-
-      redis.boardTimerStart(boardId, seconds);
-    });
-  },*/
-
   timerPause: function(req, res) {
     var boardId = parseInt(req.param('id')),
       seconds = parseInt(req.param('seconds'));
@@ -693,8 +674,6 @@ module.exports = {
   },
 
   timerReset: function(req, res) {
-    //var boardId = parseInt(req.param('id'));
-    //redis.boardTimerReset(boardId);
     var boardId = parseInt(req.param('id')),
       seconds = parseInt(req.param('seconds'));
 

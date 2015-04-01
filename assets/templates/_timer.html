@@ -4,16 +4,16 @@
     <use xlink:href="#clock"></use>
   </svg>
   {{timer.remaining | secondsToMinutes}}
-  <form data-ng-show="showForm">
+  <span data-ng-show="showForm">
     <input class="text-input-clear mlm" type="text" size="4" data-ng-model-options="{ getterSetter: true }" data-ng-model="timer.startMinutes" data-ng-click="preventDefault($event)">
-    <a href="#" class="outline mlm" data-ng-show="showTimerStart" data-ng-click="timerStart($event, timerMinutesInput); clockPop = !clockPop">
+    <span class="outline mlm" data-ng-show="showTimerStart" data-ng-click="timerStart($event, timerMinutesInput); clockPop = !clockPop">
       Start
-    </a>
-    <a href="#" class="outline mlm" data-ng-show="!showTimerStart" data-ng-click="timerPause($event); clockPop = !clockPop">
+    </span>
+    <span href="#" class="outline mlm" data-ng-show="!showTimerStart" data-ng-click="timerPause($event); clockPop = !clockPop">
       Pause
-    </a>
-    <a href="#" class="outline mlm" data-ng-click="timerReset(timerMinutesInput); clockPop = !clockPop">
+    </span>
+    <span href="#" class="outline mlm" data-ng-click="timerReset($event); clockPop = !clockPop">
       Reset
-    </a>
-  </form>
+    </span>
+  </span>
 </div>

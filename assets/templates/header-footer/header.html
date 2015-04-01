@@ -56,25 +56,11 @@
                   data-ng-options="columnView.label for columnView in view.column.options">
                 </select>
             </li>
-            <!--
-            <li>
-                <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
-                    <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
-                        <desc>Board Clock Timer Icon</desc>
-                        <use xlink:href="#clock"></use>
-                    </svg>
-                    {{timer.remaining | formatTime}}
-                    <input data-ng-show="showTimerForm" class="text-input-clear mlm" id="timerMinutesInput" name="timerMinutesInput" type="text" size="4"
-                        data-ng-model="timerMinutesInput">
-                    <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput)">
-                        Start
-                    </span>
-                    <span class="outline mlm" data-ng-show="showTimerForm" data-ng-click="timerStart(timerMinutesInput); clockPop = !clockPop">
-                        Reset
-                    </span>
+            <li data-ng-show="board.isFacilitator">
+                <a href="#" class="btn" data-ng-click="toggleTimerForm()">
+                    <timer data-show-form="showTimerForm"></timer>
                 </a>
             </li>
-            -->
             <li data-ng-show="board.isFacilitator">
                 <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
                   data-ng-class="{active:view.tab.current === 'settings'}">
@@ -112,11 +98,12 @@
                       target="_self"
                       >
                         Export to CSV
-                    <a href="#" class="btn" data-ng-click="toggleTimerForm()">
-                      <timer data-show-form="showTimerForm"></timer>
                     </a>
-              </li>
-              <li data-ng-show="board.votesEnabled()">
+                    <!--<a href="#" class="btn" data-ng-click="toggleTimerForm()">
+                      <timer data-show-form="showTimerForm"></timer>
+                    </a>-->
+                </li>
+                <li data-ng-show="board.votesEnabled()">
                   <a href="#" class="btn">
                       <svg class="aside-left icon-standard" fill="#ffffff">
                           <desc>Vote icon</desc>

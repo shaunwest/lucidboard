@@ -48,11 +48,11 @@
         board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id, function(bits) {
         timer.start(bits.seconds);
-      }).event('board:timerPause:' + board.id(), function(bits) {
+      }).event('board:timerPause:' + board.id, function(bits) {
         timer.pause();
-      }).event('board:timerReset:' + board.id(), function(bits) {
+      }).event('board:timerReset:' + board.id, function(bits) {
         timer.reset(bits.seconds);
-      }).event('board:combineCards:' + board.id(), function(info) {
+      }).event('board:combineCards:' + board.id, function(info) {
         board.combineCards(info);
       }).event('board:flipCard:' + board.id, function(cardId) {
         board.flipCard(cardId);
@@ -60,7 +60,7 @@
       }).hook($scope);
 
       view.init();
-      timer.init();
+      //timer.init();
 
       $scope.board             = board;
       $scope.view              = view;

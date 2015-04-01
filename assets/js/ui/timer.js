@@ -19,12 +19,12 @@
             scope.showTimerStart = true;
           });
 
-          if (board.timerRunning()) {
-            timer.remaining = board.timerLeft();
+          if (board.timerRunning) {
+            timer.remaining = board.timerLeft;
             timer.start();
           } else {
             scope.showTimerStart = true;
-            timer.remaining = board.timerLength();
+            timer.remaining = board.timerLength;
           }
 
           scope.preventDefault = function($event) {
@@ -33,21 +33,25 @@
           };
 
           scope.timerStart = function ($event) {
-            api.timerStart(board.id(), board.timerLeft() > 0 ?
+            api.timerStart(board.id, board.timerLeft > 0 ?
               timer.remaining : timer.startTime);
             $event.stopPropagation();
             $event.preventDefault();
+            return false;
           };
 
-          scope.timerReset = function () {
-            api.timerReset(board.id(), timer.startTime);
+          scope.timerReset = function ($event) {
+            api.timerReset(board.id, timer.startTime);
+            $event.stopPropagation();
+            $event.preventDefault();
             return false;
           };
 
           scope.timerPause = function ($event) {
-            api.timerPause(board.id(), timer.remaining);
+            api.timerPause(board.id, timer.remaining);
             $event.stopPropagation();
             $event.preventDefault();
+            return false;
           };
         }
       }
