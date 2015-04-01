@@ -1,32 +1,50 @@
 h1, h2, h3, h4, h5, h6 {
     @extend %font--heading;
-    color: #333;
+    color: $font-body-color;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
 
 h1, .alpha {
   font-size: $h1-size;
+  @media (min-width: 60em) {
+      font-size: $h1-size-large;
+  }
 }
 
 h2, .beta {
   font-size: $h2-size;
+  @media (min-width: 60em) {
+      font-size: $h2-size-large;
+  }
 }
 
 h3, .gamma {
   font-size: $h3-size;
+  @media (min-width: 60em) {
+      font-size: $h3-size-large;
+  }
 }
 
 h4, .delta {
   font-size: $h4-size;
+  @media (min-width: 60em) {
+      font-size: $h4-size-large;
+  }
 }
 
 h5, .epsilon {
   font-size: $h5-size;
+  @media (min-width: 60em) {
+      font-size: $h5-size-large;
+  }
 }
 
 h6, .zeta {
   font-size: $h6-size;
+  @media (min-width: 60em) {
+      font-size: $h6-size-large;
+  }
 }
 
 .heading-underline  {

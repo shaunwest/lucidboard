@@ -6,7 +6,7 @@
         float: right;
     }
     .delta {
-        font-size: $h6-size;
+        font-size: $h5-size;
         margin-top: 0.2em;
         float: left;
         color: $white;
@@ -48,16 +48,12 @@
         // show board tools dropdown in larger viewports
         .board-menu-item {
             display: inline-block;
-            .board-menu-item-icon {
-                padding-top: 0.5em;
-
-            }
         }
         .nav-full {
             width: auto;
         }
         .delta {
-            font-size: $h5-size;
+            font-size: $h4-size;
         }
     }
 }

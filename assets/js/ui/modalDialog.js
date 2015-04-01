@@ -9,8 +9,7 @@
         restrict:    'E',
         templateUrl: '/templates/_modalDialog.html',
         scope:       {
-          show:      '=',
-          closeable: '='
+          show:      '='
         },
         replace:     true,
         transclude:  true,
@@ -21,8 +20,8 @@
           if (attrs.width)  scope.dialogStyle.width  = attrs.width;
           if (attrs.height) scope.dialogStyle.height = attrs.height;
 
-          scope.hideModal = function(force) {
-            if (scope.closeable || force) scope.show = false;
+          scope.hideModal = function() {
+            scope.show = false;
           };
         }
       };

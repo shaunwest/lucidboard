@@ -12,7 +12,7 @@
           <li data-ng-repeat="b in boards | filter:query">
             <a href="/boards/{{b.id}}">
               {{b.title}}
-              <small style="float:right">/{{b.creatorUsername}}</small>
+              <small class="aside-right">/{{b.creatorUsername}}</small>
             </a>
           </li>
         </ul>
