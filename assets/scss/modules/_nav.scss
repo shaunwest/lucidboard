@@ -3,6 +3,7 @@
     @include span(12 of 12 omega);
     position: relative;
     .nav-links {
+        font-size: $small-text;
         float: right;
     }
     .delta {
