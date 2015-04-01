@@ -14,6 +14,14 @@
 
       eventerFactory().event('board:create', function(board) {
         $scope.boards.push(board);
+      }).event('board:update', function(board) {
+        var idx = _.findIndex($scope.boards, function(b) { return b.id === board.id; });
+        if (idx === -1) return;
+        $scope.boards.splice(idx, 1, board);
+      }).event('board:delete', function(boardId) {
+        var idx = _.findIndex($scope.boards, function(b) { return b.id === boardId; });
+        if (idx === -1) return;
+        $scope.boards.splice(idx, 1);
       }).hook($scope);
 
     }])

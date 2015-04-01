@@ -10,18 +10,16 @@
       var user, initialTokenDefer, initialToken = fetchLSToken();
 
       user = {
-        id:       null,
-        name:     null,
-        token:    initialToken,
         signedIn: Boolean(initialToken),
 
         refresh: function(data) {
-          this.id       = data.id;
-          this.name     = data.name;
-          this.token    = data.token;
-          this.signedIn = Boolean(data.token);
+          this.id       = data ? data.id : null;
+          this.name     = data ? data.name : null;
+          this.token    = data ? data.token : fetchLSToken();
+          this.admin    = data ? data.admin : false;
+          this.signedIn = Boolean(data ? data.token : fetchLSToken());
         },
-        signin:   function(username, pass, cb) {
+        signin: function(username, pass, cb) {
           api.signin(username, pass, function(data, jwr) {
             localStorageService.set('authToken', data.token);
             initialTokenDefer.resolve();
@@ -33,8 +31,7 @@
           var beganSignedIn = Boolean(this.token);
           localStorageService.remove('authToken');
           localStorageService.set('justSignedOut', true);
-          this.token = null;
-          this.signedIn = false
+          this.refresh();
           return beganSignedIn;
         },
         clearJustSignedOut: function() {
@@ -68,6 +65,8 @@
           return initialTokenDefer.promise;
         },
       };
+
+      user.refresh();  // initialize
 
       return user;
     }])

@@ -266,7 +266,7 @@
             var nextPosition = board.columns.length,
                 idx          = _.findIndex(board.columns, function(c) { return c.id === columnId; }),
                 column       = board.columns.splice(idx, 1)[0],
-                trash        = this.trash();
+                trash        = this.trash;
             column.cardSlots.forEach(function(cs) {  // move cards to trash
               cs.forEach(function(c) {
                 c.position = (trash.cardSlots.length

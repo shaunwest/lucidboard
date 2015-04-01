@@ -59,21 +59,45 @@ module.exports = {
       }
 
       return {
-        id:             this.id,
-        title:          this.title,
-        columns:        this.columns,
-        creator:        this.creator,
-        timerLength:    this.timerLength,
-        timerLeft:      timerLeft,
-        votesPerUser:   this.votesPerUser,
-        p_seeVotes:     this.p_seeVotes,
-        p_seeContent:   this.p_seeContent,
-        p_lock:         this.p_lock,
-        archived:       this.archived
+        id:              this.id,
+        title:           this.title,
+        columns:         this.columns,
+        creator:         this.creator,
+        timerLength:     this.timerLength,
+        timerLeft:       timerLeft,
+        votesPerUser:    this.votesPerUser,
+        p_seeVotes:      this.p_seeVotes,
+        p_seeContent:    this.p_seeContent,
+        p_lock:          this.p_lock,
+        archived:        this.archived,
+        creatorUsername: this.creatorUsername,
+        creatorEmail:    this.creatorEmail
       };
+    },
+
+    // Adds some extra bits of info, needed for the board list
+    addInfo: function(cb) {
+      User.findOneById(this.creator).exec(function(err, user) {
+        if (err) return cb(err);
+        this.creatorUsername = user.name;
+        this.creatorEmail    = user.email;
+        cb(err, this);
+      }.bind(this));
     }
   },
 
+  beforeDestroy: function(criteria, cb) {
+    if (!criteria.where) {
+      return cb('Where criteria expected!');  // i don't know what i'm doing
+    }
+
+    Board.find(criteria.where).exec(function(err, boards) {
+      if (err) return cb(err);
+      Column.destroy({board: _.pluck(boards, 'id')}).exec(cb);
+    })
+  },
+
+  // Load the board by id along with all child objects.
   loadFullById: function(id, _cb) {
     async.auto({
       board: function(cb) {
@@ -131,6 +155,8 @@ module.exports = {
     });
   },
 
+  // Get a list of boards with extra info. This info is the same as what addInfo
+  // augments a board model with, but it is fetched in a more efficient manner.
   getList: function(criteria, cb) {
     async.auto({
       boards:  function(_cb) { Board.find(criteria).exec(_cb); },
@@ -156,7 +182,8 @@ module.exports = {
           title:           b.title,
           creatorUsername: b.creatorUsername,
           creatorEmail:    b.creatorEmail,
-          createdAt:       b.createdAt
+          // createdAt:       b.createdAt,
+          archived:        b.archived
         };
       }));
     });

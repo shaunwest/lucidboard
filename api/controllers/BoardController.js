@@ -55,14 +55,20 @@ module.exports = {
         jobs.push(colmakermaker(name, pos));
         pos++;
       });
-      async.parallel(jobs, function(err, results) {
+      async.parallel(jobs, function(err, columns) {
         if (err) return res.serverError(err);
 
-        board.columns = results;
+        board.addInfo(function(err, b) {
+          if (err) return res.serverError(err);
 
-        res.jsonx(board);
+          b.columns = columns;
 
-        redis.boardCreated(board);
+          res.jsonx(b);
+
+          delete b.columns;  // other users don't need this.
+
+          redis.boardCreated(b);
+        });
       });
 
     });
@@ -89,6 +95,25 @@ module.exports = {
         if (err) return res.serverError(err);
         res.jsonx(board[0]);
         redis.boardUpdated(board[0]);
+      });
+    });
+  },
+
+  delete: function(req, res) {
+    var id   = parseInt(req.param('id')),
+        user = req.user;
+
+    if (!id)         return res.badRequest();
+    if (!user.admin) return res.forbidden();
+
+    Board.findOneById(id).exec(function(err, board) {
+      if (err)    return res.serverError(err);
+      if (!board) return res.notFound(err);
+
+      Board.destroy({id: board.id}).exec(function(err) {
+        if (err) return res.serverError(err);
+        res.jsonx(true);
+        redis.boardDelete(id);
       });
     });
   },

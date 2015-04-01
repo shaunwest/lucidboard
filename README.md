@@ -16,6 +16,20 @@ Make sure you have a running instance of Redis going on and do something like th
     npm install
     npm start
 
+## Administration
+
+A user can be flagged as an admin, giving them special abilities on the Lucidboard installation. Currently, these abilities include:
+
+  - Actually deleting from the database archived boards
+
+To flag a user, add the following lines to your config/local.js file, changing the adminMakerPassword:
+
+    // Is the admin delegation screen available?
+    adminMakerEnabled: true,
+    adminMakerPassword: 'secretpassword',  // admin delegation password
+
+Using this special password, you will be able to delegate a user as an admin by visiting the `/admin-delegation` page on your installation.
+
 ## Credits
 
 **Developers/UI:** Adam Bellinson, Shaun West, Amber Febbraro, Phil Rinke

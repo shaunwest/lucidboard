@@ -6,6 +6,8 @@
  * @docs		    :: http://sailsjs.org/#!documentation/models
  */
 
+var _ = require('underscore');
+
 module.exports = {
 
   schema: true,
@@ -51,6 +53,18 @@ module.exports = {
         color:      this.color,
         locked:     this.locked || null
       };
+    },
+
+  },
+
+  beforeDestroy: function(criteria, cb) {
+    if (!criteria.where) {
+      return cb('Where criteria expected!');  // i don't know what i'm doing
     }
+
+    Card.find(criteria.where).exec(function(err, cards) {
+      if (err) return cb(err);
+      Vote.destroy({card: _.pluck(cards, 'id')}).exec(cb);
+    })
   }
 };

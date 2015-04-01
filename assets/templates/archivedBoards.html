@@ -15,6 +15,10 @@
               {{b.title}}
               <small style="float:right">by {{b.creatorUsername}}</small>
             </a>
+            <a href="" data-ng-click="confirmDelete(b)"
+              data-ng-show="user.admin && b.archived">
+              Delete Board
+            </a>
           </li>
         </ul>
     </section>

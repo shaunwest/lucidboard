@@ -134,6 +134,12 @@ module.exports.routes = {
     action:     'unlock'
   },
 
+  // Board: Delete
+  'DELETE /api/boards/:id': {
+    controller: 'BoardController',
+    action:     'delete'
+  },
+
   // Column Create
   'POST /api/boards/:boardId/columns': {
     controller: 'ColumnController',
@@ -188,6 +194,12 @@ module.exports.routes = {
     action:     'config'
   },
 
+  // Delegate an admin
+  'POST /api/delegate-admin': {
+    controller: 'UserController',
+    action:     'delegateAdmin'
+  },
+
 
 
   /***************************************************************************
@@ -200,11 +212,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'GET /':                jsapp,
-  'GET /signin':          jsapp,
-  'GET /boards':          jsapp,
-  'GET /archived-boards': jsapp,
-  'GET /boards/:boardId': jsapp,
+  'GET /':                 jsapp,
+  'GET /signin':           jsapp,
+  'GET /boards':           jsapp,
+  'GET /archived-boards':  jsapp,
+  'GET /boards/:boardId':  jsapp,
+  'GET /admin-delegation': jsapp,
 
   // Board Export (CSV)
   'GET /boards/:boardId/export/csv': {

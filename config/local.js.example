@@ -7,7 +7,11 @@ module.exports = {
      *   - ldap: edit config/ldap.js to configure
      *   - dumb: username input only
      */
-    signin: 'ldap'
+    signin: 'ldap',
+
+    // Is the admin delegation screen available?
+    adminMakerEnabled: true,
+    adminMakerPassword: 'changeme',  // admin delegation password
   }
 
 };

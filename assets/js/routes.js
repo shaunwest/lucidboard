@@ -5,6 +5,10 @@
     return config.load();
   }];
 
+  var authenticate = ['user', function(user) {
+    return user.initialTokenPromise();
+  }];
+
   angular.module('hansei.routes')
     .constant('routes', {
       signin: {
@@ -23,6 +27,7 @@
           loadConfig: loadConfig,
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
+            console.log('alright', user);
             if (user.signedIn) {
               api.boardsGetUnarchivedList(function(boards) { defer.resolve(boards); });
             } else {

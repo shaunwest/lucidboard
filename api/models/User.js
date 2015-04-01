@@ -23,11 +23,18 @@ module.exports = {
       regex: usernameRegex,
       unique: true
     },
+
     email: {
       type: 'string',
       unique: true,
       required: true
     },
+
+    admin: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
     // gravatarHash: {
     //   type: 'string'
     // },
@@ -50,7 +57,8 @@ module.exports = {
       return {
         id:    this.id,
         name:  this.name,
-        token: this.buildToken()
+        token: this.buildToken(),
+        admin: this.admin
       };
     },
 

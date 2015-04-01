@@ -40,8 +40,9 @@ module.exports.policies = {
   },
 
   UserController: {
-    subscribe:   'authenticated',
-    unsubscribe: 'authenticated'
+    subscribe:     'authenticated',
+    unsubscribe:   'authenticated',
+    delegateAdmin: 'authenticated'
   },
 
   // '*': true,

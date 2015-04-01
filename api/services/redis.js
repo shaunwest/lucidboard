@@ -35,8 +35,6 @@ var publish = function(signal, payload, req) {
 
 module.exports = {
   boardCreated:      function(board, r)           { publish('board:create', board, r); },
-  boardUpdated:      function(board, r)           { publish('board:update:' + board.id, board, r); },
-  boardDeleted:      function(boardId, r)         { publish('board:delete:' + boardId, null, r); },
   boardMoveCards:    function(boardId, info, r)   { publish('board:moveCards:' + boardId, info, r); },
   boardMoveColumns:  function(boardId, info, r)   { publish('board:moveColumns:' + boardId, info, r); },
   boardCombineCards: function(boardId, info, r)   { publish('board:combineCards:' + boardId, info, r); },
@@ -55,6 +53,15 @@ module.exports = {
 
   cardLock:          function(boardId, info, r)   { publish('card:lock:' + boardId, info, r); },
   cardUnlock:        function(boardId, info, r)   { publish('card:unlock:' + boardId, info, r); },
+
+  boardDelete:       function(boardId, r) {
+    publish('board:delete:' + boardId, true, r);
+    publish('board:delete', boardId, r);
+  },
+  boardUpdated:      function(board, r) {
+    publish('board:update:' + board.id, board, r);
+    publish('board:update', board, r);
+  },
 
   boardTimerStart: function(boardId, seconds, r) {
     publish('board:timerStart:' + boardId, {seconds: seconds}, r);

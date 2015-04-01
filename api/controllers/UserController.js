@@ -20,12 +20,7 @@ module.exports = {
         req.socket.authToken = token;
       }
 
-      res.jsonx({
-        id:       user.id,
-        username: user.name,
-        email:    user.email,
-        token:    user.buildToken()
-      });
+      res.jsonx(user);
     };
 
     switch (config.signin) {
@@ -106,7 +101,7 @@ module.exports = {
     }
     subscriber.subscribe(req, req.param('events'), function(err) {
       if (err) res.serverError(err);
-      res.json({subs: subscriber.getSubs(req)});
+      res.jsonx({subs: subscriber.getSubs(req)});
     });
   },
 
@@ -119,8 +114,26 @@ module.exports = {
     }
     subscriber.unsubscribe(req, req.param('events'), function(err) {
       if (err) res.serverError(err);
-      res.json({subs: subscriber.getSubs(req)});
+      res.jsonx({subs: subscriber.getSubs(req)});
     });
   },
+
+  delegateAdmin: function(req, res) {
+    var user = req.body.username,
+        pass = req.body.password;
+
+    if (!config.adminMakerEnabled)          return res.notFound();
+    if (pass !== config.adminMakerPassword) return res.forbidden();
+
+    User.findOne({name: user}).exec(function(err, obj) {
+      if (err)  return res.serverError(err);
+      if (!obj) return res.badRequest();
+
+      User.update({id: obj.id}, {admin: true}, function(err, r) {
+        if (err) return res.serverError(err);
+        res.jsonx(true);
+      });
+    });
+  }
 
 };

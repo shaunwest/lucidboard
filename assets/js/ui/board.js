@@ -34,6 +34,9 @@
         board.cardColor(bits);
       }).event('board:update:' + board.id, function(b) {
         board.update(b);
+      }).event('board:delete:' + board.id, function() {
+        alert("The board you're viewing has just been deleted.");
+        $state.go('boards');
       }).event('board:moveCards:' + board.id, function(info) {
         board.cardMove(info);
       }).event('board:moveColumns:' + board.id, function(info) {

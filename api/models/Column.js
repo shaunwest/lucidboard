@@ -6,6 +6,8 @@
  * @docs		    :: http://sailsjs.org/#!documentation/models
  */
 
+var _ = require('underscore');
+
 var titleRegex = /^.{1,25}$/;
 
 module.exports = {
@@ -38,8 +40,19 @@ module.exports = {
         board:    this.board,
         cards:    this.cards
       };
+    },
+
+  },
+
+  beforeDestroy: function(criteria, cb) {
+    if (!criteria.where) {
+      return cb('Where criteria expected!');  // i don't know what i'm doing
     }
 
+    Column.find(criteria.where).exec(function(err, columns) {
+      if (err) return cb(err);
+      Card.destroy({column: _.pluck(columns, 'id')}).exec(cb);
+    })
   }
 
 };

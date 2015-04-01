@@ -207,6 +207,7 @@
         delegateAdmin: function(username, password, cb) {
           post('/api/delegate-admin', {username: username, password: password}, cb);
         },
+        boardDelete: function(boardId, cb) { doDelete('/api/boards/' + boardId, cb); },
 
         subscribe:   function(events, cb) { subscriber.subscribe(events, cb); },
         unsubscribe: function(events, cb) { subscriber.unsubscribe(events, cb); },

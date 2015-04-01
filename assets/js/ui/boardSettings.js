@@ -15,7 +15,11 @@
           $scope.colsets = config.colsets;
 
           if ($scope.board) {
-            $scope.b = $scope.board;
+            // Without this, modifying the form has a direct affect on the real
+            // board model. We only want to allow changing this when the event comes
+            // back from the server after the real, server-side update.
+            $scope.b = angular.copy($scope.board);
+            $scope.$watch('board', function() { $scope.b = angular.copy($scope.board); });
           } else {
             $scope.b = {
               id:             null,
