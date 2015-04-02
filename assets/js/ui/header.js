@@ -45,10 +45,7 @@
       }
 
       function showBoardNav() {
-        // Update the column switcher when the column updates (and the first time)
-        $scope.$watch('board.columns', function() {
-          view.column.setOptionsByBoard(board);
-        }, true);
+        view.column.setOptionsByBoard(board);
 
         $scope.$watch('board.title', function() {
           $scope.mailtoSubject = config.appname + ': ' + board.title;

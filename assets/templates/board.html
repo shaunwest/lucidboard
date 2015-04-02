@@ -25,7 +25,7 @@
                 <ul class="form-fields--blank">
                     <li class="brand-underline">
                         <h4 class="mtn mbn delta"
-                            data-ng-if="board.isFacilitator"
+                            data-ng-if="board.isFacilitator && column.position !== 0"
                             data-editable-text="column.title"
                             data-buttons="no"
                             data-onbeforesave="checkColumnTitle($data, column.id)"
@@ -37,8 +37,8 @@
                             >
                             {{column.title}}
                         </h4>
-                        <h4 class="mtn mbn delta"
-                            data-ng-if="!board.isFacilitator"
+                        <h4 class="mtn mbn"
+                            data-ng-if="!board.isFacilitator || column.position === 0"
                             >
                             {{column.title}}
                         </h4>

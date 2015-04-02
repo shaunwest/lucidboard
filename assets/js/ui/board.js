@@ -13,6 +13,7 @@
         board.columnCreate(col);
       }).event('column:update:' + board.id, function(col) {
         board.columnUpdate(col);
+        view.column.setOptionsByBoard(board);
       }).event('card:create:' + board.id, function(card) {
         if (card.you) card.openForEditWhenReady = true;
         board.cardCreate(card);
@@ -60,7 +61,7 @@
       $scope.timerMinutesInput = 5;
 
       // Change to the board when the column view dropdown changes
-      $scope.$watch('view.column.current', function() {
+      $scope.$watch('view.column.current', function(newV, oldV) {
         view.tab.current = 'board';
       });
 

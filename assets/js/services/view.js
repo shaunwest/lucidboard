@@ -31,7 +31,7 @@
         column: {
           options: [defaultColumn],
           current: defaultColumn,
-          isAll: function() { return this.current && this.current.id === 0; },
+          isAll: function() { return this.current.id === 0; },
           setOptionsByBoard: function(board) {
             var options = board.columns.map(function(column) {
               return {id: column.id, label: column.title, position: column.position};
