@@ -6,7 +6,12 @@
 
       var defaultColumn = {id: 0, label: 'View All'};
 
-      return {
+      var closeMenus = function() {
+        view.cardMenu.switch();
+        view.boardMenu.toggle(false);
+      };
+
+      var view = {
         init: function() {
           this.tab.current      = 'board';
           this.column.options   = [defaultColumn];
@@ -17,9 +22,12 @@
         cardDragging:   false,
         columnDragging: false,
 
+        closeMenus: closeMenus,
+
         tab: {
           current: 'board',
           switch: function(tabName, otherwise) {
+            closeMenus();
             if (this.current === tabName && otherwise) {
               this.current = otherwise;
             } else {
@@ -54,10 +62,27 @@
         cardMenu: {
           current: null,  // card id of open menu
           switch: function(cId) {
-            this.current = this.current === cId ? null : cId;
+            if (this.current === cId || cId === undefined) {
+              this.current = null;
+            } else {
+              this.current = cId;
+            }
+          }
+        },
+
+        boardMenu: {
+          shown: false,
+          toggle: function(open) {
+            if (open === undefined) {
+              this.shown = !this.shown;
+            } else {
+              this.shown = Boolean(open)
+            }
           }
         }
       };
+
+      return view;
 
     }])
 })();

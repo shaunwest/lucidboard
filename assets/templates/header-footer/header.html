@@ -84,7 +84,7 @@
                 </a>
             </li>
             <li class="board-menu-item">
-                <a href="#" data-ng-click="boardMenuToggle = !boardMenuToggle">
+                <a href="#" data-ng-click="view.boardMenu.toggle()">
                     <svg class="icon-alert ptm" fill="#ffffff" data-ng-class="{'active-icon':boardMenuToggle}">
                         <desc>Menu Icon</desc>
                         <use xlink:href="#site-menu"></use>
@@ -92,21 +92,21 @@
                 </a>
             </li>
         </ul>
-        <div class="board-menu" ng-init="boardMenuToggle = false" data-ng-show="boardMenuToggle">
+        <div class="board-menu" data-ng-show="view.boardMenu.shown">
             <ul class="y-list">
                 <li>
-                    <a href="#" data-ng-click="goFullScreen(); boardMenuToggle = false">
+                    <a href="#" data-ng-click="view.closeMenus(); goFullScreen();">
                         Go Fullscreen
                     </a>
                 </li>
                 <li data-ng-show="board.isFacilitator">
-                    <a href="#" data-ng-click="sortByVotes(); boardMenuToggle = false">
+                    <a href="#" data-ng-click="view.closeMenus(); sortByVotes();">
                         Sort by Votes
                     </a>
                 </li>
                 <li>
                     <a href="/boards/{{board.id}}/export/csv"
-                      data-ng-click="boardMenuToggle = false"
+                      data-ng-click="view.closeMenus()"
                       target="_self"
                       >
                         Export to CSV
@@ -114,7 +114,7 @@
                 </li>
                 <li>
                     <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"
-                      data-ng-click="boardMenuToggle = false">
+                      data-ng-click="view.closeMenus()">
                         Email Board
                     </a>
                 </li>

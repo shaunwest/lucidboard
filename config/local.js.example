@@ -14,6 +14,6 @@ module.exports = {
   appSecret: {
     adminMakerEnabled:  true,        // Is the admin delegation screen available?
     adminMakerPassword: 'changeme',  // admin delegation password
- }
+  }
 
 };

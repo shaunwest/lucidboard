@@ -83,6 +83,7 @@
           $scope.moveTo = function(column, card) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
+            view.closeMenus();
             api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
@@ -93,6 +94,7 @@
           $scope.color = function(card, color) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
+            view.closeMenus();
             api.cardColor(board.id, card.column, card.id, color);
           };
 
