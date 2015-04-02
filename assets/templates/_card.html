@@ -28,10 +28,10 @@
 Click to enter comments...
             </pre>
         </div>
-        <a href="#" class="remove" data-ng-show="isEditorVisible()">
-            <svg class="icon-small mts" fill="#ffffff">
+        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(trash, card)">
+            <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
-                <use xlink:href="#minus-alt"></use>
+                <use xlink:href="#cancel-circle"></use>
             </svg>
         </a>
         <div data-ng-hide="isEditorVisible()" class="handle aside-right">
