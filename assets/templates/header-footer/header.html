@@ -13,12 +13,9 @@
                 </a>
             </li>
             <li>
-                <a class="divided-copy" href="#" data-ng-click="signout($event)">
-                     Sign Out
+                <a href="#" data-ng-click="signout($event)">
+                     Sign Out {{user.name}}
                 </a>
-            </li>
-            <li>
-                {{user.name}}
             </li>
         </ul>
     </div>
@@ -59,7 +56,7 @@
                   data-ng-options="columnView.label for columnView in view.column.options">
                 </select>
             </li>
-            <li data-ng-show="board.isFacilitator">
+            <li>
                 <a href="#" class="btn" data-ng-click="showTimerForm = !showTimerForm">
                     <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': clockPop}">
                         <desc>Board Clock Timer Icon</desc>
