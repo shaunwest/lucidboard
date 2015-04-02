@@ -48,7 +48,7 @@
                         <desc>Vote icon</desc>
                         <use xlink:href="#vote"></use>
                     </svg>
-                    {{board.votesAreInfinite ? '&infin;' : board.votesRemaining}}
+                    {{board.votesAreInfinite ? '&infin;' : board.votesRemaining + '/' + board.votesPerUser}}
                 </div>
             </li>
             <li class="nav-full">
