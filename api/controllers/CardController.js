@@ -136,25 +136,22 @@ module.exports = {
 
       // Make sure they have votes left.
       var cardExistsOnBoard = false,
-          cool              = false;
+          votesRemaining    = board.votesPerUser,
+          votingLimited     = board.votesPerUser !== -1,
+          cool;
 
-      if (board.votesPerUser === -1) {  // no vote limit
-        cool = true;
-
-      } else {
-        var votesRemaining = board.votesPerUser;
-
-        board.columns.forEach(function(column) {
-          column.cards.forEach(function(card) {
+      board.columns.forEach(function(column) {
+        column.cards.forEach(function(card) {
+          if (votingLimited) {
             card.votes.forEach(function(v) {
               if (v.user === user.id) votesRemaining--;
             });
-            if (card.id === cardId) cardExistsOnBoard = true;
-          });
+          }
+          if (card.id === cardId) cardExistsOnBoard = true;
         });
+      });
 
-        cool = votesRemaining > 0;
-      }
+      cool = !votingLimited || votesRemaining > 0;
 
       if (!cardExistsOnBoard) return res.notFound();
       if (!cool)              return res.forbidden("You're out of votes!");
