@@ -44,7 +44,7 @@ Enter note...
         </div>
         <div class="handle aside-left" title="{{card.myVoteCount}}"
           data-ng-show="!isEditorVisible() && board.votesEnabled">
-            <a href="#" data-ng-click="upvote(card, $event)">
+            <a href="#" data-ng-click="upvote(card, $event)" data-ng-class="{'brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
                     <use xlink:href="#heart"></use>
