@@ -120,7 +120,8 @@ module.exports = {
   },
 
   moveCard: function(req, res) {
-    var boardId = parseInt(req.param('id'));
+    var boardId           = parseInt(req.param('id')),
+        vaporizingTheCard = false;
 
     var p = {
       cardId:       parseInt(req.param('cardId')),
@@ -164,6 +165,8 @@ module.exports = {
             sourceStack       = util.normalizeCardStack(r.sourceStack || r.destStack),
             originalSourceMap = util.toCardStackMap(sourceStack),
             card              = util.spliceItem(sourceStack, r.card.id);
+
+        vaporizingTheCard = true;
 
         // Actually delete the card from the db
         jobs.push(function(cb) { Card.destroy({id: card.id}).exec(cb); });
@@ -219,6 +222,8 @@ module.exports = {
 
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
+
+        if (vaporizingTheCard) meta.releaseCardLock(boardId, card.id);
 
         res.jsonx(signalData);
 

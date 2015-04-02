@@ -71,11 +71,15 @@ var getCardLock = function(boardId, cardId, req) {  // true if a lock was succes
   return true;
 };
 
-var releaseCardLock = function(boardId, cardId, req) {   // true if the lock was successfully released
+// reqOrTrue is the request object if we want to only unlock if the req.user
+// had the lock. Set this argument to true to unlock the board/card combo, regardless.
+var releaseCardLock = function(boardId, cardId, reqOrTrue) {   // true if the lock was successfully released
   createBoardEntryIfNew(boardId);
 
   // Check that the user actually has a lock on this card.
-  if (!boardHasCardLockedByUserId(boardId, cardId, req.user.id)) return false;
+  if (req !== true && !boardHasCardLockedByUserId(boardId, cardId, reqOrTrue.user.id)) {
+    return false;
+  }
 
   var idx = cardLocks[boardId]['cardIds'].indexOf(cardId);
 

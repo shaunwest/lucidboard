@@ -93,7 +93,7 @@ module.exports = {
         async.parallel(jobs, function(err, results) {
           if (err) return res.serverError(err);
 
-          meta.releaseCardLock(boardId, cardId, req);
+          meta.releaseCardLock(boardId, cardId);
 
           res.jsonx(null);
 
