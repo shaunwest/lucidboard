@@ -223,7 +223,7 @@ module.exports = {
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
-        if (vaporizingTheCard) meta.releaseCardLock(boardId, card.id);
+        if (vaporizingTheCard) meta.releaseCardLock(boardId, card.id, true);
 
         res.jsonx(signalData);
 
