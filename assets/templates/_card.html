@@ -28,6 +28,12 @@
 Click to enter comments...
             </pre>
         </div>
+        <a href="#" class="remove" data-ng-show="isEditorVisible()">
+            <svg class="icon-small mts" fill="#ffffff">
+                <desc>Delete Icon</desc>
+                <use xlink:href="#minus-alt"></use>
+            </svg>
+        </a>
         <div data-ng-hide="isEditorVisible()" class="handle aside-right">
             <a href="#" data-ng-click="view.cardMenu.switch(card.id)">
                 <svg class="icon-standard">

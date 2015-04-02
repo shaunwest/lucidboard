@@ -4,6 +4,7 @@
     border-radius: 0.15em;
     font-weight: bold;
     width: 100%;
+    position: relative;
     textarea {
         margin-left: 0.5em;
         margin-top: 0.5em;
@@ -18,6 +19,18 @@
     &:active {
         cursor: grabbing;
     }
+}
+
+.remove {
+    text-align: center;
+    position: absolute;
+    top: -0.375em;
+    right: -0.5625em;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 1em;
+    background: $brick;
+    display: inline-block;
 }
 
 .card .attached-cards {
