@@ -427,16 +427,14 @@
             animateCardIds.forEach(function(cId) {
               var card = this.card(cId);
               if (!card) return;  // shrug.. shouldn't happen...
-              card.shake = true;
-              $timeout(function() { card.shake = false; }, 500);
+              animateCard(topCard);
             }.bind(this));
           } else if (animatePiles.length > 0) {
             animatePiles.forEach(function(i) {
               var topCard, column = this.column(i.columnId);
-              if (!column || !column.cardSlots[i.destPosition - 1]) return;
-              topCard = this.getTopCard(column.cardSlots[i.destPosition - 1]);
-              topCard.shake = true;
-              $timeout(function() { topCard.shake = false; }, 500);
+              if (!column || !column.cardSlots[i.position - 1]) return;
+              topCard = this.getTopCard(column.cardSlots[i.position - 1]);
+              animateCard(topCard);
             }.bind(this));
           }
 
@@ -460,6 +458,7 @@
             remap[sourceColumnId] = sourceMap.map(function(s) {
               return s.filter(function(id) { return id != card.id; });
             });
+            if (info.animatePiles) remap.animatePiles = info.animatePiles;
             this.rebuildColumn(remap);
 
             // If topOfPile is coming down flipped on, make sure the others in the

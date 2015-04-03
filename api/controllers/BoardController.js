@@ -397,7 +397,8 @@ module.exports = {
         var signalData = {
           card:           r.source,
           sourceMap:      util.toCardStackMap(sourceStack),
-          sourceColumnId: sourceColumnId
+          sourceColumnId: sourceColumnId,
+          animatePiles:   [{columnId: r.dest.column, position: r.dest.position}]
         };
 
         res.jsonx(signalData);
