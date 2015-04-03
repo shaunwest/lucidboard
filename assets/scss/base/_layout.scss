@@ -1,3 +1,4 @@
+// Susy setup
 $susy: (
   columns: 12,
   container: 100%,
@@ -50,6 +51,7 @@ html, body {
     position: relative;
 }
 
+// full width container with x padding
 .tier-padded {
     @extend .tier;
     padding: 0 1em;
