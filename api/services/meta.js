@@ -77,7 +77,7 @@ var releaseCardLock = function(boardId, cardId, reqOrTrue) {   // true if the lo
   createBoardEntryIfNew(boardId);
 
   // Check that the user actually has a lock on this card.
-  if (req !== true && !boardHasCardLockedByUserId(boardId, cardId, reqOrTrue.user.id)) {
+  if (reqOrTrue !== true && !boardHasCardLockedByUserId(boardId, cardId, reqOrTrue.user.id)) {
     return false;
   }
 
@@ -85,7 +85,7 @@ var releaseCardLock = function(boardId, cardId, reqOrTrue) {   // true if the lo
 
   doUnlockSplices(boardId, idx);
 
-  redis.cardUnlock(boardId, {id: cardId}, req);
+  redis.cardUnlock(boardId, {id: cardId}, reqOrTrue);
 
   return true;
 };
