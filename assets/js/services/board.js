@@ -427,7 +427,7 @@
             animateCardIds.forEach(function(cId) {
               var card = this.card(cId);
               if (!card) return;  // shrug.. shouldn't happen...
-              animateCard(topCard);
+              animateCard(card);
             }.bind(this));
           } else if (animatePiles.length > 0) {
             animatePiles.forEach(function(i) {
