@@ -28,7 +28,7 @@
 Enter note...
             </pre>
         </div>
-        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(trash, card)">
+        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, card, true)">
             <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#cancel-circle"></use>
@@ -82,11 +82,11 @@ Enter note...
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li data-ng-show="board.columns.length > 2 || column.position === 0">
                     Move Card To
                     <div data-ng-repeat="col in board.columns">
                         <a class="pointer" role="menuitem" tabindex="1"
-                          data-ng-show="col.title !== column.title"
+                          data-ng-show="col.title !== column.title && col.position !== 0"
                           data-ng-click="moveTo(col, card)" href="#"
                           >
                             {{col.title}}

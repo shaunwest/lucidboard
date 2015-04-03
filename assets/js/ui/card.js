@@ -55,6 +55,7 @@
           };
 
           $scope.endCardLock = function(c) {
+            if (!board.card(card.id).locked) return;
             api.cardUnlock(board.id, c.id, function(unlockWorked) {
               if (unlockWorked) board.forgetCardLock(c.id);
             });
@@ -80,9 +81,11 @@
             api.cardUpvote(board.id, board.column(card.column).id, card.id);
           };
 
-          $scope.moveTo = function(column, card) {
-            if (board.card(card.id).locked) return;
-            if (board.hasCardLocks)         return;
+          $scope.moveTo = function(column, card, force) {
+            if (!force) {
+              if (board.card(card.id).locked) return;
+              if (board.hasCardLocks)         return;
+            }
             view.closeMenus();
             api.boardMoveCard(board.id, {
               cardId:       card.id,

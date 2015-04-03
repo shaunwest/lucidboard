@@ -3,7 +3,12 @@
     <li data-ng-repeat="c in board.columns"
       >
         <a href="#" data-ng-if="c.position !== 0" class="clear-title">
-            <svg data-ng-click="getDeleteConfirm(c)" class="icon-standard icon-small aside-left" fill="#ffffff">
+            <svg
+              data-ng-show="board.columns.length > 2"
+              data-ng-click="getDeleteConfirm(c)"
+              class="icon-standard icon-small aside-left"
+              fill="#ffffff"
+              >
                 <desc>Delete Icon</desc>
                 <use xlink:href="#minus-alt"></use>
             </svg>
