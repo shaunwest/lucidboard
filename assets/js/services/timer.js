@@ -2,32 +2,71 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('timer', ['api', '$interval', function(api, $interval) {
+    .factory('timer', ['api', '$filter', '$interval', function(api, $filter, $interval) {
 
-      var timer;
+      var timer,
+        startCallbacks = [],
+        stopCallbacks = [];
 
       return {
+        startTime: 300,
         remaining: 0,
 
-        init: function() {
-          this.remaining = 0;
-          $interval.cancel(timer);
+       startMinutes: function (minutes) {
+          if(typeof minutes !== 'undefined') {
+            this.startTime = (minutes.toString().match(/\d{1,2}:\d\d/)) ?
+              $filter('minutesToSeconds')(minutes) :
+              minutes;
+          }
+
+          return (isNaN(this.startTime) ||
+            (this.startTime.toString().length < 3 && this.startTime.toString().indexOf(':') == -1)) ?
+              this.startTime :
+              $filter('secondsToMinutes')(this.startTime);
         },
 
-        start: function start(seconds) {
+        pause: function () {
+          $interval.cancel(timer);
+          stopCallbacks.forEach(function(cb) {
+            cb();
+          });
+        },
+
+        reset: function (seconds) {
+          this.remaining = seconds || this.startTime;
+        },
+
+        onStart: function(cb) {
+          startCallbacks.push(cb);
+        },
+
+        onStop: function(cb) {
+          stopCallbacks.push(cb);
+        },
+
+        start: function start () {
           var sound = new Audio();
+          var seconds = this.remaining || this.startTime;
 
           sound.src = '/sounds/ding.mp3';
           this.remaining = seconds;
 
           $interval.cancel(timer);
 
-          timer = $interval(function() {
+          startCallbacks.forEach(function(cb) {
+            cb();
+          });
+
+          timer = $interval (function() {
             this.remaining -= 1;
+
             if (this.remaining <= 0) {
               this.remaining = 0;
               sound.play();
               $interval.cancel(timer);
+              stopCallbacks.forEach(function(cb) {
+                cb();
+              });
             }
           }.bind(this), 1000);
         }

@@ -561,7 +561,6 @@ module.exports = {
     Board.findOneById(boardId).exec(function(err, board) {
       if (err)                       return res.serverError(err);
       if (!board)                    return res.notFound();
-      if (board.creator !== user.id) return res.forbidden();
 
       var bits = {
         timerStart:  new Date(),
@@ -653,6 +652,42 @@ module.exports = {
 
         if (!_.isEmpty(signalData)) redis.boardMoveCards(boardId, signalData);
       });
+    });
+  },
+
+  timerPause: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+      seconds = parseInt(req.param('seconds'));
+
+    var bits = {
+      timerStart: null,
+      timerLength: seconds
+    };
+
+    Board.update(boardId, bits).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+
+      redis.boardTimerPause(boardId);
+    });
+  },
+
+  timerReset: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+      seconds = parseInt(req.param('seconds'));
+
+    var bits = {
+      timerStart: new Date(),
+      timerLength: seconds
+    };
+
+    Board.update(boardId, bits).exec(function(err, board) {
+      if (err) return res.serverError(err);
+
+      res.jsonx(board);
+
+      redis.boardTimerReset(boardId, seconds);
     });
   },
 

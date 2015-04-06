@@ -122,6 +122,18 @@ module.exports.routes = {
     action:     'sortByVotes'
   },
 
+  // Board: Pause timer
+  'POST /api/boards/:id/timer-pause': {
+    controller: 'BoardController',
+    action:     'timerPause'
+  },
+
+  // Board: Reset timer
+  'POST /api/boards/:id/timer-reset': {
+    controller: 'BoardController',
+    action:     'timerReset'
+  },
+
   // Board: Lock a card
   'POST /api/boards/:id/lock-card': {
     controller: 'CardController',

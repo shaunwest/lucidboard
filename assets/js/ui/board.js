@@ -10,6 +10,8 @@
       if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
 
       eventerFactory().event('column:create:' + board.id, function(col) {
+        $scope.board             = board;
+
         board.columnCreate(col);
       }).event('column:update:' + board.id, function(col) {
         board.columnUpdate(col);
@@ -46,6 +48,10 @@
         board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id, function(bits) {
         timer.start(bits.seconds);
+      }).event('board:timerPause:' + board.id, function(bits) {
+        timer.pause();
+      }).event('board:timerReset:' + board.id, function(bits) {
+        timer.reset(bits.seconds);
       }).event('board:combineCards:' + board.id, function(info) {
         board.combineCards(info);
       }).event('board:flipCard:' + board.id, function(cardId) {
@@ -54,7 +60,7 @@
       }).hook($scope);
 
       view.init();
-      timer.init();
+      //timer.init();
 
       $scope.board             = board;
       $scope.view              = view;

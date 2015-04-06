@@ -9,7 +9,6 @@
 
       $scope.user              = user;
       $scope.board             = board;
-      $scope.timer             = timer;
       $scope.view              = view;
       $scope.showTimerForm     = false;
       $scope.timerMinutesInput = 5;
@@ -20,12 +19,15 @@
         $state.go('signin');
       };
 
-      $scope.timerStart = function(minutes) {
+      $scope.toggleTimerForm = function() {
         $scope.clockPop = true;
-        $scope.showTimerForm = false;
-        api.timerStart(board.id, minutes * 60);
+        $scope.showTimerForm = !$scope.showTimerForm;
         $timeout(function() { $scope.clockPop = false; }, 500);
       };
+
+      $scope.board             = board;
+      $scope.signout           = function(event) { $state.go('signin'); };
+      $scope.current           = $state.current;
 
       $scope.sortByVotes = function() {
         api.boardSortByVotes(board.id);
@@ -54,11 +56,6 @@
         });
 
         $scope.showBoardNav = true;
-        $scope.timerLeft    = timer.remaining;
-
-        if (board.timerLeft > 0) {
-          timer.start(board.timerLeft);
-        }
       }
 
       if ($state.current.name === 'board') {
