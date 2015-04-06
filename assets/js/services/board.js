@@ -167,9 +167,6 @@
         hasCardLocks:     false,
         locks:            locks,
         loaded:           false,
-        //timerLength:    function() { return board.timerLength; },
-        //timerLeft:      function() { return board.timerLeft; },
-        //timerRunning:   function() { return board.timerRunning; },
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
