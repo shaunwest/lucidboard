@@ -7,12 +7,11 @@
     'api', 'user', 'board', 'timer', 'view', 'config',
     function($rootScope, $scope, $state, $timeout, $location, api, user, board, timer, view, config) {
 
-      $scope.user              = user;
-      $scope.board             = board;
-      $scope.view              = view;
-      $scope.showTimerForm     = false;
-      $scope.timerMinutesInput = 5;
-      $scope.current           = $state.current;
+      $scope.user    = user;
+      $scope.board   = board;
+      $scope.view    = view;
+      $scope.signout = function(event) { $state.go('signin'); };
+      $scope.current = $state.current;
 
       $scope.signout = function(event) {
         user.signout();
@@ -20,14 +19,10 @@
       };
 
       $scope.toggleTimerForm = function() {
+        view.timer.showForm = !view.timer.showForm;
         $scope.clockPop = true;
-        $scope.showTimerForm = !$scope.showTimerForm;
         $timeout(function() { $scope.clockPop = false; }, 500);
       };
-
-      $scope.board             = board;
-      $scope.signout           = function(event) { $state.go('signin'); };
-      $scope.current           = $state.current;
 
       $scope.sortByVotes = function() {
         api.boardSortByVotes(board.id);

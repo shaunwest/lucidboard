@@ -1,8 +1,8 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user',
-    function($rootScope, $q, $timeout, api, user) {
+    .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user', 'timer', 'view',
+    function($rootScope, $q, $timeout, api, user, timer, view) {
       var board, defer, eventCb,
           locks    = [],  // card ids that this client has locked
           theQueue = [],  // array of functions to exec when user is done with locks
@@ -25,10 +25,12 @@
       // and forget about the obj.
       var loadBoard = function(boardObj) {
         if (!boardObj) return false;
+        view.init();
         setAllPropertiesFrom(boardObj);
         boardSort();
         parseCards();
         figureVotesRemaining();
+        initTimer();
         return true;
       };
 
@@ -108,6 +110,19 @@
         });
       };
 
+      var initTimer = function() {
+        timer.init(board.timerLeft);
+        if (board.timerRunning) {
+          board.timer.remaining = board.timerLeft;
+          view.timer.showStart  = false;
+          board.timer.start();
+        } else {
+          board.timer.remaining = board.timerLength;
+          view.timer.showStart  = true;
+          view.timer.setInputSeconds(board.timerLength)
+        }
+      };
+
       var setAllPropertiesFrom = function(obj) {
         board.loaded  = true;
         board.id      = obj.id;
@@ -129,10 +144,11 @@
         board.p_lock           = obj.p_lock;
         board.archived         = obj.archived;
         board.isFacilitator    = isFacilitator;
-        board.seeVotes         = isFacilitator || obj.p_seeVotes;
-        board.seeContent       = isFacilitator || obj.p_seeContent;
-        board.timerLength      = obj.timerLength;
-        board.timerLeft        = obj.timerLeft;
+        board.seeVotes         = isFacilitator    || obj.p_seeVotes;
+        board.seeContent       = isFacilitator    || obj.p_seeContent;
+        board.timerLength      = obj.timerLength  || 0;
+        board.timerLeft        = obj.timerLeft    || 0;
+        board.timerRunning     = obj.timerRunning || false;
       };
 
       var queue      = function(fn) { theQueue.push(fn); };
@@ -162,11 +178,18 @@
           return defer.promise;
         },
 
+        unload: function() {
+          this.id     = null;
+          this.loaded = false;
+          timer.init();
+        },
+
         promise: function() { return defer.promise; },
 
-        hasCardLocks:     false,
-        locks:            locks,
-        loaded:           false,
+        hasCardLocks: false,
+        loaded:       false,
+        locks:        locks,
+        timer:        timer,
 
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);

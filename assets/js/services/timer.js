@@ -4,69 +4,67 @@
   angular.module('hansei.services')
     .factory('timer', ['api', '$filter', '$interval', function(api, $filter, $interval) {
 
-      var timer,
-        startCallbacks = [],
-        stopCallbacks = [];
+      var interval = null;
+
+      var stopInterval = function() {
+        $interval.cancel(interval);
+        interval = null;
+      };
 
       return {
         startTime: 300,
         remaining: 0,
 
-       startMinutes: function (minutes) {
-          if(typeof minutes !== 'undefined') {
+        minutes: function (minutes) {
+          if (typeof minutes !== 'undefined') {
             this.startTime = (minutes.toString().match(/\d{1,2}:\d\d/)) ?
               $filter('minutesToSeconds')(minutes) :
               minutes;
           }
 
-          return (isNaN(this.startTime) ||
-            (this.startTime.toString().length < 3 && this.startTime.toString().indexOf(':') == -1)) ?
-              this.startTime :
-              $filter('secondsToMinutes')(this.startTime);
+          if (isNaN(this.startTime) ||
+            (this.startTime.toString().length < 3 &&
+             this.startTime.toString().indexOf(':') === -1)
+          ) {
+            return this.startTime;
+          } else {
+            return $filter('secondsToMinutes')(this.startTime);
+          }
         },
 
-        pause: function () {
-          $interval.cancel(timer);
-          stopCallbacks.forEach(function(cb) {
-            cb();
-          });
+        pause: function(seconds) {
+          if (seconds !== undefined) this.remaining = seconds;
+          stopInterval();
         },
 
-        reset: function (seconds) {
-          this.remaining = seconds || this.startTime;
+        init: function(seconds) {
+          stopInterval();
+          if (seconds === undefined) {
+            this.remaining = this.startTime;
+          } else {
+            this.remaining = seconds;
+          }
         },
 
-        onStart: function(cb) {
-          startCallbacks.push(cb);
-        },
+        start: function(seconds) {
+          if (seconds !== undefined) {
+            this.remaining = seconds;
+          } else if (!this.remaining) {
+            this.remaining = this.startTime;
+          }
 
-        onStop: function(cb) {
-          stopCallbacks.push(cb);
-        },
-
-        start: function start () {
           var sound = new Audio();
-          var seconds = this.remaining || this.startTime;
-
           sound.src = '/sounds/ding.mp3';
-          this.remaining = seconds;
 
-          $interval.cancel(timer);
+          stopInterval();
 
-          startCallbacks.forEach(function(cb) {
-            cb();
-          });
-
-          timer = $interval (function() {
+          interval = $interval(function() {
             this.remaining -= 1;
 
             if (this.remaining <= 0) {
               this.remaining = 0;
               sound.play();
-              $interval.cancel(timer);
-              stopCallbacks.forEach(function(cb) {
-                cb();
-              });
+              stopInterval();
             }
           }.bind(this), 1000);
         }

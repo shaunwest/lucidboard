@@ -30,9 +30,13 @@ module.exports = {
 
     creator: { model: 'user' },
 
-    timerLength: 'integer',
-    timerStart:  'datetime',
+    timerLength: {
+      type:       'integer',
+      min:        0,
+      defaultsTo: 0
+    },
 
+    timerStart: 'datetime',
 
     votesPerUser: {
       type:       'integer',
@@ -50,8 +54,8 @@ module.exports = {
     },
 
     toJSON: function() {
-      var timerLeft = 0;
-      var timerRunning = false;
+      var timerLeft    = 0,
+          timerRunning = false;
 
       if (this.timerStart) {
         timerRunning = true;
@@ -59,7 +63,7 @@ module.exports = {
           - (new Date().getTime() - this.timerStart.getTime())
           / 1000);
 
-        if(timerLeft < 0) {
+        if (timerLeft < 0) {
           timerLeft = 0;
           timerRunning = false;
         }
@@ -70,7 +74,7 @@ module.exports = {
         title:           this.title,
         columns:         this.columns,
         creator:         this.creator,
-        timerRunning:   timerRunning,
+        timerRunning:    timerRunning,
         timerLength:     this.timerLength,
         timerLeft:       timerLeft,
         votesPerUser:    this.votesPerUser,

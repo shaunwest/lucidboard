@@ -657,10 +657,10 @@ module.exports = {
 
   timerPause: function(req, res) {
     var boardId = parseInt(req.param('id')),
-      seconds = parseInt(req.param('seconds'));
+        seconds = parseInt(req.param('seconds'));
 
     var bits = {
-      timerStart: null,
+      timerStart:  null,
       timerLength: seconds
     };
 
@@ -669,25 +669,7 @@ module.exports = {
 
       res.jsonx(board);
 
-      redis.boardTimerPause(boardId);
-    });
-  },
-
-  timerReset: function(req, res) {
-    var boardId = parseInt(req.param('id')),
-      seconds = parseInt(req.param('seconds'));
-
-    var bits = {
-      timerStart: new Date(),
-      timerLength: seconds
-    };
-
-    Board.update(boardId, bits).exec(function(err, board) {
-      if (err) return res.serverError(err);
-
-      res.jsonx(board);
-
-      redis.boardTimerReset(boardId, seconds);
+      redis.boardTimerPause(boardId, bits.timerLength);
     });
   },
 

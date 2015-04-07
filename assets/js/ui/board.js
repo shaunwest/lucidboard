@@ -4,8 +4,8 @@
   angular.module('hansei.ui')
 
   .controller('BoardCtrl', ['$scope', '$state', '$interval', '$anchorScroll', 'api',
-    'user', 'board', 'eventerFactory', 'timer', 'view', 'config',
-    function($scope, $state, $interval, $anchorScroll, api, user, board, eventerFactory, timer, view, config) {
+    'user', 'board', 'eventerFactory', 'view', 'config',
+    function($scope, $state, $interval, $anchorScroll, api, user, board, eventerFactory, view, config) {
 
       if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
 
@@ -47,11 +47,12 @@
       }).event('board:trashCardsAndDeleteColumn:' + board.id, function(info) {
         board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id, function(bits) {
-        timer.start(bits.seconds);
+        board.timer.start(bits.seconds);
+        view.timer.showStart = false;
       }).event('board:timerPause:' + board.id, function(bits) {
-        timer.pause();
-      }).event('board:timerReset:' + board.id, function(bits) {
-        timer.reset(bits.seconds);
+        board.timer.pause(bits.seconds);
+        view.timer.setInputSeconds(bits.seconds);
+        view.timer.showStart = true;
       }).event('board:combineCards:' + board.id, function(info) {
         board.combineCards(info);
       }).event('board:flipCard:' + board.id, function(cardId) {
@@ -59,12 +60,8 @@
 
       }).hook($scope);
 
-      view.init();
-      //timer.init();
-
-      $scope.board             = board;
-      $scope.view              = view;
-      $scope.timerMinutesInput = 5;
+      $scope.board = board;
+      $scope.view  = view;
 
       // Change to the board when the column view dropdown changes
       $scope.$watch('view.column.current', function(newV, oldV) {
@@ -74,11 +71,12 @@
       // Scroll to top whenever the tab changes
       $scope.$watch('view.tab.current', function() { $anchorScroll(); });
 
-      // Unlock cards when our scope dies
+      // Clean up when our scope dies
       $scope.$on('$destroy', function() {
         board.locks.forEach(function(cardId) {
           api.cardUnlock(board.id, cardId);
         });
+        board.unload();
       });
 
       $scope.getColumnViewState = function(columnId, columnPosition, columnViewSelected) {

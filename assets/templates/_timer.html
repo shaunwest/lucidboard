@@ -3,13 +3,13 @@
     <desc>Board Clock Timer Icon</desc>
     <use xlink:href="#clock"></use>
   </svg>
-  {{timer.remaining | secondsToMinutes}}
+  {{board.timer.remaining | secondsToMinutes}}
   <span data-ng-show="showForm">
-    <input class="text-input-clear mlm" type="text" size="4" data-ng-model-options="{ getterSetter: true }" data-ng-model="timer.startMinutes" data-ng-click="preventDefault($event)">
-    <span class="outline mlm" data-ng-show="showTimerStart" data-ng-click="timerStart($event, timerMinutesInput); clockPop = !clockPop">
+    <input class="text-input-clear mlm" type="text" size="4" data-ng-model="view.timer.input" data-ng-click="preventDefault($event)">
+    <span class="outline mlm" data-ng-show="view.timer.showStart" data-ng-click="timerStart($event, view.timer.input); clockPop = !clockPop">
       Start
     </span>
-    <span href="#" class="outline mlm" data-ng-show="!showTimerStart" data-ng-click="timerPause($event); clockPop = !clockPop">
+    <span href="#" class="outline mlm" data-ng-show="!view.timer.showStart" data-ng-click="timerPause($event); clockPop = !clockPop">
       Pause
     </span>
     <span href="#" class="outline mlm" data-ng-click="timerReset($event); clockPop = !clockPop">
