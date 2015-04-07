@@ -103,13 +103,13 @@
                       <timer data-show-form="showTimerForm"></timer>
                     </a>-->
                 </li>
-                <li data-ng-show="board.votesEnabled()">
+                <li data-ng-show="board.votesEnabled">
                   <a href="#" class="btn">
                       <svg class="aside-left icon-standard" fill="#ffffff">
                           <desc>Vote icon</desc>
                           <use xlink:href="#vote"></use>
                       </svg>
-                      {{board.votesRemaining() === -1 ? '&infin;' : board.votesRemaining()}}
+                      {{board.votesRemaining === -1 ? '&infin;' : board.votesRemaining}}
                     </a>
                 </li>
                 <li>
