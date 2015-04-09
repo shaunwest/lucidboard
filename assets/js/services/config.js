@@ -9,7 +9,6 @@
         loaded:  false,
         promise: function() { return defer.promise; },
         load:    function(force) {
-          console.log('LOADING');
           if (force || !this.loaded) {
             defer = $q.defer();
             api.getConfig(function(config) {
