@@ -44,10 +44,10 @@
       }).event('board:trashCardsAndDeleteColumn:' + board.id, function(info) {
         board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id, function(bits) {
-        board.timer.start(bits.seconds);
+        board.timerStart(bits.seconds);
         view.timer.start();
       }).event('board:timerPause:' + board.id, function(bits) {
-        board.timer.pause(bits.seconds);
+        board.timerPause(bits.seconds);
         view.timer.setInputSeconds(bits.seconds);
         view.timer.showStart = true;
       }).event('board:combineCards:' + board.id, function(info) {

@@ -51,7 +51,7 @@
                     {{board.votesAreInfinite ? '&infin;' : board.votesRemaining + '/' + board.votesPerUser}}
                 </div>
             </li>
-            <li data-ng-show="!board.isFacilitator">
+            <li data-ng-show="!board.isFacilitator && board.timerRunning">
               <svg class="aside-left icon-standard" fill="#ffffff"
                 data-ng-class="{'animate-pop': view.timer.clockPop}"
                 >

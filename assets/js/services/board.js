@@ -187,6 +187,18 @@
         locks:        locks,
         timer:        timer,
 
+        timerStart: function(seconds) {
+          this.timerLeft    = seconds;
+          this.timerRunning = true;
+          this.timer.start(seconds);
+        },
+
+        timerPause: function(seconds) {
+          this.timerLeft = seconds;
+          this.timerRunning = false;
+          this.timer.pause(seconds);
+        },
+
         nextPositionByColumnId: function(columnId) {
           var column = this.column(columnId);
 
