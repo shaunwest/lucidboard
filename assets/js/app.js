@@ -80,21 +80,7 @@
           user.initialRefreshToken();
         }
 
-        $sails.on('disconnect', function() {
-          view.modal.reconnecting.show = true;
-        });
-
-        $sails.on('reconnect', function() {
-          initialSetup();
-
-          api.resubscribe();  // resubscribe to websocket events
-
-          // Re-lock all our locked cards
-          board.locks.forEach(function(cardId) {
-            api.cardLock(board.id(), cardId);
-          });
-
-          // Reload the whole page if there are any new client-side updates.
+        function reloadPageIfNewClientSideUpdatesExist() {
           var oldUIVersion = config.uiversion;
           var reloadInASec = function() {
             // Wait a sec to make sure the server is fully initialized
@@ -108,6 +94,21 @@
               reloadInASec();
             }
           }, reloadInASec);  // just reload if config fetch fails for any reason
+        }
+
+        $sails.on('disconnect', function() {
+          view.modal.reconnecting.show = true;
+        });
+
+        $sails.on('reconnect', function() {
+          initialSetup();
+
+          api.resubscribe();  // resubscribe to websocket events
+
+          // Re-lock all our locked cards
+          board.locks.forEach(function(cardId) { api.cardLock(board.id, cardId); });
+
+          reloadPageIfNewClientSideUpdatesExist();
         });
 
         $rootScope.bodyClick = function() {
@@ -124,7 +125,8 @@
       'hansei.services',
       'xeditable',
       'ang-drag-drop',
-      'monospaced.elastic'
+      'monospaced.elastic',
+      'ui.keypress'
     ])
 
     .run(['editableOptions', 'editableThemes', function(editableOptions, editableThemes) {

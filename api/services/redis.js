@@ -46,6 +46,7 @@ module.exports = {
   cardCreated:       function(boardId, card, r)   { publish('card:create:' + boardId, card, r); },
   cardUpdated:       function(boardId, card, r)   { publish('card:update:' + boardId, card, r); },
   cardUpvote:        function(boardId, vote, r)   { publish('card:upvote:' + boardId, vote, r); },
+  cardUnupvote:      function(boardId, vote, r)   { publish('card:unupvote:' + boardId, vote, r); },
   cardVaporize:      function(boardId, cardId, r) { publish('card:vaporize:' + boardId, cardId, r); },
   cardColor:         function(boardId, info, r)   { publish('card:color:' + boardId, info, r); },
 

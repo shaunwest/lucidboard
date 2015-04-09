@@ -22,6 +22,8 @@
         board.cardUpdate(card);
       }).event('card:upvote:' + board.id, function(vote) {
         board.cardUpvote(vote);
+      }).event('card:unupvote:' + board.id, function(vote) {
+        board.cardUnupvote(vote);
       }).event('card:vaporize:' + board.id, function(cardId) {
         board.cardVaporize(cardId);
       }).event('card:lock:' + board.id, function(info) {
@@ -60,7 +62,7 @@
       $scope.view  = view;
 
       // Change to the board when the column view dropdown changes
-      $scope.$watch('view.column.current', function(newV, oldV) {
+      $scope.$watch('view.column.current', function() {
         view.tab.current = 'board';
       });
 

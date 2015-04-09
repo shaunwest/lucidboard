@@ -349,7 +349,6 @@ module.exports = {
 
       if (!r.board || !r.source || !r.dest)       return res.notFound();
       if (!r.sourceColumn || r.sourceStack === 0) return res.notFound();
-      if (r.board.creator !== user.id)            return res.forbidden();
 
       var sourceColumnId    = r.source.column,
           sourcePosition    = r.source.position,
@@ -440,7 +439,6 @@ module.exports = {
       if (!r.board || !r.dest || !r.destColumn)  return res.notFound('a');
       if (r.sourceStack.length === 0)            return res.notFound('b');
       if (r.sourceColumn.board !== boardId)      return res.notFound('c');
-      if (r.board.creator !== user.id)           return res.forbidden();
 
       var sourceStack       = util.normalizeCardStack(r.sourceStack);
 
@@ -609,9 +607,8 @@ module.exports = {
         cb(null, r.rawCards);
       }]
     }, function(err, r) {
-      if (err)                             return res.serverError(err);
-      if (!r.board || !r.columns)          return res.badRequest();
-      if (r.board.creator !== req.user.id) return res.forbidden();
+      if (err)                    return res.serverError(err);
+      if (!r.board || !r.columns) return res.badRequest();
 
       var cards      = _.indexBy(r.cards, 'column'),
           jobs       = [],

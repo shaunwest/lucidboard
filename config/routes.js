@@ -182,10 +182,16 @@ module.exports.routes = {
     action:     'update'
   },
 
-  // Card Vote
+  // Card Upvote
   'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/upvote': {
     controller: 'CardController',
     action:     'upvote'
+  },
+
+  // Card Unupvote
+  'POST /api/boards/:boardId/columns/:columnId/cards/:cardId/unupvote': {
+    controller: 'CardController',
+    action:     'unupvote'
   },
 
   // Card Colorize

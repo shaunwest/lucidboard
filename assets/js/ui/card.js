@@ -15,8 +15,9 @@
         controller: ['$scope', '$timeout', 'api', 'user', 'view',
         function($scope, $timeout, api, user, view) {
 
-          var board = $scope.board,
-              card  = $scope.card;
+          var board  = $scope.board,
+              column = $scope.column,
+              card   = $scope.card;
 
           var endCardLock = function(c) {
             if (!board.card(card.id).locked) return;
@@ -74,11 +75,16 @@
           $scope.upvote = function(card, event) {
             $scope.votePop = true;
             $timeout(function() { $scope.votePop = false; }, 500);
-            event.stopPropagation();
-            event.preventDefault();
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
+            if (board.votesRemaining === 0) return;
             api.cardUpvote(board.id, board.column(card.column).id, card.id);
+          };
+
+          $scope.unupvote = function() {
+            $scope.votePop = true;
+            $timeout(function() { $scope.votePop = false; }, 500);
+            api.cardUnupvote(board.id, column.id, card.id);
           };
 
           $scope.moveTo = function(column, card, force) {

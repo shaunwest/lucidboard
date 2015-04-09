@@ -189,6 +189,10 @@
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             cardId + '/upvote', {}, cb);
         },
+        cardUnupvote: function(boardId, columnId, cardId, cb) {
+          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
+            cardId + '/unupvote', {}, cb);
+        },
         cardColor: function(boardId, columnId, cardId, color, cb) {
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             cardId + '/color', {color: color}, cb);

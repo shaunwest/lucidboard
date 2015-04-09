@@ -104,7 +104,8 @@ var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
 
     if (err)                                { res.serverError(err); failed = true; }
     else if (!board)                        { res.notFound();       failed = true; }
-    else if (board.creator !== req.user.id) { res.forbidden();      failed = true; }
+    else if (board.creator !== req.user.id &&
+             !req.user.admin)               { res.forbidden();      failed = true; }
 
     cb(failed ? null : board);
   });

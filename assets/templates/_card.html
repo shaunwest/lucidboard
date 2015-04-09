@@ -58,6 +58,9 @@ Enter note...
             </a>
         </div>
         <div class="card-menu" data-ng-show="view.cardMenu.current === card.id">
+            <div style="float:right" data-ng-show="card.myVoteCount">
+              <a href="#" data-ng-click="unupvote()">Unupvote</a>
+            </div>
             <ul class="card-menu-items" role="menu">
                 <li>
                     Card Color

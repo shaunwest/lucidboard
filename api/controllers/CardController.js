@@ -118,6 +118,34 @@ module.exports = {
     })
   },
 
+  unupvote: function(req, res) {
+    var user     = req.user,
+        boardId  = parseInt(req.param('boardId')),
+        columnId = parseInt(req.param('columnId')),
+        cardId   = parseInt(req.param('cardId'));
+
+    if (!boardId || !columnId || !cardId) return res.badRequest();
+
+    async.auto({
+      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
+      column: function(cb) { Column.findOne({id: columnId, board: boardId}).exec(cb); },
+      card:   function(cb) { Card.findOne({id: cardId, column: columnId}).exec(cb); },
+      votes:  function(cb) { Vote.find({card: cardId, user: user.id}).exec(cb); }
+    }, function(err, r) {
+      if (err)                              return res.serverError(err);
+      if (!r.board || !r.column || !r.card) return res.notFound();
+      if (r.votes.length === 0)             return res.badRequest();
+
+      var bye = r.votes[0];
+
+      bye.destroy(function(err, done) {
+        if (err) return res.serverError(err);
+
+        redis.cardUnupvote(boardId, bye);
+      });
+    });
+  },
+
   upvote: function(req, res) {
     var user     = req.user,
         boardId  = parseInt(req.param('boardId')),
@@ -218,9 +246,7 @@ module.exports = {
       card:   function(cb) { Card.findOne({id: cardId, column: columnId}).exec(cb); }
     }, function(err, r) {
       if (err)                              return res.serverError(err);
-      if (!r.board || !r.column || !r.card) return res.notFound('a');
-      if (r.column.board !== r.board.id)    return res.notFound('b');
-      if (r.card.column !== r.column.id)    return res.notFound('c');
+      if (!r.board || !r.column || !r.card) return res.notFound();
 
       r.card.color = color;
 

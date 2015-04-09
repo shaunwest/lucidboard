@@ -129,7 +129,7 @@
       };
 
       var setPropertiesFrom = function(obj) {
-        var isFacilitator = user.id == obj.creator;
+        var isFacilitator = (user.id === obj.creator) || user.admin;
 
         board.title            = obj.title;
         board.votesEnabled     = obj.votesPerUser !== 0;
@@ -343,6 +343,21 @@
             if (board.votesPerUser > 0 && vote.user === user.id) {
               board.votesRemaining--;
             }
+
+            animateCard(card);
+          }.bind(this));
+        },
+
+        cardUnupvote: function(vote) {
+          maybeDefer(function() {
+            var card = this.card(vote.card),
+                idx = _.findIndex(card.votes, function(v) { return v.user === vote.user; });
+
+            card.votes.splice(idx, 1);
+
+            card.myVoteCount = countOwnVotes(card);
+
+            if (vote.user === user.id) board.votesRemaining++;
 
             animateCard(card);
           }.bind(this));
