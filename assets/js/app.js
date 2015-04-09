@@ -64,8 +64,8 @@
       'angular-lodash/utils/findIndex',
     ])
 
-    .run(['$rootScope', '$sails', '$state', 'user', 'api', 'board', 'view',
-      function($rootScope, $sails, $state, user, api, board, view) {
+    .run(['$rootScope', '$sails', '$state', '$window', 'user', 'api', 'board', 'view',
+      function($rootScope, $sails, $state, $window, user, api, board, view) {
 
         function initialSetup() {
           // This clues the api library into the status of the initial token setup

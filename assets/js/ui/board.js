@@ -7,11 +7,10 @@
     'user', 'board', 'eventerFactory', 'view', 'config',
     function($scope, $state, $interval, $anchorScroll, api, user, board, eventerFactory, view, config) {
 
-      if (!board.loaded) return $state.go('boards');  // If we has no board, go to boards list
+      view.init(board);
 
       eventerFactory().event('column:create:' + board.id, function(col) {
-        $scope.board             = board;
-
+        $scope.board = board;
         board.columnCreate(col);
       }).event('column:update:' + board.id, function(col) {
         board.columnUpdate(col);
@@ -29,10 +28,8 @@
         board.cardLock(info);
       }).event('card:unlock:' + board.id, function(info) {
         board.cardUnlock(info);
-
-        // This only matters for our own locked card id's, but
-        // won't hurt for others.
-        board.forgetCardLock(info.id);
+        board.forgetCardLock(info.id);  // This only matters for our own locked
+                                        // card id's, but won't hurt for others.
       }).event('card:color:' + board.id, function(bits) {
         board.cardColor(bits);
       }).event('board:update:' + board.id, function(b) {
@@ -48,7 +45,7 @@
         board.columnDeleteAndTrashCards(info.columnId);
       }).event('board:timerStart:' + board.id, function(bits) {
         board.timer.start(bits.seconds);
-        view.timer.showStart = false;
+        view.timer.start();
       }).event('board:timerPause:' + board.id, function(bits) {
         board.timer.pause(bits.seconds);
         view.timer.setInputSeconds(bits.seconds);
@@ -57,7 +54,6 @@
         board.combineCards(info);
       }).event('board:flipCard:' + board.id, function(cardId) {
         board.flipCard(cardId);
-
       }).hook($scope);
 
       $scope.board = board;

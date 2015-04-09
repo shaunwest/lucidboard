@@ -3,9 +3,9 @@
 
   angular.module('hansei.ui')
 
-  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$location',
+  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$location',
     'api', 'user', 'board', 'timer', 'view', 'config',
-    function($rootScope, $scope, $state, $timeout, $location, api, user, board, timer, view, config) {
+    function($rootScope, $scope, $state, $location, api, user, board, timer, view, config) {
 
       $scope.user    = user;
       $scope.board   = board;
@@ -20,9 +20,7 @@
 
       $scope.toggleTimerForm = function($event) {
         view.timer.toggleForm(undefined, $event);
-        if (!view.timer.showForm) return;
-        $scope.clockPop = true;
-        $timeout(function() { $scope.clockPop = false; }, 500);
+        if (view.timer.showForm) view.timer.popTheClock();
       };
 
       $scope.sortByVotes = function() {
@@ -42,21 +40,13 @@
         }
       }
 
-      function showBoardNav() {
-        view.column.setOptionsByBoard(board);
-
-        $scope.$watch('board.title', function() {
-          $scope.mailtoSubject = config.appname + ': ' + board.title;
-          $scope.mailtoBody = user.name + ' would like to share a link to a board: ' +
-            $location.protocol() + '://' + $location.host() + '/boards/' + board.id;
-        });
-
-        $scope.showBoardNav = true;
-      }
-
-      if ($state.current.name === 'board') {
-        showBoardNav();
-      }
+      var updateBoardMeta = function() {
+        $scope.mailtoSubject = config.appname + ': ' + board.title;
+        $scope.mailtoBody = user.name + ' would like to share a link to a board: ' +
+          $location.protocol() + '://' + $location.host() + '/boards/' + board.id;
+      };
+      $scope.$watch('board.id', updateBoardMeta);
+      $scope.$watch('board.title', updateBoardMeta);
 
       $scope.checkBoardTitle = function(title) {
         api.boardUpdate(board.id, {title: title});
@@ -65,6 +55,14 @@
         return false;
       };
 
+      function showBoardNav() {
+        view.column.setOptionsByBoard(board);
+        $scope.showBoardNav = true;
+      }
+
+      if ($state.current.name === 'board') {
+        showBoardNav();
+      }
 
       $rootScope.$on('$stateChangeSuccess', function(event, toState) {
         $scope.current = toState;

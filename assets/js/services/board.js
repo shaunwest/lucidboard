@@ -1,8 +1,8 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user', 'timer', 'view',
-    function($rootScope, $q, $timeout, api, user, timer, view) {
+    .factory('board', ['$rootScope', '$q', '$timeout', 'api', 'user', 'timer',
+    function($rootScope, $q, $timeout, api, user, timer) {
       var board, defer, eventCb,
           locks    = [],  // card ids that this client has locked
           theQueue = [],  // array of functions to exec when user is done with locks
@@ -25,7 +25,6 @@
       // and forget about the obj.
       var loadBoard = function(boardObj) {
         if (!boardObj) return false;
-        view.init();
         setAllPropertiesFrom(boardObj);
         boardSort();
         parseCards();
@@ -113,13 +112,10 @@
       var initTimer = function() {
         timer.init(board.timerLeft);
         if (board.timerRunning) {
-          board.timer.remaining = board.timerLeft;
-          view.timer.showStart  = false;
-          board.timer.start();
+          timer.remaining = board.timerLeft;
+          timer.start();
         } else {
-          board.timer.remaining = board.timerLength;
-          view.timer.showStart  = true;
-          view.timer.setInputSeconds(board.timerLength)
+          timer.remaining = board.timerLength;
         }
       };
 

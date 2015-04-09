@@ -2,7 +2,7 @@
 (function() {
   'use strict';
   angular.module('hansei.services')
-    .factory('view', ['$filter', function($filter) {
+    .factory('view', ['$filter', '$timeout', function($filter, $timeout) {
 
       var defaultColumn     = {id: 0, label: 'View All'},
           timerInputDefault = '5:00';
@@ -28,13 +28,19 @@
       };
 
       var view = {
-        init: function() {
+        init: function(board) {
           this.tab.current      = 'board';
           this.column.options   = [defaultColumn];
           this.column.current   = defaultColumn;
           this.cardMenu.current = null;
           this.timer.showForm   = false;
           this.timer.showStart  = false;
+          if (board.timerRunning) {
+            this.timer.popTheClock();
+          } else {
+            this.timer.showStart = true;
+            this.timer.setInputSeconds(board.timerLength);
+          }
         },
 
         cardDragging:   false,
@@ -106,13 +112,23 @@
         timer: {
           showForm:  false,
           showStart: true,
+          clockPop:  false,
           input:     timerInputDefault,
+          start: function() {
+            this.showStart = false;
+            this.showForm  = false;
+            this.popTheClock();
+          },
           resetInput: function() { this.input = timerInputDefault; },
           setInputSeconds: function(seconds) {
             this.input = $filter('secondsToMinutes')(seconds);
           },
           inputInSeconds: function() {
             return $filter('minutesToSeconds')(this.input);
+          },
+          popTheClock: function() {
+            this.clockPop = true;
+            $timeout(function() { this.clockPop = false; }.bind(this), 500);
           },
           toggleForm: function(open, $event) {  // true, false, or undefined to toggle
             maybeStopEvent($event);

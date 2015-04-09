@@ -42,7 +42,7 @@
             </a>
         </div>
         <ul class="x-list-inline">
-            <li class="nav-full" data-ng-show="board.votesEnabled && board.isFacilitator">
+            <li class="nav-full" data-ng-show="board.votesEnabled">
                 <div>
                     <svg class="aside-left icon-standard" fill="#ffffff">
                         <desc>Vote icon</desc>
@@ -50,6 +50,15 @@
                     </svg>
                     {{board.votesAreInfinite ? '&infin;' : board.votesRemaining + '/' + board.votesPerUser}}
                 </div>
+            </li>
+            <li data-ng-show="!board.isFacilitator">
+              <svg class="aside-left icon-standard" fill="#ffffff"
+                data-ng-class="{'animate-pop': view.timer.clockPop}"
+                >
+                <desc>Board Clock Timer Icon</desc>
+                <use xlink:href="#clock"></use>
+              </svg>
+              {{board.timer.remaining | secondsToMinutes}}
             </li>
             <li class="nav-full">
                 <select id="viewSections" data-ng-model="view.column.current"
