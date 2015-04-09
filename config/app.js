@@ -5,6 +5,12 @@ module.exports.app = {
   appname: 'Lucidboard',
 
   /*
+   * Increment this number when you want the frontend to refresh upon
+   * reconnect when it originally loaded with a prior uiversion.
+   */
+  uiversion: 6,
+
+  /*
    * Sigin methods:
    *
    *   - ldap: edit config/ldap.js to configure

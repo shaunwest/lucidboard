@@ -8,8 +8,10 @@
       return {
         loaded:  false,
         promise: function() { return defer.promise; },
-        load:    function() {
-          if (!this.loaded) {
+        load:    function(force) {
+          console.log('LOADING');
+          if (force || !this.loaded) {
+            defer = $q.defer();
             api.getConfig(function(config) {
 
               Object.keys(config).forEach(function(name) {

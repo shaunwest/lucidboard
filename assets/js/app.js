@@ -64,8 +64,8 @@
       'angular-lodash/utils/findIndex',
     ])
 
-    .run(['$rootScope', '$sails', '$state', '$window', 'user', 'api', 'board', 'view',
-      function($rootScope, $sails, $state, $window, user, api, board, view) {
+    .run(['$rootScope', '$sails', '$state', '$window', 'user', 'api', 'board', 'view', 'config',
+      function($rootScope, $sails, $state, $window, user, api, board, view, config) {
 
         function initialSetup() {
           // This clues the api library into the status of the initial token setup
@@ -94,7 +94,20 @@
             api.cardLock(board.id(), cardId);
           });
 
-          view.modal.reconnecting.show = false;
+          // Reload the whole page if there are any new client-side updates.
+          var oldUIVersion = config.uiversion;
+          var reloadInASec = function() {
+            // Wait a sec to make sure the server is fully initialized
+            setTimeout(function() { $window.location.reload(); }, 2500);
+          };
+
+          config.load(true).then(function() {
+            if (config.uiversion === oldUIVersion) {
+              view.modal.reconnecting.show = false;
+            } else {
+              reloadInASec();
+            }
+          }, reloadInASec);  // just reload if config fetch fails for any reason
         });
 
         $rootScope.bodyClick = function() {

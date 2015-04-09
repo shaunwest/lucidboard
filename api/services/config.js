@@ -14,11 +14,12 @@ conf.regex = {
 };
 
 module.exports = {
-  all:     function() { return conf; },
-  appname: function() { return conf.appname; },
-  signin:  function() { return conf.signin; },
-  colsets: function() { return conf.colsets; },
-  regex:   function() { return conf.regex; },
+  all:         function() { return conf; },
+  appname:     function() { return conf.appname; },
+  appversion:  function() { return conf.version; },
+  signin:      function() { return conf.signin; },
+  colsets:     function() { return conf.colsets; },
+  regex:       function() { return conf.regex; },
   colsetsById: function() {
     var ret = {};
     conf.colsets.forEach(function(s) { ret[s.id] = s; });
