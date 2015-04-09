@@ -57,7 +57,7 @@
                 </select>
             </li>
             <li data-ng-show="board.isFacilitator">
-                <a href="#" class="btn" data-ng-click="toggleTimerForm()">
+                <a href="#" class="btn" data-ng-click="toggleTimerForm($event)">
                     <timer data-show-form="view.timer.showForm"></timer>
                 </a>
             </li>
@@ -102,15 +102,6 @@
                     <!--<a href="#" class="btn" data-ng-click="toggleTimerForm()">
                       <timer data-show-form="view.timer.showForm"></timer>
                     </a>-->
-                </li>
-                <li data-ng-show="board.votesEnabled">
-                  <a href="#" class="btn">
-                      <svg class="aside-left icon-standard" fill="#ffffff">
-                          <desc>Vote icon</desc>
-                          <use xlink:href="#vote"></use>
-                      </svg>
-                      {{board.votesRemaining === -1 ? '&infin;' : board.votesRemaining}}
-                    </a>
                 </li>
                 <li>
                     <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"

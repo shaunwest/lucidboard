@@ -18,8 +18,9 @@
         $state.go('signin');
       };
 
-      $scope.toggleTimerForm = function() {
-        view.timer.showForm = !view.timer.showForm;
+      $scope.toggleTimerForm = function($event) {
+        console.log('wat');
+        view.timer.toggleForm(undefined, $event);
         $scope.clockPop = true;
         $timeout(function() { $scope.clockPop = false; }, 500);
       };

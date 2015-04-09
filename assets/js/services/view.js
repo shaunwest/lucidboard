@@ -10,6 +10,15 @@
       var closeMenus = function() {
         view.cardMenu.switch();
         view.boardMenu.toggle(false);
+        view.timer.toggleForm(false);
+      };
+
+      var decideToggle = function(open, current) {
+        if (open === undefined) {
+          return !current;
+        } else {
+          return Boolean(open);
+        }
       };
 
       var maybeStopEvent = function($event) {
@@ -69,13 +78,14 @@
         },
 
         cardMenu: {
-          current: null,  // card id of open menu
-          switch: function(cId, $event) {
+          current: null,                   // card id of open menu
+          switch: function(cId, $event) {  // card id or undefined to close all
             if (this.current === cId || cId === undefined) {
               this.current = null;
             } else {
               this.current = cId;
               view.boardMenu.toggle(false);
+              view.timer.toggleForm(false);
             }
             maybeStopEvent($event);
           }
@@ -83,14 +93,13 @@
 
         boardMenu: {
           shown: false,
-          toggle: function(open, $event) {
-            if (open === undefined) {
-              this.shown = !this.shown;
-            } else {
-              this.shown = Boolean(open)
-            }
-            if (this.shown) view.cardMenu.switch(undefined);
+          toggle: function(open, $event) {  // true, false, or undefined to toggle
             maybeStopEvent($event);
+            this.shown = decideToggle(open, this.shown);
+            if (this.shown) {
+              view.cardMenu.switch(undefined);
+              view.timer.toggleForm(false);
+            }
           }
         },
 
@@ -104,6 +113,16 @@
           },
           inputInSeconds: function() {
             return $filter('minutesToSeconds')(this.input);
+          },
+          toggleForm: function(open, $event) {  // true, false, or undefined to toggle
+            maybeStopEvent($event);
+            console.log('decideToggle', open, this.showForm);
+            this.showForm = decideToggle(open, this.showForm);
+            if (this.showForm) {
+              console.log('umm closing the board menu !');
+              view.boardMenu.toggle(false);
+              view.cardMenu.switch(undefined);
+            }
           }
         }
       };
