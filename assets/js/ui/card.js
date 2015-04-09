@@ -12,15 +12,22 @@
           column: '=',
           index:  '='
         },
-        controller: ['$scope', '$timeout', 'api', 'user', 'view', function($scope, $timeout, api, user, view) {
+        controller: ['$scope', '$timeout', 'api', 'user', 'view',
+        function($scope, $timeout, api, user, view) {
 
           var board = $scope.board,
               card  = $scope.card;
 
-          $scope.view = view;
-          $scope.user = user;
+          var endCardLock = function(c) {
+            if (!board.card(card.id).locked) return;
+            api.cardUnlock(board.id, c.id, function(unlockWorked) {
+              if (unlockWorked) board.forgetCardLock(c.id);
+            });
+          };
 
-          $scope.onShow = function() { console.log('srsly'); };
+          $scope.view        = view;
+          $scope.user        = user;
+          $scope.endCardLock = endCardLock;
 
           $scope.combineThings = function($event, $data, destCardId) {
             if ($data.pile) {
@@ -54,13 +61,6 @@
             });
           };
 
-          $scope.endCardLock = function(c) {
-            if (!board.card(card.id).locked) return;
-            api.cardUnlock(board.id, c.id, function(unlockWorked) {
-              if (unlockWorked) board.forgetCardLock(c.id);
-            });
-          };
-
           $scope.editorShow = function(c) {
             if (board.card(c.id).locked) return;
             $scope.editform.$show();
@@ -86,7 +86,7 @@
               if (board.card(card.id).locked) return;
               if (board.hasCardLocks)         return;
             }
-            view.closeMenus();
+            $scope.editform.$cancel();
             api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
@@ -97,7 +97,6 @@
           $scope.color = function(card, color) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
-            view.closeMenus();
             api.cardColor(board.id, card.column, card.id, color);
           };
 
