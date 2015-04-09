@@ -92,26 +92,24 @@
         <div class="board-menu" data-ng-show="view.boardMenu.shown">
             <ul class="y-list">
                 <li>
-                    <a href="#" data-ng-click="view.closeMenus(); goFullScreen();">
+                    <a href="#" data-ng-click="goFullScreen();">
                         Go Fullscreen
                     </a>
                 </li>
-                <li data-ng-show="board.isFacilitator">
-                    <a href="#" data-ng-click="view.closeMenus(); sortByVotes();">
+                <li>
+                    <a href="#" data-ng-click="sortByVotes();">
                         Sort by Votes
                     </a>
                 </li>
                 <li>
                     <a href="/boards/{{board.id}}/export/csv"
-                      data-ng-click="view.closeMenus()"
                       target="_self"
                       >
                         Export to CSV
                     </a>
                 </li>
                 <li>
-                    <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"
-                      data-ng-click="view.closeMenus()">
+                    <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}">
                         Email Board
                     </a>
                 </li>
