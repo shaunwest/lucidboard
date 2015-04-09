@@ -72,8 +72,8 @@
                 </a>
             </li>
             <li class="board-menu-item">
-                <a href="#" data-ng-click="view.boardMenu.toggle()">
-                    <svg class="icon-alert ptm" fill="#ffffff" data-ng-class="{'active-icon':boardMenuToggle}">
+                <a href="#" data-ng-click="view.boardMenu.toggle(undefined, $event)">
+                    <svg class="icon-alert ptm" fill="#ffffff" data-ng-class="{'active-icon':view.boardMenu.shown}">
                         <desc>Menu Icon</desc>
                         <use xlink:href="#site-menu"></use>
                     </svg>

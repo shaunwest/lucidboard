@@ -12,6 +12,12 @@
         view.boardMenu.toggle(false);
       };
 
+      var maybeStopEvent = function($event) {
+        if (!$event) return;
+        $event.stopPropagation();
+        $event.preventDefault();
+      };
+
       var view = {
         init: function() {
           this.tab.current      = 'board';
@@ -64,23 +70,27 @@
 
         cardMenu: {
           current: null,  // card id of open menu
-          switch: function(cId) {
+          switch: function(cId, $event) {
             if (this.current === cId || cId === undefined) {
               this.current = null;
             } else {
               this.current = cId;
+              view.boardMenu.toggle(false);
             }
+            maybeStopEvent($event);
           }
         },
 
         boardMenu: {
           shown: false,
-          toggle: function(open) {
+          toggle: function(open, $event) {
             if (open === undefined) {
               this.shown = !this.shown;
             } else {
               this.shown = Boolean(open)
             }
+            if (this.shown) view.cardMenu.switch(undefined);
+            maybeStopEvent($event);
           }
         },
 

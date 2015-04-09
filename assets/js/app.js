@@ -97,6 +97,10 @@
           view.modal.reconnecting.show = false;
         });
 
+        $rootScope.bodyClick = function() {
+          view.closeMenus();
+        };
+
         initialSetup();
       }
     ]);
