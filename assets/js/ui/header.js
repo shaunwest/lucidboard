@@ -19,8 +19,8 @@
       };
 
       $scope.toggleTimerForm = function($event) {
-        console.log('wat');
         view.timer.toggleForm(undefined, $event);
+        if (!view.timer.showForm) return;
         $scope.clockPop = true;
         $timeout(function() { $scope.clockPop = false; }, 500);
       };

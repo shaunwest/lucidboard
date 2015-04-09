@@ -116,10 +116,8 @@
           },
           toggleForm: function(open, $event) {  // true, false, or undefined to toggle
             maybeStopEvent($event);
-            console.log('decideToggle', open, this.showForm);
             this.showForm = decideToggle(open, this.showForm);
             if (this.showForm) {
-              console.log('umm closing the board menu !');
               view.boardMenu.toggle(false);
               view.cardMenu.switch(undefined);
             }

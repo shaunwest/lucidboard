@@ -7,7 +7,10 @@
       return {
         restrict: 'AE',
         templateUrl: '/templates/_timer.html',
-        scope: {showForm: '='},
+        scope: {
+          showForm: '=',
+          clockPop: '='
+        },
         link: function(scope, element, attrs) {
 
           var preventDefault = function($event) {

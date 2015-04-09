@@ -58,7 +58,7 @@
             </li>
             <li data-ng-show="board.isFacilitator">
                 <a href="#" class="btn" data-ng-click="toggleTimerForm($event)">
-                    <timer data-show-form="view.timer.showForm"></timer>
+                    <timer data-clock-pop="clockPop" data-show-form="view.timer.showForm"></timer>
                 </a>
             </li>
             <li data-ng-show="board.isFacilitator">
@@ -99,9 +99,6 @@
                       >
                         Export to CSV
                     </a>
-                    <!--<a href="#" class="btn" data-ng-click="toggleTimerForm()">
-                      <timer data-show-form="view.timer.showForm"></timer>
-                    </a>-->
                 </li>
                 <li>
                     <a href="mailto:?subject={{mailtoSubject}}&body={{mailtoBody}}"
