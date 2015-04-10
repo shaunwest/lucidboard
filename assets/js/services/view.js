@@ -51,7 +51,6 @@
         tab: {
           current: 'board',
           switch: function(tabName, otherwise) {
-            closeMenus();
             if (this.current === tabName && otherwise) {
               this.current = otherwise;
             } else {

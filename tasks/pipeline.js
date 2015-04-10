@@ -39,6 +39,7 @@ var jsFilesToInject = [
   'bower_components/ng-context-menu/dist/ng-context-menu.min.js',
   'bower_components/angular-elastic/elastic.js',
   'bower_components/velocity/velocity.js',
+  'bower_components/angular-ui-utils/keypress.min.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files

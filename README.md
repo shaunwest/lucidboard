@@ -1,6 +1,6 @@
 # Lucidboard
 
-A virtual board of adhesive sticky notes for all your brainstorming and retrospective needs.
+A realtime virtual board of adhesive sticky notes for all your brainstorming and retrospective needs.
 
 ## Setup
 
@@ -16,9 +16,16 @@ Make sure you have a running instance of Redis going on and do something like th
     npm install
     npm start
 
+## Usage Tips
+
+### Keyboard Shortcuts (on board screen)
+
+| Backtick (`) | As a facilitator, toggle between settings and the board |
+| Escape       | Close menus                                             |
+
 ## Administration
 
-A user can be flagged as an admin, giving them special abilities on the Lucidboard installation. Currently, these abilities include:
+A user can be flagged as an admin, giving them special abilities on the Lucidboard installation. This means that they have facilitator rights on any board as well as the following:
 
   - Actually deleting from the database archived boards
 
