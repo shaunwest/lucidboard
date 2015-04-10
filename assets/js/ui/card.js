@@ -20,7 +20,7 @@
               card   = $scope.card;
 
           var endCardLock = function(c) {
-            if (!board.card(card.id).locked) return;
+            if (!board.card(c.id).locked) return;
             api.cardUnlock(board.id, c.id, function(unlockWorked) {
               if (unlockWorked) board.forgetCardLock(c.id);
             });
