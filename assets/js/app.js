@@ -125,8 +125,7 @@
       'hansei.services',
       'xeditable',
       'ang-drag-drop',
-      'monospaced.elastic',
-      'ui.keypress'
+      'monospaced.elastic'
     ])
 
     .run(['editableOptions', 'editableThemes', function(editableOptions, editableThemes) {
