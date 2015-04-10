@@ -16,7 +16,10 @@
                 });
                 break;
               case 192:  // backtick
-                scope.$apply(function() { view.tab.switch('board', 'settings'); });
+                scope.$apply(function() {
+                  view.tab.switch('board', 'settings');
+                  view.closeMenus();
+                });
                 break;
             }
           });

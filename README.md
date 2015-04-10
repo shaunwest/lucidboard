@@ -7,6 +7,7 @@ A realtime virtual board of adhesive sticky notes for all your brainstorming and
 Make sure you have a running instance of Redis going on and do something like the following:
 
     npm install -g sails bower gulp
+    gem install bundle
     cp config/local.js.example config/local.js  # maybe do this if you want to override defaults
     cp config/ldap.js.example config/ldap.js    # if you're using ldap
     vim config/local.js                         # or your editor of choice.
@@ -20,8 +21,10 @@ Make sure you have a running instance of Redis going on and do something like th
 
 ### Keyboard Shortcuts (on board screen)
 
-| Backtick (`) | As a facilitator, toggle between settings and the board |
-| Escape       | Close menus                                             |
+| Key                  | Description                                             |
+|----------------------|---------------------------------------------------------|
+| Backtick (``` ` ```) | As a facilitator, toggle between settings and the board |
+| Escape               | Close menus                                             |
 
 ## Administration
 
