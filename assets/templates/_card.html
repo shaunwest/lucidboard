@@ -11,11 +11,11 @@
      <div data-ng-show="(card.userCanWrite || !board.p_lock) && !card.lockedByAnother">
          <div class="cardcontent"
              data-e-form="editform"
-             data-ng-click="editorShow(card)"
+             data-ng-click="editorShow()"
              data-ng-hide="isEditorVisible()"
              data-editable-textarea="card.content"
-             data-onshow="getCardLock(card)"
-             data-onhide="endCardLock(card)"
+             data-onshow="getCardLock()"
+             data-onhide="endCardLock()"
              data-onbeforesave="checkCardContent($data, column.id, card.id)"
              data-ng-disabled="true">
              <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
@@ -28,7 +28,7 @@
 Enter note...
             </pre>
         </div>
-        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, card, true)">
+        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, true)">
             <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#cancel-circle"></use>
@@ -44,7 +44,7 @@ Enter note...
         </div>
         <div class="handle aside-left" title="{{card.myVoteCount}}"
           data-ng-show="!isEditorVisible() && board.votesEnabled">
-            <a href="#" data-ng-click="upvote(card, $event)" data-ng-class="{'brand-color': false}">
+            <a href="#" data-ng-click="upvote($event)" data-ng-class="{'brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
                     <use xlink:href="#heart"></use>
@@ -66,22 +66,22 @@ Enter note...
                     Card Color
                     <ul class="x-list" role="menu">
                         <li>
-                            <a href="#" class="sea swatch" data-ng-click="color(card, 'sea')"></a>
+                            <a href="#" class="sea swatch" data-ng-click="color('sea')"></a>
                         </li>
                         <li>
-                            <a href="#" class="brick swatch" data-ng-click="color(card, 'brick')"></a>
+                            <a href="#" class="brick swatch" data-ng-click="color('brick')"></a>
                         </li>
                         <li>
-                            <a href="#" class="ice swatch" data-ng-click="color(card, 'ice')"></a>
+                            <a href="#" class="ice swatch" data-ng-click="color('ice')"></a>
                         </li>
                         <li>
-                            <a href="#" class="gold-money swatch" data-ng-click="color(card, 'gold-money')"></a>
+                            <a href="#" class="gold-money swatch" data-ng-click="color('gold-money')"></a>
                         </li>
                         <li>
-                            <a href="#" class="eggplant swatch" data-ng-click="color(card, 'eggplant')"></a>
+                            <a href="#" class="eggplant swatch" data-ng-click="color('eggplant')"></a>
                         </li>
                         <li>
-                            <a href="#" class="default swatch" data-ng-click="color(card, 'default')"></a>
+                            <a href="#" class="default swatch" data-ng-click="color('default')"></a>
                         </li>
                     </ul>
                 </li>
@@ -90,7 +90,7 @@ Enter note...
                     <div data-ng-repeat="col in board.columns">
                         <a class="pointer" role="menuitem" tabindex="1"
                           data-ng-show="col.title !== column.title && col.position !== 0"
-                          data-ng-click="moveTo(col, card)" href="#"
+                          data-ng-click="moveTo(col)" href="#"
                           >
                             {{col.title}}
                         </a>

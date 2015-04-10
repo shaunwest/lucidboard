@@ -19,10 +19,10 @@
               column = $scope.column,
               card   = $scope.card;
 
-          var endCardLock = function(c) {
-            if (!board.card(c.id).locked) return;
-            api.cardUnlock(board.id, c.id, function(unlockWorked) {
-              if (unlockWorked) board.forgetCardLock(c.id);
+          var endCardLock = function() {
+            if (!board.card(card.id).locked) return;
+            api.cardUnlock(board.id, card.id, function(unlockWorked) {
+              if (unlockWorked) board.forgetCardLock(card.id);
             });
           };
 
@@ -52,18 +52,18 @@
             return false;
           };
 
-          $scope.getCardLock = function(c) {
-            api.cardLock(board.id, c.id, function(gotLock) {
+          $scope.getCardLock = function() {
+            api.cardLock(board.id, card.id, function(gotLock) {
               if (gotLock) {
-                board.rememberCardLock(c.id);  // so we can reestablish on websocket reconnect
+                board.rememberCardLock(card.id);  // so we can reestablish on websocket reconnect
               } else {
-                $scope.editform.$cancel();  // no lock, dude.
+                $scope.editform.$cancel();        // no lock, dude.
               }
             });
           };
 
-          $scope.editorShow = function(c) {
-            if (board.card(c.id).locked) return;
+          $scope.editorShow = function() {
+            if (board.card(card.id).locked) return;
             $scope.editform.$show();
           };
 
@@ -72,7 +72,7 @@
             return $scope.editform.$visible;
           };
 
-          $scope.upvote = function(card, event) {
+          $scope.upvote = function(event) {
             $scope.votePop = true;
             $timeout(function() { $scope.votePop = false; }, 500);
             if (board.card(card.id).locked) return;
@@ -87,7 +87,7 @@
             api.cardUnupvote(board.id, column.id, card.id);
           };
 
-          $scope.moveTo = function(column, card, force) {
+          $scope.moveTo = function(column, force) {
             if (!force) {
               if (board.card(card.id).locked) return;
               if (board.hasCardLocks)         return;
@@ -100,7 +100,7 @@
             });
           };
 
-          $scope.color = function(card, color) {
+          $scope.color = function(color) {
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
             api.cardColor(board.id, card.column, card.id, color);
