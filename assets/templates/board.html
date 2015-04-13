@@ -53,7 +53,7 @@
                     </li>
                     <li>
                         <card-slot data-ng-repeat-start="slot in column.cardSlots track by $index"
-                            board="board" item="slot" column="column" index="$index">
+                            item="slot" column="column" index="$index">
                         </card-slot>
                         <div data-ng-repeat-end class="cardjunction"
                             data-drop-channel="card"
@@ -77,6 +77,6 @@
         </div>
     </div>
     <div data-ng-show="view.tab.current === 'settings'" class="tier-padded">
-        <board-settings class="panel" board="board"></board-settings>
+        <board-settings class="panel"></board-settings>
     </div>
 </div>

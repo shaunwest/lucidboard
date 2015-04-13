@@ -2,24 +2,22 @@
   'use strict';
 
   angular.module('hansei.ui')
-    .directive('boardSettings', [function() {
+    .directive('boardSettings', ['board', function(board) {
       return {
         restrict: 'E',
         templateUrl: '/templates/_boardSettings.html',
-        scope: {
-          board: '='
-        },
         controller: ['$scope', '$state', 'api', 'view', 'config',
         function($scope, $state, api, view, config) {
 
+          $scope.board   = board;
           $scope.colsets = config.colsets;
 
-          if ($scope.board) {
+          if (board) {
             // Without this, modifying the form has a direct affect on the real
             // board model. We only want to allow changing this when the event comes
             // back from the server after the real, server-side update.
             $scope.b = angular.copy($scope.board);
-            $scope.$watch('board', function() { $scope.b = angular.copy($scope.board); });
+            $scope.$watch('board', function() { $scope.b = angular.copy(board); });
           } else {
             $scope.b = {
               id:             null,
@@ -48,8 +46,8 @@
               archived:       !!$scope.b.archived
             };
 
-            if ($scope.board) {
-              api.boardUpdate($scope.board.id, bits, function(board) {
+            if (board) {
+              api.boardUpdate(board.id, bits, function(board) {
                 view.tab.switch('board');
               });
             } else {

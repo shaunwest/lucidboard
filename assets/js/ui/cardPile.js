@@ -2,19 +2,17 @@
   'use strict';
 
   angular.module('hansei.ui')
-    .directive('cardPile', [function() {
+    .directive('cardPile', ['board', function(board) {
       return {
         restrict: 'E',
         templateUrl: '/templates/_cardPile.html',
         scope: {
-          board:  '=',
           pile:   '=',
           column: '=',
           index:  '='
         },
         controller: ['$rootScope', '$scope', 'api', 'view', function($rootScope, $scope, api, view) {
-          var board = $scope.board,
-              _     = { findIndex: $rootScope.findIndex };
+          var _ = { findIndex: $rootScope.findIndex };
 
           var flip = function(idx) {
             api.boardCardFlip(board.id, {
@@ -24,7 +22,8 @@
             });
           };
 
-          $scope.view = view;
+          $scope.board = board;
+          $scope.view  = view;
 
           // Get the card model for the top-most card. If getIndexOnly is true,
           // then return only the index of the $scope.pile array.

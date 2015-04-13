@@ -2,12 +2,11 @@
   'use strict';
 
   angular.module('hansei.ui')
-    .directive('card', [function() {
+    .directive('card', ['board', function(board) {
       return {
         restrict: 'E',
         templateUrl: '/templates/_card.html',
         scope: {
-          board:  '=',
           card:   '=',
           column: '=',
           index:  '='
@@ -15,8 +14,7 @@
         controller: ['$scope', '$timeout', 'api', 'user', 'view',
         function($scope, $timeout, api, user, view) {
 
-          var board  = $scope.board,
-              column = $scope.column,
+          var column = $scope.column,
               card   = $scope.card;
 
           var endCardLock = function() {
@@ -26,6 +24,7 @@
             });
           };
 
+          $scope.board       = board;
           $scope.view        = view;
           $scope.user        = user;
           $scope.endCardLock = endCardLock;

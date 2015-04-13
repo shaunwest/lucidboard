@@ -1,15 +1,17 @@
 (function() {
   'use strict';
   angular.module('hansei.ui')
-    .directive('cardSlot', [function() {
+    .directive('cardSlot', ['board', function(board) {
       return {
         restrict: 'E',
         templateUrl: '/templates/_cardSlot.html',
         scope: {
-          board:  '=',
           item:   '=',
           column: '=',
           index:  '='
+        },
+        link: function(scope, element) {
+          scope.board = board;
         }
       };
     }]);
