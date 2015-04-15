@@ -46,7 +46,7 @@
               archived:       !!$scope.b.archived
             };
 
-            if (board) {
+            if (board.loaded) {
               api.boardUpdate(board.id, bits, function(board) {
                 view.tab.switch('board');
               });
