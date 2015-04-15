@@ -12,7 +12,7 @@
           $scope.board   = board;
           $scope.colsets = config.colsets;
 
-          if (board) {
+          if (board.loaded) {
             // Without this, modifying the form has a direct affect on the real
             // board model. We only want to allow changing this when the event comes
             // back from the server after the real, server-side update.
