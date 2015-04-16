@@ -11,6 +11,7 @@
         findIndex: $rootScope.findIndex
       };
 
+      $scope.user    = user;
       $scope.boards  = boards;
       $scope.colsets = config.colsets;
 

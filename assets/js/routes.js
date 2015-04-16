@@ -36,16 +36,26 @@
           }]
         }
       },
-      archivedBoards: {
-        url:         '/archived-boards',
-        templateUrl: '/templates/archivedBoards.html',
-        controller:  'ArchivedBoardsCtrl',
+      adminBoards: {
+        url:         '/boards/where/:type',
+        templateUrl: '/templates/adminBoards.html',
+        controller:  'AdminBoardsCtrl',
         resolve: {
           loadConfig: loadConfig,
-          theArchivedBoards: ['$q', 'api', 'user', function($q, api, user) {
+          theBoards: ['$q', '$stateParams', '$state', 'api', 'user',
+          function($q, $stateParams, $state, api, user) {
             var defer = $q.defer();
             if (user.signedIn) {
-              api.boardsGetArchivedList(function(boards) { defer.resolve(boards); });
+              switch ($stateParams.type) {
+                case 'archived':
+                  api.boardsGetArchivedList(function(boards) { defer.resolve(boards); });
+                  break;
+                case 'private':
+                  api.boardsGetPrivateList(function(boards) { defer.resolve(boards); });
+                  break;
+                default:
+                  $state.go('adminBoards', {type: 'archived'});
+              }
             } else {
               defer.reject('not_logged_in');
             }
@@ -59,7 +69,8 @@
         controller:  'BoardCtrl',
         resolve: {
           loadConfig: loadConfig,
-          boardData: ['board', 'user', '$stateParams', '$q', function(board, user, $stateParams, $q) {
+          boardData: ['board', 'user', '$stateParams', '$q',
+          function(board, user, $stateParams, $q) {
             if (!user.signedIn) {
               var defer = $q.defer();
               defer.reject('not_logged_in');

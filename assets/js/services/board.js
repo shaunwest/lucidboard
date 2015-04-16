@@ -139,6 +139,7 @@
         board.p_seeContent     = obj.p_seeContent;
         board.p_lock           = obj.p_lock;
         board.archived         = obj.archived;
+        board.private          = obj.private;
         board.isFacilitator    = isFacilitator;
         board.seeVotes         = isFacilitator    || obj.p_seeVotes;
         board.seeContent       = isFacilitator    || obj.p_seeContent;

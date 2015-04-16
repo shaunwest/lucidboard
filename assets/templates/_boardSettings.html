@@ -40,10 +40,14 @@
         <input id="p_lock" type="checkbox" data-ng-model="b.p_lock">
       </div>
     </li>
-    <li data-ng-show="b.id">
-      <label for="archived">
-          <input type="checkbox" data-ng-model="b.archived">
+    <li>
+      <label for="input_archived" data-ng-show="b.id">
+          <input id="input_archived" type="checkbox" data-ng-model="b.archived">
           Board is Archived
+      </label>
+      <label for="input_private">
+          <input id="input_private" type="checkbox" data-ng-model="b.private">
+          Board is Private
       </label>
     </li>
     <li>

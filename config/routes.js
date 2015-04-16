@@ -212,28 +212,18 @@ module.exports.routes = {
     action:     'delegateAdmin'
   },
 
-
-
-  /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  *  If a request to a URL doesn't match any of the custom routes above, it  *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
-
-  'GET /':                 jsapp,
-  'GET /signin':           jsapp,
-  'GET /boards':           jsapp,
-  'GET /archived-boards':  jsapp,
-  'GET /boards/:boardId':  jsapp,
-  'GET /admin-delegation': jsapp,
-
   // Board Export (CSV)
   'GET /boards/:boardId/export/csv': {
     controller: 'ExportController',
     action:     'csv'
-  }
+  },
+
+
+  'GET /':                   jsapp,
+  'GET /signin':             jsapp,
+  'GET /boards':             jsapp,
+  'GET /archived-boards':    jsapp,
+  'GET /boards/:boardId':    jsapp,
+  'GET /boards/where/:type': jsapp,
+  'GET /admin-delegation':   jsapp
 };

@@ -27,7 +27,8 @@
               p_seeVotes:     true,
               p_seeContent:   true,
               p_lock:         false,
-              archived:       false
+              archived:       false,
+              private:        false
             };
           }
 
@@ -43,7 +44,8 @@
               p_seeVotes:     !!$scope.b.p_seeVotes,
               p_seeContent:   !!$scope.b.p_seeContent,
               p_lock:         !!$scope.b.p_lock,
-              archived:       !!$scope.b.archived
+              archived:       !!$scope.b.archived,
+              private:        !!$scope.b.private
             };
 
             if (board.loaded) {

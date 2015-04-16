@@ -3,16 +3,22 @@
 
   angular.module('hansei.ui')
 
-  .controller('ArchivedBoardsCtrl', [
-    '$rootScope', '$scope', 'eventerFactory', 'theArchivedBoards', 'user', 'api',
-    function($rootScope, $scope, eventerFactory, theArchivedBoards, user, api) {
+  .controller('AdminBoardsCtrl', [
+    '$rootScope', '$scope', '$state', '$stateParams', 'eventerFactory', 'theBoards', 'user', 'api',
+    function($rootScope, $scope, $state, $stateParams, eventerFactory, theBoards, user, api) {
 
-      var _ = {
-        findIndex: $rootScope.findIndex
-      };
+      var type = $stateParams.type,
+          _    = {findIndex: $rootScope.findIndex};
 
-      $scope.boards = theArchivedBoards;
+      // Non-admin trying to list private boards? ...How did you get here?
+      if (!user.admin && type === 'private') {
+        $state.go('adminBoards', {type: 'archived'});
+        return;
+      }
+
+      $scope.boards = theBoards;
       $scope.user   = user;
+      $scope.type   = type.substr(0, 1).toUpperCase() + type.substr(1);
 
       // reverse the array to order boards by descending create date
       $scope.boards.reverse();

@@ -143,6 +143,7 @@
 
         boardsGetUnarchivedList: function(cb) { get('/api/boards', {archived: false}, cb); },
         boardsGetArchivedList: function(cb) { get('/api/boards', {archived: true}, cb); },
+        boardsGetPrivateList: function(cb) { get('/api/boards', {private: true}, cb); },
         boardCreate: function(bits, cb) { post('/api/boards', bits, cb); },
         boardGet: function(boardId, cb) { get('/api/boards/' + boardId, cb); },
         boardUpdate: function(boardId, bits, cb) { post('/api/boards/' + boardId, bits, cb); },

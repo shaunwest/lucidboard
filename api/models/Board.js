@@ -16,6 +16,16 @@ module.exports = {
 
   titleRegex: titleRegex,
 
+  updatableAttributes: [
+    'title',
+    'votesPerUser',
+    'p_seeVotes',
+    'p_seeContent',
+    'p_lock',
+    'archived',
+    'private'
+  ],
+
   attributes: {
 
     title: {
@@ -53,6 +63,11 @@ module.exports = {
       defaultsTo: false
     },
 
+    private: {
+      type:       'boolean',
+      defaultsTo: false
+    },
+
     toJSON: function() {
       var timerLeft    = 0,
           timerRunning = false;
@@ -82,6 +97,7 @@ module.exports = {
         p_seeContent:    this.p_seeContent,
         p_lock:          this.p_lock,
         archived:        this.archived,
+        private:         this.private,
         creatorUsername: this.creatorUsername,
         creatorEmail:    this.creatorEmail,
         createdAt:       this.createdAt

@@ -20,18 +20,16 @@ module.exports.bootstrap = function(cb) {
   }
 
   // Remove this later
-  // Board.find({}).exec(function(err, boards) {
-  //   if (err) throw err;
-  //   boards.forEach(function(b) {
-  //     console.log('b', b.id);
-  //     if (b.archived === true || b.archived === false) return;
-  //     console.log('updating', b.id);
-  //     Board.update({id: b.id}, {archived: false}, function(err, gg) {
-  //       console.log('er', err);
-  //       console.log('gg', gg);
-  //     });
-  //   });
-  // });
+  Board.find({}).exec(function(err, boards) {
+    if (err) throw err;
+    boards.forEach(function(b) {
+      if (b.private === true || b.private === false) return;
+      Board.update({id: b.id}, {private: false}, function(err, gg) {
+        // console.log('er', err);
+        // console.log('gg', gg);
+      });
+    });
+  });
 
   /*
   User.findOne({id:2}).exec(function(err, u) {
