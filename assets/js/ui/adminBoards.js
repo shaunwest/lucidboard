@@ -23,9 +23,10 @@
       // reverse the array to order boards by descending create date
       $scope.boards.reverse();
 
-      eventerFactory().event('board:create', function(board) {
-        $scope.boards.push(board);
-      }).event('board:update', function(board) {
+      // Note: we haven't hooked 'board:create' ... we won't see new boards being created
+      //       in this view without a refresh.
+
+      eventerFactory().event('board:update', function(board) {
         var idx = _.findIndex($scope.boards, function(b) { return b.id === board.id; });
         if (idx === -1) return;
         $scope.boards.splice(idx, 1, board);

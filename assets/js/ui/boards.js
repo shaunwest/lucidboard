@@ -19,6 +19,7 @@
       $scope.boards.reverse();
 
       eventerFactory().event('board:create', function(board) {
+        if (board.archived || (board.private && board.creator !== user.id)) return;
         $scope.boards.push(board);
       }).event('board:update', function(board) {
         var idx = _.findIndex($scope.boards, function(b) { return b.id === board.id; });
