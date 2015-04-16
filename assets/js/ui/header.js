@@ -74,11 +74,17 @@
       });
 
       $rootScope.$on('ANGULAR_DRAG_START', function(event, channel, card) {
-        view.cardDragging = true;
+        $rootScope.$apply(function() {
+          if (channel === 'card')   view.cardDragging = true;
+          if (channel === 'column') view.columnDragging = true;
+        })
       });
 
       $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
-        view.cardDragging = false;
+        $rootScope.$apply(function() {
+          if (channel === 'card')   view.cardDragging = false;
+          if (channel === 'column') view.columnDragging = false;
+        });
       });
     }]);
 })();

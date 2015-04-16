@@ -1,8 +1,14 @@
 <h4 class="underline">Current Columns</h4>
 <ul class="y-list-color">
-    <li data-ng-repeat="c in board.columns"
+    <li
+      data-ng-if="c.position !== 0"
+      data-ng-repeat-start="c in board.columns"
       >
-        <a href="#" data-ng-if="c.position !== 0" class="clear-title">
+        <a href="#" class="clear-title"
+          data-ui-draggable="true"
+          data-drag="c"
+          data-drag-channel="column"
+          >
             <svg
               data-ng-show="board.columns.length > 2"
               data-ng-click="getDeleteConfirm(c)"
@@ -17,16 +23,23 @@
               >
                 {{c.title}}
             </span>
-            <!-- <svg class="aside-right icon-standard" fill="#ffffff">
+            <svg class="aside-right icon-standard" fill="#ffffff">
                 <desc>Move Menu icon</desc>
                 <use xlink:href="#menu2"></use>
-            </svg> -->
+            </svg>
             <div class="item-delete" data-ng-show="deleteToggles[c.id]"
               data-ng-click="deleteColumn(c)"
               >
                 Delete {{c.title}}
             </div>
         </a>
+    </li>
+    <li data-ng-repeat-end>
+      <div class="columnlistjunction"
+        data-drop-channel="column"
+        data-ng-class="{active:view.columnDragging}"
+        data-ui-on-drop="moveColumn($data, c.position + 1)">
+      </div>
     </li>
 </ul>
 <form data-ng-submit="createColumn()">

@@ -41,6 +41,10 @@
             scope.title = '';
             scope.error = false;
           };
+
+          scope.moveColumn = function(column, position) {
+            api.columnMove(board.id, column.id, position);
+          };
         }
       };
     }]);
