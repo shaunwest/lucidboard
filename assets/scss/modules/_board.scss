@@ -123,5 +123,11 @@
         float: left;
         width: auto;
     }
+}
 
+.clear-title--settings {
+    @include clearfix;
+    .editable-controls input {
+        font-size: inherit;
+    }
 }

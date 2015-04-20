@@ -58,7 +58,7 @@
 }
 
 .slate-card {
-    background-color: $cloudy-day;
+    background-color: $sticky-note;
     transition: background-color 0.2s ease-in-out;
     border: {
         top: 0.0625em solid $storm;
@@ -67,7 +67,7 @@
         bottom: 0.0625em solid $storm;
     }
     &:hover {
-        background-color: darken($cloudy-day, 5%);
+        background-color: darken($sticky-note, 5%);
     }
     &.locked {
         background-color: $detroit;
