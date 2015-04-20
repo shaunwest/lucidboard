@@ -1,5 +1,5 @@
 <div class="tier">
-    <section class="panel-half">
+    <section class="panel--half">
         <h1 class="gamma heading-underline">
             Boards
         </h1>
@@ -9,11 +9,11 @@
                 <input name="filter" type="text" data-ng-model="query" placeholder="Filter boards">
             </li>
         </ul>
-        <ul class="y-list-color">
+        <ul class="y-list--color">
           <li data-ng-repeat="b in boards | filter:query">
             <a href="/boards/{{b.id}}">
               {{b.title}}
-              <small class="small-muted">{{b.createdAt | formatDate}}</small>
+              <small class="font--small-muted">{{b.createdAt | formatDate}}</small>
               <small class="aside-right">{{b.creatorUsername}}</small>
             </a>
           </li>
@@ -21,7 +21,7 @@
         <div>&laquo; <a href="/boards/where/archived">Archived Boards</a></div>
         <div data-ng-if="user.admin">&laquo; <a href="/boards/where/private">Private Boards</a></div>
     </section>
-    <section class="panel-half last">
+    <section class="panel--half last">
         <h1 class="gamma heading-underline">
             Create New Board
         </h1>

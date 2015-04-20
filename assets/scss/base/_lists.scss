@@ -27,7 +27,8 @@
   }
 }
 
-.x-list-inline {
+// modified x-list
+.x-list--inline {
     @include clearfix;
     @extend .x-list;
     li {
@@ -37,7 +38,8 @@
     }
 }
 
-.y-list-color {
+// modified y-list
+.y-list--color {
     @include clearfix;
     @extend .y-list;
     float: left;
@@ -68,7 +70,8 @@
     }
 }
 
-.item-delete {
+// used when you want to show a delete overlay
+.y-list--color-delete {
     background: $brick;
     position: absolute;
     z-index: 2;

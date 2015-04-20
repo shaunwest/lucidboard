@@ -20,11 +20,12 @@ $font-body: 'Open Sans', sans-serif;;
   line-height: $base-line-height;
 }
 
-.small-muted {
+.font--small-muted {
     font-size: $micro-text;
     color: $storm;
 }
 
-.brand-color {
+// General brand color class
+.font--brand-color {
     color: $flamingo;
 }

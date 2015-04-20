@@ -23,7 +23,7 @@
         @include clearfix;
         width: 100%;
     }
-    .x-list-inline {
+    .x-list--inline {
         li {
             @include clearfix;
             margin-bottom: 0.5em;
@@ -40,7 +40,7 @@
         display: none;
     }
     @media (min-width: 60em) {
-        .x-list-inline {
+        .x-list--inline {
             float: right;
             li {
                 margin-bottom: 0;

@@ -52,7 +52,7 @@ html, body {
 }
 
 // full width container with x padding
-.tier-padded {
+.tier--padded {
     @extend .tier;
     padding: 0 1em;
 }
@@ -72,7 +72,7 @@ html, body {
 }
 
 // small = full width, medium & up = 1/2 width,
-.panel-half {
+.panel--half {
     @extend .tier;
     @media (min-width: 40em) {
         @include span(6 of 12);

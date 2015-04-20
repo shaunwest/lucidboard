@@ -1,5 +1,7 @@
-<h4 class="underline">Current Columns</h4>
-<ul class="y-list-color">
+<h4 class="underline">
+    Current Columns
+</h4>
+<ul class="y-list--color">
     <li
       data-ng-if="c.position !== 0"
       data-ng-repeat-start="c in board.columns"
@@ -27,7 +29,7 @@
                 <desc>Move Menu icon</desc>
                 <use xlink:href="#menu2"></use>
             </svg>
-            <div class="item-delete" data-ng-show="deleteToggles[c.id]"
+            <div class="y-list--color-delete" data-ng-show="deleteToggles[c.id]"
               data-ng-click="deleteColumn(c)"
               >
                 Delete {{c.title}}
@@ -45,9 +47,13 @@
 <form data-ng-submit="createColumn()">
 <ul class="form-fields">
   <li>
-    <h4 class="underline">Add New Column</h4>
+    <h4 class="underline">
+        Add New Column
+    </h4>
     <input type="text" data-ng-model="title" placeholder="Column Title">
-    <p data-ng-show="error">A column title is required.</p>
+    <p data-ng-show="error">
+        A column title is required.
+    </p>
   </li>
   <li>
     <input type="submit" value="Create New Column" class="btn">

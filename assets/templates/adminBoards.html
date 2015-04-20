@@ -1,5 +1,5 @@
 <div class="tier">
-    <section class="panel-half">
+    <section class="panel--half">
         &laquo; <a href="/boards">Back to Boards</a>
         <h1 class="gamma heading-underline">
             {{type}} Boards
@@ -9,7 +9,7 @@
                 <input type="text" data-ng-model="query" placeholder="Filter boards">
             </li>
         </ul>
-        <ul class="y-list-color">
+        <ul class="y-list--color">
           <li data-ng-repeat="b in boards | filter:query">
             <a href="/boards/{{b.id}}">
               {{b.title}}

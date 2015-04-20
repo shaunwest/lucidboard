@@ -27,7 +27,7 @@
 Enter note...
             </pre>
         </div>
-        <a href="#" class="remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, true)">
+        <a href="#" class="card-remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, true)">
             <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#cancel-circle"></use>
@@ -43,7 +43,7 @@ Enter note...
         </div>
         <div class="handle aside-left" title="{{card.myVoteCount}}"
           data-ng-show="!isEditorVisible() && board.votesEnabled">
-            <a href="#" data-ng-click="upvote($event)" data-ng-class="{'brand-color': false}">
+            <a href="#" data-ng-click="upvote($event)" data-ng-class="{'font--brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
                     <use xlink:href="#heart"></use>
@@ -111,7 +111,7 @@ Empty
             </pre>
         </div>
     </div>
-    <div class="card-locked" data-ng-show="card.lockedByAnother">
+    <div class="card--locked" data-ng-show="card.lockedByAnother">
         <svg class="icon-standard">
             <desc>Card is locked loading icon</desc>
             <use xlink:href="#typing"></use>
