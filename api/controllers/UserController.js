@@ -75,7 +75,7 @@ module.exports = {
   // What comes out is a refreshed token.
   // This is necessary when (re)establishing the websocket.
   refreshToken: function(req, res) {
-    var token = req.body.token;
+    var token = String(req.body.token);
 
     User.findByToken(token, function(err, user) {
       if (err) return res.serverError(err);

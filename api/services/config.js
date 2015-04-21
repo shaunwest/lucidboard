@@ -16,7 +16,7 @@ conf.regex = {
 module.exports = {
   all:         function() { return conf; },
   appname:     function() { return conf.appname; },
-  appversion:  function() { return conf.version; },
+  uiversion:   function() { return conf.uiversion; },
   signin:      function() { return conf.signin; },
   colsets:     function() { return conf.colsets; },
   regex:       function() { return conf.regex; },
