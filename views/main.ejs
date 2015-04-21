@@ -1,4 +1,8 @@
-<header class="tier site-header item-fixed" data-ng-include="headerUrl"></header>
+<header data-ng-controller="HeaderCtrl"
+  class="tier site-header item-fixed"
+  data-ng-class="{'site-header--muted':board.archived,'site-header--dark':board.private}"
+  data-ng-include="headerUrl">
+</header>
 <main class="site-container" data-ui-view></main>
 <footer class="site-footer" data-ng-include="footerUrl"></footer>
 <modal-dialog

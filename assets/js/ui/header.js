@@ -56,6 +56,7 @@
       };
 
       function showBoardNav() {
+        view.init(board);
         view.column.setOptionsByBoard(board);
         $scope.showBoardNav = true;
       }
@@ -81,10 +82,8 @@
       });
 
       $rootScope.$on('ANGULAR_DRAG_END', function(event, channel, card) {
-        $rootScope.$apply(function() {
-          if (channel === 'card')   view.cardDragging = false;
-          if (channel === 'column') view.columnDragging = false;
-        });
+        if (channel === 'card')   view.cardDragging = false;
+        if (channel === 'column') view.columnDragging = false;
       });
     }]);
 })();

@@ -2,12 +2,12 @@
      class="card slate-card {{card.color || 'default'}}"
      data-ng-class="{active:view.cardDragging,'animate-shake':card.shake}"
      data-ng-show="card"
-     data-ui-draggable="{{board.locks.length === 0}}"
+     data-ui-draggable="{{board.locks.length === 0 && !board.locked}}"
      data-drag="card"
      data-drag-channel="card"
      data-drop-channel="card"
      data-ui-on-drop="combineThings($event, $data, card.id)">
-     <div data-ng-show="(card.userCanWrite || !board.p_lock) && !card.lockedByAnother">
+     <div data-ng-show="(card.userCanWrite || !board.locked) && !card.lockedByAnother">
          <div class="cardcontent"
              data-e-form="editform"
              data-ng-click="editorShow()"
@@ -27,7 +27,11 @@
 Enter note...
             </pre>
         </div>
-        <a href="#" class="card-remove" data-ng-show="isEditorVisible()" data-ng-click="moveTo(board.trash, true)">
+        <a href="#"
+          class="card-remove"
+          data-ng-show="isEditorVisible() && column.position !== 0"
+          data-ng-click="moveTo(board.trash, true)"
+          >
             <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#cancel-circle"></use>
@@ -41,7 +45,7 @@ Enter note...
                 </svg>
             </a>
         </div>
-        <div class="handle aside-left" title="{{card.myVoteCount}}"
+        <div class="handle aside-left"
           data-ng-show="!isEditorVisible() && board.votesEnabled">
             <a href="#" data-ng-click="upvote($event)" data-ng-class="{'font--brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
@@ -98,7 +102,7 @@ Enter note...
             </ul>
         </div>
     </div>
-    <div data-ng-show="!card.userCanWrite && board.p_lock && !card.lockedByAnother">
+    <div data-ng-show="!card.userCanWrite && board.locked && !card.lockedByAnother">
         <div class="cardcontent">
             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
 {{card.content}}
@@ -109,6 +113,21 @@ Enter note...
             <pre data-ng-show="!card.content">
 Empty
             </pre>
+        </div>
+        <div class="handle aside-left"
+          data-ng-show="!isEditorVisible() && board.votesEnabled">
+            <a href="#" data-ng-class="{'font--brand-color': false}">
+                <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
+                    <desc>Card upvote icon</desc>
+                    <use xlink:href="#heart"></use>
+                </svg>
+                <span data-ng-show="board.seeVotes">
+                    {{card.votes.length}}
+                </span>
+                <span data-ng-show="!board.seeVotes && card.myVoteCount">
+                    ({{card.myVoteCount}})
+                </span>
+            </a>
         </div>
     </div>
     <div class="card--locked" data-ng-show="card.lockedByAnother">

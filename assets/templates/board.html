@@ -60,7 +60,7 @@
                             data-ui-on-drop="moveSlot($event, $data, column.cardSlots, column.id, slot[0].position + 1)">
                         </div>
                     </li>
-                    <li data-ng-show="column.position !== 0">
+                    <li data-ng-show="column.position !== 0 && (board.isFacilitator || !board.p_lock)">
                         <button class="btn" data-ng-click="createCard(column)">Add Card</button>
                     </li>
                 </ul>

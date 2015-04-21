@@ -7,8 +7,6 @@
     'user', 'board', 'eventerFactory', 'view', 'config',
     function($scope, $state, $interval, $anchorScroll, api, user, board, eventerFactory, view, config) {
 
-      view.init(board);
-
       eventerFactory().event('column:create:' + board.id, function(col) {
         $scope.board = board;
         board.columnCreate(col);

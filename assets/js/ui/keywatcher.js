@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('hansei.ui')
-    .directive('keywatcher', ['view', function(view) {
+    .directive('keywatcher', ['view', 'board', function(view, board) {
       return {
         restrict: 'A',
         link: function(scope, element) {
@@ -16,6 +16,7 @@
                 });
                 break;
               case 192:  // backtick
+                if (!board.isFacilitator) return;
                 scope.$apply(function() {
                   view.tab.switch('board', 'settings');
                   view.closeMenus();

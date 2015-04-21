@@ -1,4 +1,4 @@
-<div class="nav" ng-controller="HeaderCtrl" data-ng-class="{archived:board.archived}">
+<div class="nav" data-ng-class="{archived:board.archived}">
     <div class="tier">
         <a href="/boards" class="aside-left">
             <svg class="icon-logo">
@@ -29,6 +29,7 @@
               data-e-maxlength="50"
               data-onbeforesave="checkBoardTitle($data)"
               >
+                <span data-ng-show="board.p_lock">(L)</span>
                 {{board.title}}
             </h1>
             <a href="#" class="aside-left"
@@ -37,6 +38,7 @@
               data-ng-class="{active:view.tab.current === 'board'}"
               >
                 <h1 class="delta">
+                    <span data-ng-show="board.p_lock">(L)</span>
                     {{board.title}}
                 </h1>
             </a>

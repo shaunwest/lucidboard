@@ -32,13 +32,10 @@
       </select>
     </li>
     <li>
-      <label>Participants Can:</label>
-      <label for="p_seeVotes"><input id="p_seeVotes" type="checkbox" data-ng-model="b.p_seeVotes"> See Votes</label>
-      <label for="p_seeContent"><input id="p_seeContent" type="checkbox" data-ng-model="b.p_seeContent"> See Card Content</label>
-      <div data-ng-if="false">
-        <label for="p_lock">Actually not do anything</label>
-        <input id="p_lock" type="checkbox" data-ng-model="b.p_lock">
-      </div>
+      <label>Participants:</label>
+      <label for="p_seeVotes"><input id="p_seeVotes" type="checkbox" data-ng-model="b.p_seeVotes"> Can See Votes</label>
+      <label for="p_seeContent"><input id="p_seeContent" type="checkbox" data-ng-model="b.p_seeContent"> Can See Card Content</label>
+      <label for="p_lock"><input id="p_lock" type="checkbox" data-ng-model="b.p_lock"> Are Locked from Making Changes</label>
     </li>
     <li>
       <label for="input_archived" data-ng-show="b.id">

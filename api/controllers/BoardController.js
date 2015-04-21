@@ -48,7 +48,8 @@ module.exports = {
       votesPerUser:   parseInt(req.body.votesPerUser),
       p_seeVotes:     req.body.p_seeVotes,
       p_seeContent:   req.body.p_seeContent,
-      p_lock:         req.body.p_lock
+      p_lock:         req.body.p_lock,
+      private:        req.body.private
     };
 
     // 1. Create the board
