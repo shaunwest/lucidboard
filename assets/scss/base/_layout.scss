@@ -44,6 +44,15 @@ html, body {
     }
 }
 
+// for archived boards
+.site-header--muted {
+    background: $storm;
+}
+
+// for private boards
+.site-header--dark {
+    background: $font-body-color;
+}
 // full width container
 .tier {
     @include clearfix;

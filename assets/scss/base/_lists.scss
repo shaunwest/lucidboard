@@ -82,3 +82,21 @@
     padding: 0.5em 1em;
     animation-name: animate-slide-right;
 }
+
+.y-list--color-muted {
+    li {
+        background: $storm;
+        &:hover {
+            background: lighten($storm, 5%);
+        }
+    }
+}
+
+.y-list--color-dark {
+    li {
+        background: $font-body-color;
+        &:hover {
+            background: lighten($font-body-color, 5%);
+        }
+    }
+}
