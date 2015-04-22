@@ -11,11 +11,7 @@
         </ul>
         <ul class="y-list--color">
           <li data-ng-repeat="b in boards | filter:query">
-            <a href="/boards/{{b.id}}">
-              {{b.title}}
-              <small class="font--small-muted">{{b.createdAt | formatDate}}</small>
-              <small class="aside-right">{{b.creatorUsername}}</small>
-            </a>
+            <boardlist-item board="b"></boardlist-item>
           </li>
         </ul>
         <div>&laquo; <a href="/boards/where/archived">Archived Boards</a></div>

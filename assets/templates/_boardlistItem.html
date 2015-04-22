@@ -1,0 +1,10 @@
+<a href="/boards/{{board.id}}"
+  data-ng-class="{'y-list--color-muted':board.archived,'y-list--color-dark':board.private}"
+  >
+  {{board.title}}
+  <small class="font--small-muted">{{board.createdAt | formatDate}}</small>
+  <small class="aside-right">{{board.creatorUsername}}</small>
+</a>
+<a href="" data-ng-click="confirmDelete(b)" data-ng-show="deletable">
+  Delete Board
+</a>
