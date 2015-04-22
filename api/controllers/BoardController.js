@@ -7,14 +7,15 @@ var async   = require('async'),
 module.exports = {
 
   getList: function(req, res) {
-    var criteria = {private: false},
+    var criteria = {},
         user     = req.user;
 
-    if (user.admin === true) criteria.private = true;
-
     // Make sure the user can always see their own private boards.
-    if (!criteria.private) {
-      criteria = {or: [criteria, {private: true, creator: user.id}]};
+    if (!user.admin) {
+      criteria = {or: [
+        {private: false},
+        {private: true, creator: user.id}
+      ]};
     }
 
     Board.getList(criteria, function(err, boards) {
