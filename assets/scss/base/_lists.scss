@@ -83,20 +83,16 @@
     animation-name: animate-slide-right;
 }
 
-.y-list--color-muted {
-    li {
-        background: $storm;
-        &:hover {
-            background: lighten($storm, 5%);
-        }
+.y-list--color__item-muted {
+    background: $storm;
+    &:hover {
+        background: lighten($storm, 5%);
     }
 }
 
-.y-list--color-dark {
-    li {
-        background: $font-body-color;
-        &:hover {
-            background: lighten($font-body-color, 5%);
-        }
+.y-list--color__item-dark {
+    background: $font-body-color;
+    &:hover {
+        background: lighten($font-body-color, 5%);
     }
 }
