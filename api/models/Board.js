@@ -112,7 +112,7 @@ module.exports = {
 
     slugify: function() {
       return this.shortid + '-' +
-        this.title.replace(/[^a-zA-Z0-9_-]+/g, '-').match(/^-*(.*)-*$/)[1];
+        this.title.replace(/[^a-zA-Z0-9_-]+/g, '-').replace(/(^-+|-+$)/, '');
     },
 
     // Adds some extra bits of info, needed for the board list
