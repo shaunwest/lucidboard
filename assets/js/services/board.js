@@ -122,6 +122,8 @@
       var setAllPropertiesFrom = function(obj) {
         board.loaded  = true;
         board.id      = obj.id;
+        board.slug    = obj.slug;
+        board.shortid = obj.shortid;
         board.columns = obj.columns;
         board.trash   = obj.columns[0];
 

@@ -43,9 +43,8 @@
       var updateBoardMeta = function() {
         $scope.mailtoSubject = config.appname + ': ' + board.title;
         $scope.mailtoBody = user.name + ' would like to share a link to a board: ' +
-          $location.protocol() + '://' + $location.host() + '/boards/' + board.id;
+          $location.protocol() + '://' + $location.host() + '/boards/' + board.slug;
       };
-      $scope.$watch('board.id', updateBoardMeta);
       $scope.$watch('board.title', updateBoardMeta);
 
       $scope.checkBoardTitle = function(title) {
@@ -58,6 +57,7 @@
       function showBoardNav() {
         if ($stateParams.slug !== board.slug) {  // make sure they are actually at the right url
           $state.go('board', {slug: board.slug});
+          return;
         }
         view.init(board);
         view.column.setOptionsByBoard(board);
