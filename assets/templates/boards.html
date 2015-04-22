@@ -8,14 +8,24 @@
                 <label for="filter">Filter Boards</label>
                 <input name="filter" type="text" data-ng-model="query" placeholder="Filter boards">
             </li>
+            <li>
+                <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
+                <label for="type-normal">Normal</label>
+                <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
+                  data-ng-show="archivedBoardsExist">
+                <label for="type-archived" data-ng-show="archivedBoardsExist">Archived</label>
+                <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
+                  data-ng-show="user.admin && privateBoardsExist">
+                <label for="type-private" data-ng-show="user.admin && privateBoardsExist">Private</label>
+                <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
+                <label for="type-all">All</label>
+            </li>
         </ul>
         <ul class="y-list--color">
-          <li data-ng-repeat="b in boards | filter:query">
+          <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
             <boardlist-item board="b"></boardlist-item>
           </li>
         </ul>
-        <div>&laquo; <a href="/boards/where/archived">Archived Boards</a></div>
-        <div data-ng-if="user.admin">&laquo; <a href="/boards/where/private">Private Boards</a></div>
     </section>
     <section class="panel--half last">
         <h1 class="gamma heading-underline">

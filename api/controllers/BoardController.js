@@ -7,20 +7,14 @@ var async   = require('async'),
 module.exports = {
 
   getList: function(req, res) {
-    var archived = req.body.archived,
-        private  = req.body.private,
-        criteria = {private: false},
+    var criteria = {private: false},
         user     = req.user;
 
-    if (archived !== undefined)         criteria.archived = !!req.body.archived;
-    if (private && user.admin === true) criteria.private  = true;
+    if (private && user.admin === true) criteria.private = true;
 
     // Make sure the user can always see their own private boards.
     if (!criteria.private) {
-      var orCriteria = _.clone(criteria);
-      orCriteria.private = true;
-      orCriteria.creator = user.id;
-      criteria = {or: [criteria, orCriteria]};
+      criteria = {or: [criteria, {private: true, creator: user.id}]};
     }
 
     Board.getList(criteria, function(err, boards) {

@@ -28,34 +28,7 @@
           boards: ['$q', 'api', 'user', function($q, api, user) {
             var defer = $q.defer();
             if (user.signedIn) {
-              api.boardsGetUnarchivedList(function(boards) { defer.resolve(boards); });
-            } else {
-              defer.reject('not_logged_in');
-            }
-            return defer.promise;
-          }]
-        }
-      },
-      adminBoards: {
-        url:         '/boards/where/:type',
-        templateUrl: '/templates/adminBoards.html',
-        controller:  'AdminBoardsCtrl',
-        resolve: {
-          loadConfig: loadConfig,
-          theBoards: ['$q', '$stateParams', '$state', 'api', 'user',
-          function($q, $stateParams, $state, api, user) {
-            var defer = $q.defer();
-            if (user.signedIn) {
-              switch ($stateParams.type) {
-                case 'archived':
-                  api.boardsGetArchivedList(function(boards) { defer.resolve(boards); });
-                  break;
-                case 'private':
-                  api.boardsGetPrivateList(function(boards) { defer.resolve(boards); });
-                  break;
-                default:
-                  $state.go('adminBoards', {type: 'archived'});
-              }
+              api.boardsGetList(function(boards) { defer.resolve(boards); });
             } else {
               defer.reject('not_logged_in');
             }
