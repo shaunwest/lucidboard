@@ -63,7 +63,7 @@ module.exports.routes = {
   },
 
   // Board Get (Full!)
-  'GET /api/boards/:id': {
+  'GET /api/boards/:shortid': {
     controller: 'BoardController',
     action:     'findById'
   },
@@ -223,7 +223,7 @@ module.exports.routes = {
   'GET /signin':             jsapp,
   'GET /boards':             jsapp,
   'GET /archived-boards':    jsapp,
-  'GET /boards/:boardId':    jsapp,
+  'GET /boards/:shortid':    jsapp,
   'GET /boards/where/:type': jsapp,
   'GET /admin-delegation':   jsapp
 };

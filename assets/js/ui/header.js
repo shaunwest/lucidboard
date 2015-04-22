@@ -3,9 +3,9 @@
 
   angular.module('hansei.ui')
 
-  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$location',
+  .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$location',
     'api', 'user', 'board', 'timer', 'view', 'config',
-    function($rootScope, $scope, $state, $location, api, user, board, timer, view, config) {
+    function($rootScope, $scope, $state, $stateParams, $location, api, user, board, timer, view, config) {
 
       $scope.user    = user;
       $scope.board   = board;
@@ -56,6 +56,9 @@
       };
 
       function showBoardNav() {
+        if ($stateParams.slug !== board.slug) {  // make sure they are actually at the right url
+          $state.go('board', {slug: board.slug});
+        }
         view.init(board);
         view.column.setOptionsByBoard(board);
         $scope.showBoardNav = true;

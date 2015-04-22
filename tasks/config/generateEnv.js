@@ -1,16 +1,5 @@
-var fs = require('fs');
-
-var randomString = function(length) {
-  var ret = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i=0; i<length; i++) {
-    ret += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-
-  return ret;
-};
-
+var fs           = require('fs'),
+    randomString = require('../../api/services/util').randomString;
 
 module.exports = function (gulp, plugins) {
   gulp.task('generateEnv', function(cb) {

@@ -9,6 +9,9 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
 
+var shortid = require('shortid'),
+    async   = require('async');
+
 module.exports.bootstrap = function(cb) {
 
   // Load in some secret keys from .env
@@ -20,14 +23,31 @@ module.exports.bootstrap = function(cb) {
   }
 
   // Remove this later
+  // Board.find({}).exec(function(err, boards) {
+  //   if (err) throw err;
+  //   boards.forEach(function(b) {
+  //     if (b.private === true || b.private === false) return;
+  //     Board.update({id: b.id}, {private: false}, function(err, gg) {
+  //       // console.log('er', err);
+  //       // console.log('gg', gg);
+  //     });
+  //   });
+  // });
+
+  // Remove this later
+  // Add a shortid to all pages lacking one
   Board.find({}).exec(function(err, boards) {
     if (err) throw err;
-    boards.forEach(function(b) {
-      if (b.private === true || b.private === false) return;
-      Board.update({id: b.id}, {private: false}, function(err, gg) {
-        // console.log('er', err);
-        // console.log('gg', gg);
+    async.parallel(boards.reduce(function(memo, b) {
+      if (b.shortid) return;
+      memo.push(function(_cb) {
+        console.log('.');
+        Board.update({id: b.id}, {shortid: shortid.generate()}, _cb);
       });
+      return memo;
+    }, []) || [], function(err) {
+      if (err) throw err;
+      cb();
     });
   });
 
@@ -45,5 +65,5 @@ module.exports.bootstrap = function(cb) {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  cb();
+  // cb();
 };

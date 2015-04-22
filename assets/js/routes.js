@@ -37,7 +37,7 @@
         }
       },
       board: {
-        url:         '/boards/:boardId',
+        url:         '/boards/:slug',
         templateUrl: '/templates/board.html',
         controller:  'BoardCtrl',
         resolve: {
@@ -49,7 +49,7 @@
               defer.reject('not_logged_in');
               return defer.promise;
             }
-            return board.load($stateParams.boardId);
+            return board.load($stateParams.slug);
           }]
         }
       },

@@ -10,7 +10,7 @@ module.exports = {
     var criteria = {private: false},
         user     = req.user;
 
-    if (private && user.admin === true) criteria.private = true;
+    if (user.admin === true) criteria.private = true;
 
     // Make sure the user can always see their own private boards.
     if (!criteria.private) {
@@ -24,9 +24,9 @@ module.exports = {
   },
 
   findById: function(req, res) {
-    var id = req.param('id');
+    var shortid = req.param('shortid');
 
-    Board.loadFullById(id, function(err, board) {
+    Board.loadFullByShortid(shortid, function(err, board) {
       if (err)             return res.serverError(err);
       if (board === false) return res.notFound();
 

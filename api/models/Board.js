@@ -7,7 +7,9 @@
  */
 
 var meta       = require('../services/meta'),
+    util       = require('../services/util'),
     _          = require('underscore'),
+    shortid    = require('shortid'),
     titleRegex = /^.{1,50}$/;
 
 module.exports = {
@@ -27,6 +29,8 @@ module.exports = {
   ],
 
   attributes: {
+
+    shortid: 'string',
 
     title: {
       type:  'string',
@@ -86,6 +90,8 @@ module.exports = {
 
       return {
         id:              this.id,
+        shortid:         this.shortid,
+        slug:            this.slugify(),
         title:           this.title,
         columns:         this.columns,
         creator:         this.creator,
@@ -104,6 +110,11 @@ module.exports = {
       };
     },
 
+    slugify: function() {
+      return this.shortid + '-' +
+        this.title.replace(/[^a-zA-Z0-9_-]+/, '-');
+    },
+
     // Adds some extra bits of info, needed for the board list
     addInfo: function(cb) {
       User.findOneById(this.creator).exec(function(err, user) {
@@ -113,6 +124,11 @@ module.exports = {
         cb(err, this);
       }.bind(this));
     }
+  },
+
+  beforeCreate: function(values, cb) {
+    values.shortid = shortid.generate();
+    cb();
   },
 
   beforeDestroy: function(criteria, cb) {
@@ -126,11 +142,12 @@ module.exports = {
     })
   },
 
-  // Load the board by id along with all child objects.
-  loadFullById: function(id, _cb) {
+  // Load the board by shortid along with all child objects.
+  loadFullByShortid: function(shortid, _cb) {
+    shortid = util.fixShortid(shortid);
     async.auto({
       board: function(cb) {
-        Board.findOneById(id).populate('columns').exec(cb);
+        Board.findOneByShortid(shortid).populate('columns').exec(cb);
       },
       cards: ['board', function(cb, r) {
         if (!r.board) {
@@ -171,7 +188,7 @@ module.exports = {
       final: ['mapVotes', function(cb, r) {
         r.mapVotes.columns.forEach(function(col) {
           col.cards.forEach(function(card) {
-            card.locked = meta.cardLockedByWhichUsername(id, card.id);
+            card.locked = meta.cardLockedByWhichUsername(r.board.id, card.id);
           });
         });
         cb(null, r.mapVotes);
@@ -208,6 +225,7 @@ module.exports = {
       cb(null, r.final.map(function(b) {
         return {
           id:              b.id,
+          slug:            b.slugify(),
           title:           b.title,
           creatorUsername: b.creatorUsername,
           creatorEmail:    b.creatorEmail,
