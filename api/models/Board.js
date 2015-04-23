@@ -121,6 +121,7 @@ module.exports = {
         if (err) return cb(err);
         this.creatorUsername = user.name;
         this.creatorEmail    = user.email;
+        this.slug            = this.slugify();
         cb(err, this);
       }.bind(this));
     }
@@ -230,7 +231,9 @@ module.exports = {
           creatorUsername: b.creatorUsername,
           creatorEmail:    b.creatorEmail,
           createdAt:       b.createdAt,
-          archived:        b.archived
+          archived:        b.archived,
+          private:         b.private,
+          p_lock:          b.p_lock
         };
       }));
     });

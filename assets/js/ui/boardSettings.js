@@ -54,7 +54,7 @@
               });
             } else {
               api.boardCreate(bits, function(board) {
-                $state.go('board', {boardId: board.id});
+                $state.go('board', {slug: board.slug});
               });
             }
 

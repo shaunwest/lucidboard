@@ -58,6 +58,6 @@
         updateBoardExistence();
       }).hook($scope);
 
-    }])
+    }]);
 
 })();
