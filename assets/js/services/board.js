@@ -27,6 +27,7 @@
         if (!boardObj) return false;
         setAllPropertiesFrom(boardObj);
         boardSort();
+        countColumnCards();
         parseCards();
         figureVotesRemaining();
         initTimer();
@@ -70,6 +71,12 @@
         maybeLoadSlot();  // but surely!
 
         return column;
+      };
+
+      var countColumnCards = function() {
+        board.columns.forEach(function(col) {
+          col.cardCount = _.flatten(col.cardSlots).length;
+        });
       };
 
       var figureVotesRemaining = function() {
@@ -259,12 +266,16 @@
         },
 
         update: function(b) {
-          maybeDefer(function() { setPropertiesFrom(b); figureVotesRemaining(); });
+          maybeDefer(function() {
+            setPropertiesFrom(b);
+            figureVotesRemaining();
+          });
         },
 
         columnCreate: function(_column) {
           maybeDefer(function() {
             board.columns.push(fixColumn(_column));
+            countColumnCards();
           }.bind(this));
         },
 
@@ -317,6 +328,7 @@
               nextPosition++;
             }
             board.updateTrashIsEmpty();
+            countColumnCards();
           }.bind(this));
         },
 
@@ -325,6 +337,7 @@
             var column = this.column(card.column);
             column.cardSlots.push([card]);
             parseCards();
+            countColumnCards();
           }.bind(this));
         },
 
@@ -375,6 +388,7 @@
             sourceStack.splice(card.position - 1, 1);
 
             figureVotesRemaining();
+            countColumnCards();
           }.bind(this));
         },
 
@@ -489,10 +503,14 @@
           }
 
           this.updateTrashIsEmpty();
+          countColumnCards();
         },
 
         cardMove: function(info) {
-          maybeDefer(function() { this.rebuildColumn(info); }.bind(this));
+          maybeDefer(function() {
+            this.rebuildColumn(info);
+            countColumnCards();
+          }.bind(this));
         },
 
         combineCards: function(info) {
@@ -527,6 +545,8 @@
 
             // Add the card to the target slot!
             destColumn.cardSlots[card.position - 1].push(card);
+
+            countColumnCards();
           }.bind(this));
         },
 
