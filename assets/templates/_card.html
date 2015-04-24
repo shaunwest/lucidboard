@@ -13,10 +13,12 @@
              data-ng-click="editorShow()"
              data-ng-hide="isEditorVisible()"
              data-editable-textarea="card.content"
+             data-blur="ignore"
              data-onshow="getCardLock()"
              data-onhide="endCardLock()"
              data-onbeforesave="checkCardContent($data, column.id, card.id)"
-             data-ng-disabled="true">
+             data-ng-disabled="true"
+             >
              <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
 {{card.content}}
             </pre>
