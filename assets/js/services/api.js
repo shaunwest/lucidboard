@@ -186,8 +186,8 @@
           post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
             bits.id, bits, cb);
         },
-        cardUpvote: function(boardId, columnId, cardId, cb) {
-          post('/api/boards/' + boardId + '/columns/' + columnId + '/cards/' +
+        cardUpvote: function(shortid, columnId, cardId, cb) {
+          post('/api/boards/' + shortid + '/columns/' + columnId + '/cards/' +
             cardId + '/upvote', {}, cb);
         },
         cardUnupvote: function(boardId, columnId, cardId, cb) {

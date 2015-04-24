@@ -36,6 +36,7 @@ module.exports.bootstrap = function(cb) {
 
   // Remove this later
   // Add a shortid to all pages lacking one
+  shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.');
   Board.find({}).exec(function(err, boards) {
     if (err) throw err;
     async.parallel(boards.reduce(function(memo, b) {

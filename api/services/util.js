@@ -145,7 +145,7 @@ var randomString = function(length, possible) {
 };
 
 var fixShortid = function(slug) {
-  return slug.match(/^([^-]+)-?/)[1];
+  return (String(slug).match(/^([^-]+)-?/))[1];
 };
 
 module.exports = {

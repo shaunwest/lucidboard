@@ -128,6 +128,7 @@ module.exports = {
   },
 
   beforeCreate: function(values, cb) {
+    shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.');
     values.shortid = shortid.generate();
     cb();
   },
@@ -195,8 +196,8 @@ module.exports = {
         cb(null, r.mapVotes);
       }]
     }, function(err, r) {
-      if (r.board === false) return _cb(null, false);
       if (err)               return _cb(err);
+      if (r.board === false) return _cb(null, false);
 
       _cb(null, r.final);
     });

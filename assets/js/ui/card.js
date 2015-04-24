@@ -77,7 +77,7 @@
             if (board.card(card.id).locked) return;
             if (board.hasCardLocks)         return;
             if (board.votesRemaining === 0) return;
-            api.cardUpvote(board.id, board.column(card.column).id, card.id);
+            api.cardUpvote(board.shortid, board.column(card.column).id, card.id);
           };
 
           $scope.unupvote = function() {

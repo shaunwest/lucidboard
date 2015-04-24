@@ -148,13 +148,13 @@ module.exports = {
 
   upvote: function(req, res) {
     var user     = req.user,
-        boardId  = parseInt(req.param('boardId')),
+        shortid  = req.param('shortid'),
         columnId = parseInt(req.param('columnId')),
         cardId   = parseInt(req.param('cardId'));
 
-    if (!boardId || !columnId || !cardId) return res.badRequest();
+    if (!shortid || !columnId || !cardId) return res.badRequest();
 
-    Board.loadFullById(boardId, function(err, board) {
+    Board.loadFullByShortid(shortid, function(err, board) {
       if (err) return res.serverError(err);
 
       // Make sure the columnId exists in the board.
@@ -192,7 +192,7 @@ module.exports = {
 
           res.jsonx(vote);
 
-          redis.cardUpvote(boardId, vote);
+          redis.cardUpvote(board.id, vote);
         });
       });
     });
