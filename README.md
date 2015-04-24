@@ -15,6 +15,7 @@ Make sure you have a running instance of Redis going on and do something like th
     bundle install
     bower install
     npm install
+    gulp generateEnv
     npm start
 
 ## Usage Tips
