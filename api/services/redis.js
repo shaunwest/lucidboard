@@ -6,13 +6,16 @@ var
 
 // I seem to get redis timeout errors after some time of server inactivity. Some forum guys
 // said something like this worked for him to prevent it. (publish on 20-min interval.)
-setInterval(function() { client.publish('_please_dont_drop_me', '1'); }, 1200000);
+setInterval(function() { client.publish('_please_dont_drop_me', '1'); }, 600000);
 
 
 var publish = function(signal, payload, req) {
+  var preserve = ['username'];
 
   if (_.isObject(payload) && !_.isArray(payload)) {
     var obj = {};
+
+    preserve.forEach(function(x) { if (payload[x]) obj[x] = payload[x]; });
 
     Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
       obj[k] = payload[k];
@@ -81,9 +84,10 @@ module.exports = {
     // Create a new redis connection for the new websocket.
     socket.redis = redisModule.createClient();
 
+    // Dumb hack so redis doesn't drop me
     var dropFix = setInterval(function() {
       client.publish('_please_dont_drop_me', '1');
-    }, 1200000);
+    }, 600000);
 
     // This is critical to clean up the redis connection when the
     // corresponding websocket closes.
@@ -105,9 +109,8 @@ module.exports = {
         delete message.socketId;
       }
 
-      // console.log('redis->socket[' + socket.handshake.sessionID + '] ' +
-      console.log('redis->socket[' + socket.id + '] ' + channel +
-        ':', JSON.stringify(message));
+      // console.log('redis->socket[' + socket.id + '] ' + channel +
+      //   ':', JSON.stringify(message));
 
       socket.emit(channel, message);
     });

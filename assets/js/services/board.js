@@ -159,7 +159,7 @@
       };
 
       var queue      = function(fn) { theQueue.push(fn); };
-      var maybeDefer = function(fn) { board.hasCardLocks ? queue(fn) : fn(); };
+      var maybeDefer = function(fn) { board.weHaveCardLocks ? queue(fn) : fn(); };
 
       var animateCard = function(card) {
         card.shake = true;
@@ -193,10 +193,10 @@
 
         promise: function() { return defer.promise; },
 
-        hasCardLocks: false,
-        loaded:       false,
-        locks:        locks,
-        timer:        timer,
+        weHaveCardLocks: false,
+        loaded:          false,
+        locks:           locks,
+        timer:           timer,
 
         timerStart: function(seconds) {
           this.timerLeft    = seconds;
@@ -381,6 +381,24 @@
         },
 
         cardVaporize: function(cardId) {
+          // TODO: i should probably splice out the card to prevent a bit of a memory
+          //       leak? The code that follows needs help.
+          return;
+          maybeDefer(function() {
+            var card    = this.card(cardId),
+                stack   = this.column(card.column).cardSlots,
+                pile    = stack[card.position - 1],
+                pileIdx = _.findIndex(pile, function(c) { return c.id === card.id; });
+
+            pile.splice(pileIdx, 1);
+            if (pile[pileIdx].length === 0) stack.splice(card.position - 1, 1);
+
+            figureVotesRemaining();
+            countColumnCards();
+          }.bind(this));
+        },
+        /* doesn't account for piles, though...
+        cardVaporize: function(cardId) {
           maybeDefer(function() {
             var card        = this.card(cardId),
                 sourceStack = this.column(card.column).cardSlots;
@@ -391,31 +409,29 @@
             countColumnCards();
           }.bind(this));
         },
+        */
 
         cardLock: function(info) {
-          maybeDefer(function() {
-            var card = this.card(info.id);
-            card.locked          = info.username;
-            card.lockedByAnother = !info.you;
-          }.bind(this));
+          var card = this.card(info.id);
+          card.locked          = info.username;
+          card.lockedByAnother = !info.you;
         },
 
-        cardUnlock: function(info) {
-          maybeDefer(function() {
-            var card = this.card(info.id);
-            card.locked          = false;
-            card.lockedByAnother = false;
-          }.bind(this));
+        cardUnlock: function(id) {
+          var card = this.card(id);
+          card.locked          = false;
+          card.lockedByAnother = false;
         },
 
         cardColor: function(bits) {
           maybeDefer(function() { this.card(bits.id).color = bits.color; }.bind(this));
         },
 
+        // Track our own card locks so we can reestablish on websocket reconnect
         rememberCardLock: function(cardId) {
           if (locks.indexOf(cardId) === -1) {
             locks.push(cardId);
-            this.hasCardLocks = true;
+            this.weHaveCardLocks = true;
           }
         },
 
@@ -427,7 +443,7 @@
           if (locks.length === 0) {
             var fn;
             while (fn = theQueue.shift()) fn();
-            this.hasCardLocks = false;
+            this.weHaveCardLocks = false;
           }
         },
 
