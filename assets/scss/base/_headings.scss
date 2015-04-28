@@ -1,6 +1,6 @@
 // Heading sizes are increased by 0.25em at 60em breakpoint
 h1, h2, h3, h4, h5, h6 {
-    @extend %font--heading;
+    @extend %font__heading;
     color: $font-body-color;
     margin-top: 0;
     margin-bottom: 0.5em;

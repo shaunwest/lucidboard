@@ -10,7 +10,7 @@ $susy: (
 
 html, body {
   height: 100%;
-  @extend %font--body;
+  @extend %font__body;
   @include container;
 }
 

@@ -29,7 +29,12 @@
               data-e-maxlength="50"
               data-onbeforesave="checkBoardTitle($data)"
               >
-                <span data-ng-show="board.p_lock">(L)</span>
+                <span data-ng-show="board.p_lock">
+                    <svg class="icon" fill="#ffffff">
+                        <desc>Board is locked Icon</desc>
+                        <use xlink:href="#lock"></use>
+                    </svg>
+                </span>
                 {{board.title}}
             </h1>
             <a href="#" class="aside-left"
