@@ -31,6 +31,9 @@
 .x-list--inline {
     @include clearfix;
     @extend .x-list;
+    label {
+        display: inline-block;
+    }
     li {
       padding-left: 0;
       display: inline-block;
