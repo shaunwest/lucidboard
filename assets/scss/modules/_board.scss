@@ -12,11 +12,13 @@
         display: table;
         table-layout: fixed;
     }
-    .column:first-child {
-        padding-left: 0;
-    }
-    .column:last-child {
-        padding-right: 0;
+    .column {
+        &:first-child {
+            padding-left: 0;
+        }
+        &:last-child {
+            padding-right: 0;
+        }
     }
 }
 
