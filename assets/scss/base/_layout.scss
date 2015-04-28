@@ -9,14 +9,14 @@ $susy: (
 @include border-box-sizing;
 
 html, body {
-  height: 100%;
   @extend %font__body;
   @include container;
+  height: 100%;
 }
 
-.site-container {
+.site_container {
   @include clearfix;
-  padding:  6.5em 0.75em;
+  padding: 6.5em 0.75em;
   min-height: 100%;
   margin-bottom: 1em;
   @media (min-width: 60em) {
@@ -24,7 +24,7 @@ html, body {
   }
 }
 
-.site-header {
+.site_header {
     @include clearfix;
     padding: 0.5em;
     background: $oxford;
@@ -45,12 +45,12 @@ html, body {
 }
 
 // for archived boards
-.site-header--muted {
+.site_header--muted {
     background: $storm;
 }
 
 // for private boards
-.site-header--dark {
+.site_header--dark {
     background: $font-body-color;
 }
 // full width container

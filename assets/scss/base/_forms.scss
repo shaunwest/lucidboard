@@ -1,24 +1,24 @@
 // Apply this class to <ul> that have forms
 .form-fields {
-  @extend .y-list;
-  li {
-      @include clearfix;
-  }
-  input[type="text"], input[type="email"], input[type="password"],
-  input[type="tel"], select, .text-input {
-      outline: 0;
-      padding: 0.5em;
-      width: 100%;
-      position: relative;
-      background: $white;
-      border: 0.125em solid $alto;
-      border-radius: 0.3125em;
-      box-sizing: border-box;
-      &:focus, &:active, &:hover {
-          border: 0.125em solid $fiord;
-          background: lighten($fiord, 50%);
-      }
-  }
+    @extend .list_y;
+    li {
+        @include clearfix;
+    }
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="tel"], select, .text-input {
+        outline: 0;
+        padding: 0.5em;
+        width: 100%;
+        position: relative;
+        background: $white;
+        border: 0.125em solid $alto;
+        border-radius: 0.3125em;
+        box-sizing: border-box;
+        &:focus, &:active, &:hover {
+            border: 0.125em solid $fiord;
+            background: lighten($fiord, 50%);
+        }
+    }
 }
 
 // You can use .field-label for items that are not labels

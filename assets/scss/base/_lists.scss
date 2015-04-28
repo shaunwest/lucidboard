@@ -1,5 +1,5 @@
 // Use for lists you wish to make vertical
-.y-list {
+.list_y {
   @include clearfix;
   list-style-type: none;
   margin: 0;
@@ -11,8 +11,8 @@
 }
 
 // Use for lists you wish to make horizontal on larger screens
-.x-list {
-  @extend .y-list;
+.list_x {
+  @extend .list_y;
   li {
       padding-left: 0.5em;
       padding-right: 0.5em;
@@ -27,10 +27,10 @@
   }
 }
 
-// modified x-list
-.x-list--inline {
+// modified list_x
+.list_x--inline {
     @include clearfix;
-    @extend .x-list;
+    @extend .list_x;
     label {
         display: inline-block;
     }
@@ -41,10 +41,10 @@
     }
 }
 
-// modified y-list
-.y-list--color {
+// modified list_y
+.list_y--color {
     @include clearfix;
-    @extend .y-list;
+    @extend .list_y;
     float: left;
     width: 100%;
     font-size: 1.25em;
@@ -74,7 +74,7 @@
 }
 
 // used when you want to show a delete overlay
-.y-list--color-delete {
+.list_y--color-delete {
     background: $brick;
     position: absolute;
     z-index: 2;
@@ -86,14 +86,14 @@
     animation-name: animate-slide-right;
 }
 
-.y-list--color__item-muted {
+.list_y--color__item-muted {
     background: $storm;
     &:hover {
         background: lighten($storm, 5%);
     }
 }
 
-.y-list--color__item-dark {
+.list_y--color__item-dark {
     background: $font-body-color;
     &:hover {
         background: lighten($font-body-color, 5%);
