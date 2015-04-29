@@ -396,6 +396,7 @@
 
             figureVotesRemaining();
             countColumnCards();
+            this.forgetCardLock(cardId);
           }.bind(this));
         },
         /* doesn't account for piles, though...
@@ -416,14 +417,16 @@
           var card = this.card(info.id);
           card.locked          = info.username;
           card.lockedByAnother = !info.you;
-          this.rememberCardLock(card.id);
+
+          if (info.you) this.rememberCardLock(card.id);
         },
 
         cardUnlock: function(id) {
           var card = this.card(id);
           card.locked          = false;
           card.lockedByAnother = false;
-          this.forgetCardLock(id);
+          this.forgetCardLock(id);  // This only matters for our own locked
+                                    // card id's, but won't hurt for others.
         },
 
         cardColor: function(bits) {

@@ -19,21 +19,17 @@
         board.cardLock({id: card.id, username: card.username, you: card.you});
       }).event('card:update:' + board.id, function(card) {
         board.cardUnlock(card.id);
-        board.forgetCardLock(card.id);
         board.cardUpdate(card);
       }).event('card:upvote:' + board.id, function(vote) {
         board.cardUpvote(vote);
       }).event('card:unupvote:' + board.id, function(vote) {
         board.cardUnupvote(vote);
       }).event('card:vaporize:' + board.id, function(cardId) {
-        board.forgetCardLock(cardId);
         board.cardVaporize(cardId);
       }).event('card:lock:' + board.id, function(info) {
         board.cardLock(info);
       }).event('card:unlock:' + board.id, function(info) {
         board.cardUnlock(info.id);
-        board.forgetCardLock(info.id);  // This only matters for our own locked
-                                        // card id's, but won't hurt for others.
       }).event('card:color:' + board.id, function(bits) {
         board.cardColor(bits);
       }).event('board:update:' + board.id, function(b) {
