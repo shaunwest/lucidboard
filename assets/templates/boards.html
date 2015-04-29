@@ -15,27 +15,27 @@
             <li>
                 <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
                 <label for="type-normal" class="mls mrm">
-                    Normal
+                    Show Active
                 </label>
             </li>
             <li>
                 <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
                   data-ng-show="archivedBoardsExist">
                 <label for="type-archived" data-ng-show="archivedBoardsExist" class="mls mrm">
-                    Archived
+                    Show Archived
                 </label>
             </li>
             <li>
                 <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
                   data-ng-show="user.admin && privateBoardsExist">
                 <label for="type-private" data-ng-show="user.admin && privateBoardsExist">
-                    Private
+                    Show Private
                 </label>
             </li>
             <li>
                 <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
                 <label for="type-all" class="mls">
-                    All
+                    Show All
                 </label>
             </li>
         </ul>
