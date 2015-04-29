@@ -160,6 +160,7 @@
 
       var queue      = function(fn) { theQueue.push(fn); };
       var maybeDefer = function(fn) { board.weHaveCardLocks ? queue(fn) : fn(); };
+      var flushQueue = function()   { var fn; while (fn = theQueue.shift()) fn(); }
 
       var animateCard = function(card) {
         card.shake = true;
@@ -415,12 +416,14 @@
           var card = this.card(info.id);
           card.locked          = info.username;
           card.lockedByAnother = !info.you;
+          this.rememberCardLock(card.id);
         },
 
         cardUnlock: function(id) {
           var card = this.card(id);
           card.locked          = false;
           card.lockedByAnother = false;
+          this.forgetCardLock(id);
         },
 
         cardColor: function(bits) {
@@ -441,9 +444,8 @@
 
           // Flush the event queue if we're done with the locks.
           if (locks.length === 0) {
-            var fn;
-            while (fn = theQueue.shift()) fn();
             this.weHaveCardLocks = false;
+            flushQueue();
           }
         },
 
