@@ -177,13 +177,15 @@ var vaporize = function(cardId, boardId, cb) {
         if (err) return cb(err);
 
         var signalData = {};
-        signalData[r.column.id] = toCardStackMap(stack)
+        signalData[r.column.id]         = toCardStackMap(stack)
+        signalData['suppressAnimation'] = true;
 
         meta.releaseCardLock(boardId, cardId, true);
 
-        redis.cardVaporize(boardId, cardId);
-
-        redis.boardMoveCards(boardId, signalData);
+        redis.cardVaporize(boardId, {
+          cardId:         cardId,
+          signalData:     signalData,
+        });
 
         if (cb) cb(null, results);
       });

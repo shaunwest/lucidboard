@@ -62,6 +62,7 @@
 
           $scope.checkCardContent = function(card, content, columnId, id) {
             if (isEmpty(content)) {
+              board.forgetCardLock(card.id);
               api.cardVaporize(board.id, card.id);
             } else {
               // Update implicitly unlocks
@@ -74,6 +75,7 @@
 
           $scope.cancel = function(card) {  // Zap the card if previous content was empty
             if (isEmpty(card.content)) {
+              board.forgetCardLock(card.id);
               api.cardVaporize(board.id, card.id);
             } else {
               unlock(card);

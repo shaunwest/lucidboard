@@ -381,37 +381,25 @@
           }.bind(this));
         },
 
-        cardVaporize: function(cardId) {
-          // TODO: i should probably splice out the card to prevent a bit of a memory
-          //       leak? The code that follows needs help.
-          return;
+        cardVaporize: function(info) {
           maybeDefer(function() {
-            var card    = this.card(cardId),
-                stack   = this.column(card.column).cardSlots,
-                pile    = stack[card.position - 1],
-                pileIdx = _.findIndex(pile, function(c) { return c.id === card.id; });
+            var cardId     = info.cardId,
+                signalData = info.signalData,
+                card       = this.card(cardId),
+                stack      = this.column(card.column).cardSlots,
+                pile       = stack[card.position - 1],
+                pileIdx    = _.findIndex(pile, function(c) { return c.id === card.id; });
 
-            pile.splice(pileIdx, 1);
-            if (pile[pileIdx].length === 0) stack.splice(card.position - 1, 1);
+            delete pile[pileIdx];
+            var card2 = pile.splice(pileIdx, 1);
+            if (pile.length === 0) stack.splice(card.position - 1, 1);
 
-            figureVotesRemaining();
-            countColumnCards();
+            this.rebuildColumn(signalData);
             this.forgetCardLock(cardId);
-          }.bind(this));
-        },
-        /* doesn't account for piles, though...
-        cardVaporize: function(cardId) {
-          maybeDefer(function() {
-            var card        = this.card(cardId),
-                sourceStack = this.column(card.column).cardSlots;
-
-            sourceStack.splice(card.position - 1, 1);
-
             figureVotesRemaining();
             countColumnCards();
           }.bind(this));
         },
-        */
 
         cardLock: function(info) {
           var card = this.card(info.id);
@@ -463,13 +451,15 @@
         // aside before dealing with the aforementioned column id keys.
         //
         rebuildColumn: function(info) {
-          var cardStacks     = {},
-              animateCardIds = [],
-              animatePiles   = [];
+          var cardStacks        = {},
+              animateCardIds    = [],
+              animatePiles      = [],
+              suppressAnimation = Boolean(info.suppressAnimation);
 
           // Pull these bits out for later, if they exist
           if (info.animateCardIds) { animateCardIds = info.animateCardIds; delete info.animateCardIds; }
           if (info.animatePiles)   { animatePiles   = info.animatePiles;   delete info.animatePiles;   }
+          // console.log('hm', animateCardIds, animatePiles);
 
           Object.keys(info).forEach(function(columnId) {
             var pos = 1, sourceStack = this.column(columnId).cards;
@@ -501,7 +491,7 @@
 
             // Animate any modified column in the case where particular cards/piles
             // aren't called out to be animated.
-            if (animateCardIds.length === 0 && animatePiles.length === 0) {
+            if (!suppressAnimation && animateCardIds.length === 0 && animatePiles.length === 0) {
               // Animate all cards in this column!
               _.flatten(sourceStack).forEach(function(card) { animateCard(card); });
             }

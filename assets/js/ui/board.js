@@ -24,8 +24,8 @@
         board.cardUpvote(vote);
       }).event('card:unupvote:' + board.id, function(vote) {
         board.cardUnupvote(vote);
-      }).event('card:vaporize:' + board.id, function(cardId) {
-        board.cardVaporize(cardId);
+      }).event('card:vaporize:' + board.id, function(info) {
+        board.cardVaporize(info);
       }).event('card:lock:' + board.id, function(info) {
         board.cardLock(info);
       }).event('card:unlock:' + board.id, function(info) {
