@@ -132,7 +132,7 @@
         board.slug    = obj.slug;
         board.shortid = obj.shortid;
         board.columns = obj.columns;
-        board.trash   = obj.columns[0];
+        board.trash   = obj.columns ? obj.columns[0] : undefined;
 
         setPropertiesFrom(obj);
       };
@@ -187,7 +187,7 @@
         },
 
         unload: function() {
-          this.id     = null;
+          setAllPropertiesFrom({});
           this.loaded = false;
           timer.init();
         },
@@ -459,7 +459,7 @@
           // Pull these bits out for later, if they exist
           if (info.animateCardIds) { animateCardIds = info.animateCardIds; delete info.animateCardIds; }
           if (info.animatePiles)   { animatePiles   = info.animatePiles;   delete info.animatePiles;   }
-          // console.log('hm', animateCardIds, animatePiles);
+          delete info.suppressAnimation;
 
           Object.keys(info).forEach(function(columnId) {
             var pos = 1, sourceStack = this.column(columnId).cards;
