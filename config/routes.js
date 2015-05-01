@@ -219,7 +219,7 @@ module.exports.routes = {
   },
 
   // Board Export (CSV)
-  'GET /boards/:boardId/export/csv': {
+  'GET /boards/:shortid/export/csv': {
     controller: 'ExportController',
     action:     'csv'
   },

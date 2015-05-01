@@ -3,14 +3,14 @@ var stringify = require('csv-stringify');
 module.exports = {
 
   csv: function(req, res) {
-    var id = req.param('boardId');
+    var shortid = req.param('shortid');
 
-    Board.loadFullById(id, function(err, board) {
+    Board.loadFullByShortid(shortid, function(err, board) {
       if (err) return res.serverError(err);
 
       var input = [['Votes', 'Column', 'Content']];
 
-      board.columns.forEach(function(col) {
+      (board.columns || []).forEach(function(col) {
         col.cards.forEach(function(card) {
           input.push([
             card.votes.length,
