@@ -94,7 +94,7 @@ module.exports = {
 
         res.jsonx(card[0]);
 
-        redis.cardUpdated(boardId, card[0], req);
+        if (card[0]) redis.cardUpdated(boardId, card[0], req);
       });
 
     })

@@ -24,7 +24,7 @@ module.exports = {
     });
   },
 
-  findById: function(req, res) {
+  findByShortid: function(req, res) {
     var shortid = req.param('shortid');
 
     Board.loadFullByShortid(shortid, function(err, board) {

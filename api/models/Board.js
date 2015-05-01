@@ -196,8 +196,9 @@ module.exports = {
         cb(null, r.mapVotes);
       }]
     }, function(err, r) {
-      if (err)               return _cb(err);
-      if (r.board === false) return _cb(null, false);
+      if (err === 'Board not found') return _cb(null, false);
+      if (err)                       return _cb(err);
+      if (r.board === false)         return _cb(null, false);
 
       _cb(null, r.final);
     });

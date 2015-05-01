@@ -65,7 +65,7 @@ module.exports.routes = {
   // Board Get (Full!)
   'GET /api/boards/:shortid': {
     controller: 'BoardController',
-    action:     'findById'
+    action:     'findByShortid'
   },
 
   // Board Create
