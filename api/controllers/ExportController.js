@@ -6,11 +6,12 @@ module.exports = {
     var shortid = req.param('shortid');
 
     Board.loadFullByShortid(shortid, function(err, board) {
-      if (err) return res.serverError(err);
+      if (err)    return res.serverError(err);
+      if (!board) return res.notFound();
 
       var input = [['Votes', 'Column', 'Content']];
 
-      (board.columns || []).forEach(function(col) {
+      board.columns.forEach(function(col) {
         col.cards.forEach(function(card) {
           input.push([
             card.votes.length,
