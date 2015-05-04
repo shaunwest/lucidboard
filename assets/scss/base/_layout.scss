@@ -95,7 +95,7 @@ html, body {
 // small = full width, medium & up = 1/3 width that is centered
 .panel--middle {
     @extend .tier;
-    @media (min-width: 40em) {
+    @media (min-width: 73em) {
         @include span(4 of 12);
         @include squish(4 of 12);
     }
