@@ -2,52 +2,60 @@
     <section class="panel--middle">
         <div class="heading-underline mbl">
             <h1 class="gamma aside-left mbn">
-                Boards
+                {{pane === 'list' ? 'Boards' : 'Create New Board'}}
             </h1>
-            <a href="#" class="btn aside-right mtm">
+            <a href="#" class="btn aside-right mtm"
+              data-ng-class="{active:pane === 'new'}"
+              data-ng-click="togglePane()"
+              >
                 New Board
             </a>
         </div>
-        <ul class="form-fields">
-            <li>
-                <label for="filter">
-                    Filter Boards
-                </label>
-                <input name="filter" type="text" data-ng-model="query" placeholder="Filter">
+        <div data-ng-show="pane === 'list'">
+          <ul class="form-fields">
+              <li>
+                  <label for="filter">
+                      Filter Boards
+                  </label>
+                  <input name="filter" type="text" data-ng-model="query" placeholder="Filter">
+              </li>
+          </ul>
+          <ul class="form-fields list_x--inline mbl">
+              <li>
+                  <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
+                  <label for="type-normal" class="mls mrm">
+                      Show Active
+                  </label>
+              </li>
+              <li>
+                  <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
+                    data-ng-show="archivedBoardsExist">
+                  <label for="type-archived" data-ng-show="archivedBoardsExist" class="mls mrm">
+                      Show Archived
+                  </label>
+              </li>
+              <li>
+                  <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
+                    data-ng-show="user.admin && privateBoardsExist">
+                  <label for="type-private" data-ng-show="user.admin && privateBoardsExist">
+                      Show Private
+                  </label>
+              </li>
+              <li>
+                  <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
+                  <label for="type-all" class="mls">
+                      Show All
+                  </label>
+              </li>
+          </ul>
+          <ul class="list_y--color">
+            <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
+              <boardlist-item board="b"></boardlist-item>
             </li>
-        </ul>
-        <ul class="form-fields list_x--inline mbl">
-            <li>
-                <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
-                <label for="type-normal" class="mls mrm">
-                    Show Active
-                </label>
-            </li>
-            <li>
-                <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
-                  data-ng-show="archivedBoardsExist">
-                <label for="type-archived" data-ng-show="archivedBoardsExist" class="mls mrm">
-                    Show Archived
-                </label>
-            </li>
-            <li>
-                <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
-                  data-ng-show="user.admin && privateBoardsExist">
-                <label for="type-private" data-ng-show="user.admin && privateBoardsExist">
-                    Show Private
-                </label>
-            </li>
-            <li>
-                <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
-                <label for="type-all" class="mls">
-                    Show All
-                </label>
-            </li>
-        </ul>
-        <ul class="list_y--color">
-          <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
-            <boardlist-item board="b"></boardlist-item>
-          </li>
-        </ul>
+          </ul>
+        </div>
+        <div data-ng-show="pane === 'new'">
+          <board-settings></board-settings>
+        </div>
     </section>
 </div>

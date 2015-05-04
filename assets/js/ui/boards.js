@@ -27,6 +27,15 @@
       $scope.boards  = boards;
       $scope.colsets = config.colsets;
       $scope.type    = 'normal';
+      $scope.pane    = 'list';
+
+      $scope.togglePane = function(screen) {
+        if (screen) {
+          $scope.pane = screen;
+        } else {
+          $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
+        }
+      };
 
       $scope.myFilter = function(b) {
         switch ($scope.type) {
