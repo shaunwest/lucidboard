@@ -9,9 +9,12 @@
   };
 }
 
-// // If you want to force text to truncate ( this needs a width...)
-// @mixin overflow {
-//     overflow: hidden;
-//     white-space: nowrap;
-//     text-overflow: ellipsis;
-// }
+// If you want to force text to truncate
+@mixin overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.overflow-ellipsis {
+    @include overflow;
+}
