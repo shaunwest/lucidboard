@@ -50,6 +50,6 @@ h6, .zeta {
 
 // Little bit of branding style
 .heading-underline  {
-    text-align: center;
     border-bottom: 0.2em solid $oxford;
+    @include clearfix;
 }

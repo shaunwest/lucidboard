@@ -11,7 +11,7 @@
     transition: background 500ms;
     text-align: center;
     text-decoration: none;
-    &:hover {
+    &:hover, &:active, &:focus {
         background: darken($flamingo, 5%);
         color: $white;
         text-decoration: none;
