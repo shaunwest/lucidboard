@@ -45,12 +45,12 @@ html, body {
 }
 
 // for archived boards
-.site_header--muted {
+.site_header--muted, .muted {
     background: $storm;
 }
 
 // for private boards
-.site_header--dark {
+.site_header--dark, .dark {
     background: $font-body-color;
 }
 // full width container
