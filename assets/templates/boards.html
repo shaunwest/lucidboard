@@ -1,11 +1,11 @@
 <div class="tier">
-    <section class="panel--middle">
+    <section class="panel--middle panel--middle--large">
         <div class="heading-underline mbl">
             <h1 class="gamma aside-left mbn">
                 {{pane === 'list' ? 'Boards' : 'Create New Board'}}
             </h1>
             <a href="#" class="btn aside-right mtm"
-              data-ng-class="{active:pane === 'new'}"
+              data-ng-class="{'btn--muted':pane === 'new'}"
               data-ng-click="togglePane()"
               >
                 New Board

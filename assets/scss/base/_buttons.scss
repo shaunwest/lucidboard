@@ -23,3 +23,12 @@
     border: 0.15em solid $white;
     padding: 0.25em;
 }
+
+.btn--muted {
+    background-color: $storm;
+    &:hover, &:active, &:focus {
+        background-color: $storm;
+        color: $white;
+        text-decoration: none;
+    }
+}

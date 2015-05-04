@@ -45,12 +45,12 @@ html, body {
 }
 
 // for archived boards
-.site_header--muted, .muted {
+.site_header--muted {
     background: $storm;
 }
 
 // for private boards
-.site_header--dark, .dark {
+.site_header--dark {
     background: $font-body-color;
 }
 // full width container
@@ -98,5 +98,12 @@ html, body {
     @media (min-width: 73em) {
         @include span(4 of 12);
         @include squish(4 of 12);
+    }
+}
+
+.panel--middle--large {
+    @media (min-width: 73em) {
+        @include span(6 of 12);
+        @include squish(3 of 12);
     }
 }
