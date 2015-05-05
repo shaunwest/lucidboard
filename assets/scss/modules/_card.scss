@@ -1,3 +1,5 @@
+// classes are to override the plugin classes. Would like to come up with something in the future to
+// remove the plugin styles
 .card {
     @include clearfix;
     cursor: grab;
@@ -8,6 +10,17 @@
     textarea {
         margin-left: 0.5em;
         margin-top: 0.5em;
+    }
+    .attached-cards {
+        float: left;
+        background-color: $font-body-color;
+        color: white;
+        border-radius: 0.15em;
+        font-weight: bold;
+        font-size: 0.5em;
+        padding: 0.1875em;
+        width: 2em;
+        text-align: center;
     }
     .cardcontent pre {
         font-family: $font-body;
@@ -37,18 +50,6 @@
     top: -0.375em;
     right: -0.5625em;
     display: inline-block;
-}
-
-.card .attached-cards {
-    float: left;
-    background-color: $font-body-color;
-    color: white;
-    border-radius: 0.15em;
-    font-weight: bold;
-    font-size: 0.5em;
-    padding: 0.1875em;
-    width: 2em;
-    text-align: center;
 }
 
 .card.on-drag-hover {
@@ -94,7 +95,7 @@
     }
 }
 
-.card-menu-items {
+.card-menu__items {
     list-style-type: none;
     padding: 0;
     margin-left: 0.5em;
