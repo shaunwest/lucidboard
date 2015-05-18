@@ -34,24 +34,11 @@ module.exports = {
           return cb(data.badPwdCount + ' login attempts; denying.');
         } else {
           var hash = {
-            dispName:  data.displayName,          // "Bellinson, Adam"
-            email:     data.mail,                 // "AdamBellinson@quickenloans.com"
-            uid:       data.uid,                  // "abellinson"
-            cid:       data.extensionAttribute8,  // "1003040" (cbid / commonid)
-            username:  data.sAMAccountName        // "ABellinson"
-            // uidNumber: data.uidNumber            // "30505"
-            // attempts:  parseInt data.badPwdCount
-            // cn:        data.cn                   // "Bellinson, Adam"
-            // name:      data.name                 // "Bellinson, Adam"
-            // givenName: data.givenName            // "Adam"
-            // title:     data.title                // "Sr. Software Engineer"
-            // dept:      data.department           // "Team Fortress"
-            // desc:      data.description          // "Technology"
-            // company:   data.company              // "Quicken Loans"
-            // location:  data.l                    // "Detroit"
-            // phone:     data.telephoneNumber      // "(313) 373-4056"
-            // mobile:    data.mobile               // "(734) 743-1287"
-            // ext:       data.primaryTelexNumber   // "34056"
+            dispName:  data.displayName,
+            email:     data.mail,
+            uid:       data.uid,
+            cid:       data.extensionAttribute8,
+            username:  data.sAMAccountName
           };
 
           return cb(null, hash);
