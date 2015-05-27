@@ -162,6 +162,7 @@ module.exports = {
       for (var i=idx; i<columns.length; i++) {
         (function() {
           var col = columns[i];
+          if (!col) return;  // Not sure why this would happen, but it happened it prod...
           col.position--;
           jobs.push(function(cb) { col.save(cb); });
         })();
