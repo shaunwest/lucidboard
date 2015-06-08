@@ -1,99 +1,99 @@
 // Slides piece to the right
 @keyframes slide-right {
-  0% {
-    transform: translateX(-50%);
-  }
+    0% {
+        transform: translateX(-50%);
+    }
 }
 
 // Closes an open piece of content
 @keyframes close-slide-left {
-  100% {
-    transform: translateX(-100%);
-  }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 // Slides piece down
 @keyframes slide-down {
-  0% {
-    transform: translateY(-90%);
-  }
+    0% {
+        transform: translateY(-90%);
+    }
 }
 
 // Slides piece down
 @keyframes slide-up {
-  0% {
-    transform: translateY(100%);
-  }
+    0% {
+        transform: translateY(100%);
+    }
 }
 
 // Slides piece down
 @keyframes slide-up {
-  0% {
-    transform: translateY(100%);
-  }
+    0% {
+        transform: translateY(100%);
+    }
 }
 
 @keyframes pop {
-  100% {
-    transform: scale(1.25);
-  }
+    100% {
+        transform: scale(1.25);
+    }
 }
 
 @keyframes shake {
     0% {
-       transform: translateX(7px);
-     }
-     15% {
-       transform: translateX(-7px);
-     }
-     30% {
-       transform: translateX(5px);
-     }
-     45% {
-       transform: translateX(-5px);
-     }
-     60% {
-       transform: translateX(3px);
-     }
-     75% {
-       transform: translateX(-3px);
-     }
-     100% {
-       transform: translateX(0px);
-     }
+        transform: translateX(7px);
+    }
+    15% {
+        transform: translateX(-7px);
+    }
+    30% {
+        transform: translateX(5px);
+    }
+    45% {
+        transform: translateX(-5px);
+    }
+    60% {
+        transform: translateX(3px);
+    }
+    75% {
+        transform: translateX(-3px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 
 // These classes are used for dynamic elements
 .animate-close-slide-left {
-  animation-name: close-slide-left;
-  animation-duration: 400ms;
-  animation-timing-function: ease-out;
+    animation-name: close-slide-left;
+    animation-duration: 400ms;
+    animation-timing-function: ease-out;
 }
 
 .animate-slide-right {
-  animation-name: slide-right;
-  animation-duration: 400ms;
-  animation-timing-function: ease-out;
+    animation-name: slide-right;
+    animation-duration: 400ms;
+    animation-timing-function: ease-out;
 }
 
 .animate-slide-down {
-  animation-name: slide-down;
-  animation-duration: 400ms;
-  animation-timing-function: ease-in-out;
+    animation-name: slide-down;
+    animation-duration: 400ms;
+    animation-timing-function: ease-in-out;
 }
 
 .animate-slide-up {
-  animation-name: slide-up;
-  animation-duration: 400ms;
-  animation-timing-function: ease-in-out;
+    animation-name: slide-up;
+    animation-duration: 400ms;
+    animation-timing-function: ease-in-out;
 }
 
 .animate-pop {
-  animation-duration: 400ms;
-  animation-name: pop;
+    animation-duration: 400ms;
+    animation-name: pop;
 }
 
 .animate-shake {
-  animation-duration: 400ms;
-  animation-name: shake;
+    animation-duration: 400ms;
+    animation-name: shake;
 }
