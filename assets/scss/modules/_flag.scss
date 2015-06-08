@@ -12,28 +12,28 @@
     }
 }
 
-.flag-body, .flag-media, .flag-close {
+.flag__body, .flag__media, .flag__close {
     display: table-cell;
     vertical-align: middle;
     padding: 1em;
 }
 
-.flag-body {
+.flag__body {
     width: 100%;
 }
 
-.flag-media, .flag-close {
+.flag__media, .flag__close {
     text-align: center;
 }
 
 // Alert message styles
-.flag-media--alert {
-    @extend .flag-media;
+.flag__media--alert {
+    @extend .flag__media;
     background: $brick;
 }
 
 // Success message styles
-.flag-media--success {
-    @extend .flag-media;
+.flag__media--success {
+    @extend .flag__media;
     background: $sea;
 }
