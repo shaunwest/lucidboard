@@ -63,21 +63,12 @@
                     {{board.votesAreInfinite ? '&infin;' : board.votesRemaining + '/' + board.votesPerUser}}
                 </div>
             </li>
-            <li data-ng-show="!board.isFacilitator && board.timerRunning">
-              <svg class="aside-left icon-standard" fill="#ffffff"
-                data-ng-class="{'animate-pop': view.timer.clockPop}"
-                >
-                <desc>Board Clock Timer Icon</desc>
-                <use xlink:href="#clock"></use>
-              </svg>
-              {{board.timer.remaining | secondsToMinutes}}
-            </li>
             <li class="nav-full">
                 <select id="viewSections" data-ng-model="view.column.current"
                   data-ng-options="columnView.label for columnView in view.column.options">
                 </select>
             </li>
-            <li data-ng-show="board.isFacilitator">
+            <li>
                 <a href="#" class="btn" data-ng-click="toggleTimerForm($event)">
                     <timer data-clock-pop="clockPop" data-show-form="view.timer.showForm"></timer>
                 </a>
