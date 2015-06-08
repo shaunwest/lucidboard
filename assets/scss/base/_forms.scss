@@ -1,6 +1,6 @@
 // Apply this class to <ul> that have forms
 .form-fields {
-    @extend .list_y;
+    @extend .list__y;
     li {
         @include clearfix;
     }

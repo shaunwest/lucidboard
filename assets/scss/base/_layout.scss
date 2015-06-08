@@ -1,30 +1,30 @@
 // Susy setup
 $susy: (
-  columns: 12,
-  container: 100%,
-  global-box-sizing: border-box
+    columns: 12,
+    container: 100%,
+    global-box-sizing: border-box
 );
 
 // susy includes border-box properties
 @include border-box-sizing;
 
 html, body {
-  @extend %font__body;
-  @include container;
-  height: 100%;
+    @extend %font__body;
+    @include container;
+    height: 100%;
 }
 
-.site_container {
-  @include clearfix;
-  padding: 6.5em 0.75em;
-  min-height: 100%;
-  margin-bottom: 1em;
-  @media (min-width: 60em) {
-      padding:  5em 0.5em;
-  }
+.site__container {
+    @include clearfix;
+    padding: 6.5em 0.75em;
+    min-height: 100%;
+    margin-bottom: 1em;
+    @media (min-width: 60em) {
+        padding: 5em 0.5em;
+    }
 }
 
-.site_header {
+.site__header {
     @include clearfix;
     padding: 0.5em;
     background: $oxford;
@@ -45,14 +45,15 @@ html, body {
 }
 
 // for archived boards
-.site_header--muted {
+.site__header--muted {
     background: $storm;
 }
 
 // for private boards
-.site_header--dark {
+.site__header--dark {
     background: $font-body-color;
 }
+
 // full width container
 .tier {
     @include clearfix;

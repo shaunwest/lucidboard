@@ -1,9 +1,9 @@
 <header data-ng-controller="HeaderCtrl"
-  class="tier site_header item-fixed"
-  data-ng-class="{'site_header--muted':board.archived,'site_header--dark':board.private}"
+  class="tier site__header item-fixed"
+  data-ng-class="{'site__header--muted':board.archived,'site__header--dark':board.private}"
   data-ng-include="headerUrl">
 </header>
-<main class="site_container" data-ui-view></main>
+<main class="site__container" data-ui-view></main>
 <footer class="site-footer" data-ng-include="footerUrl"></footer>
 <modal-dialog
   data-ng-controller="ReconnectingModalCtrl"

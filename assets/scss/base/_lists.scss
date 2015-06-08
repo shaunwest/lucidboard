@@ -1,50 +1,50 @@
 // Use for lists you wish to make vertical
-.list_y {
-  @include clearfix;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  > li {
-      @include clearfix;
-      margin-bottom: 1.5em;
-  }
+.list__y {
+    @include clearfix;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    > li {
+        @include clearfix;
+        margin-bottom: 1.5em;
+    }
 }
 
 // Use for lists you wish to make horizontal on larger screens
-.list_x {
-  @extend .list_y;
-  li {
-      padding-left: 0.5em;
-      padding-right: 0.5em;
-      display: block;
-      margin-bottom: 1em;
-  }
-  @media (min-width: 40em) {
-      li {
-        display: inline-block;
-        margin-bottom: 0;
-      }
-  }
+.list__x {
+    @extend .list__y;
+    li {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        display: block;
+        margin-bottom: 1em;
+    }
+    @media (min-width: 40em) {
+        li {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+    }
 }
 
-// modified list_x
-.list_x--inline {
+// modified list__x
+.list__x--inline {
     @include clearfix;
-    @extend .list_x;
+    @extend .list__x;
     label {
         display: inline-block;
     }
     li {
-      padding-left: 0;
-      display: inline-block;
-      margin-bottom: 0;
+        padding-left: 0;
+        display: inline-block;
+        margin-bottom: 0;
     }
 }
 
-// modified list_y
-.list_y--color {
+// modified list__y
+.list__y--color {
     @include clearfix;
-    @extend .list_y;
+    @extend .list__y;
     float: left;
     width: 100%;
     font-size: 1.25em;
@@ -74,7 +74,7 @@
 }
 
 // used when you want to show a delete overlay
-.list_y--color-delete {
+.list__y--color-delete {
     background: $brick;
     position: absolute;
     z-index: 2;
@@ -86,14 +86,14 @@
     animation-name: animate-slide-right;
 }
 
-.list_y--color__item-muted {
+.list__y--color__item-muted {
     background: $storm;
     &:hover {
         background: lighten($storm, 5%);
     }
 }
 
-.list_y--color__item-dark {
+.list__y--color__item-dark {
     background: $font-body-color;
     &:hover {
         background: lighten($font-body-color, 5%);
