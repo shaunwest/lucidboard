@@ -25,9 +25,12 @@ module.exports = {
     if (!boardId) return res.badRequest();
 
     Board.findOneById(boardId).exec(function(err, board) {
-      if (err)                       return res.serverError(err);
-      if (!board)                    return res.notFound();
-      if (board.creator !== user.id) return res.forbidden();
+      if (err)    return res.serverError(err);
+      if (!board) return res.notFound();
+
+      if (board.creator !== user.id && !user.admin) {
+        return res.forbidden();
+      }
 
       getNextColumnPosition(boardId, function(err, nextpos) {
         if (err) return res.serverError(err);
@@ -61,7 +64,10 @@ module.exports = {
     }, function(err, r) {
       if (err)                           return res.serverError(err);
       if (r.column.board !== r.board.id) return res.notFound();
-      if (r.board.creator !== user.id)   return res.forbidden();
+
+      if (r.board.creator !== user.id && !user.admin) {
+        return res.forbidden();
+      }
 
       Column.update(columnId, {title: title}).exec(function(err, column) {
         if (err) return res.serverError(err);
@@ -87,7 +93,10 @@ module.exports = {
       if (!r.board)                        return res.notFound();
       if (destPosition < 1)                return res.badRequest();
       if (destPosition > r.columns.length) return res.badRequest();
-      if (r.board.creator !== user.id)     return res.forbidden();
+
+      if (r.board.creator !== user.id && !user.admin) {
+        return res.forbidden();
+      }
 
       var columns     = r.columns,
           originalMap = _.pluck(columns, 'id'),
@@ -136,7 +145,10 @@ module.exports = {
     }, function(err, r) {
       if (err)                                return res.serverError(err);
       if (!r.board || !r.columns || !r.trash) return res.badRequest();
-      if (r.board.creator !== user.id)        return res.forbidden();
+
+      if (r.board.creator !== user.id && !user.admin) {
+        return res.forbidden();
+      }
 
       var nextPosition = r.trCards.length + 1,
           columns      = r.columns,
