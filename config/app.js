@@ -50,6 +50,15 @@ module.exports.app = {
         "What Didn't Go Well",
         'Opportunities'
       ]
+    },
+    {
+      id: 5,
+      name: 'Retro Standard',
+      cols: [
+        'What Went Well',
+        "What Didn't Go Well",
+        'What Can We Do Better?'
+      ]
     }
   ]
 
