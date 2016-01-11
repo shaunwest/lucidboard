@@ -10,3 +10,13 @@ a {
         color: $fiord-darken;
     }
 }
+
+.link--inverse {
+    color: $white;
+    display: inline-block;
+    &:hover,
+    &:active,
+    &:focus {
+        color: $white;
+    }
+}

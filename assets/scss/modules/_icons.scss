@@ -7,6 +7,7 @@
     margin-right: 0.5em;
     outline: 0;
     fill: currentColor;
+    vertical-align: middle;
 }
 
 //need to remove this margin top
@@ -32,8 +33,6 @@
 .icon-middle {
     width: 10em;
     height: 7em;
-    display: block;
-    margin: 0 auto;
 }
 
 .icon-alert {
