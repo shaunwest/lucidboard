@@ -1,6 +1,5 @@
 <div
      class="card slate-card {{card.color || 'default'}}"
-     data-ng-class="{active:view.cardDragging,'animate-shake':card.shake}"
      data-ui-draggable="{{board.locks.length === 0 && !board.locked}}"
      data-drag="card"
      data-drag-channel="card"
@@ -29,14 +28,11 @@ Enter note...
             </pre>
         </div>
         <a href="#"
-          class="card-remove"
+          class="card-remove btn"
           data-ng-show="isEditorVisible(card) && column.position !== 0"
           data-ng-click="trash(card)"
           >
-            <svg class="icon-alert" fill="#ffffff">
-                <desc>Delete Icon</desc>
-                <use xlink:href="#cancel-circle"></use>
-            </svg>
+            Remove
         </a>
         <div data-ng-hide="isEditorVisible(card)" class="handle aside-right">
             <a class="btn" href="#" data-ng-class="{'btn--muted': view.cardMenu.current === card.id}" data-ng-click="view.cardMenu.switch(card.id, $event)">
