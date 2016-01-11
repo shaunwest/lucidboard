@@ -8,12 +8,12 @@
         </a>
         <ul class="list__x--inline nav-links" data-ng-show="user.signedIn">
             <li>
-                <a class="divided-copy" href="/boards">
+                <a class="divided-copy site__header__link" href="/boards">
                     Boards
                 </a>
             </li>
             <li>
-                <a href="#" data-ng-click="signout($event)">
+                <a class="site__header__link" href="#" data-ng-click="signout($event)">
                      Sign Out {{user.name}}
                 </a>
             </li>
@@ -23,7 +23,6 @@
         <div class="clear-title">
             <h1 class="delta"
               data-ng-if="board.isFacilitator"
-              data-ng-class="{active:view.tab.current === 'board'}"
               data-editable-text="board.title"
               data-buttons="no"
               data-e-maxlength="50"
@@ -37,7 +36,7 @@
                 </span>
                 {{board.title}}
             </h1>
-            <a href="#" class="aside-left"
+            <a href="#" class="aside-left site__header__link"
               data-ng-if="!board.isFacilitator"
               data-ng-click="view.tab.switch('board')"
               data-ng-class="{active:view.tab.current === 'board'}"
@@ -69,13 +68,13 @@
                 </select>
             </li>
             <li>
-                <a href="#" class="btn" data-ng-click="toggleTimerForm($event)">
+                <a href="#" class="btn site__header__link" data-ng-click="toggleTimerForm($event)">
                     <timer data-clock-pop="clockPop" data-show-form="view.timer.showForm"></timer>
                 </a>
             </li>
             <li data-ng-show="board.isFacilitator">
-                <a href="#" class="btn" data-ng-click="view.tab.switch('settings', 'board')"
-                  data-ng-class="{active:view.tab.current === 'settings'}">
+                <a href="#" class="btn site__header__link" data-ng-click="view.tab.switch('settings', 'board')"
+                  data-ng-class="{'btn--muted':view.tab.current === 'settings'}">
                     <svg class="aside-left icon-standard" fill="#ffffff">
                         <desc>Board Settings Icon</desc>
                         <use xlink:href="#settings"></use>
@@ -84,11 +83,8 @@
                 </a>
             </li>
             <li class="board-menu-item">
-                <a href="#" data-ng-click="view.boardMenu.toggle(undefined, $event)">
-                    <svg class="icon-alert ptm" fill="#ffffff" data-ng-class="{'active-icon':view.boardMenu.shown}">
-                        <desc>Menu Icon</desc>
-                        <use xlink:href="#site-menu"></use>
-                    </svg>
+                <a class="btn site__header__link" href="#" data-ng-class="{'btn--muted': view.boardMenu.shown}" data-ng-click="view.boardMenu.toggle(undefined, $event)">
+                    Menu
                 </a>
             </li>
         </ul>

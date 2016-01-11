@@ -29,18 +29,20 @@ html, body {
     padding: 0.5em;
     background: $oxford;
     color: $white;
-    a {
-        color: $white;
-        display: inline-block;
-        &:hover,
-        &:active,
-        &:focus {
-            color: $white;
-            text-decoration: none;
-        }
-    }
+
     @media (min-width: 60em) {
         padding: 0.5em 1.7em;
+    }
+}
+
+.site__header__link {
+    color: $white;
+    display: inline-block;
+    &:hover,
+    &:active,
+    &:focus {
+        color: $white;
+        text-decoration: none;
     }
 }
 

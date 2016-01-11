@@ -1,4 +1,4 @@
-var LdapAuth = require('ldapauth');
+var LdapAuth = require('ldapauth-fork');
 
 var auth = function(username, password, dn, cb) {
   return new LdapAuth({

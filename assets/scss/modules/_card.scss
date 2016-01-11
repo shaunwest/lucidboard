@@ -176,15 +176,16 @@
     margin: 0;
     font-style: normal;
     color: $oxford;
-    a {
-        outline: none;
-        display: inline-block;
-        &:hover, &:active, &:focus {
-            color: $flamingo;
-            fill: $flamingo;
-            font-style: normal;
-            text-decoration: none;
-        }
+}
+
+.handle__link {
+    outline: none;
+    display: inline-block;
+    &:hover, &:active, &:focus {
+        color: $flamingo;
+        fill: $flamingo;
+        font-style: normal;
+        text-decoration: none;
     }
 }
 
