@@ -45,11 +45,9 @@
 }
 
 .card-remove {
-    text-align: center;
     position: absolute;
-    top: -0.375em;
-    right: -0.5625em;
-    display: inline-block;
+    bottom: 0.3125em;
+    right: 0.3125em;
 }
 
 .card.on-drag-hover {
@@ -69,7 +67,7 @@
 }
 
 .slate-card {
-    background-color: $sticky-note;
+    background-color: $summit;
     transition: background-color 0.2s ease-in-out;
     border: {
         top: 0.0625em solid $storm;
@@ -78,7 +76,7 @@
         bottom: 0.0625em solid $storm;
     }
     &:hover {
-        background-color: darken($sticky-note, 5%);
+        background-color: darken($summit, 5%);
     }
     &.locked {
         background-color: $detroit;
@@ -86,7 +84,7 @@
 }
 
 .card-menu {
-    background: #D8D07D;
+    background-color: darken($summit, 5%);
     font-size: 0.8em;
     @include span(12 of 12 omega);
     @include clearfix;
@@ -226,7 +224,6 @@
 
 .editable-empty {
     color: $storm;
-    border-bottom: 0.0625em solid $storm;
     &:hover {
         color: $storm;
     }

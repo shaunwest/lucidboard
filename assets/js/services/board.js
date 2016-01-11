@@ -162,11 +162,6 @@
       var maybeDefer = function(fn) { board.weHaveCardLocks ? queue(fn) : fn(); };
       var flushQueue = function()   { var fn; while (fn = theQueue.shift()) fn(); }
 
-      var animateCard = function(card) {
-        card.shake = true;
-        $timeout(function() { card.shake = false; }, 500);
-      };
-
 
 
       board = {

@@ -20,7 +20,4 @@
             </g>
         </g>
     </g>
-    <animate id="dot-anim-one" xlink:href="#dot-one" attributeName="fill" to="#F05623" begin="0s"  repeatCount="indefinite" />
-    <animate id="dot-anim-two" xlink:href="#dot-two" attributeName="fill" to="#F05623" begin="0.5s"  repeatCount="indefinite"/>
-    <animate id="dot-anim-three" xlink:href="#dot-three" attributeName="fill" to="#FFFFFF" begin="1.5s"  repeatCount="indefinite" />
 </svg>
