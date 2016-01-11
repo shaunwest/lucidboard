@@ -35,17 +35,6 @@ html, body {
     }
 }
 
-.site__header__link {
-    color: $white;
-    display: inline-block;
-    &:hover,
-    &:active,
-    &:focus {
-        color: $white;
-        text-decoration: none;
-    }
-}
-
 // for archived boards
 .site__header--muted {
     background: $storm;
