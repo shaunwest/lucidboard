@@ -111,11 +111,8 @@
             $scope.votePop = true;
             $timeout(function() { $scope.votePop = false; }, 500);
             if (board.card(card.id).locked) return;
-            console.log('yo');
             if (board.weHaveCardLocks)      return;
-            console.log('yo2');
             if (board.votesRemaining === 0) return;
-            console.log('yo3');
             api.cardUpvote(board.shortid, board.column(card.column).id, card.id);
           };
 
@@ -131,7 +128,6 @@
               if (board.weHaveCardLocks)      return;
             }
             $scope.editform.$cancel();
-            console.log('moving', card.id, column.title);
             api.boardMoveCard(board.id, {
               cardId:       card.id,
               destColumnId: column.id,
@@ -140,7 +136,6 @@
           };
 
           $scope.trash = function(card) {
-            console.log('trashing', card.id);
             if (isEmpty(card.content)) {
               api.cardVaporize(board.id, card.id);
             } else {

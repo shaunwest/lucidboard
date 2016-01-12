@@ -170,7 +170,7 @@ module.exports = {
       if (!cardExistsOnBoard) return res.notFound();
       if (!cool)              return res.forbidden("You're out of votes!");
 
-      Card.findOneById(cardId).populate('votes').exec(function(err, card) {
+      Card.findOneById(cardId).exec(function(err, card) {
         if (err)   return res.serverError(err);
         if (!card) return res.badRequest('Card does not exist!');  // not super possible heh
 
