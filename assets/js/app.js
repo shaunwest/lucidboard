@@ -89,7 +89,7 @@
 
           config.load(true).then(function() {
             if (config.uiversion === oldUIVersion) {
-              view.modal.reconnecting.show = false;
+              view.message.reconnecting.show = false;
             } else {
               reloadInASec();
             }
@@ -97,7 +97,7 @@
         }
 
         $sails.on('disconnect', function() {
-          view.modal.reconnecting.show = true;
+          view.message.reconnecting.show = true;
         });
 
         $sails.on('reconnect', function() {
