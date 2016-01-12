@@ -87,14 +87,19 @@ module.exports = {
 
       var criteria = {id: cardId, column: r.column.id};
 
-      Card.update(criteria, bits).populate('votes').exec(function(err, card) {
+      Card.update(criteria, bits).exec(function(err, card) {
         if (err) return res.serverError(err);
 
-        meta.releaseCardLock(boardId, cardId, req);
+        card[0].populateVotes(function(err, card) {
+          if (err) return res.serverError(err);
 
-        res.jsonx(card[0]);
+          meta.releaseCardLock(boardId, cardId, req);
 
-        if (card[0]) redis.cardUpdated(boardId, card[0], req);
+          res.jsonx(card);
+
+          if (card) redis.cardUpdated(boardId, card, req);
+        });
+
       });
 
     })

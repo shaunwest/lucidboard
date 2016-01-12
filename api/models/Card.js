@@ -55,6 +55,13 @@ module.exports = {
       };
     },
 
+    populateVotes: function(cb) {
+      Vote.find({card: this.id}).exec(function(err, votes) {
+        if (err) return cb(err);
+        this.votes = votes;
+        cb(null, this);
+      }.bind(this));
+    }
   },
 
   beforeDestroy: function(criteria, cb) {
@@ -67,4 +74,5 @@ module.exports = {
       Vote.destroy({card: _.pluck(cards, 'id')}).exec(cb);
     })
   }
+
 };
