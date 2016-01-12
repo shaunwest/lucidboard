@@ -18,6 +18,10 @@
     margin-top: 0.5em;
 }
 
+.mtl {
+    margin-top: 1.5em;
+}
+
 .mbn {
     margin-bottom: 0;
 }
@@ -48,6 +52,14 @@
 
 .ptm {
     padding-top: 0.5em;
+}
+
+.plm {
+    padding-left: 0.5em;
+}
+
+.prm {
+    padding-right: 0.5em;
 }
 
 // Branding classes
@@ -82,15 +94,6 @@
             color: $white;
         }
     }
-}
-
-// currently used on site header
-.item-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
 }
 
 .active {

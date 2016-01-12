@@ -16,12 +16,9 @@ html, body {
 
 .site__container {
     @include clearfix;
-    padding: 6.5em 0.75em;
+    padding: 0 0.75em;
     min-height: 100%;
     margin-bottom: 1em;
-    @media (min-width: 60em) {
-        padding: 5em 0.5em;
-    }
 }
 
 .site__header {
@@ -29,9 +26,11 @@ html, body {
     padding: 0.5em;
     background: $oxford;
     color: $white;
+    margin-bottom: 0.5em;
 
     @media (min-width: 60em) {
         padding: 0.5em 1.7em;
+        margin-bottom: 3em;
     }
 }
 
