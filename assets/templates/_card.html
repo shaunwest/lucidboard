@@ -27,13 +27,6 @@
 Enter note...
             </pre>
         </div>
-        <a href="#"
-          class="card-remove btn"
-          data-ng-show="isEditorVisible(card) && column.position !== 0"
-          data-ng-click="trash(card)"
-          >
-            Remove
-        </a>
         <div data-ng-hide="isEditorVisible(card)" class="handle aside-right">
             <a class="btn" href="#" data-ng-class="{'btn--muted': view.cardMenu.current === card.id}" data-ng-click="view.cardMenu.switch(card.id, $event)">
                 Menu
@@ -92,6 +85,9 @@ Enter note...
                             {{col.title}}
                         </a>
                     </div>
+                    <a href="#" class="pointer" data-ng-click="trash(card)">
+                        Trash
+                    </a>
                 </li>
             </ul>
         </div>
