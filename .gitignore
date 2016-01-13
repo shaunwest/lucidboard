@@ -118,6 +118,6 @@ nbproject
 .node_history
 .sass-cache/
 www
-
+*.swp
 .env
 /config/ldap.js

@@ -75,7 +75,7 @@
           }
         },
 
-        modal: {
+        message: {
           reconnecting: {
             show:      false,
             closeable: false
