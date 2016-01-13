@@ -2,6 +2,10 @@
     display: block;
 }
 
+.center {
+    margin: 0 auto;
+}
+
 .hide {
     display: none;
 }
@@ -98,8 +102,4 @@
 
 .active {
     background-color: $storm;
-}
-
-.center {
-    margin: 0 auto;
 }
