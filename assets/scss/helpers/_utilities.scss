@@ -22,10 +22,6 @@
     margin-top: 0.5em;
 }
 
-.mtl {
-    margin-top: 1.5em;
-}
-
 .mbn {
     margin-bottom: 0;
 }
@@ -34,7 +30,7 @@
     margin-bottom: 0.5em;
 }
 
-.mbl {
+.mbxl {
     margin-bottom: 1.5em;
 }
 
@@ -58,6 +54,10 @@
     padding-top: 0.5em;
 }
 
+.ptl {
+    padding-top: 1em;
+}
+
 .plm {
     padding-left: 0.5em;
 }
@@ -69,7 +69,6 @@
 // Branding classes
 .brand-underline {
     border-bottom: 0.1875em solid $oxford;
-    margin-bottom: 0.5em;
 }
 
 .underline  {
