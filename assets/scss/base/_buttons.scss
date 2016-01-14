@@ -32,3 +32,13 @@
         text-decoration: none;
     }
 }
+
+.btn--card {
+    border: 0.0625em solid $oxford;
+    background-color: $summit;
+    color: $oxford;
+    padding: 0.25em 0.75em;
+    &:hover, &:active, &:focus {
+        background: $oxford;
+    }
+}
