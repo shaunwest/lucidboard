@@ -24,7 +24,7 @@
               data-ng-repeat-start="column in board.columns"
               data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
-                    <li class="brand-underline">
+                    <li class="brand-underline mbm">
                         <h4 class="mbn delta overflow-ellipsis"
                             data-ng-if="board.isFacilitator && column.position !== 0"
                             data-editable-text="column.title"
@@ -37,6 +37,9 @@
                             data-e-maxlength="25"
                             >
                             {{column.title}}
+                            <span class="aside-right font--micro font--muted ptl" data-ng-show="column.cardCount > 0">
+                              {{column.cardCount}} Card{{column.cardCount > 1 ? 's' : ''}}
+                            </span>
                         </h4>
                         <h4 class="mtn mbn"
                             data-ng-if="!board.isFacilitator || column.position === 0"
@@ -67,9 +70,6 @@
                           >
                             Add Card
                         </button>
-                        <span class="aside-right font--muted" data-ng-show="column.cardCount > 0">
-                          {{column.cardCount}} Card{{column.cardCount > 1 ? 's' : ''}}
-                        </span>
                     </li>
                 </ul>
             </div>
