@@ -4,10 +4,8 @@
             <h1 class="gamma aside-left mbn">
                 {{pane === 'list' ? 'Boards' : 'Create New Board'}}
             </h1>
-            <a href="#" class="btn aside-right mtm"
-              data-ng-click="togglePane()" id="newBoard"
-              >
-                New Board
+            <a href="#" class="btn aside-right mtm" data-ng-click="togglePane()" id="newBoard">
+                {{newBoardToggleButton}}
             </a>
         </div>
         <div data-ng-show="pane === 'list'">

@@ -28,21 +28,16 @@
       $scope.colsets = config.colsets;
       $scope.type    = 'normal';
       $scope.pane    = 'list';
+      $scope.newBoardToggleButton = 'New Board';
 
-      $scope.togglePane = function(screen) {
-        var newBoardButton = document.getElementById('newBoard');
-
-        if (screen) {
-          $scope.pane = screen;
-        } else {
-          $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
-        }
+      $scope.togglePane = function() {
+        $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
 
         // change the 'new board' button text to back when user is on new board screen
         if ($scope.pane === 'list') { // list = boards screen
-            newBoardButton.textContent = 'New Board';
+            $scope.newBoardToggleButton = 'New Board';
         } else if ($scope.pane === 'new') { // new = new board screen
-            newBoardButton.textContent = 'Back';
+            $scope.newBoardToggleButton = 'Back';
         }
       };
 
