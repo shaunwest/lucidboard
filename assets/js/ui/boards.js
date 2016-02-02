@@ -28,12 +28,16 @@
       $scope.colsets = config.colsets;
       $scope.type    = 'normal';
       $scope.pane    = 'list';
+      $scope.newBoardToggleButton = 'New Board';
 
-      $scope.togglePane = function(screen) {
-        if (screen) {
-          $scope.pane = screen;
-        } else {
-          $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
+      $scope.togglePane = function() {
+        // change the 'new board' button text to back when user is on new board screen
+        if ($scope.pane === 'list') { // list = boards screen
+            $scope.newBoardToggleButton = 'Back';
+            $scope.pane = 'new';
+        } else if ($scope.pane === 'new') { // new = new board screen
+            $scope.newBoardToggleButton = 'New Board';
+            $scope.pane = 'list';
         }
       };
 
