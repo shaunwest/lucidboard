@@ -32,8 +32,16 @@
       $scope.togglePane = function(screen) {
         if (screen) {
           $scope.pane = screen;
+          document.getElementById('newBoard').innerText = 'New Board';
+          console.log('asdfasf')
         } else {
           $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
+        }
+
+        if ($scope.pane === 'list') {
+            document.getElementById('newBoard').innerText = 'New Board';
+        } else if ($scope.pane === 'new') {
+            document.getElementById('newBoard').innerText = 'Back';
         }
       };
 
