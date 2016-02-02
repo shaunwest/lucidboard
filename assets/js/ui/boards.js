@@ -31,13 +31,13 @@
       $scope.newBoardToggleButton = 'New Board';
 
       $scope.togglePane = function() {
-        $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
-
         // change the 'new board' button text to back when user is on new board screen
         if ($scope.pane === 'list') { // list = boards screen
-            $scope.newBoardToggleButton = 'New Board';
-        } else if ($scope.pane === 'new') { // new = new board screen
             $scope.newBoardToggleButton = 'Back';
+            $scope.pane = 'new';
+        } else if ($scope.pane === 'new') { // new = new board screen
+            $scope.newBoardToggleButton = 'New Board';
+            $scope.pane = 'list';
         }
       };
 
