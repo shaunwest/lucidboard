@@ -30,18 +30,19 @@
       $scope.pane    = 'list';
 
       $scope.togglePane = function(screen) {
+        var newBoardButton = document.getElementById('newBoard');
+
         if (screen) {
           $scope.pane = screen;
-          document.getElementById('newBoard').innerText = 'New Board';
-          console.log('asdfasf')
         } else {
           $scope.pane = $scope.pane === 'list' ? 'new' : 'list';
         }
 
-        if ($scope.pane === 'list') {
-            document.getElementById('newBoard').innerText = 'New Board';
-        } else if ($scope.pane === 'new') {
-            document.getElementById('newBoard').innerText = 'Back';
+        // change the 'new board' button text to back when user is on new board screen
+        if ($scope.pane === 'list') { // list = boards screen
+            newBoardButton.textContent = 'New Board';
+        } else if ($scope.pane === 'new') { // new = new board screen
+            newBoardButton.textContent = 'Back';
         }
       };
 
