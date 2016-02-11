@@ -14,7 +14,7 @@
     </div>
     <div data-alert></div>
     <div class="tier" data-ng-show="view.tab.current === 'board'">
-        <div class="column-container">
+        <div class="column__container">
             <div class="columnjunction" data-ng-class="{active:view.columnDragging}"
               data-ng-show="view.column.isAll()"
               data-ui-on-drop="moveColumn($data, 1)"
@@ -25,7 +25,7 @@
               data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
                     <li class="brand-underline mbm">
-                        <h4 class="mbn delta overflow-ellipsis"
+                        <h4 class="column__title mbn delta overflow-ellipsis"
                             data-ng-if="board.isFacilitator && column.position !== 0"
                             data-editable-text="column.title"
                             data-buttons="no"
@@ -41,7 +41,7 @@
                             </span>
                             {{column.title}}
                         </h4>
-                        <h4 class="mbn overflow-ellipsis"
+                        <h4 class="column__title mbn overflow-ellipsis"
                             data-ng-if="!board.isFacilitator || column.position === 0">
                             <span class="aside-right font--micro font--muted ptl" data-ng-show="column.cardCount > 0">
                               {{column.cardCount}} Card{{column.cardCount > 1 ? 's' : ''}}
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div data-ng-show="view.tab.current === 'settings'" class="tier--padded">
+    <div data-ng-show="view.tab.current === 'settings'" class="tier tier--padded">
         <board-settings class="panel"></board-settings>
     </div>
 </div>
