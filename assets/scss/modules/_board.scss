@@ -25,6 +25,10 @@
     }
 }
 
+.column__title {
+    font-size: 1.5em;
+}
+
 // classes related to the plugin
 .editable-click {
     color: $font-body-color;
@@ -37,7 +41,7 @@
 
 .editable-input {
     &.editable-has-buttons {
-        width: 100%;
+        width: 96%;
         outline: 0;
         border: 0;
         background: transparent;

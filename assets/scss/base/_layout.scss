@@ -45,7 +45,7 @@ html, body {
 }
 
 // full width container
-.tier {
+.tier, .panel {
     @include clearfix;
     @include span(12 of 12 omega);
     position: relative;
@@ -53,13 +53,11 @@ html, body {
 
 // full width container with x padding
 .tier--padded {
-    @extend .tier;
     padding: 0 1em;
 }
 
 // small = full width, medium = 1/2 width, large = 1/3 width
 .panel {
-    @extend .tier;
     @media (min-width: 40em) {
         @include span(6 of 12);
     }
@@ -71,24 +69,11 @@ html, body {
     }
 }
 
-// small = full width, medium & up = 1/2 width,
-.panel--half {
-    @extend .tier;
-    @media (min-width: 40em) {
-        @include span(6 of 12);
-    }
-    // add last to set as last piece
-    &.last {
-        @include omega;
-    }
-}
-
 // small = full width, medium & up = 1/3 width that is centered
 .panel--middle {
-    @extend .tier;
-    @media (min-width: 73em) {
-        @include span(4 of 12);
-        @include squish(4 of 12);
+    @media (min-width: 50em) {
+        @include span(5 of 11);
+        @include squish(3 of 11);
     }
 }
 
