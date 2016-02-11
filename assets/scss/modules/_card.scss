@@ -55,14 +55,17 @@
 }
 
 .cardjunction {
-     height: 0.75em;
+     height: 1em;
      transition: all 0.2s ease-in-out;
      &.on-drag-hover {
-         height: 7em;
-         border-radius: 0.15em;
-         border: 0.125em dashed $storm;
-         margin-top: 0.375em;
-         margin-bottom: 0.375em;
+        height: 7em;
+        border-radius: 0.15em;
+        border: 0.125em dashed $storm;
+        margin-top: 0.375em;
+        margin-bottom: 0.375em;
+     }
+     .active {
+        background-color: $summit;
      }
 }
 
