@@ -1,5 +1,5 @@
 // Column container displays as table for screens >70em
-.column-container {
+.column__container {
     width: 100%;
     @media (min-width: 65em) {
         display: table;

@@ -71,6 +71,10 @@ html, body {
 
 // small = full width, medium & up = 1/3 width that is centered
 .panel--middle {
+    @media (min-width: 40em) {
+        @include span(8 of 12);
+        @include squish(2 of 12);
+    }
     @media (min-width: 50em) {
         @include span(5 of 11);
         @include squish(3 of 11);

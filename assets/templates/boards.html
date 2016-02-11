@@ -17,7 +17,7 @@
                   <input name="filter" type="text" data-ng-model="query" placeholder="Search">
               </li>
           </ul>
-          <ul class="form-fields list__x--inline mbxl">
+          <ul class="form-fields list--x--inline mbxl">
               <li>
                   <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
                   <label for="type-normal" class="mls mrm">
@@ -45,7 +45,7 @@
                   </label>
               </li>
           </ul>
-          <ul class="list__y--color">
+          <ul class="list--y--bg">
             <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
               <boardlist-item board="b"></boardlist-item>
             </li>
