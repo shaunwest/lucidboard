@@ -356,8 +356,6 @@
             if (board.votesPerUser > 0 && vote.user === user.id) {
               board.votesRemaining--;
             }
-
-            animateCard(card);
           }.bind(this));
         },
 
@@ -371,8 +369,6 @@
             card.myVoteCount = countOwnVotes(card);
 
             if (vote.user === user.id) board.votesRemaining++;
-
-            animateCard(card);
           }.bind(this));
         },
 
@@ -483,28 +479,18 @@
             // DO EET
             sourceStack.splice.apply(sourceStack,
               [0, Number.MAX_VALUE].concat(cardStacks[columnId]));
-
-            // Animate any modified column in the case where particular cards/piles
-            // aren't called out to be animated.
-            if (!suppressAnimation && animateCardIds.length === 0 && animatePiles.length === 0) {
-              // Animate all cards in this column!
-              _.flatten(sourceStack).forEach(function(card) { animateCard(card); });
-            }
-
           }.bind(this));
 
           if (animateCardIds.length > 0) {
             animateCardIds.forEach(function(cId) {
               var card = this.card(cId);
               if (!card) return;  // shrug.. shouldn't happen...
-              animateCard(card);
             }.bind(this));
           } else if (animatePiles.length > 0) {
             animatePiles.forEach(function(i) {
               var topCard, column = this.column(i.columnId);
               if (!column || !column.cardSlots[i.position - 1]) return;
               topCard = this.getTopCard(column.cardSlots[i.position - 1]);
-              animateCard(topCard);
             }.bind(this));
           }
 
