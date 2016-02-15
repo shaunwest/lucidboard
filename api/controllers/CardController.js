@@ -18,6 +18,42 @@ var getNextCardPosition = function(columnId, cb) {
   });
 };
 
+var nativeFind = function(type, id, cb) {
+  // should be connection, not column, right??
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.get('waterline:' + type + ':id:' + id, function(a, b) {
+        cb(a, JSON.parse(b)); 
+      });
+    }
+  });
+}
+
+var nativeFindStack = function(columnId, cb) {
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.get('waterline:card:id:' + columnId, function(a, b) {
+        cb(a, JSON.parse(b)); 
+      });
+    }
+  });
+}
+
+var nativeSet = function(type, id, value, cb) {
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.set('waterline:' + type + ':id:' + id, JSON.stringify(value), cb); 
+    }
+  });
+}
+
+
 module.exports = {
 
   create: function(req, res) {
@@ -78,30 +114,86 @@ module.exports = {
     };
 
     async.auto({
-      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
-      column: function(cb) { Column.findOneById(columnId).exec(cb); },
-      stack:  function(cb) { Card.find({column: columnId}).sort({position: 'asc'}).exec(cb); }
+      board:  function(cb) { 
+        /*
+        Board.findOneById(boardId).exec(function(a, b, c) { 
+          console.log('board done', a, b, c);
+          cb.apply(null, arguments);
+        });
+        */
+        nativeFind('board', boardId, function () {
+          cb.apply(null, arguments);  
+        });
+      },
+      column: function(cb) { 
+        nativeFind('column', columnId, function () {
+          cb.apply(null, arguments);  
+        });
+        /*
+        Column.findOneById(columnId).exec(function (a, b) {
+          console.log('stack done!!!', a, b);
+          cb.apply(null, arguments);  
+        });
+        */
+      },
+      card: function (cb) {
+        nativeFind('card', cardId, function () {
+          cb.apply(null, arguments);  
+        });
+      }/*,
+      stack:  function(cb) {  // slow
+        Card.find({column: columnId}).sort({position: 'asc'}).exec(function () {
+          cb.apply(null, arguments);
+        });
+      }*/
     }, function(err, r) {
       if (err)                           return res.serverError(err);
       if (r.column.board !== r.board.id) return res.notFound();
-
-      var criteria = {id: cardId, column: r.column.id};
-
-      Card.update(criteria, bits).exec(function(err, card) {
-        if (err) return res.serverError(err);
-
-        card[0].populateVotes(function(err, card) {
+      //var criteria = {id: cardId, column: r.column.id};
+      var card = r.card;
+      if (card.id === cardId) {
+        card.content = bits.content; 
+        nativeSet('card', cardId, card, function (err, msg) {
+          // what about populate votes?
           if (err) return res.serverError(err);
-
           meta.releaseCardLock(boardId, cardId, req);
 
           res.jsonx(card);
 
           if (card) redis.cardUpdated(boardId, card, req);
         });
+      }
 
+      /*
+      Card.update(criteria, bits).exec(function(err, card) { // slow
+        if (err) return res.serverError(err);
+        console.log('done 2');
+        card[0].populateVotes(function(err, card) {
+          if (err) return res.serverError(err);
+          console.log('done 3');
+          meta.releaseCardLock(boardId, cardId, req);
+
+          res.jsonx(card);
+
+          if (card) redis.cardUpdated(boardId, card, req);
+        });
       });
+     */
 
+      /*
+      var card = {
+        creator: 24,
+        content: 'Test test fooo bar asdfads test hhhh jjjj ghg hasdfadsf hhhh uuuuu hhh llll gggg fdfd ytyt nnn vvvv jjjj lalalalala',
+        position: 2,
+        column: 2758,
+        topOfPile: false,
+        color: 'default',
+        createdAt: '2016-02-12T17:37:03.562Z',
+        updatedAt: '2016-02-12T18:20:14.968Z',
+        id: 11202 
+      };
+      redis.cardUpdated(boardId, card, req);
+      */
     })
   },
 
