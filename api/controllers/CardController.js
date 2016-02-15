@@ -18,42 +18,6 @@ var getNextCardPosition = function(columnId, cb) {
   });
 };
 
-var nativeFind = function(type, id, cb) {
-  // should be connection, not column, right??
-  Column.native(function(err, connection) {
-    if (err) {
-      console.log('Error!');
-    } else {
-      connection.get('waterline:' + type + ':id:' + id, function(a, b) {
-        cb(a, JSON.parse(b)); 
-      });
-    }
-  });
-}
-
-var nativeFindStack = function(columnId, cb) {
-  Column.native(function(err, connection) {
-    if (err) {
-      console.log('Error!');
-    } else {
-      connection.get('waterline:card:id:' + columnId, function(a, b) {
-        cb(a, JSON.parse(b)); 
-      });
-    }
-  });
-}
-
-var nativeSet = function(type, id, value, cb) {
-  Column.native(function(err, connection) {
-    if (err) {
-      console.log('Error!');
-    } else {
-      connection.set('waterline:' + type + ':id:' + id, JSON.stringify(value), cb); 
-    }
-  });
-}
-
-
 module.exports = {
 
   create: function(req, res) {
@@ -115,31 +79,15 @@ module.exports = {
 
     async.auto({
       board:  function(cb) { 
-        /*
-        Board.findOneById(boardId).exec(function(a, b, c) { 
-          console.log('board done', a, b, c);
-          cb.apply(null, arguments);
-        });
-        */
-        nativeFind('board', boardId, function () {
-          cb.apply(null, arguments);  
-        });
+        //Board.findOneById(boardId).exec(cb);
+        util.nativeFind('board', boardId, cb);
       },
       column: function(cb) { 
-        nativeFind('column', columnId, function () {
-          cb.apply(null, arguments);  
-        });
-        /*
-        Column.findOneById(columnId).exec(function (a, b) {
-          console.log('stack done!!!', a, b);
-          cb.apply(null, arguments);  
-        });
-        */
+        util.nativeFind('column', columnId, cb);
+        //Column.findOneById(columnId).exec(cb);
       },
       card: function (cb) {
-        nativeFind('card', cardId, function () {
-          cb.apply(null, arguments);  
-        });
+        util.nativeFind('card', cardId, cb);
       }/*,
       stack:  function(cb) {  // slow
         Card.find({column: columnId}).sort({position: 'asc'}).exec(function () {
@@ -153,7 +101,7 @@ module.exports = {
       var card = r.card;
       if (card.id === cardId) {
         card.content = bits.content; 
-        nativeSet('card', cardId, card, function (err, msg) {
+        util.nativeSet('card', cardId, card, function (err, msg) {
           // what about populate votes?
           if (err) return res.serverError(err);
           meta.releaseCardLock(boardId, cardId, req);
@@ -179,21 +127,6 @@ module.exports = {
         });
       });
      */
-
-      /*
-      var card = {
-        creator: 24,
-        content: 'Test test fooo bar asdfads test hhhh jjjj ghg hasdfadsf hhhh uuuuu hhh llll gggg fdfd ytyt nnn vvvv jjjj lalalalala',
-        position: 2,
-        column: 2758,
-        topOfPile: false,
-        color: 'default',
-        createdAt: '2016-02-12T17:37:03.562Z',
-        updatedAt: '2016-02-12T18:20:14.968Z',
-        id: 11202 
-      };
-      redis.cardUpdated(boardId, card, req);
-      */
     })
   },
 
