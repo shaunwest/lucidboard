@@ -193,6 +193,41 @@ var vaporize = function(cardId, boardId, cb) {
   })
 };
 
+var nativeFind = function(type, id, cb) {
+  // TODO: is there a cleaner way to get to native()?
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.get('waterline:' + type + ':id:' + id, function(a, b) {
+        cb(a, JSON.parse(b)); 
+      });
+    }
+  });
+}
+
+var nativeFindStack = function(columnId, cb) {
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.get('waterline:card:id:' + columnId, function(a, b) {
+        cb(a, JSON.parse(b)); 
+      });
+    }
+  });
+}
+
+var nativeSet = function(type, id, value, cb) {
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      connection.set('waterline:' + type + ':id:' + id, JSON.stringify(value), cb); 
+    }
+  });
+}
+
 module.exports = {
   normalizeCardStack:     normalizeCardStack,
   spliceItem:             spliceItem,
@@ -203,5 +238,8 @@ module.exports = {
   getCardAndBoard:        getCardAndBoard,
   randomString:           randomString,
   fixShortid:             fixShortid,
-  vaporize:               vaporize
+  vaporize:               vaporize,
+  nativeSet:              nativeSet,
+  nativeFind:             nativeFind,
+  nativeFindStack:        nativeFindStack
 };

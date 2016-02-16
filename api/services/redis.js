@@ -28,6 +28,21 @@ var publish = function(signal, payload, req) {
     payload = obj;
   }
 
+  /*
+  signal = 'card:update:551';
+  payload = {
+    creator: 24,
+    content: 'Test test fooo bar asdfads test hhhh jjjj ghg hasdfadsf hhhh uuuuu hhh llll gggg fdfd ytyt nnn vvvv jjjj lalalalala',
+    position: 2,
+    column: 2758,
+    topOfPile: false,
+    color: 'default',
+    createdAt: '2016-02-12T17:37:03.562Z',
+    updatedAt: '2016-02-12T18:20:14.968Z',
+    id: 11202 
+  };
+  */
+
   var stringified = JSON.stringify(payload);
   console.log('publishing ' + signal, stringified);
   client.publish(signal, stringified);

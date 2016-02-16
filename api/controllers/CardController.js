@@ -78,30 +78,55 @@ module.exports = {
     };
 
     async.auto({
-      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
-      column: function(cb) { Column.findOneById(columnId).exec(cb); },
-      stack:  function(cb) { Card.find({column: columnId}).sort({position: 'asc'}).exec(cb); }
+      board:  function(cb) { 
+        //Board.findOneById(boardId).exec(cb);
+        util.nativeFind('board', boardId, cb);
+      },
+      column: function(cb) { 
+        util.nativeFind('column', columnId, cb);
+        //Column.findOneById(columnId).exec(cb);
+      },
+      card: function (cb) {
+        util.nativeFind('card', cardId, cb);
+      }/*,
+      stack:  function(cb) {  // slow
+        Card.find({column: columnId}).sort({position: 'asc'}).exec(function () {
+          cb.apply(null, arguments);
+        });
+      }*/
     }, function(err, r) {
       if (err)                           return res.serverError(err);
       if (r.column.board !== r.board.id) return res.notFound();
-
-      var criteria = {id: cardId, column: r.column.id};
-
-      Card.update(criteria, bits).exec(function(err, card) {
-        if (err) return res.serverError(err);
-
-        card[0].populateVotes(function(err, card) {
+      //var criteria = {id: cardId, column: r.column.id};
+      var card = r.card;
+      if (card.id === cardId) {
+        card.content = bits.content; 
+        util.nativeSet('card', cardId, card, function (err, msg) {
+          // what about populate votes?
           if (err) return res.serverError(err);
-
           meta.releaseCardLock(boardId, cardId, req);
 
           res.jsonx(card);
 
           if (card) redis.cardUpdated(boardId, card, req);
         });
+      }
 
+      /*
+      Card.update(criteria, bits).exec(function(err, card) { // slow
+        if (err) return res.serverError(err);
+        console.log('done 2');
+        card[0].populateVotes(function(err, card) {
+          if (err) return res.serverError(err);
+          console.log('done 3');
+          meta.releaseCardLock(boardId, cardId, req);
+
+          res.jsonx(card);
+
+          if (card) redis.cardUpdated(boardId, card, req);
+        });
       });
-
+     */
     })
   },
 
